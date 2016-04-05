@@ -14,7 +14,6 @@
     "category": "Event Management",
     "depends": [
         'event_track_presence_hr_holidays',
-        'hr_contract_stages'
     ],
     "data": [
         'wizard/wiz_calculate_employee_calendar_view.xml',
