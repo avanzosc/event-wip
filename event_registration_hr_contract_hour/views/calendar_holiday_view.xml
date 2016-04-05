@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+       <record id="calendar_holiday_form_view_inh_contracthour" model="ir.ui.view">
+            <field name="name">calendar.holiday.form.view.inh.contracthour</field>
+            <field name="model">calendar.holiday</field>
+            <field name="inherit_id" ref="calendar_holiday.calendar_holiday_form_view"/>
+            <field name="arch" type="xml">
+                <field name="absence_type" position="before">
+                    <field name="type_hour" domain="[('id','>',3)]" />
+                </field>
+                <group name="days" position="before">
+                    <group name="warning" colspan="4">
+                        <p>* For calendars defined in employee contracts, YOU CAN NOT DEFINE any type hour, because the day defined in this calendars, is a public holiday day. If you 
+                        defined it, its value is not caught.</p>
+                        <newline/>
+                        <p>* For calendars defined in sales contracts, YOU CAN  DEFINE any type hour in which the DAY IS A PUBLIC  HOLIDAY, but IT HAS TO GO TO WORK. If any type hour is 
+                        not defined, the day is a public holiday.</p>
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</openerp>

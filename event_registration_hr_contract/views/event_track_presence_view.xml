@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="event_track_presence_view_inh_regis_contract" model="ir.ui.view">
+            <field name="name">event.track.presence.view.inh.regis.contract</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_view"/>
+            <field name="arch" type="xml">
+                <field name="partner" position="after">
+                    <field name="contract" />
+                </field>
+            </field>
+        </record>
+        <record id="event_track_presence_search_view_inh_regis_contract" model="ir.ui.view">
+            <field name="name">event.track.presence.search.view.inh.regis.contract</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_search_view"/>
+            <field name="arch" type="xml">
+                <field name="partner" position="after">
+                    <field name="contract" />
+                </field>
+                <filter string="Partner" position="after">
+                    <filter string="Employee contract" 
+                            domain="[]" context="{'group_by':'contract'}"/>
+                </filter> 
+            </field>
+        </record>
+        <record id="event_track_presence_form_view_inh_regis_contract" model="ir.ui.view">
+            <field name="name">event.track.presence.form.view.inh.regis.contract</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_form_view"/>
+            <field name="arch" type="xml">
+                <field name="partner" position="attributes">
+                    <attribute name="colspan">4</attribute>
+                </field>
+                <field name="partner" position="after">
+                    <field name="contract" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

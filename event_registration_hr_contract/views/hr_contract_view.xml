@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="hr_contract_view_form_inh_registration_contract" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.inh.registration.contract</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div" position="before">
+                    <div class="oe_right oe_button_box" name="buttons">
+                        <button name="show_contract_calendar_days" type="object"
+                                class="oe_stat_button oe_inline" icon="fa-list">
+                            <field name="calendar_day_count" widget="statinfo"
+                                   string="Calendar days"/>
+                        </button>
+                        <button name="show_contract_events" type="object"
+                                class="oe_stat_button oe_inline" icon="fa-bars">
+                            <field name="event_count" widget="statinfo"
+                                   string="Events"/>
+                        </button>
+                        <button name="show_contract_registrations" type="object"
+                                class="oe_stat_button oe_inline" icon="fa-github">
+                            <field name="registration_count" widget="statinfo"
+                                   string="Registrations"/>
+                        </button>
+                        <button name="show_contract_sessions" type="object"
+                                class="oe_stat_button oe_inline" icon="fa-inbox">
+                            <field name="session_count" widget="statinfo"
+                                   string="Sessions"/>
+                        </button>
+                        <button name="show_contract_presences" type="object"
+                                class="oe_stat_button oe_inline" icon="fa-tasks">
+                            <field name="presence_count" widget="statinfo"
+                                   string="Presences"/>
+                        </button>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

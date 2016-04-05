@@ -1,0 +1,197 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_registration_hr_contract
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-31 19:16+0000\n"
+"PO-Revision-Date: 2016-03-31 21:17+0100\n"
+"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: event_registration_hr_contract
+#: view:res.partner.calendar.day:event_registration_hr_contract.res_partner_calendar_day_search_view_inh_regis_contract
+#: field:res.partner.calendar.day,absence:0
+#: field:wiz.calculate.employee.calendar,ausence:0
+msgid "Absence"
+msgstr "Ausencia"
+
+#. module: event_registration_hr_contract
+#: view:hr.contract:event_registration_hr_contract.hr_contract_view_form_inh_registration_contract
+msgid "Calendar days"
+msgstr "Días de calendario"
+
+#. module: event_registration_hr_contract
+#: code:addons/event_registration_hr_contract/models/event.py:187
+#, python-format
+msgid "Calendar not found for employee %s"
+msgstr "Calendario no encontrado para el empleado %s"
+
+#. module: event_registration_hr_contract
+#: view:wiz.calculate.employee.calendar:event_registration_hr_contract.wiz_calculate_employee_calendar_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_hr_contract
+msgid "Contract"
+msgstr "Contrato"
+
+#. module: event_registration_hr_contract
+#: field:event.registration,contract_stage:0
+msgid "Contract stage"
+msgstr "Estado contrato"
+
+#. module: event_registration_hr_contract
+#: field:wiz.event.append.assistant,contracts_permitted:0
+msgid "Contracts permitted"
+msgstr "Contratos permitidos"
+
+#. module: event_registration_hr_contract
+#: view:wiz.calculate.employee.calendar:event_registration_hr_contract.wiz_calculate_employee_calendar_form
+msgid "Create employee calendar"
+msgstr "Crear calendario empleado"
+
+#. module: event_registration_hr_contract
+#: field:wiz.calculate.employee.calendar,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: event_registration_hr_contract
+#: field:wiz.calculate.employee.calendar,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: event_registration_hr_contract
+#: field:event.event,date_begin_without_hour:0
+msgid "Date begin without hour"
+msgstr "Fecha inicio sin hora"
+
+#. module: event_registration_hr_contract
+#: field:event.event,date_end_without_hour:0
+msgid "Date end without hour"
+msgstr "Fecha fin sin hora"
+
+#. module: event_registration_hr_contract
+#: field:event.registration,employee:0
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_res_partner_calendar_day
+msgid "Employee calendar day"
+msgstr "Día calendario empleado"
+
+#. module: event_registration_hr_contract
+#: field:event.registration,contract:0
+#: view:event.track.presence:event_registration_hr_contract.event_track_presence_search_view_inh_regis_contract
+#: field:event.track.presence,contract:0
+#: field:wiz.event.append.assistant,contract:0
+msgid "Employee contract"
+msgstr "Contrato empleado"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_event_event
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_event_registration
+msgid "Event Registration"
+msgstr "Registro evento"
+
+#. module: event_registration_hr_contract
+#: view:hr.contract:event_registration_hr_contract.hr_contract_view_form_inh_registration_contract
+msgid "Events"
+msgstr "Eventos"
+
+#. module: event_registration_hr_contract
+#: view:res.partner.calendar.day:event_registration_hr_contract.res_partner_calendar_day_search_view_inh_regis_contract
+msgid "Festive"
+msgstr "Festivo"
+
+#. module: event_registration_hr_contract
+#: field:wiz.calculate.employee.calendar,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: event_registration_hr_contract
+#: field:wiz.calculate.employee.calendar,write_uid:0
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: event_registration_hr_contract
+#: field:wiz.calculate.employee.calendar,write_date:0
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_hr_holidays
+msgid "Leave"
+msgstr "Ausencia"
+
+#. module: event_registration_hr_contract
+#: view:event.track.presence:event_registration_hr_contract.event_track_presence_search_view_inh_regis_contract
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: event_registration_hr_contract
+#: view:hr.contract:event_registration_hr_contract.hr_contract_view_form_inh_registration_contract
+msgid "Presences"
+msgstr "Presencias"
+
+#. module: event_registration_hr_contract
+#: field:hr.contract,presences:0
+msgid "Presences to sessions"
+msgstr "Presencias a sesiones"
+
+#. module: event_registration_hr_contract
+#: view:hr.contract:event_registration_hr_contract.hr_contract_view_form_inh_registration_contract
+#: field:hr.contract,registrations:0
+msgid "Registrations"
+msgstr "Registros"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_event_track_presence
+msgid "Session assistants"
+msgstr "Presencias a sesión"
+
+#. module: event_registration_hr_contract
+#: view:hr.contract:event_registration_hr_contract.hr_contract_view_form_inh_registration_contract
+msgid "Sessions"
+msgstr "Sesiones"
+
+#. module: event_registration_hr_contract
+#: code:addons/event_registration_hr_contract/models/hr_holidays.py:64
+#: view:wiz.calculate.employee.calendar:event_registration_hr_contract.wiz_calculate_employee_calendar_form
+#, python-format
+msgid "There is no calendar for the employee, we are going to create"
+msgstr "No hay calendario para el empleado, vamos a crearlo"
+
+#. module: event_registration_hr_contract
+#: field:wiz.calculate.employee.calendar,validate_ausence:0
+msgid "Validate ausence"
+msgstr "Validar ausencia"
+
+#. module: event_registration_hr_contract
+#: model:ir.model,name:event_registration_hr_contract.model_wiz_calculate_employee_calendar
+msgid "Wizard for calculate employee calendar"
+msgstr "Wizard para calcular el calendario del empleado"
+
+#. module: event_registration_hr_contract
+#: code:addons/event_registration_hr_contract/models/event.py:167
+#, python-format
+msgid "You must enter the employee's contract"
+msgstr "Debe de introducir el contrato del empleado"
+
+#. module: event_registration_hr_contract
+#: view:wiz.calculate.employee.calendar:event_registration_hr_contract.wiz_calculate_employee_calendar_form
+msgid "or"
+msgstr "o"
+
