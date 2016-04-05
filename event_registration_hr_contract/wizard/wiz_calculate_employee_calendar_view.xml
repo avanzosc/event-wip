@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_calculate_employee_calendar_form">
+            <field name="name">wiz.calculate.employee.calendar.form</field>
+            <field name="model">wiz.calculate.employee.calendar</field>
+            <field name="arch" type="xml">
+                <form string="There is no calendar for the employee, we are going to create" version="7.0">
+                    <group colspan="4">
+                        <field name="validate_ausence" invisible="1" />
+                        <field name="ausence" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="button_calculate_employee_calendar" type="object"
+                            string="Create employee calendar" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

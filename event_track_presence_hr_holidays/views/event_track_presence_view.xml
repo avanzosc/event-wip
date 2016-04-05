@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="event_track_presence_view_inh_presence" model="ir.ui.view">
+            <field name="name">event.track.presence.tree.view.inh.presence</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_calendar_holiday.event_track_presence_view_inh_calendar" />
+            <field name="arch" type="xml">
+                <field name="sale_contract_absence_type" position="after">
+                    <field name="hr_holiday_absence_type" readonly="1" />
+                </field>
+            </field>
+        </record>
+        <record id="event_track_presence_search_view_inh_presence" model="ir.ui.view">
+            <field name="name">event.track.presence.search.view.inh.presence</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_calendar_holiday.event_track_presence_search_view_inh_calendar" />
+            <field name="arch" type="xml">
+                <field name="sale_contract_absence_type" position="after">
+                    <field name="hr_holiday_absence_type" />
+                </field>
+                <filter string="Absence type from employee contract" position="after">
+                    <filter string="Absence/Holiday absence type" 
+                            domain="[]" context="{'group_by':'hr_holiday_absence_type'}"/>
+                </filter>
+            </field>
+        </record>
+    </data>
+</openerp>

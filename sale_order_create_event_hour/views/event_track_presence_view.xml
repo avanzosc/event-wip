@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="event_track_presence_tree_view_inh_hour" model="ir.ui.view">
+            <field name="name">event.track.presence.tree.view.inh.hour</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_view" />
+            <field name="arch" type="xml">
+                <field name="real_duration" position="after">
+                    <field name="type_hour" />
+                </field>
+            </field>
+        </record>
+        <record id="event_track_presence_search_view_inh_hour" model="ir.ui.view">
+            <field name="name">event.track.presence.search.view.inh.hour</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_search_view" />
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="type_hour" />
+                </field>
+                <filter string="State" position="after">
+                    <filter string="Type hour" 
+                            domain="[]" context="{'group_by':'type_hour'}"/>
+                </filter>
+            </field>
+        </record>
+        <record id="event_track_presence_form_view_inh_hour" model="ir.ui.view">
+            <field name="name">event.track.presence.form.view.inh.hour</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_form_view" />
+            <field name="arch" type="xml">
+                <field name="real_duration" position="after">
+                    <group colspan="4" col="8" >
+	                    <field name="type_hour" colspan="4"/>
+	                    <group colspan="4" />
+                    </group>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,75 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_registration_hr_contract_hour
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-31 19:18+0000\n"
+"PO-Revision-Date: 2016-03-31 21:25+0100\n"
+"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: event_registration_hr_contract_hour
+#: view:calendar.holiday:event_registration_hr_contract_hour.calendar_holiday_form_view_inh_contracthour
+msgid ""
+"* For calendars defined in employee contracts, YOU CAN NOT DEFINE any type hour, because the day defined in this calendars, is a public holiday day. If you \n"
+"                        defined it, its value is not caught."
+msgstr ""
+"* Para calendarios definidos en contratos de empleados, NO PUEDE DEFINIR ningún tipo de hora, porque el día definido en estos calendarios, es un día festivo público. Si usted \n"
+"                        lo define, no se cogerá su valor."
+
+#. module: event_registration_hr_contract_hour
+#: view:calendar.holiday:event_registration_hr_contract_hour.calendar_holiday_form_view_inh_contracthour
+msgid ""
+"* For calendars defined in sales contracts, YOU CAN  DEFINE any type hour in which the DAY IS A PUBLIC  HOLIDAY, but IT HAS TO GO TO WORK. If any type hour is \n"
+"                        not defined, the day is a public holiday."
+msgstr ""
+"* Para calendarios definidos en contratos de ventas, PUEDE DEFINIR algún tipo de hora en el cuál el DíA ES UN FESTIVO, pero HAY QUE TRABAJAR. Si algún tipo de hora \n"
+"                        no es definido, el día es un festivo."
+
+#. module: event_registration_hr_contract_hour
+#: view:calendar.holiday.day:event_registration_hr_contract_hour.calendar_holiday_day_search_view_inh_contracthour
+msgid "Calendar holiday"
+msgstr "Calendario festivo"
+
+#. module: event_registration_hr_contract_hour
+#: model:ir.model,name:event_registration_hr_contract_hour.model_calendar_holiday_day
+msgid "Calendar holiday lines"
+msgstr "Líneas calendario festivo"
+
+#. module: event_registration_hr_contract_hour
+#: model:ir.model,name:event_registration_hr_contract_hour.model_res_partner_calendar_day
+msgid "Employee calendar day"
+msgstr "Día calendario empleado"
+
+#. module: event_registration_hr_contract_hour
+#: model:ir.model,name:event_registration_hr_contract_hour.model_event_event
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_registration_hr_contract_hour
+#: field:res.partner.calendar.day,festive_to_work:0
+msgid "Festive to work"
+msgstr "Festivo a trabajar"
+
+#. module: event_registration_hr_contract_hour
+#: model:ir.model,name:event_registration_hr_contract_hour.model_hr_holidays
+msgid "Leave"
+msgstr "Ausencia"
+
+#. module: event_registration_hr_contract_hour
+#: model:ir.model,name:event_registration_hr_contract_hour.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: event_registration_hr_contract_hour
+#: field:calendar.holiday.day,type_hour:0
+msgid "Type hour"
+msgstr "Tipo hora"
+

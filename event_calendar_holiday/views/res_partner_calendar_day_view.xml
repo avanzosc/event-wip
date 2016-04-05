@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="res_partner_calendar_day_tree_view_inh_event" model="ir.ui.view">
+            <field name="name">res.partner.calendar.day.tree.view.inh.event</field>
+            <field name="model">res.partner.calendar.day</field>
+            <field name="inherit_id" ref="calendar_holiday.res_partner_calendar_day_tree_view" />
+            <field name="arch" type="xml">
+                <field name="absence_type" position="after">
+                    <field name="presences" />
+                </field>
+            </field>
+        </record>
+        <record id="res_partner_calendar_day_form_view_inh_event" model="ir.ui.view">
+            <field name="name">res.partner.calendar.day.form.view.inh.event</field>
+            <field name="model">res.partner.calendar.day</field>
+            <field name="inherit_id" ref="calendar_holiday.res_partner_calendar_day_form_view" />
+            <field name="arch" type="xml">
+                <field name="absence_type" position="after">
+                    <separator string="Presences" colspan="4" />
+                    <field name="presences" nolabel="1" colspan="4"/>
+                </field>
+                <group name="body" position="before">
+                    <group name="buttons" colspan="4" >
+                        <button name="button_mark_presences_as_worked" type="object" 
+                                string="Mark all presences as worked" />
+                    </group>
+                </group>
+            </field>
+        </record>
+        <record id="res_partner_calendar_day_calendar_view_inh_event" model="ir.ui.view">
+            <field name="name">res.partner.calendar.day.calendar.view.inh.event</field>
+            <field name="model">res.partner.calendar.day</field>
+            <field name="inherit_id" ref="calendar_holiday.res_partner_calendar_day_calendar_view" />
+            <field name="arch" type="xml">
+                <field name="real_hours" position="after">
+                    <field name="lit_estimated_hours" />
+                    <field name="lit_real_hours" />
+                </field>
+                <field name="estimated_hours" position="replace"/>
+                <field name="real_hours" position="replace"/>
+            </field>
+        </record>
+        <record id="calendar_holiday.action_res_partner_calendar_day_view" model="ir.actions.act_window">
+            <field name="domain">['|',('estimated_hours','!=',0),('absence_type','!=',False)]</field>
+        </record>
+    </data>
+</openerp>

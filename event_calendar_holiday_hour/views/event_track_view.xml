@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_track_for_inh_calendar_typehour">
+            <field name="name">view.event.track.for.inh.calendar_typehour</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="event_calendar_holiday.view_event_track_for_inh_calendar" />
+            <field name="arch" type="xml">
+                <field name="presences" position="attributes">
+                    <attribute name="context">{'default_session':active_id,'default_type_hour':type_hour,'default_absence_type':absence_type}</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

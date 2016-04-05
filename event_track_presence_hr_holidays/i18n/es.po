@@ -1,0 +1,53 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_track_presence_hr_holidays
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-31 19:32+0000\n"
+"PO-Revision-Date: 2016-03-31 21:32+0100\n"
+"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: event_track_presence_hr_holidays
+#: view:event.track.presence:event_track_presence_hr_holidays.event_track_presence_search_view_inh_presence
+msgid "Absence type from employee contract"
+msgstr "Tipo ausencia desde contracto empleado"
+
+#. module: event_track_presence_hr_holidays
+#: view:event.track.presence:event_track_presence_hr_holidays.event_track_presence_search_view_inh_presence
+msgid "Absence/Holiday absence type"
+msgstr "Ausencia/Vacaciones tipo de ausencia"
+
+#. module: event_track_presence_hr_holidays
+#: field:event.track.presence,hr_holiday:0
+msgid "Holiday/Absence"
+msgstr "Vacaciones/Ausencia"
+
+#. module: event_track_presence_hr_holidays
+#: field:event.track.presence,hr_holiday_absence_type:0
+msgid "Holiday/Absence absence type"
+msgstr "Vacaciones/Ausencia tipo de ausencia"
+
+#. module: event_track_presence_hr_holidays
+#: model:ir.model,name:event_track_presence_hr_holidays.model_hr_holidays
+msgid "Leave"
+msgstr "Ausencia"
+
+#. module: event_track_presence_hr_holidays
+#: model:ir.model,name:event_track_presence_hr_holidays.model_event_track_presence
+msgid "Session assistants"
+msgstr "Presencias a sesión"
+
+#. module: event_track_presence_hr_holidays
+#: view:hr.holidays:event_track_presence_hr_holidays.allocation_company_new_inh_presence_holidays
+#: view:hr.holidays:event_track_presence_hr_holidays.edit_holiday_new_inh_presence_holidays
+msgid "object"
+msgstr "objecto"
+

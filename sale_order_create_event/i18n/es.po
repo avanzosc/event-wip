@@ -1,0 +1,342 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_order_create_event
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-04 09:38+0000\n"
+"PO-Revision-Date: 2016-04-04 11:41+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: sale_order_create_event
+#: field:wiz.event.append.assistant,tasks:0
+msgid "Add partner to the tasks"
+msgstr "Añadir empresa a tareas"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "April"
+msgstr "Abril"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "August"
+msgstr "Agosto"
+
+#. module: sale_order_create_event
+#: field:sale.order,project_by_task:0
+msgid "Create project by task"
+msgstr "Crear proyecto por tarea"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "December"
+msgstr "Diciembre"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:28
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:30
+#, python-format
+msgid "Error in dates"
+msgstr "Error en fechas"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:160
+#: code:addons/sale_order_create_event/models/sale_order.py:169
+#, python-format
+msgid "Error in recurring service product"
+msgstr "Error en producto servicio recurrente"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_event_event
+msgid "Event"
+msgstr "Evento"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_event_registration
+msgid "Event Registration"
+msgstr "Registro evento"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_event_track
+msgid "Event Tracks"
+msgstr "Sesiones del evento"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Extra Info"
+msgstr "Información extra"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "February"
+msgstr "Febrero"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Friday"
+msgstr "Viernes"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "January"
+msgstr "Enero"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "July"
+msgstr "Julio"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "June"
+msgstr "Junio"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "March"
+msgstr "Marzo"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "May"
+msgstr "Mayo"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Monday"
+msgstr "Lunes"
+
+#. module: sale_order_create_event
+#: selection:sale.order,project_by_task:0
+msgid "No"
+msgstr "No"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:30
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:32
+#, python-format
+msgid "Not tasks found for introduced dates"
+msgstr "Tareas no encontradas para las fechas introducidas"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "November"
+msgstr "Noviembre"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "October"
+msgstr "Octubre"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+#: field:project.task,sessions_partners:0
+msgid "Partners of sessions"
+msgstr "Empresas de la sesión"
+
+#. module: sale_order_create_event
+#: field:wiz.event.append.assistant,permitted_tasks:0
+msgid "Permited tasks"
+msgstr "Tareas  permitidas"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_project_project
+msgid "Project"
+msgstr "Proyecto"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:32
+#: code:addons/sale_order_create_event/models/sale_order.py:33
+#, python-format
+msgid "Project/contract without project"
+msgstr "Proyecto/contrato sin proyecto"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Recalculate Sessions"
+msgstr "Recalcular sesiones"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Recurrence generator"
+msgstr "Generar recurrencias"
+
+#. module: sale_order_create_event
+#: field:event.event,sale_order:0
+msgid "Sale Order"
+msgstr "Pedido Venta"
+
+#. module: sale_order_create_event
+#: field:account.analytic.account,sale:0
+msgid "Sale order"
+msgstr "Pedido de venta"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea pedido de venta"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Saturday"
+msgstr "Sábado"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "September"
+msgstr "Septiembre"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/project.py:217
+#: code:addons/sale_order_create_event/models/project.py:221
+#: code:addons/sale_order_create_event/models/sale_order.py:130
+#: code:addons/sale_order_create_event/models/sale_order.py:135
+#, python-format
+msgid "Session %s for %s"
+msgstr "Sesión %s para %s"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/project.py:119
+#: code:addons/sale_order_create_event/models/project.py:123
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+#: field:project.task,sessions:0
+#, python-format
+msgid "Sessions"
+msgstr "Sesiones"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Sunday"
+msgstr "Domingo"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_project_task
+msgid "Task"
+msgstr "Tarea"
+
+#. module: sale_order_create_event
+#: field:res.partner,sessions_tasks:0
+msgid "Task of sessions"
+msgstr "Tarea de sesiones"
+
+#. module: sale_order_create_event
+#: field:event.track,tasks:0
+#: view:wiz.event.append.assistant:sale_order_create_event.wiz_event_append_assistant_form_inh_createevent
+msgid "Tasks"
+msgstr "Tareas"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:161
+#: code:addons/sale_order_create_event/models/sale_order.py:172
+#, python-format
+msgid ""
+"This product is a recurring service, But it has NOT checked only the "
+"\"Generate procurement-task\" option in their routes defined, consequently, "
+"this product will not create task in the event."
+msgstr ""
+"Este producto es un servicio recurrente, pero NO ESTA chequeada solo la "
+"opción \"Generar abastecimientos-tareas\" en sus rutas definidas, por "
+"consiguiente, este producto no va a crear tarea en el evento."
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Thursday"
+msgstr "Jueves"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Tuesday"
+msgstr "Martes"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:19
+#: code:addons/sale_order_create_event/models/sale_order.py:21
+#, python-format
+msgid "User without time zone"
+msgstr "Usuario sin zona horaria definida"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Wednesday"
+msgstr "Miércoles"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Week 1"
+msgstr "Semana 1"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Week 2"
+msgstr "Semana 2"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Week 3"
+msgstr "Semana 3"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Week 4"
+msgstr "Semana 4"
+
+#. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+msgid "Week 5"
+msgstr "Semana 5"
+
+#. module: sale_order_create_event
+#: selection:sale.order,project_by_task:0
+msgid "Yes"
+msgstr "Si"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:26
+#: code:addons/sale_order_create_event/models/sale_order.py:28
+#, python-format
+msgid "You must enter the end date of the project/contract"
+msgstr "Debe de introducir la fecha fin del proyecto/contracto"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:21
+#: code:addons/sale_order_create_event/models/sale_order.py:23
+#, python-format
+msgid "You must enter the project/contract"
+msgstr "Debe de introducir el proyecto/contracto"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:23
+#: code:addons/sale_order_create_event/models/sale_order.py:25
+#, python-format
+msgid "You must enter the start date of the project/contract"
+msgstr "Debe de introducir la fecha de inicio del proyecto/contrato"
+
+#. module: sale_order_create_event
+#: view:wiz.event.append.assistant:sale_order_create_event.wiz_event_append_assistant_form_inh_createevent
+msgid "tasks"
+msgstr "tareas"
+

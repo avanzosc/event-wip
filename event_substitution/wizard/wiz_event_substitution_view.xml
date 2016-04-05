@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_event_substitution_view">
+            <field name="name">wiz.event.substitution.view</field>
+            <field name="model">wiz.event.substitution</field>
+            <field name="arch" type="xml">
+                <form string="Wizard for substitution employee" version="7.0">
+                    <group>
+                        <field name="holiday" invisible="1"/>
+                        <field name="lines" nolabel="1" >
+                            <tree string="Events for substitution employee"
+                                editable="top">
+                                <field name="wiz" invisible="1" />
+                                <field name="event" readonly="1" />
+                                <field name="employee" required="1"
+                                    domain="[('address_home_id','!=',False)]"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="button_substitution_employee" type="object" 
+                                string="Substitution employee" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link"
+                                special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
