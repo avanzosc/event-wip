@@ -9,7 +9,7 @@ class HrContract(models.Model):
     _inherit = ['hr.contract', 'mail.thread', 'ir.needaction_mixin']
 
     holiday_calendars = fields.Many2many(
-        'calendar.holiday', string='Holiday calendars')
+        comodel_name='calendar.holiday', string='Holiday calendars')
     partner = fields.Many2one(
         comodel_name='res.partner', string='Contract employee',
         related='employee_id.address_home_id')

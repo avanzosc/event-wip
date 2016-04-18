@@ -68,7 +68,7 @@ class ResPartnerCalendar(models.Model):
 
     partner = fields.Many2one(
         comodel_name='res.partner', string='Partner', ondelete='cascade')
-    year = fields.Integer('Year', size=4)
+    year = fields.Integer(string='Year', size=4)
     dates = fields.One2many(
         comodel_name='res.partner.calendar.day', inverse_name='calendar',
         string='Calendar dates')
@@ -83,17 +83,17 @@ class ResPartnerCalendarDay(models.Model):
         comodel_name='res.partner.calendar', string='Calendar',
         ondelete='cascade')
     partner = fields.Many2one(
-        'res.partner', related='calendar.partner', string='Partner',
-        store=True, select=True)
-    date = fields.Date('Date', select=True)
+        comodel_name='res.partner', related='calendar.partner',
+        string='Partner', store=True, select=True)
+    date = fields.Date(string='Date', select=True)
     contract = fields.Many2one(
         comodel_name='hr.contract', string='Partner contract')
-    estimated_hours = fields.Float('Estimated hours', default=0.0)
-    real_hours = fields.Float('Real hours', default=0.0)
-    festive = fields.Boolean('Festive', default=False)
+    estimated_hours = fields.Float(string='Estimated hours', default=0.0)
+    real_hours = fields.Float(string='Real hours', default=0.0)
+    festive = fields.Boolean(string='Festive', default=False)
     absence_type = fields.Many2one(
-        'hr.holidays.status', string='Absence type')
+        comodel_name='hr.holidays.status', string='Absence type')
     absence_type_from_employee_contract = fields.Many2one(
-        'hr.holidays.status', string='Absence type')
+        comodel_name='hr.holidays.status', string='Absence type')
     calendar_holiday_day = fields.Many2one(
-        'calendar.holiday.day', string='Calendar holiday day')
+        comodel_name='calendar.holiday.day', string='Calendar holiday day')
