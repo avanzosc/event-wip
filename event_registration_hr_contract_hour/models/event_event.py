@@ -8,8 +8,8 @@ class EventEvent(models.Model):
     _inherit = 'event.event'
 
     def _put_festives_in_sesions_from_sale_contract(self, calendars):
-        res = super(EventEvent,
-                    self)._put_festives_in_sesions_from_sale_contract(calendars)
+        super(EventEvent,
+              self)._put_festives_in_sesions_from_sale_contract(calendars)
         type_hour_festive = self.env.ref(
             'sale_order_create_event_hour.type_hour_festive')
         for track in self.track_ids:
