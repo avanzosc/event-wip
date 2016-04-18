@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model="hr.type.hour" id="type_hour_festive">
+            <field name="name">Festive</field>
+        </record>
+        <record model="hr.type.hour" id="type_hour_working">
+            <field name="name">Workable</field>
+        </record>
+        <record model="hr.type.hour" id="type_hour_sunday">
+            <field name="name">Sunday</field>
+        </record>
+        <record model="hr.type.hour" id="type_hour_festive_work">
+            <field name="name">Festive workable</field>
+        </record>
+    </data>
+</openerp>

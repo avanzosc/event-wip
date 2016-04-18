@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="edit_holiday_new_inh_presence_holidays" model="ir.ui.view">
+            <field name="name">edit.holiday.new.inh.presence.holidays</field>
+            <field name="model">hr.holidays</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_new"/>
+            <field name="arch" type="xml">
+                <button name="validate" position="attributes">
+                    <attribute name="name">button_validate_holiday</attribute>
+                    <attribute name="type">object</attribute>
+                </button>
+                <button name="refuse" position="attributes">
+                    <attribute name="name">button_refuse_holiday</attribute>
+                    <attribute name="type">object</attribute>
+                </button>
+            </field>
+        </record>
+        <record id="allocation_company_new_inh_presence_holidays" model="ir.ui.view">
+            <field name="name">allocation.company.new.inh.presence.holidays</field>
+            <field name="model">hr.holidays</field>
+            <field name="inherit_id" ref="hr_holidays.allocation_company_new"/>
+            <field name="arch" type="xml">
+                <button name="validate" position="attributes">
+                    <attribute name="name">button_validate_holiday</attribute>
+                    <attribute name="type">object</attribute>
+                </button>
+                <button name="refuse" position="attributes">
+                    <attribute name="name">button_refuse_holiday</attribute>
+                    <attribute name="type">object</attribute>
+                </button>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="event_track_presence_view_inh_calendar" model="ir.ui.view">
+            <field name="name">event.track.presence.tree.view.inh.calendar</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_view" />
+            <field name="arch" type="xml">
+                <field name="session_date" position="after">
+                    <field name="absence_type" />
+                    <field name="calendar_holiday_absence_type" readonly="1" />
+                    <field name="sale_contract_absence_type" readonly="1" />
+                </field>
+                <field name="state" position="after">
+                    <button name="button_mark_presence_as_worked" type="object" 
+                            string="Mark presence as worked" icon="gtk-apply" 
+                            attrs="{'invisible':[('state','!=','pending')]}"/>
+
+                </field>
+            </field>
+        </record>
+        <record id="event_track_presence_search_view_inh_calendar" model="ir.ui.view">
+            <field name="name">event.track.presence.search.view.inh.calendar</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_search_view" />
+            <field name="arch" type="xml">
+                <field name="partner" position="after">
+                    <field name="absence_type" />
+                    <field name="calendar_holiday_absence_type" />
+                    <field name="sale_contract_absence_type" />
+                </field>
+                <filter string="State" position="after">
+                    <filter string="Absence type" 
+                            domain="[]" context="{'group_by':'absence_type'}"/>
+                    <filter string="Calenda holiday absence type" 
+                            domain="[]" context="{'group_by':'calendar_holiday_absence_type'}"/>
+                    <filter string="Absence type from employee contract" 
+                            domain="[]" context="{'group_by':'sale_contract_absence_type'}"/>
+                </filter>
+            </field>
+        </record>
+        <record id="action_event_track_presence2_view" model="ir.actions.act_window">
+            <field name="name">Session presences</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">event.track.presence</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="event_track_presence2_option_view" name="Sessions presences"
+                  action="action_event_track_presence2_view" 
+                  parent="hr.menu_hr_main" sequence="88" />
+    </data>
+</openerp>

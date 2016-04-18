@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_form_inh_assistant">
+            <field name="name">view.event.form.inh.assistant</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form" />
+            <field name="arch" type="xml">
+                <field name="registration_ids" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="registration_ids" position="after">
+                    <separator string="NOT Employee registrations" colspan="4" />
+                    <field name="no_employee_registration_ids" colspan="4" nolabel="1" groups="event.group_event_manager,event.group_event_user"
+                            context="{'default_event_id':active_id}">
+                        <tree string="No employee registrations" editable="top">
+                            <field name="event_id" invisible="1"/>
+                            <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
+                                domain="[('employee','=',False)]"/>
+                            <field name="name" />
+                            <field name="replaces_to" readonly="1" />
+                            <field name="required_account" invisible="1"/>
+                            <field name="employee" invisible="1"/>
+                            <field name="analytic_account"
+                                 attrs="{'readonly': [('required_account','=',False)]}" />
+                            <field name="date_start" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                            <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                            <field name="email" />
+                            <field name="phone"/>
+                            <field name="nb_register" />
+                            <field name="event_ticket_id"/>
+                            <field name="contracts_permitted" invisible="1"/>
+                            <field name="contract" invisible="1"/>
+                            <field name="contract_stage" invisible="1" />
+                            <field name="state"/>
+                            <button name="registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
+                            <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
+                            <button name="button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
+                        </tree>
+                    </field>
+                    <separator string="Employee registrations" colspan="4" />
+                    <field name="employee_registration_ids" colspan="4" nolabel="1" groups="event.group_event_manager,event.group_event_user"
+                            context="{'default_event_id':active_id}">
+                        <tree string="Employee registrations" editable="top">
+                            <field name="event_id" invisible="1" />
+                            <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
+                                domain="[('employee','!=',False)]"/>
+                            <field name="name" />
+                            <field name="replaces_to" readonly="1" />
+                            <field name="required_account" invisible="1"/>
+                            <field name="employee" invisible="1"/>
+                            <field name="analytic_account" invisible="1" />
+                            <field name="date_start" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                            <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                            <field name="email" />
+                            <field name="phone"/>
+                            <field name="nb_register" />
+                            <field name="event_ticket_id"/>
+                            <field name="contracts_permitted" invisible="1"/>
+                            <field name="contract"
+                                   attrs="{'readonly': ['|', ('state','not in',('draft')),('employee','=',False)]}"
+                                   domain="[('id','in',contracts_permitted[0][2])]"/>
+                            <field name="contract_stage" readonly="1" />
+                            <field name="state"/>
+                            <button name="registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
+                            <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
+                            <button name="button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_event_form_inh2__assistant">
+            <field name="name">view.event.form.inh2.assistant</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event_registration_hr_contract.view_event_form_inh_registration_contract" />
+            <field name="arch" type="xml">
+               <field name="contract" position="attributes">
+                    <attribute name="invisible">1</attribute>
+               </field>
+               <field name="contract_stage" position="attributes">
+                    <attribute name="invisible">1</attribute>
+               </field>
+            </field>
+        </record>
+    </data>
+</openerp>

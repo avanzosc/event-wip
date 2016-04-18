@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="event_track_presence_view_inh_substitution">
+            <field name="name">event.track.presence.view.inh.substitution</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_view" />
+            <field name="arch" type="xml">
+                <field name="session_duration" position="before">
+                    <field name="replaced_by" />
+                    <field name="replaces_to" />
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="event_track_presence_search_view_inh_substitution">
+            <field name="name">event.track.presence.search.view.inh.substitution</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_search_view" />
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <field name="replaced_by" />
+                    <field name="replaces_to" />
+                </field>
+                <filter string="State" position="before">
+                    <filter string="Replaced by" 
+                            domain="[]" context="{'group_by':'replaced_by'}"/>
+                    <filter string="Replaces to" 
+                            domain="[]" context="{'group_by':'replaces_to'}"/>
+                </filter>
+            </field>
+        </record>
+    </data>
+</openerp>

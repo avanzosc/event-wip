@@ -1,0 +1,165 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_substitution
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-31 19:26+0000\n"
+"PO-Revision-Date: 2016-03-31 19:26+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_substitution
+#: view:wiz.event.substitution:event_substitution.wiz_event_substitution_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,create_uid:0
+#: field:wiz.event.substitution.line,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,create_date:0
+#: field:wiz.event.substitution.line,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: event_substitution
+#: field:wiz.event.substitution.line,employee:0
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: event_substitution
+#: field:wiz.event.substitution.line,event:0
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_substitution
+#: model:ir.model,name:event_substitution.model_event_registration
+msgid "Event Registration"
+msgstr "Registro evento"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,lines:0
+msgid "Events for substitution"
+msgstr "Eventos para substitución"
+
+#. module: event_substitution
+#: view:wiz.event.substitution:event_substitution.wiz_event_substitution_view
+msgid "Events for substitution employee"
+msgstr "Eventos para sustituir al empleado"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,holiday:0
+msgid "Holiday"
+msgstr "Vacaciones"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,id:0
+#: field:wiz.event.substitution.line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,write_uid:0
+#: field:wiz.event.substitution.line,write_uid:0
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: event_substitution
+#: field:wiz.event.substitution,write_date:0
+#: field:wiz.event.substitution.line,write_date:0
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: event_substitution
+#: model:ir.model,name:event_substitution.model_hr_holidays
+msgid "Leave"
+msgstr "Ausencia"
+
+#. module: event_substitution
+#: view:event.registration:event_substitution.view_registration_search_inh_substitution
+msgid "Registration Day"
+msgstr "Día de registro"
+
+#. module: event_substitution
+#: view:event.track.presence:event_substitution.event_track_presence_search_view_inh_substitution
+#: field:event.track.presence,replaced_by:0
+msgid "Replaced by"
+msgstr "Sustituido por"
+
+#. module: event_substitution
+#: view:event.registration:event_substitution.view_registration_search_inh_substitution
+#: field:event.registration,replaces_to:0
+#: view:event.track.presence:event_substitution.event_track_presence_search_view_inh_substitution
+#: field:event.track.presence,replaces_to:0
+#: field:wiz.event.append.assistant,replaces_to:0
+msgid "Replaces to"
+msgstr "Sustituye a"
+
+#. module: event_substitution
+#: model:ir.model,name:event_substitution.model_event_track_presence
+msgid "Session assistants"
+msgstr "Presencias a sesión"
+
+#. module: event_substitution
+#: view:event.track.presence:event_substitution.event_track_presence_search_view_inh_substitution
+msgid "State"
+msgstr "Estado"
+
+#. module: event_substitution
+#: view:wiz.event.substitution:event_substitution.wiz_event_substitution_view
+msgid "Substitution employee"
+msgstr "Sustituir empleado"
+
+#. module: event_substitution
+#: code:addons/event_substitution/wizard/wiz_event_substitution.py:53
+#, python-format
+msgid "The employee: %s, replaces the employee: %s, from date %s, to date %s"
+msgstr "El empleado: %s, sustituye al empleado: %s, desde fecha %s, hasta fecha %s"
+
+#. module: event_substitution
+#: field:wiz.event.substitution.line,wiz:0
+msgid "Wiz"
+msgstr "Wiz"
+
+#. module: event_substitution
+#: model:ir.model,name:event_substitution.model_wiz_event_substitution_line
+msgid "Wizard Events for substitution"
+msgstr "Wizard eventos para sustituir"
+
+#. module: event_substitution
+#: model:ir.model,name:event_substitution.model_wiz_calculate_employee_calendar
+msgid "Wizard for calculate employee calendar"
+msgstr "Wizard para calcular el calendario del empleado"
+
+#. module: event_substitution
+#: view:wiz.event.substitution:event_substitution.wiz_event_substitution_view
+msgid "Wizard for substitution employee"
+msgstr "Wizard para sustituir empleado"
+
+#. module: event_substitution
+#: model:ir.model,name:event_substitution.model_wiz_event_substitution
+msgid "Wizard for substitution employee absences"
+msgstr "Wizard para sustituir ausencias de empleados"
+
+#. module: event_substitution
+#: code:addons/event_substitution/models/hr_holidays.py:28
+#: code:addons/event_substitution/wizard/wiz_calculate_employee_calendar.py:29
+#, python-format
+msgid "Wizard for substitution employee in events"
+msgstr "Wizard para sustituir empleados en eventos"
+
+#. module: event_substitution
+#: view:wiz.event.substitution:event_substitution.wiz_event_substitution_view
+msgid "or"
+msgstr "o"
+

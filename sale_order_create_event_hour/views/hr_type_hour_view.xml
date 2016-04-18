@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="hr_type_hour_tree_view" model="ir.ui.view">
+            <field name="name">hr.type.hour.tree.view</field>
+            <field name="model">hr.type.hour</field>
+            <field name="arch" type="xml">
+                <tree string="Type hours">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <record id="hr_type_hour_search_view" model="ir.ui.view">
+            <field name="name">hr.type.hour.search.view</field>
+            <field name="model">hr.type.hour</field>
+            <field name="arch" type="xml">
+                <search string="Search type hour">
+                    <field name="name" />
+                </search>
+            </field>
+        </record>
+	    <record id="hr_type_hour_form_view" model="ir.ui.view">
+            <field name="name">hr.type.hour.form.view</field>
+            <field name="model">hr.type.hour</field>
+            <field name="arch" type="xml">
+                <form string="Type hour">
+                    <sheet>
+                        <h1>
+                            <label string="Description" />
+                            <field name="name" required="1"/>
+                        </h1>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_hr_type_hour_view" model="ir.actions.act_window">
+            <field name="name">Type hours</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.type.hour</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="hr_type_hour_option_view" name="Type hours"
+                  action="action_hr_type_hour_view" 
+                  parent="hr.menu_hr_configuration"
+                  sequence="10" groups="base.group_hr_manager"/>
+    </data>
+</openerp>
