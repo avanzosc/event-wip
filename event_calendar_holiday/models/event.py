@@ -9,20 +9,19 @@ class EventEvent(models.Model):
 
     def _put_festives_in_sesions_from_sale_contract(self, calendars):
         for track in self.track_ids:
-            for calendar in calendars:
-                for day in calendar.lines:
-                    track_month = fields.Datetime.from_string(
-                        track.session_date).date().month
-                    day_month = fields.Datetime.from_string(
-                        day.date).date().month
-                    track_day = fields.Datetime.from_string(
-                        track.session_date).date().day
-                    day_day = fields.Datetime.from_string(
-                        day.date).date().day
-                    if track_month == day_month and track_day == day_day:
-                        track.write({'absence_type': day.absence_type.id,
-                                     'sale_contract_absence_type':
-                                     day.absence_type.id})
+            for day in calendars.mapped('lines'):
+                track_month = fields.Datetime.from_string(
+                    track.session_date).date().month
+                day_month = fields.Datetime.from_string(
+                    day.date).date().month
+                track_day = fields.Datetime.from_string(
+                    track.session_date).date().day
+                day_day = fields.Datetime.from_string(
+                    day.date).date().day
+                if track_month == day_month and track_day == day_day:
+                    track.write({'absence_type': day.absence_type.id,
+                                 'sale_contract_absence_type':
+                                 day.absence_type.id})
 
 
 class EventTrack(models.Model):

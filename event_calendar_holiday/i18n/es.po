@@ -221,7 +221,7 @@ msgstr "Wizard"
 #. module: event_calendar_holiday
 #: view:event.track:event_calendar_holiday.view_event_track_calendar_inh_calendar
 msgid "absence_type"
-msgstr "tipo ausencia"
+msgstr "absence_type"
 
 #. module: event_calendar_holiday
 #: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
