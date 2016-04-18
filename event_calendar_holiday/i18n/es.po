@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_calendar_holiday
+# 	* event_calendar_holiday
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 19:10+0000\n"
-"PO-Revision-Date: 2016-03-31 21:11+0100\n"
-"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"POT-Creation-Date: 2016-04-15 08:38+0000\n"
+"PO-Revision-Date: 2016-04-15 10:39+0100\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. module: event_calendar_holiday
 #: field:event.track,absence_type:0
@@ -45,16 +46,21 @@ msgid "Calenda holiday absence type"
 msgstr "Tipo ausencia calendario vacaciones"
 
 #. module: event_calendar_holiday
+#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
 #: view:wiz.put.presence.as.worked:event_calendar_holiday.wiz_put_presence_as_worked_form
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,create_uid:0
+#: field:wiz.impute.presence.with.incident.line,create_uid:0
 #: field:wiz.put.presence.as.worked,create_uid:0
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,create_date:0
+#: field:wiz.impute.presence.with.incident.line,create_date:0
 #: field:wiz.put.presence.as.worked,create_date:0
 msgid "Created on"
 msgstr "Creado el"
@@ -96,16 +102,39 @@ msgid "Festives calendar"
 msgstr "Calendario festivos"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident.line,hours:0
+msgid "Hours"
+msgstr "Hours"
+
+#. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,id:0
+#: field:wiz.impute.presence.with.incident.line,id:0
 #: field:wiz.put.presence.as.worked,id:0
 msgid "ID"
 msgstr "ID"
 
 #. module: event_calendar_holiday
+#: model:ir.actions.act_window,name:event_calendar_holiday.action_impute_presences_with_incidents
+#: model:ir.actions.act_window,name:event_calendar_holiday.impute_presences_with_incidents_action
+#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
+msgid "Impute presences with incidents"
+msgstr "Imputar presencias con incidencias"
+
+#. module: event_calendar_holiday
+#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
+msgid "Impute with incidents"
+msgstr "Imputar con incidencias"
+
+#. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,write_uid:0
+#: field:wiz.impute.presence.with.incident.line,write_uid:0
 #: field:wiz.put.presence.as.worked,write_uid:0
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,write_date:0
+#: field:wiz.impute.presence.with.incident.line,write_date:0
 #: field:wiz.put.presence.as.worked,write_date:0
 msgid "Last Updated on"
 msgstr "Última actualización el"
@@ -121,8 +150,20 @@ msgid "Mark presence as worked"
 msgstr "Marcar presencia como trabajada"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident.line,notes:0
+msgid "Notes"
+msgstr "Notes"
+
+#. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident.line,presence:0
+msgid "Presence"
+msgstr "Presencia"
+
+#. module: event_calendar_holiday
 #: view:res.partner.calendar.day:event_calendar_holiday.res_partner_calendar_day_form_view_inh_event
 #: field:res.partner.calendar.day,presences:0
+#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
+#: field:wiz.impute.presence.with.incident,lines:0
 msgid "Presences"
 msgstr "Presencias"
 
@@ -143,9 +184,19 @@ msgid "Sales Order"
 msgstr "Pedido de venta"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident.line,session:0
+msgid "Session"
+msgstr "Sesión"
+
+#. module: event_calendar_holiday
 #: model:ir.model,name:event_calendar_holiday.model_event_track_presence
 msgid "Session assistants"
 msgstr "Presencias a sesión"
+
+#. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident.line,session_date:0
+msgid "Session date"
+msgstr "Fecha sesión"
 
 #. module: event_calendar_holiday
 #: model:ir.actions.act_window,name:event_calendar_holiday.action_event_track_presence2_view
@@ -163,12 +214,22 @@ msgid "State"
 msgstr "Estado"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident.line,wiz_id:0
+msgid "Wizard"
+msgstr "Wizard"
+
+#. module: event_calendar_holiday
 #: view:event.track:event_calendar_holiday.view_event_track_calendar_inh_calendar
 msgid "absence_type"
 msgstr "tipo ausencia"
 
 #. module: event_calendar_holiday
+#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
 #: view:wiz.put.presence.as.worked:event_calendar_holiday.wiz_put_presence_as_worked_form
 msgid "or"
 msgstr "o"
 
+#. module: event_calendar_holiday
+#: view:event.track:event_calendar_holiday.view_event_track_for_inh_calendar
+msgid "{'default_session':active_id, 'default_absence_type':absence_type}"
+msgstr "{'default_session':active_id, 'default_absence_type':absence_type}"

@@ -18,6 +18,7 @@
     ],
     "data": [
         'wizard/wiz_put_presence_as_worked_view.xml',
+        'wizard/wiz_impute_presence_with_incident_view.xml',
         'views/account_analytic_account_view.xml',
         'views/event_track_presence_view.xml',
         'views/res_partner_calendar_day_view.xml',

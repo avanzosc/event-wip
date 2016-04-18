@@ -24,6 +24,8 @@
                     <group name="buttons" colspan="4" >
                         <button name="button_mark_presences_as_worked" type="object" 
                                 string="Mark all presences as worked" />
+                        <button name="%(action_impute_presences_with_incidents)d" type="action"
+                                string="Mark all presences as worked" />
                     </group>
                 </group>
             </field>
