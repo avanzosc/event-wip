@@ -55,9 +55,9 @@ class WizEventSubstitution(models.TransientModel):
                  (line.employee.address_home_id.name,
                   self.holiday.employee_id.address_home_id.name,
                   str(event_obj._convert_date_to_local_format_with_hour(
-                    self.holiday.date_from).date()),
+                      self.holiday.date_from).date()),
                   str(event_obj._convert_date_to_local_format_with_hour(
-                    self.holiday.date_to).date())) + "<br>")
+                      self.holiday.date_to).date())) + "<br>")
             m += "<br> <br>"
             vals = {'type': 'comment',
                     'model': 'event.event',
