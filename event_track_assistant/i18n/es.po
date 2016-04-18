@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-04 09:02+0000\n"
-"PO-Revision-Date: 2016-04-04 11:05+0100\n"
+"POT-Creation-Date: 2016-04-18 13:38+0000\n"
+"PO-Revision-Date: 2016-04-18 15:40+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,6 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:225
 #: code:addons/event_track_assistant/models/event.py:537
 #: model:ir.actions.act_window,name:event_track_assistant.action_create_assistant_from_event
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
@@ -29,6 +28,26 @@ msgstr "Añadir persona a sesión"
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
 msgid "Append"
 msgstr "Añadir"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "Begin current month"
+msgstr "Inicio mes en curso"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "Begin current week"
+msgstr "Inicio semana en curso"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "Begin next month"
+msgstr "Inicio mes siguiente"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "Begin next week"
+msgstr "Inicio semana siguiente"
 
 #. module: event_track_assistant
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
@@ -129,7 +148,6 @@ msgid "Day"
 msgstr "Día"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:284
 #: code:addons/event_track_assistant/models/event.py:585
 #: model:ir.actions.act_window,name:event_track_assistant.action_delete_assistant_from_event_session
 #: view:wiz.event.delete.assistant:event_track_assistant.wiz_event_delete_assistant_form
@@ -193,9 +211,35 @@ msgid "End Next week"
 msgstr "Fin siguiente semana"
 
 #. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
 #: view:event.registration:event_track_assistant.view_registration_search_inh_assistant
 msgid "End Week"
 msgstr "Finaliza semana"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "End current month"
+msgstr "Finaliza mes en curso"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "End current week"
+msgstr "Finaliza semana en curso"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "End month"
+msgstr "Finaliza en el mes"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "End next month"
+msgstr "Finaliza siguiente mes"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "End next week"
+msgstr "Finaliza siguiente semana"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/models/event.py:23
@@ -227,11 +271,7 @@ msgstr "Error en fechas"
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:54
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:62
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:70
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:82
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:90
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:95
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:98
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:103
 #, python-format
 msgid "Error in from date"
@@ -239,11 +279,7 @@ msgstr "Error en fecha desde"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:71
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:79
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:87
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:107
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:112
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:115
 #, python-format
 msgid "Error in to date"
 msgstr "Error en fecha hasta"
@@ -266,15 +302,44 @@ msgid "Estimated duration"
 msgstr "Duración estimada"
 
 #. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Estimated end current month"
+msgstr "Finalización estimada mes en curso"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Estimated end current week"
+msgstr "Finalización estimada semana en curso"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Estimated end month"
+msgstr "Finalización estimada mes"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Estimated end next month"
+msgstr "Finalización estimada siguiente mes"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Estimated end next week"
+msgstr "Finalización estimada siguiente semana"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Estimated end week"
+msgstr "Finalización estimada semana"
+
+#. module: event_track_assistant
 #: field:event.track.presence,estimated_nightlight_hours:0
 msgid "Estimated nightlight hours"
 msgstr "Horas estimadas nocturnas"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:134
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:276
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:223
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:241
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_form_view
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
 #: field:event.track.presence,event:0
@@ -306,26 +371,20 @@ msgstr "De fecha"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:56
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:84
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:97
 #, python-format
 msgid "From date greater than date to"
 msgstr "Fecha desde mayor que fecha hasta"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:72
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:73
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:89
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:100
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:114
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:117
 #, python-format
 msgid "From date greater than end date of the event %s"
 msgstr "Fecha desde mayor que fecha fin del evento %s"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:64
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:92
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:105
 #, python-format
 msgid "From date less than start date of the event %s"
@@ -381,7 +440,7 @@ msgstr "Max. event"
 #: field:wiz.event.append.assistant,max_to_date:0
 #: field:wiz.event.delete.assistant,max_to_date:0
 msgid "Max. to date"
-msgstr "Max. to date"
+msgstr "Max. hasta fecha"
 
 #. module: event_track_assistant
 #: field:wiz.event.delete.assistant,message:0
@@ -398,7 +457,7 @@ msgstr "Min. event"
 #: field:wiz.event.append.assistant,min_from_date:0
 #: field:wiz.event.delete.assistant,min_from_date:0
 msgid "Min. from date"
-msgstr "Min. from date"
+msgstr "Min. desde fecha"
 
 #. module: event_track_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
@@ -496,6 +555,36 @@ msgid "Real duration"
 msgstr "Duración real"
 
 #. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Real end current month"
+msgstr "Real fecha fin mes en curso"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Real end current week"
+msgstr "Real fecha fin semana en curso"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Real end month"
+msgstr "Real fecha fin mes"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Real end next month"
+msgstr "Real fecha fin mes siguiente"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Real end next week"
+msgstr "Real fecha fin semama siguiente"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Real end week"
+msgstr "Real fecha fin en la semana"
+
+#. module: event_track_assistant
 #: field:event.track.presence,real_nightlight_hours:0
 msgid "Real nightlight hours"
 msgstr "Horas reales nocturnas"
@@ -533,14 +622,12 @@ msgid "Session"
 msgstr "Sesión"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:118
 #: code:addons/event_track_assistant/models/event.py:180
 #, python-format
 msgid "Session %s with date greater than the event start date"
 msgstr "Sesión %s con fecha mayor que fecha inicio del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:114
 #: code:addons/event_track_assistant/models/event.py:176
 #, python-format
 msgid "Session %s with date lower than the event start date"
@@ -596,6 +683,11 @@ msgid "Session presences"
 msgstr "Presencias a sesión"
 
 #. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Session week"
+msgstr "Sesiones semana"
+
+#. module: event_track_assistant
 #: field:res.partner,sessions:0
 msgid "Sessions"
 msgstr "Sesiones"
@@ -604,6 +696,26 @@ msgstr "Sesiones"
 #: view:res.partner:event_track_assistant.view_partner_track_assistant
 msgid "Sessions Presences"
 msgstr "Presencias a sesiones"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Sessions current month"
+msgstr "Sesiones mes en curso"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Sessions current week"
+msgstr "Sesiones semana en curso"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Sessions next month"
+msgstr "Sesiones siguiente mes"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Sessions next week"
+msgstr "Sesiones siguiente semana"
 
 #. module: event_track_assistant
 #: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
@@ -626,9 +738,10 @@ msgid "Start Day"
 msgstr "Día comienzo"
 
 #. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
 #: view:event.registration:event_track_assistant.view_registration_search_inh_assistant
 msgid "Start Month"
-msgstr "Mes comienzo"
+msgstr "Mes de inicio"
 
 #. module: event_track_assistant
 #: view:event.registration:event_track_assistant.view_registration_search_inh_assistant
@@ -646,34 +759,33 @@ msgid "Start Week"
 msgstr "Comienzo en semana"
 
 #. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_search_inh_assistant
+msgid "Start week"
+msgstr "Semana inicio"
+
+#. module: event_track_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
 #: field:event.track.presence,state:0
 msgid "State"
 msgstr "Estado"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:279
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:71
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:83
 #, python-format
 msgid "This person has sessions with dates after"
 msgstr "Esta persona tiene sesiones con fecha posterior"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:277
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:69
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:81
 #, python-format
 msgid "This person has sessions with dates before"
-msgstr "Esta persona tiene sesines con fecha anterior"
+msgstr "Esta persona tiene sesiones con fecha anterior"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:274
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:66
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:78
 #, python-format
 msgid "This person has sessions with dates before and after"
-msgstr "Esta persona tiene sesiones con fecha anterior, y posterior"
+msgstr "Esta persona tiene sesiones con fecha anterior y posterior"
 
 #. module: event_track_assistant
 #: field:wiz.event.append.assistant,to_date:0
@@ -683,6 +795,34 @@ msgstr "A fecha"
 
 #. module: event_track_assistant
 #: view:event.track:event_track_assistant.view_event_track_for_inh_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_view
+msgid "Tot. daylight hours"
+msgstr "Tot. daylight hours"
+
+#. module: event_track_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_view
+msgid "Tot. estimated daylight hours"
+msgstr "Tot. estimated daylight hours"
+
+#. module: event_track_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_view
+msgid "Tot. estimated duration"
+msgstr "Tot. estimated duration"
+
+#. module: event_track_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_view
+msgid "Tot. estimated nightlight hours"
+msgstr "Tot. estimated nightlight hours"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_for_inh_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_view
+msgid "Tot. nightlight hours"
+msgstr "Tot. nightlight hours"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_for_inh_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_view
 msgid "Tot. real duration"
 msgstr "Tot. duración real"
 
@@ -743,10 +883,3 @@ msgstr "o"
 #: view:event.track:event_track_assistant.view_event_track_tree_inh_assistant
 msgid "real_duration"
 msgstr "real_duration"
-
-#. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:81
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:109
-#, python-format
-msgid "to date less than start date of the event %s"
-msgstr "Fecha hasta menor que fecha inicio del evento %s"
