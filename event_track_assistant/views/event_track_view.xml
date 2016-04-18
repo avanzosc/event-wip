@@ -26,7 +26,54 @@
                     <separator/>
                     <filter string="Sessions without presences" domain="[('presences','=',False)]" name="my_presences_filter"/>
                     <separator/>
+                    <filter string="Sessions current week"
+                            domain="[('date','&lt;=', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                     ('date','&gt;',(context_today() - relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Sessions next week"
+                            domain="[('date','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                     ('date','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter string="Sessions current month"
+                            domain="[('date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
+                                     ('date','&gt;=',time.strftime('%%Y-%%m-01'))]" />
+                    <filter string="Sessions next month"
+                            domain="[('date','&gt;=',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
+                                     ('date','&lt;',(context_today()+relativedelta(months=2)).strftime('%%Y-%%m-01'))]" />
+                    <separator/>
+                    <filter string="Estimated end current week"
+                            domain="[('estimated_date_end','&lt;=', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                     ('estimated_date_end','&gt;',(context_today() - relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Estimated end next week"
+                            domain="[('estimated_date_end','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                     ('estimated_date_end','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter string="Estimated end current month"
+                            domain="[('estimated_date_end','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
+                                     ('estimated_date_end','&gt;=',time.strftime('%%Y-%%m-01'))]" />
+                    <filter string="Estimated end next month"
+                            domain="[('estimated_date_end','&gt;=',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
+                                     ('estimated_date_end','&lt;',(context_today()+relativedelta(months=2)).strftime('%%Y-%%m-01'))]" />
+                    <separator/>
+                    <filter string="Real end current week"
+                            domain="[('real_date_end','&lt;=', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                     ('real_date_end','&gt;',(context_today() - relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Real end next week"
+                            domain="[('real_date_end','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                     ('real_date_end','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter string="Real end current month"
+                            domain="[('real_date_end','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
+                                     ('real_date_end','&gt;=',time.strftime('%%Y-%%m-01'))]" />
+                    <filter string="Real end next month"
+                            domain="[('real_date_end','&gt;=',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
+                                     ('real_date_end','&lt;',(context_today()+relativedelta(months=2)).strftime('%%Y-%%m-01'))]" />
+                    <separator/>
                 </field>
+                <filter string="Event" position="after">
+                    <filter string="Estimated end month" domain="[]" context="{'group_by': 'estimated_date_end:month'}"/>
+                    <filter string="Real end month" domain="[]" context="{'group_by': 'real_date_end:month'}"/>
+                    <separator/>
+                    <filter string="Session week" domain="[]" context="{'group_by': 'date:week'}"/>
+                    <filter string="Estimated end week" domain="[]" context="{'group_by': 'estimated_date_end:week'}"/>
+                    <filter string="Real end week" domain="[]" context="{'group_by': 'real_date_end:week'}"/>
+                </filter>
             </field>
         </record>
         <record model="ir.ui.view" id="view_event_track_tree_inh_assistant">
