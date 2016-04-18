@@ -9,12 +9,12 @@ class EventEvent(models.Model):
 
     no_employee_registration_ids = fields.One2many(
         comodel_name='event.registration', inverse_name='event_id',
-        string='No employee registrations', readonly=False,
+        string='Registered students', readonly=False,
         states={'done': [('readonly', True)]},
         domain=[('employee', '=', False)])
     employee_registration_ids = fields.One2many(
         comodel_name='event.registration', inverse_name='event_id',
-        string='Employee registrations', readonly=False,
+        string='Registered teachers', readonly=False,
         states={'done': [('readonly', True)]},
         domain=[('employee', '!=', False)])
 

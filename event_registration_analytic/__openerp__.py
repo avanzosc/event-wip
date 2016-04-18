@@ -13,6 +13,7 @@
     ],
     "category": "Event Management",
     "depends": [
+        'partner_group',
         'analytic',
         'account_analytic_analysis',
         'event_sale',

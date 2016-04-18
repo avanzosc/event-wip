@@ -10,13 +10,13 @@
                     <attribute name="invisible">1</attribute>
                 </field>
                 <field name="registration_ids" position="after">
-                    <separator string="NOT Employee registrations" colspan="4" />
+                    <separator string="Registered students" colspan="4" />
                     <field name="no_employee_registration_ids" colspan="4" nolabel="1" groups="event.group_event_manager,event.group_event_user"
                             context="{'default_event_id':active_id}">
-                        <tree string="No employee registrations" editable="top">
+                        <tree string="Registered students" editable="top">
                             <field name="event_id" invisible="1"/>
                             <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
-                                domain="[('employee','=',False)]"/>
+                                domain="[('employee','=',False),('parent_is_company','=',True),('parent_is_group','=',False)]" string="Student"/>
                             <field name="name" />
                             <field name="replaces_to" readonly="1" />
                             <field name="required_account" invisible="1"/>
@@ -38,13 +38,13 @@
                             <button name="button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
                         </tree>
                     </field>
-                    <separator string="Employee registrations" colspan="4" />
+                    <separator string="Registered teachers" colspan="4" />
                     <field name="employee_registration_ids" colspan="4" nolabel="1" groups="event.group_event_manager,event.group_event_user"
                             context="{'default_event_id':active_id}">
-                        <tree string="Employee registrations" editable="top">
+                        <tree string="Registered teachers" editable="top">
                             <field name="event_id" invisible="1" />
                             <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
-                                domain="[('employee','!=',False)]"/>
+                                domain="[('employee','!=',False)]" string="Teacher"/>
                             <field name="name" />
                             <field name="replaces_to" readonly="1" />
                             <field name="required_account" invisible="1"/>
