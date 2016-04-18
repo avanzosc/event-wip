@@ -213,7 +213,6 @@ class EventTrackPresence(models.Model):
 
     @api.depends('session_date', 'real_duration')
     def _calculate_real_date_end(self):
-        event_obj = self.env['event.event']
         for presence in self:
             presence.real_date_end = False
             if presence.real_duration:
@@ -393,13 +392,13 @@ class EventTrackPresence(models.Model):
             hour = self._calculate_hour_between_dates(
                 presence.estimated_date_end, fec_fin)
             presence.estimated_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and presence.estimated_date_end
-              <= fec_ini2):
+        elif (presence.session_date >= fec_fin and
+              presence.estimated_date_end <= fec_ini2):
             hour = self._calculate_hour_between_dates(
                 presence.estimated_date_end, presence.session_date)
             presence.estimated_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and presence.estimated_date_end
-              > fec_ini2):
+        elif (presence.session_date >= fec_fin and
+              presence.estimated_date_end > fec_ini2):
             hour = self._calculate_hour_between_dates(
                 fec_ini2, presence.session_date)
             presence.estimated_nightlight_hours = hour
@@ -420,13 +419,13 @@ class EventTrackPresence(models.Model):
             hour = self._calculate_hour_between_dates(
                 presence.real_date_end, fec_fin)
             presence.real_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and presence.real_date_end
-              <= fec_ini2):
+        elif (presence.session_date >= fec_fin and
+              presence.real_date_end <= fec_ini2):
             hour = self._calculate_hour_between_dates(
                 presence.real_date_end, presence.session_date)
             presence.real_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and presence.real_date_end
-              > fec_ini2):
+        elif (presence.session_date >= fec_fin and
+              presence.real_date_end > fec_ini2):
             hour = self._calculate_hour_between_dates(
                 fec_ini2, presence.session_date)
             presence.real_nightlight_hours = hour
