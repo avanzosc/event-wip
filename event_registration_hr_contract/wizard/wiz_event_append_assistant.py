@@ -40,13 +40,13 @@ class WizEventAppendAssistant(models.TransientModel):
         permitted_contracts = self.env['hr.contract']
         self._put_init_dates_in_wizard()
         cond = contract_obj._search_contracts_without_date_end(
-            wiz.partner, wiz.to_date)
+            self.partner, self.to_date)
         contracts = contract_obj.search(cond)
         for contract in contracts:
             if contract not in permitted_contracts:
                 permitted_contracts += contract
         cond = contract_obj._search_contracts_with_date_end(
-            wiz.partner, wiz.from_date, wiz.to_date)
+            self.partner, self.from_date, self.to_date)
         contracts = contract_obj.search(cond)
         for contract in contracts:
             if contract not in permitted_contracts:
