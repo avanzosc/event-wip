@@ -36,7 +36,6 @@ class SaleOrder(models.Model):
 
     def _create_event_and_sessions_from_sale_order(self):
         event_obj = self.env['event.event']
-        project_obj = self.env['project.project']
         for sale in self:
             sale.project_id.name = sale.name
             sale_lines = sale.order_line.filtered(

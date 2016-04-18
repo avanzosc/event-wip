@@ -27,6 +27,7 @@ class EventEvent(models.Model):
         string='Tasks', oldname='tasks')
     sale_order = fields.Many2one(
         'sale.order', string='Sale Order')
+
     def _create_event_from_sale(self, by_task, sale, line=False):
         project_obj = self.env['project.project']
         cond = [('analytic_account_id', '=', sale.project_id.id)]
