@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-30 12:51+0000\n"
-"PO-Revision-Date: 2016-03-30 14:51+0100\n"
+"POT-Creation-Date: 2016-04-18 13:45+0000\n"
+"PO-Revision-Date: 2016-04-18 15:47+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -32,15 +32,19 @@ msgid "Cancel Registration"
 msgstr "Cancelar registro"
 
 #. module: event_registration_analytic
-#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
-msgid "Confirm Registration"
-msgstr "Confirmación registro"
+#: help:res.partner,parent_is_company:0
+msgid "Check if the contact is a company, otherwise it is a person"
+msgstr "Check si el contacto es una compañia, sino es una persona"
+
+#. module: event_registration_analytic
+#: help:res.partner,parent_is_group:0
+msgid "Check if the partner is a group"
+msgstr "Check si el partner es un grupo"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
-#: field:event.event,employee_registration_ids:0
-msgid "Employee registrations"
-msgstr "Registro de empleados"
+msgid "Confirm Registration"
+msgstr "Confirmación registro"
 
 #. module: event_registration_analytic
 #: model:ir.model,name:event_registration_analytic.model_event_event
@@ -53,15 +57,31 @@ msgid "Event Registration"
 msgstr "Registro evento"
 
 #. module: event_registration_analytic
-#: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:54
-#, python-format
-msgid "Event: %s Registration Partner %s"
-msgstr "Evento: %s Empresa registrada %s"
+#: field:res.partner,parent_is_company:0
+msgid "Parent is company"
+msgstr "Padre es compañía"
+
+#. module: event_registration_analytic
+#: field:res.partner,parent_is_group:0
+msgid "Parent is group"
+msgstr "Padre es grupo"
+
+#. module: event_registration_analytic
+#: model:ir.model,name:event_registration_analytic.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
-msgid "NOT Employee registrations"
-msgstr "Registro de NO empleados"
+#: field:event.event,no_employee_registration_ids:0
+msgid "Registered students"
+msgstr "Estudiantes registrados"
+
+#. module: event_registration_analytic
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+#: field:event.event,employee_registration_ids:0
+msgid "Registered teachers"
+msgstr "Profesores registrados"
 
 #. module: event_registration_analytic
 #: view:event.registration:event_registration_analytic.view_event_registration_tree_inh_assistant
@@ -90,30 +110,12 @@ msgid "Show create account"
 msgstr "Mostrar crear cuenta"
 
 #. module: event_registration_analytic
-#: code:addons/event_registration_analytic/models/event_registration.py:24
-#: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:27
-#, python-format
-msgid ""
-"The project defined in the event, not associated to an analytical account"
-msgstr ""
-"El proyecto definido en el evento, no esta asociado a una cuenta analítica"
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+msgid "Student"
+msgstr "Estudiante"
 
 #. module: event_registration_analytic
-#: code:addons/event_registration_analytic/models/event_registration.py:21
-#: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:24
-#, python-format
-msgid "You must define a project in event"
-msgstr "Debe de definir un proyecto en el evento"
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+msgid "Teacher"
+msgstr "Profesor"
 
-#. module: event_registration_analytic
-#: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:43
-#, python-format
-msgid "You must enter if you want to create account for partner registration"
-msgstr ""
-"Debe introducir si quiere crear una cuenta analítica para el registro de la "
-"empresa"
-
-#. module: event_registration_analytic
-#: view:event.registration:event_registration_analytic.view_event_registration_tree_inh_assistant
-msgid "red:employee!=False"
-msgstr "red:employee!=False"

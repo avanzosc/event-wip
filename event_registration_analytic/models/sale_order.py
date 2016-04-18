@@ -7,10 +7,6 @@ from openerp import models, api, fields
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    project_by_task = fields.Selection(
-        [('yes', 'Yes'),
-         ('no', 'No')], string='Create project by task')
-
     @api.multi
     def action_button_confirm(self):
         project_obj = self.env['project.project']
