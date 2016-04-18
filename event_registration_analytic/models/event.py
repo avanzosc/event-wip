@@ -8,13 +8,15 @@ class EventEvent(models.Model):
     _inherit = 'event.event'
 
     no_employee_registration_ids = fields.One2many(
-        'event.registration', 'event_id', string='No employee registrations',
-        readonly=False, states={'done': [('readonly', True)]},
-        domain=[('employee','=',False)])
+        comodel_name='event.registration', inverse_name='event_id',
+        string='No employee registrations', readonly=False,
+        states={'done': [('readonly', True)]},
+        domain=[('employee', '=', False)])
     employee_registration_ids = fields.One2many(
-        'event.registration', 'event_id', string='Employee registrations',
-        readonly=False, states={'done': [('readonly', True)]},
-        domain=[('employee','!=',False)])
+        comodel_name='event.registration', inverse_name='event_id',
+        string='Employee registrations', readonly=False,
+        states={'done': [('readonly', True)]},
+        domain=[('employee', '!=', False)])
 
     def _create_event_from_sale(self, by_task, sale, line=False):
         event = super(EventEvent, self)._create_event_from_sale(
