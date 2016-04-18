@@ -13,6 +13,7 @@
     ],
     "category": "Event Management",
     "depends": [
+        'account',
         'analytic',
         'partner_event',
         'event_project_follower',

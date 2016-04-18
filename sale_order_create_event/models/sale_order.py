@@ -38,6 +38,7 @@ class SaleOrder(models.Model):
         event_obj = self.env['event.event']
         project_obj = self.env['project.project']
         for sale in self:
+            sale.project_id.name = sale.name
             sale_lines = sale.order_line.filtered(
                 lambda x: x.recurring_service)
             if sale_lines and sale.project_by_task == 'no':
@@ -50,11 +51,10 @@ class SaleOrder(models.Model):
                 sale._validate_create_session_from_sale_order(
                     event, num_session, line)
                 if sale.project_by_task == 'yes':
-                    name = sale.name + ': ' + line.name
-                    cond = [('name', '=', name)]
-                    project = project_obj.search(cond, limit=1)
-                    project.event_id = event.id
-                sale.project_id.name = sale.name
+                    if line.service_project_task:
+                        project = line.service_project_task.project_id
+                        project.event_id = line.event
+            sale.project_id.name = sale.name
 
     def _prepare_event_data(self, sale, name, project):
         event_obj = self.env['event.event']
@@ -137,6 +137,9 @@ class SaleOrder(models.Model):
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
+
+    event = fields.Many2one(
+        comodel_name='event.event', string='Event')
 
     @api.multi
     def product_id_change_with_wh(

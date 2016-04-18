@@ -18,7 +18,7 @@ class EventEvent(models.Model):
                 self.my_task_ids = [(6, 0, [])]
 
     @api.one
-    @api.depends('task_ids')
+    @api.depends('my_task_ids')
     def _count_tasks(self):
         self.count_tasks = len(self.my_task_ids)
 
@@ -27,7 +27,6 @@ class EventEvent(models.Model):
         string='Tasks', oldname='tasks')
     sale_order = fields.Many2one(
         'sale.order', string='Sale Order')
-
     def _create_event_from_sale(self, by_task, sale, line=False):
         project_obj = self.env['project.project']
         cond = [('analytic_account_id', '=', sale.project_id.id)]
@@ -38,6 +37,8 @@ class EventEvent(models.Model):
         event_vals = sale._prepare_event_data(sale, name, project)
         event = self.with_context(
             sale_order_create_event=True).create(event_vals)
+        if line:
+            line.event = event.id
         return event
 
 
