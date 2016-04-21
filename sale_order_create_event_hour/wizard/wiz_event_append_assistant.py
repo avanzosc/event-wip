@@ -49,7 +49,7 @@ class WizEventAppendAssistant(models.TransientModel):
     def onchange_dates_and_partner(self):
         self.ensure_one()
         event_obj = self.env['event.event']
-        res = super
+        res = {}
         if self.from_date and self.to_date:
             from_date = event_obj._put_utc_format_date(
                 self.from_date, self.start_time).strftime("%Y-%m-%d %H:%M:%S")

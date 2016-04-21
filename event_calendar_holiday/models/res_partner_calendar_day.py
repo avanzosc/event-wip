@@ -38,12 +38,3 @@ class ResPartnerCalendarDay(models.Model):
     lit_real_hours = fields.Char(
         string='Real hours literal', store=True,
         compute='_calculate_estim_and_real_hours')
-
-    @api.multi
-    def button_mark_presences_as_worked(self):
-        self.ensure_one()
-        presences = self.presences.filtered(lambda x: x.state == 'pending')
-        presences.write({'state': 'completed'})
-        presences = self.presences.filtered(lambda x: not x.absence_type)
-        for presence in presences:
-            presence.real_duration = presence.session_duration

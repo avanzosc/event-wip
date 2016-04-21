@@ -6,6 +6,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
+                <field name="order_line" position="attributes">
+                    <attribute name="context">{'default_project_by_task': project_by_task}</attribute>
+                </field>
                 <field name="project_id" position="after">
                     <field name="project_by_task" required="1" />
                 </field>
@@ -13,8 +16,19 @@
                     <attribute name="context">{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}</attribute>
                     <attribute name="domain">[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',active_id)]</attribute>
                 </field>
+                <xpath expr="//field[@name='order_line']/form/group" position="after">
+                    <group colspan="4">
+                        <field name="project_by_task" invisible="1"/>
+                        <field name="start_hour" widget="float_time" string="Start hour"
+                                attrs="{'required':[('project_by_task','','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="project_by_task" invisible="1"/>
+                    <field name="start_hour" widget="float_time" string="Start hour"
+                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                </xpath>
             </field>
         </record>
-
     </data>
 </openerp>

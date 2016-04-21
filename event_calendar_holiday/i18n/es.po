@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-15 08:38+0000\n"
-"PO-Revision-Date: 2016-04-15 10:39+0100\n"
+"POT-Creation-Date: 2016-04-21 09:00+0000\n"
+"PO-Revision-Date: 2016-04-21 11:01+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -71,6 +71,13 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,display_name:0
+#: field:wiz.impute.presence.with.incident.line,display_name:0
+#: field:wiz.put.presence.as.worked,display_name:0
+msgid "Display Name"
+msgstr "Mostrar nombre"
+
+#. module: event_calendar_holiday
 #: field:event.track.presence,partner_calendar_day:0
 #: model:ir.model,name:event_calendar_holiday.model_res_partner_calendar_day
 msgid "Employee calendar day"
@@ -104,7 +111,7 @@ msgstr "Calendario festivos"
 #. module: event_calendar_holiday
 #: field:wiz.impute.presence.with.incident.line,hours:0
 msgid "Hours"
-msgstr "Hours"
+msgstr "Horas"
 
 #. module: event_calendar_holiday
 #: field:wiz.impute.presence.with.incident,id:0
@@ -114,16 +121,28 @@ msgid "ID"
 msgstr "ID"
 
 #. module: event_calendar_holiday
+#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
+msgid "Impute hours"
+msgstr "Imputar horas"
+
+#. module: event_calendar_holiday
 #: model:ir.actions.act_window,name:event_calendar_holiday.action_impute_presences_with_incidents
 #: model:ir.actions.act_window,name:event_calendar_holiday.impute_presences_with_incidents_action
 #: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
-msgid "Impute presences with incidents"
-msgstr "Imputar presencias con incidencias"
+msgid "Impute hours in presences"
+msgstr "Imputar horas en presencias"
 
 #. module: event_calendar_holiday
-#: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
-msgid "Impute with incidents"
-msgstr "Imputar con incidencias"
+#: view:res.partner.calendar.day:event_calendar_holiday.res_partner_calendar_day_form_view_inh_event
+msgid "Impute times in presences"
+msgstr "Imputar tiempos en presencias"
+
+#. module: event_calendar_holiday
+#: field:wiz.impute.presence.with.incident,__last_update:0
+#: field:wiz.impute.presence.with.incident.line,__last_update:0
+#: field:wiz.put.presence.as.worked,__last_update:0
+msgid "Last Modified on"
+msgstr "Última modificación el"
 
 #. module: event_calendar_holiday
 #: field:wiz.impute.presence.with.incident,write_uid:0
@@ -140,11 +159,6 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: event_calendar_holiday
-#: view:res.partner.calendar.day:event_calendar_holiday.res_partner_calendar_day_form_view_inh_event
-msgid "Mark all presences as worked"
-msgstr "Marcar todas las presencias como trabajadas"
-
-#. module: event_calendar_holiday
 #: view:event.track.presence:event_calendar_holiday.event_track_presence_view_inh_calendar
 msgid "Mark presence as worked"
 msgstr "Marcar presencia como trabajada"
@@ -152,7 +166,7 @@ msgstr "Marcar presencia como trabajada"
 #. module: event_calendar_holiday
 #: field:wiz.impute.presence.with.incident.line,notes:0
 msgid "Notes"
-msgstr "Notes"
+msgstr "Notas"
 
 #. module: event_calendar_holiday
 #: field:wiz.impute.presence.with.incident.line,presence:0
@@ -219,17 +233,8 @@ msgid "Wizard"
 msgstr "Wizard"
 
 #. module: event_calendar_holiday
-#: view:event.track:event_calendar_holiday.view_event_track_calendar_inh_calendar
-msgid "absence_type"
-msgstr "absence_type"
-
-#. module: event_calendar_holiday
 #: view:wiz.impute.presence.with.incident:event_calendar_holiday.wiz_impute_presence_with_incident_form
 #: view:wiz.put.presence.as.worked:event_calendar_holiday.wiz_put_presence_as_worked_form
 msgid "or"
 msgstr "o"
 
-#. module: event_calendar_holiday
-#: view:event.track:event_calendar_holiday.view_event_track_for_inh_calendar
-msgid "{'default_session':active_id, 'default_absence_type':absence_type}"
-msgstr "{'default_session':active_id, 'default_absence_type':absence_type}"

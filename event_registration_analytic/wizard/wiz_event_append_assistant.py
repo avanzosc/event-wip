@@ -43,6 +43,7 @@ class WizEventAppendAssistant(models.TransientModel):
     def _create_account_for_not_employee_from_wizard(
             self, event, registration):
         account_obj = self.env['account.analytic.account']
+        event_obj = self.env['event.event']
         analytic_invoice_line_obj = self.env['account.analytic.invoice.line']
         today = datetime.strptime(
             fields.Date.context_today(self), '%Y-%m-%d').date()
@@ -51,12 +52,16 @@ class WizEventAppendAssistant(models.TransientModel):
             calendar.monthrange(today.year, today.month)[1])
         code = self.env['ir.sequence'].get(
             'account.analytic.account')
+        from_date = event_obj._convert_date_to_local_format_with_hour(
+            registration.date_start).date()
+        to_date = event_obj._convert_date_to_local_format_with_hour(
+            registration.date_end).date()
         vals = {'name': (_('Registration partner %s, event: %s') %
                          (registration.partner_id.name,
                           event.name)),
                 'type': 'contract',
-                'date_start': registration.date_start,
-                'date': registration.date_end,
+                'date_start': from_date,
+                'date': to_date,
                 'parent_id': event.project_id.analytic_account_id.id or False,
                 'code': code,
                 'partner_id': registration.partner_id.id,

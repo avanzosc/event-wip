@@ -21,11 +21,10 @@
                     <field name="presences" nolabel="1" colspan="4"/>
                 </field>
                 <group name="body" position="before">
-                    <group name="buttons" colspan="4" >
-                        <button name="button_mark_presences_as_worked" type="object" 
-                                string="Mark all presences as worked" />
+                    <group name="buttons" colspan="2" >
                         <button name="%(action_impute_presences_with_incidents)d" type="action"
-                                string="Mark all presences as worked" />
+                                string="Impute times in presences" />
+                        <group colspan="2" />
                     </group>
                 </group>
             </field>

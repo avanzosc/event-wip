@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-18 13:45+0000\n"
-"PO-Revision-Date: 2016-04-18 15:47+0100\n"
+"POT-Creation-Date: 2016-04-21 09:04+0000\n"
+"PO-Revision-Date: 2016-04-21 11:04+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -90,9 +90,15 @@ msgstr "Registro"
 
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:54
+#: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:59
 #, python-format
 msgid "Registration partner %s, event: %s"
 msgstr "Persona registrada %s, evento: %s"
+
+#. module: event_registration_analytic
+#: field:event.registration,required_account:0
+msgid "Required account"
+msgstr "Requerida cuenta"
 
 #. module: event_registration_analytic
 #: field:event.event.ticket,sale_line:0
