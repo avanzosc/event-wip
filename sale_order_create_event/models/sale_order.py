@@ -62,7 +62,7 @@ class SaleOrder(models.Model):
                        'date_tz': self.env.user.tz,
                        'project_id': project.id,
                        'sale_order': sale.id})
-        if line.project_by_task:
+        if line and line.project_by_task:
             utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
                                                     line.start_hour)
         else:

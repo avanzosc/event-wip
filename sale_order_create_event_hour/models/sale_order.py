@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self)._prepare_event_data(sale, line, name,
                                                          project)
         if self.project_id.date_start:
-            if line.project_by_task:
+            if line and line.project_by_task:
                 time = line.start_hour
             else:
                 time = self.project_id.start_time or 0
