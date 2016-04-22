@@ -35,7 +35,7 @@ class EventEvent(models.Model):
         name = sale.name
         if by_task:
             name = name + ': ' + line.name
-        event_vals = sale._prepare_event_data(sale, name, project)
+        event_vals = sale._prepare_event_data(sale, line, name, project)
         event = self.with_context(
             sale_order_create_event=True).create(event_vals)
         if line:

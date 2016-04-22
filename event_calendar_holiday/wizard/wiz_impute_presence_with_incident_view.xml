@@ -5,9 +5,9 @@
             <field name="name">wiz.impute.presence.with.incident.form</field>
             <field name="model">wiz.impute.presence.with.incident</field>
             <field name="arch" type="xml">
-                <form string="Impute with incidents" version="7.0">
+                <form string="Impute hours in presences" version="7.0">
                     <group>
-                        <separator string="Impute presences with incidents" colspan="4" />
+                        <separator string="Impute hours" colspan="4" />
                         <field name="lines" nolabel="1">
                             <tree string="Presences" editable="botton">
                                 <field name="wiz_id" invisible="1" />
@@ -19,8 +19,8 @@
                         </field>
                     </group>
                     <footer>
-                        <button name="button_impute_presences_with_incidents" type="object"
-                            string="Impute with incidents" class="oe_highlight"/>
+                        <button name="button_impute_hours" type="object"
+                            string="Impute hours" class="oe_highlight"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -28,13 +28,13 @@
             </field>
         </record>
         <record id="action_impute_presences_with_incidents" model="ir.actions.act_window">
-            <field name="name">Impute presences with incidents</field>
+            <field name="name">Impute hours in presences</field>
             <field name="res_model">wiz.impute.presence.with.incident</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-        <act_window name="Impute presences with incidents"
+        <act_window name="Impute hours in presences"
                     res_model="wiz.impute.presence.with.incident"
                     src_model="res.partner.calendar.day"
                     view_mode="form"

@@ -55,15 +55,19 @@ class SaleOrder(models.Model):
                         project.event_id = line.event
             sale.project_id.name = sale.name
 
-    def _prepare_event_data(self, sale, name, project):
+    def _prepare_event_data(self, sale, line, name, project):
         event_obj = self.env['event.event']
         event_vals = ({'name': name,
                        'timezone_of_event': self.env.user.tz,
                        'date_tz': self.env.user.tz,
                        'project_id': project.id,
                        'sale_order': sale.id})
-        utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
-                                                0.0)
+        if line.project_by_task:
+            utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
+                                                    line.start_hour)
+        else:
+            utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
+                                                    0.0)
         event_vals['date_begin'] = utc_dt
         utc_dt = event_obj._put_utc_format_date(self.project_id.date, 0.0)
         event_vals['date_end'] = utc_dt
@@ -125,7 +129,10 @@ class SaleOrder(models.Model):
             duration = (line.performance * line.product_uom_qty)
         else:
             duration = line.product_uom_qty
-        utc_dt = event_obj._put_utc_format_date(date, 0.0)
+        if line.project_by_task:
+            utc_dt = event_obj._put_utc_format_date(date, line.start_hour)
+        else:
+            utc_dt = event_obj._put_utc_format_date(date, 0.0)
         vals = {'name': (_('Session %s for %s') % (str(num_session),
                                                    line.product_id.name)),
                 'event_id': event.id,
@@ -139,6 +146,11 @@ class SaleOrderLine(models.Model):
 
     event = fields.Many2one(
         comodel_name='event.event', string='Event')
+    project_by_task = fields.Selection(
+        [('yes', 'Yes'),
+         ('no', 'No')],
+        related='order_id.project_by_task', string='Create project by task')
+    start_hour = fields.Float(string='Start hour', default=0.0)
 
     @api.multi
     def product_id_change_with_wh(

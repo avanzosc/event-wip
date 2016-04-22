@@ -16,7 +16,7 @@ class WizImputePresenceWithIncident(models.TransientModel):
         day_obj = self.env['res.partner.calendar.day']
         vals = []
         for day in day_obj.browse(self.env.context.get('active_ids')):
-            presences = day.presences.filtered(lambda x: x.state == 'pending')
+            presences = day.presences.filtered(lambda x: x.state != 'canceled')
             for presence in presences:
                 line_vals = {'presence': presence.id,
                              'session': presence.session.id,
@@ -30,7 +30,7 @@ class WizImputePresenceWithIncident(models.TransientModel):
         return {'lines': vals}
 
     @api.multi
-    def button_impute_presences_with_incidents(self):
+    def button_impute_hours(self):
         self.ensure_one()
         for wiz in self:
             for line in wiz.lines:
