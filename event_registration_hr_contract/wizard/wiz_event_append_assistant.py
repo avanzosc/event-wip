@@ -7,11 +7,13 @@ from openerp import fields, models, api
 class WizEventAppendAssistant(models.TransientModel):
     _inherit = 'wiz.event.append.assistant'
 
-    contract = fields.Many2one('hr.contract', string='Employee contract')
+    contract = fields.Many2one(
+        comodel_name='hr.contract', string='Employee contract')
     employee = fields.Many2one(
-        'hr.employee', related='partner.employee', string='Employee')
+        comodel_name='hr.employee', related='partner.employee_id',
+        string='Employee')
     contracts_permitted = fields.Many2many(
-        'hr.contract', string='Contracts permitted')
+        comodel_name='hr.contract', string='Contracts permitted')
 
     @api.multi
     @api.onchange('from_date', 'to_date', 'partner')

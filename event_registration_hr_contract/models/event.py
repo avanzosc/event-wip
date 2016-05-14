@@ -53,7 +53,7 @@ class EventRegistration(models.Model):
         comodel_name='hr.contract.stage', string='Contract stage',
         related='contract.contract_stage_id', store=True)
     employee = fields.Many2one(
-        'hr.employee', related='partner_id.employee',
+        'hr.employee', related='partner_id.employee_id',
         string='Employee', store=True)
     contracts_permitted = fields.Many2many(
         'hr.contract', string='Contracts permitted',

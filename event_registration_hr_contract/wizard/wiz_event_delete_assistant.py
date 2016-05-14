@@ -8,7 +8,8 @@ class WizEventDeleteAssistant(models.TransientModel):
     _inherit = 'wiz.event.delete.assistant'
 
     employee = fields.Many2one(
-        'hr.employee', related='partner.employee', string='Employee')
+        comodel_name='hr.employee', related='partner.employee_id',
+        string='Employee')
 
     def _cancel_presences(self):
         presences = super(WizEventDeleteAssistant, self)._cancel_presences()

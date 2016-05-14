@@ -62,13 +62,13 @@ class EventRegistration(models.Model):
     analytic_account = fields.Many2one(
         'account.analytic.account', string='Analytic account')
     employee = fields.Many2one(
-        'hr.employee', string='Employee', related='partner_id.employee',
+        'hr.employee', string='Employee', related='partner_id.employee_id',
         store=True)
 
-    @api.onchange('partner_id', 'partner_id.employee')
+    @api.onchange('partner_id', 'partner_id.employee_id')
     def _onchange_partner(self):
         super(EventRegistration, self)._onchange_partner()
-        self.employee = self.partner_id.employee
+        self.employee = self.partner_id.employee_id
 
     @api.multi
     def registration_open(self):
