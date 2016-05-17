@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-21 09:21+0000\n"
-"PO-Revision-Date: 2016-04-21 11:24+0100\n"
+"POT-Creation-Date: 2016-05-17 13:50+0000\n"
+"PO-Revision-Date: 2016-05-17 15:52+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,9 +44,9 @@ msgid "August"
 msgstr "Agosto"
 
 #. module: sale_order_create_event
-#: help:project.project,use_timesheets:0
-msgid "Check this field if this project manages timesheets"
-msgstr "Marque este campo si el proyecto gestiona horas."
+#: field:project.project,charge_expenses:0
+msgid "Charge Expenses"
+msgstr "Charge Expenses"
 
 #. module: sale_order_create_event
 #: field:sale.order,project_by_task:0 field:sale.order.line,project_by_task:0
@@ -60,19 +60,35 @@ msgid "December"
 msgstr "Diciembre"
 
 #. module: sale_order_create_event
+#: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
+#: field:sale.order.line,end_date:0
+msgid "End date"
+msgstr "Fecha fin"
+
+#. module: sale_order_create_event
 #: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:30
 #, python-format
 msgid "Error in dates"
 msgstr "Error en fechas"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:162
-#: code:addons/sale_order_create_event/models/sale_order.py:171
 #: code:addons/sale_order_create_event/models/sale_order.py:174
+#: code:addons/sale_order_create_event/models/sale_order.py:182
 #: code:addons/sale_order_create_event/models/sale_order.py:183
+#: code:addons/sale_order_create_event/models/sale_order.py:191
 #, python-format
 msgid "Error in recurring service product"
 msgstr "Error en producto servicio recurrente"
+
+#. module: sale_order_create_event
+#: field:event.track,estimated_date_end:0
+msgid "Estimated date end"
+msgstr "Fecha fin estimada"
+
+#. module: sale_order_create_event
+#: field:project.project,est_expenses:0
+msgid "Estimation of Expenses to Invoice"
+msgstr "Estimation of Expenses to Invoice"
 
 #. module: sale_order_create_event
 #: model:ir.model,name:sale_order_create_event.model_event_event
@@ -108,16 +124,6 @@ msgid "Friday"
 msgstr "Viernes"
 
 #. module: sale_order_create_event
-#: field:project.project,recurring_invoices:0
-msgid "Generate recurring invoices automatically"
-msgstr "Generar facturas recurrentes automáticamente"
-
-#. module: sale_order_create_event
-#: field:project.project,recurring_invoice_line_ids:0
-msgid "Invoice Lines"
-msgstr "Líneas de factura"
-
-#. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,january:0
 msgid "January"
@@ -142,21 +148,36 @@ msgid "March"
 msgstr "Marzo"
 
 #. module: sale_order_create_event
+#: field:wiz.event.append.assistant,max_event:0
+msgid "Max. event"
+msgstr "Max. evento"
+
+#. module: sale_order_create_event
+#: field:wiz.event.append.assistant,max_to_date:0
+msgid "Max. to date"
+msgstr "Max. fecha hasta"
+
+#. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,may:0
 msgid "May"
 msgstr "Mayo"
 
 #. module: sale_order_create_event
+#: field:wiz.event.append.assistant,min_event:0
+msgid "Min. event"
+msgstr "Min. evento"
+
+#. module: sale_order_create_event
+#: field:wiz.event.append.assistant,min_from_date:0
+msgid "Min. from date"
+msgstr "Min. fecha desde"
+
+#. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,monday:0
 msgid "Monday"
 msgstr "Lunes"
-
-#. module: sale_order_create_event
-#: field:project.project,month_ids:0
-msgid "Month"
-msgstr "Mes"
 
 #. module: sale_order_create_event
 #: selection:sale.order,project_by_task:0
@@ -209,6 +230,11 @@ msgid "Project/contract without project"
 msgstr "Proyecto/contrato sin proyecto"
 
 #. module: sale_order_create_event
+#: field:event.track,real_date_end:0
+msgid "Real date end"
+msgstr "Fecha fin real"
+
+#. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 msgid "Recalculate Sessions"
 msgstr "Recalcular sesiones"
@@ -217,11 +243,6 @@ msgstr "Recalcular sesiones"
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 msgid "Recurrence generator"
 msgstr "Generar recurrencias"
-
-#. module: sale_order_create_event
-#: field:project.project,recurring_rule_type:0
-msgid "Recurrency"
-msgstr "Recurrencia"
 
 #. module: sale_order_create_event
 #: field:project.task,recurring_service:0
@@ -246,7 +267,7 @@ msgstr "Pedido de venta"
 #. module: sale_order_create_event
 #: model:ir.model,name:sale_order_create_event.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Línea de pedido de venta"
+msgstr "Línea pedido de venta"
 
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
@@ -262,8 +283,8 @@ msgstr "Septiembre"
 
 #. module: sale_order_create_event
 #: code:addons/sale_order_create_event/models/project.py:224
-#: code:addons/sale_order_create_event/models/sale_order.py:129
 #: code:addons/sale_order_create_event/models/sale_order.py:136
+#: code:addons/sale_order_create_event/models/sale_order.py:142
 #, python-format
 msgid "Session %s for %s"
 msgstr "Sesión %s para %s"
@@ -275,6 +296,12 @@ msgstr "Sesión %s para %s"
 #, python-format
 msgid "Sessions"
 msgstr "Sesiones"
+
+#. module: sale_order_create_event
+#: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
+#: field:sale.order.line,start_date:0
+msgid "Start date"
+msgstr "Fecha inicio"
 
 #. module: sale_order_create_event
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
@@ -305,10 +332,10 @@ msgid "Tasks"
 msgstr "Tareas"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:163
-#: code:addons/sale_order_create_event/models/sale_order.py:174
 #: code:addons/sale_order_create_event/models/sale_order.py:175
+#: code:addons/sale_order_create_event/models/sale_order.py:183
 #: code:addons/sale_order_create_event/models/sale_order.py:186
+#: code:addons/sale_order_create_event/models/sale_order.py:194
 #, python-format
 msgid ""
 "This product is a recurring service, But it has NOT checked only the "
@@ -324,7 +351,6 @@ msgstr ""
 #: field:project.task,thursday:0
 msgid "Thursday"
 msgstr "Jueves"
-
 
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
@@ -398,7 +424,23 @@ msgid "You must enter the start date of the project/contract"
 msgstr "Debe de introducir la fecha de inicio del proyecto/contrato"
 
 #. module: sale_order_create_event
+#: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
+msgid ""
+"[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',"
+"active_id)]"
+msgstr ""
+"[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',"
+"active_id)]"
+
+#. module: sale_order_create_event
 #: view:wiz.event.append.assistant:sale_order_create_event.wiz_event_append_assistant_form_inh_createevent
 msgid "tasks"
 msgstr "tareas"
+
+#. module: sale_order_create_event
+#: field:project.project,expense_invoiced:0
+#: field:project.project,expense_to_invoice:0
+#: field:project.project,remaining_expense:0
+msgid "unknown"
+msgstr "desconocido"
 
