@@ -11,6 +11,10 @@ class SaleOrder(models.Model):
     project_by_task = fields.Selection(
         [('yes', 'Yes'),
          ('no', 'No')], string='Create project by task')
+    project_start_date = fields.Date(
+        string='Project start date', related='project_id.date_start')
+    project_end_date = fields.Date(
+        string='Project end date', related='project_id.date')
 
     @api.multi
     def action_button_confirm(self):
