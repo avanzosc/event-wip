@@ -63,13 +63,19 @@ class SaleOrder(models.Model):
                        'project_id': project.id,
                        'sale_order': sale.id})
         if line and line.project_by_task:
-            utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
-                                                    line.start_hour)
+            if line.start_date:
+                utc_dt = event_obj._put_utc_format_date(
+                    line.start_date, line.start_hour)
+            else:
+                utc_dt = event_obj._put_utc_format_date(
+                    self.project_id.date_start, line.start_hour)
         else:
             utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
                                                     0.0)
         event_vals['date_begin'] = utc_dt
         utc_dt = event_obj._put_utc_format_date(self.project_id.date, 0.0)
+        if line and line.project_by_task and line.end_date:
+            utc_dt = event_obj._put_utc_format_date(line.end_date, 0.0)
         event_vals['date_end'] = utc_dt
         return event_vals
 
@@ -150,7 +156,9 @@ class SaleOrderLine(models.Model):
         [('yes', 'Yes'),
          ('no', 'No')],
         related='order_id.project_by_task', string='Create project by task')
+    start_date = fields.Date(string='Start date')
     start_hour = fields.Float(string='Start hour', default=0.0)
+    end_date = fields.Date(string='End date')
 
     @api.multi
     def product_id_change_with_wh(
