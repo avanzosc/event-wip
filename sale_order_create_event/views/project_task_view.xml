@@ -52,6 +52,7 @@
                                <field name="week3" string="Week 3"/>
                                <field name="week4" string="Week 4"/>
                                <field name="week5" string="Week 5"/>
+                               <field name="week6" string="Week 6"/>
                            </group>
                            <group name="group_day" colspan="2" >
                                <field name="monday" string="Monday"/>

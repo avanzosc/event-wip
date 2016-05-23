@@ -66,28 +66,35 @@ class SaleOrder(models.Model):
                        'date_tz': self.env.user.tz,
                        'project_id': project.id,
                        'sale_order': sale.id})
+        utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
+                                                0.0)
         if line and line.project_by_task:
-            if line.start_date:
-                utc_dt = event_obj._put_utc_format_date(
-                    line.start_date, line.start_hour)
-            else:
-                utc_dt = event_obj._put_utc_format_date(
-                    self.project_id.date_start, line.start_hour)
-        else:
-            utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
-                                                    0.0)
+            utc_dt = event_obj._put_utc_format_date(line.start_date,
+                                                    line.start_hour)
         event_vals['date_begin'] = utc_dt
         utc_dt = event_obj._put_utc_format_date(self.project_id.date, 0.0)
-        if line and line.project_by_task and line.end_date:
-            utc_dt = event_obj._put_utc_format_date(line.end_date, 0.0)
+        if line and line.project_by_task:
+            utc_dt = event_obj._put_utc_format_date(line.end_date,
+                                                    line.end_hour)
         event_vals['date_end'] = utc_dt
         return event_vals
 
     def _validate_create_session_from_sale_order(self, event, num_session,
                                                  line):
         task_obj = self.env['project.task']
-        fec_ini = fields.Datetime.from_string(
-            self.project_id.date_start).date()
+        event_obj = self.env['event.event']
+        if line.project_by_task:
+            utc_dt = event_obj._put_utc_format_date(line.start_date,
+                                                    line.start_hour)
+            fec_ini = utc_dt.date()
+            utc_dt = event_obj._put_utc_format_date(line.end_date,
+                                                    line.end_hour)
+            fec_limit = utc_dt.date()
+        else:
+            fec_ini = fields.Datetime.from_string(
+                self.project_id.date_start).date()
+            fec_limit = fields.Datetime.from_string(
+                self.project_id.date).date()
         if fec_ini.day != 1:
             while fec_ini.day != 1:
                 fec_ini = fec_ini + relativedelta(days=-1)
@@ -96,8 +103,7 @@ class SaleOrder(models.Model):
         else:
             num_week = 1
         month = fec_ini.month
-        while (fec_ini <=
-               fields.Datetime.from_string(self.project_id.date).date()):
+        while fec_ini <= fec_limit:
             if month != fec_ini.month:
                 month = fec_ini.month
                 if fec_ini.weekday() == 0:
@@ -106,8 +112,18 @@ class SaleOrder(models.Model):
                     num_week = 1
             if fec_ini.weekday() == 0:
                 num_week += 1
-            if fec_ini >= fields.Datetime.from_string(
-                    self.project_id.date_start).date():
+            valid = False
+            if line.project_by_task:
+                utc_dt = event_obj._put_utc_format_date(line.start_date,
+                                                        line.start_hour)
+                line_fec_ini = utc_dt.date()
+                if fec_ini >= line_fec_ini:
+                    valid = True
+            else:
+                if (fec_ini >= fields.Datetime.from_string(
+                        self.project_id.date_start).date()):
+                    valid = True
+            if valid:
                 valid = task_obj._validate_event_session_month(line, fec_ini)
                 if valid:
                     valid = task_obj._validate_event_session_week(
@@ -163,6 +179,7 @@ class SaleOrderLine(models.Model):
     start_date = fields.Date(string='Start date')
     start_hour = fields.Float(string='Start hour', default=0.0)
     end_date = fields.Date(string='End date')
+    end_hour = fields.Float(string='End hour', default=0.0)
 
     @api.multi
     def product_id_change_with_wh(

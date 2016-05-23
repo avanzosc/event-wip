@@ -72,6 +72,8 @@ class ProjectTask(models.Model):
         'Week 4', related='service_project_sale_line.week4')
     week5 = fields.Boolean(
         'Week 5', related='service_project_sale_line.week5')
+    week6 = fields.Boolean(
+        'Week 6', related='service_project_sale_line.week6')
     monday = fields.Boolean(
         'Monday', related='service_project_sale_line.monday')
     tuesday = fields.Boolean(
@@ -190,7 +192,8 @@ class ProjectTask(models.Model):
             (line.week2 and num_week == 2) or
             (line.week3 and num_week == 3) or
             (line.week4 and num_week == 4) or
-                (line.week5 and num_week == 5)):
+            (line.week5 and num_week == 5) or
+                (line.week6 and num_week == 6)):
             valid = True
         return valid
 
