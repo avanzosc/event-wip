@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 13:50+0000\n"
-"PO-Revision-Date: 2016-05-17 15:52+0100\n"
+"POT-Creation-Date: 2016-05-23 08:56+0000\n"
+"PO-Revision-Date: 2016-05-23 10:57+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -66,16 +66,22 @@ msgid "End date"
 msgstr "Fecha fin"
 
 #. module: sale_order_create_event
+#: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
+#: field:sale.order.line,end_hour:0
+msgid "End hour"
+msgstr "Hora fin"
+
+#. module: sale_order_create_event
 #: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:30
 #, python-format
 msgid "Error in dates"
 msgstr "Error en fechas"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:174
-#: code:addons/sale_order_create_event/models/sale_order.py:182
-#: code:addons/sale_order_create_event/models/sale_order.py:183
-#: code:addons/sale_order_create_event/models/sale_order.py:191
+#: code:addons/sale_order_create_event/models/sale_order.py:186
+#: code:addons/sale_order_create_event/models/sale_order.py:195
+#: code:addons/sale_order_create_event/models/sale_order.py:203
+#: code:addons/sale_order_create_event/models/sale_order.py:212
 #, python-format
 msgid "Error in recurring service product"
 msgstr "Error en producto servicio recurrente"
@@ -224,7 +230,17 @@ msgid "Project"
 msgstr "Proyecto"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:32
+#: field:sale.order,project_end_date:0
+msgid "Project end date"
+msgstr "Fecha fin proyecto"
+
+#. module: sale_order_create_event
+#: field:sale.order,project_start_date:0
+msgid "Project start date"
+msgstr "Fecha inicio proyecto"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:36
 #, python-format
 msgid "Project/contract without project"
 msgstr "Proyecto/contrato sin proyecto"
@@ -283,14 +299,16 @@ msgstr "Septiembre"
 
 #. module: sale_order_create_event
 #: code:addons/sale_order_create_event/models/project.py:224
-#: code:addons/sale_order_create_event/models/sale_order.py:136
-#: code:addons/sale_order_create_event/models/sale_order.py:142
+#: code:addons/sale_order_create_event/models/project.py:227
+#: code:addons/sale_order_create_event/models/sale_order.py:146
+#: code:addons/sale_order_create_event/models/sale_order.py:162
 #, python-format
 msgid "Session %s for %s"
 msgstr "Sesión %s para %s"
 
 #. module: sale_order_create_event
 #: code:addons/sale_order_create_event/models/project.py:126
+#: code:addons/sale_order_create_event/models/project.py:128
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,sessions:0
 #, python-format
@@ -332,10 +350,10 @@ msgid "Tasks"
 msgstr "Tareas"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:175
-#: code:addons/sale_order_create_event/models/sale_order.py:183
-#: code:addons/sale_order_create_event/models/sale_order.py:186
-#: code:addons/sale_order_create_event/models/sale_order.py:194
+#: code:addons/sale_order_create_event/models/sale_order.py:187
+#: code:addons/sale_order_create_event/models/sale_order.py:198
+#: code:addons/sale_order_create_event/models/sale_order.py:204
+#: code:addons/sale_order_create_event/models/sale_order.py:215
 #, python-format
 msgid ""
 "This product is a recurring service, But it has NOT checked only the "
@@ -359,7 +377,7 @@ msgid "Tuesday"
 msgstr "Martes"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:19
+#: code:addons/sale_order_create_event/models/sale_order.py:23
 #, python-format
 msgid "User without time zone"
 msgstr "Usuario sin zona horaria definida"
@@ -401,36 +419,33 @@ msgid "Week 5"
 msgstr "Semana 5"
 
 #. module: sale_order_create_event
+#: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
+#: field:project.task,week6:0
+msgid "Week 6"
+msgstr "Semana 6"
+
+#. module: sale_order_create_event
 #: selection:sale.order,project_by_task:0
 msgid "Yes"
 msgstr "Si"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:26
+#: code:addons/sale_order_create_event/models/sale_order.py:30
 #, python-format
 msgid "You must enter the end date of the project/contract"
 msgstr "Debe de introducir la fecha fin del proyecto/contracto"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:21
+#: code:addons/sale_order_create_event/models/sale_order.py:25
 #, python-format
 msgid "You must enter the project/contract"
 msgstr "Debe de introducir el proyecto/contracto"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:23
+#: code:addons/sale_order_create_event/models/sale_order.py:27
 #, python-format
 msgid "You must enter the start date of the project/contract"
 msgstr "Debe de introducir la fecha de inicio del proyecto/contrato"
-
-#. module: sale_order_create_event
-#: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
-msgid ""
-"[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',"
-"active_id)]"
-msgstr ""
-"[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',"
-"active_id)]"
 
 #. module: sale_order_create_event
 #: view:wiz.event.append.assistant:sale_order_create_event.wiz_event_append_assistant_form_inh_createevent
