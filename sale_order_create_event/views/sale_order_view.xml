@@ -36,9 +36,9 @@
                     <field name="project_by_task" invisible="1"/>
                     <field name="start_date" string="Start date"
                             attrs="{'invisible':[('project_by_task','=','no')]}" />
-                    <field name="start_hour" widget="float_time" string="Start hour"
-                            attrs="{'invisible':[('project_by_task','=','no')]}" />
                     <field name="end_date" string="End date"
+                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                    <field name="start_hour" widget="float_time" string="Start hour"
                             attrs="{'invisible':[('project_by_task','=','no')]}" />
                     <field name="end_hour" widget="float_time" string="End hour"
                             attrs="{'invisible':[('project_by_task','=','no')]}" />
