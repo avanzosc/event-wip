@@ -1,0 +1,118 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_planned_by_sale_line
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-01 13:56+0000\n"
+"PO-Revision-Date: 2016-06-01 15:57+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_order_form_inh_rockbotic
+msgid "Duration"
+msgstr "Duración"
+
+#. module: event_planned_by_sale_line
+#: code:addons/event_planned_by_sale_line/models/sale_order.py:25
+#, python-format
+msgid "Error in product category"
+msgstr "Error en categoría del producto"
+
+#. module: event_planned_by_sale_line
+#: view:product.category:event_planned_by_sale_line.product_category_search_view_inh_rockbotic
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_sales_order_filter_inh_rockbotic
+msgid "Order Month"
+msgstr "Mes del pedido"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_sales_order_filter_inh_rockbotic
+#: field:sale.order,payer:0
+msgid "Payer"
+msgstr "Pagador"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_product_category
+msgid "Product Category"
+msgstr "Categoría de producto"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_sales_order_filter_inh_rockbotic
+#: field:sale.order,product_category:0
+#: field:sale.order.line,product_category:0
+msgid "Product category"
+msgstr "Categoría producto"
+
+#. module: event_planned_by_sale_line
+#: view:product.category:event_planned_by_sale_line.product_category_search_view_inh_rockbotic
+#: field:product.category,punctual_service:0
+msgid "Punctual service"
+msgstr "Servicio puntual"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea pedido de venta"
+
+#. module: event_planned_by_sale_line
+#: selection:sale.order,payer:0
+msgid "School"
+msgstr "Colegio"
+
+#. module: event_planned_by_sale_line
+#: selection:sale.order,payer:0
+msgid "Student"
+msgstr "Alumno"
+
+#. module: event_planned_by_sale_line
+#: view:product.template:event_planned_by_sale_line.product_template_form_inh_rockbotic
+msgid "Training activity"
+msgstr "Actividad de formación"
+
+#. module: event_planned_by_sale_line
+#: code:addons/event_planned_by_sale_line/models/sale_order.py:27
+#, python-format
+msgid "You must introduce the product category"
+msgstr "Debe de intorudicr la categoría del producto"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_order_form5_inh_rockbotic
+msgid "[('categ_id', '=', product_category)]"
+msgstr "[('categ_id', '=', product_category)]"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.sale_order_form_quote_inh_rockbotic
+msgid ""
+"onchange_template_id(template_id, partner_id, fiscal_position, "
+"product_category, context)"
+msgstr ""
+"onchange_template_id(template_id, partner_id, fiscal_position, "
+"product_category, context)"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_order_form3_inh_rockbotic
+msgid ""
+"{'default_product_category': product_category,'default_project_by_task': "
+"project_by_task, 'default_start_date': project_start_date, "
+"'default_end_date': project_end_date}"
+msgstr ""
+"{'default_product_category': product_category,'default_project_by_task': "
+"project_by_task, 'default_start_date': project_start_date, "
+"'default_end_date': project_end_date}"

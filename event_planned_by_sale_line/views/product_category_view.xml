@@ -1,0 +1,37 @@
+<openerp>
+    <data>
+        <record id="product_category_search_view_inh_rockbotic" model="ir.ui.view" >
+            <field name="name">product.category.search.view.inh.rockbotic</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_search_view"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="punctual_service" />
+                    <group expand="0" string="Group By">
+                        <filter string="Punctual service" domain="[]" context="{'group_by':'punctual_service'}"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+        <record id="product_category_list_view_inh_rockbotic" model="ir.ui.view" >
+            <field name="name">product.category.list.view.inh.rockbotic</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_list_view"/>
+            <field name="arch" type="xml">
+                <field name="complete_name" position="after">
+                    <field name="punctual_service" />
+                </field>
+            </field>
+        </record>
+        <record id="product_category_form_view_inh_rockbotic" model="ir.ui.view" >
+            <field name="name">product.category.form.view.inh.rockbotic</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="punctual_service" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

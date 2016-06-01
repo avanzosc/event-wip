@@ -43,8 +43,24 @@ class WizEventAppendAssistant(models.TransientModel):
     def _create_account_for_not_employee_from_wizard(
             self, event, registration):
         account_obj = self.env['account.analytic.account']
-        event_obj = self.env['event.event']
         analytic_invoice_line_obj = self.env['account.analytic.invoice.line']
+        vals = self._prepare_data_for_account_not_employee(event, registration)
+        new_account = account_obj.create(vals)
+        registration.analytic_account = new_account.id
+        for ticket in event.event_ticket_ids:
+            line_vals = {'analytic_account_id': new_account.id,
+                         'name': (ticket.sale_line.name or
+                                  ticket.product_id.name),
+                         'price_unit': ticket.price,
+                         'price_subtotal': ticket.sale_line.price_subtotal,
+                         'product_id': ticket.product_id.id,
+                         'quantity': ticket.sale_line.product_uom_qty,
+                         'uom_id': (ticket.sale_line.product_uom.id or
+                                    ticket.product_id.uom_id.id)}
+            analytic_invoice_line_obj.create(line_vals)
+
+    def _prepare_data_for_account_not_employee(self, event, registration):
+        event_obj = self.env['event.event']
         today = datetime.strptime(
             fields.Date.context_today(self), '%Y-%m-%d').date()
         recurrring_next_date = "%s-%s-%s" % (
@@ -67,16 +83,4 @@ class WizEventAppendAssistant(models.TransientModel):
                 'partner_id': registration.partner_id.id,
                 'recurring_invoices': True,
                 'recurring_next_date': recurrring_next_date}
-        new_account = account_obj.create(vals)
-        registration.analytic_account = new_account.id
-        for ticket in event.event_ticket_ids:
-            line_vals = {'analytic_account_id': new_account.id,
-                         'name': (ticket.sale_line.name or
-                                  ticket.product_id.name),
-                         'price_unit': ticket.price,
-                         'price_subtotal': ticket.sale_line.price_subtotal,
-                         'product_id': ticket.product_id.id,
-                         'quantity': ticket.sale_line.product_uom_qty,
-                         'uom_id': (ticket.sale_line.product_uom.id or
-                                    ticket.product_id.uom_id.id)}
-            analytic_invoice_line_obj.create(line_vals)
+        return vals
