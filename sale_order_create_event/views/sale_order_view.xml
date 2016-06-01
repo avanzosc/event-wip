@@ -21,7 +21,6 @@
                 <xpath expr="//field[@name='order_line']//field[@name='address_allotment_id']/.." position="after">
                     <field name="project_by_task" invisible="1" />
                     <group colspan="4" col="8">
-                        
                         <field name="start_date" string="Start date"
                                 attrs="{'required':[('project_by_task','','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
                         <field name="end_date" string="End date"

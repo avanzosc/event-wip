@@ -27,6 +27,8 @@ class EventEvent(models.Model):
         string='Tasks', oldname='tasks')
     sale_order = fields.Many2one(
         'sale.order', string='Sale Order')
+    sale_order_line = fields.Many2one(
+        'sale.order.line', string='Sale order line')
 
     def _create_event_from_sale(self, by_task, sale, line=False):
         project_obj = self.env['project.project']
@@ -36,6 +38,8 @@ class EventEvent(models.Model):
         if by_task:
             name = name + ': ' + line.name
         event_vals = sale._prepare_event_data(sale, line, name, project)
+        if by_task:
+            event_vals['sale_order_line'] = line.id
         event = self.with_context(
             sale_order_create_event=True).create(event_vals)
         if line:
