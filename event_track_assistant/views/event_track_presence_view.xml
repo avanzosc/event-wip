@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <record id="event_track_presence_calendar_view" model="ir.ui.view">
+            <field name="name">event.track.presence.calendar.view</field>
+            <field name="model">event.track.presence</field>
+            <field name="arch" type="xml">
+                <calendar string="Session presences" color="state" date_start="session_date_without_hour">
+                    <field name="partner" />
+                    <field name="session_duration" />
+                    <field name="real_duration" />
+                </calendar>
+            </field>
+        </record>
         <record id="event_track_presence_view" model="ir.ui.view">
             <field name="name">event.track.presence.tree.view</field>
             <field name="model">event.track.presence</field>
@@ -126,7 +137,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">event.track.presence</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">calendar,tree,form</field>
         </record>
         <menuitem id="event_track_presence_option_view" name="Session presences"
                   action="action_event_track_presence_view" 

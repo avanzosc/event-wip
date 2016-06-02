@@ -19,13 +19,17 @@ class WizEventAppendAssistant(models.TransientModel):
         else:
             vals['recurring_invoices'] = False
         if event.sale_order.product_category.punctual_service:
-            vals['recurring_next_date'] = (
-                event.sale_order_line.date_start)
+            vals.update({'recurring_interval': 1,
+                         'recurring_rule_type': 'yearly',
+                         'recurring_next_date':
+                         event.sale_order_line.start_date})
         else:
             date = fields.Datetime.from_string(
-                event.sale_order_line.date_start).date()
+                event.sale_order_line.start_date).date()
             recurring_next_date = "%s-%s-%s" % (
                 date.year, date.month,
                 calendar.monthrange(date.year, date.month)[1])
-            vals['recurring_next_date'] = recurring_next_date
+            vals.update({'recurring_next_date': recurring_next_date,
+                         'recurring_interval': 1,
+                         'recurring_rule_type': 'monthly'})
         return vals

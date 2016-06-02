@@ -57,14 +57,18 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self).action_button_confirm()
         for sale in self:
             if sale.product_category.punctual_service:
-                vals = {'recurring_next_date': sale.project_id.date_start}
+                vals = {'recurring_next_date': sale.project_id.date_start,
+                        'recurring_interval': 1,
+                        'recurring_rule_type': 'yearly'}
             else:
                 date = fields.Datetime.from_string(
                     sale.project_id.date_start).date()
                 recurring_next_date = "%s-%s-%s" % (
                     date.year, date.month,
                     calendar.monthrange(date.year, date.month)[1])
-                vals = {'recurring_next_date': recurring_next_date}
+                vals = {'recurring_next_date': recurring_next_date,
+                        'recurring_interval': 1,
+                        'recurring_rule_type': 'monthly'}
             if sale.payer == 'school':
                 vals['recurring_invoices'] = True
             sale.project_id.write(vals)

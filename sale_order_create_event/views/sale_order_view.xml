@@ -22,25 +22,20 @@
                     <field name="project_by_task" invisible="1" />
                     <group colspan="4" col="8">
                         <field name="start_date" string="Start date"
-                                attrs="{'required':[('project_by_task','','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
+                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
                         <field name="end_date" string="End date"
-                                attrs="{'required':[('project_by_task','','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
+                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
                         <field name="start_hour" widget="float_time" string="Start hour"
-                                attrs="{'required':[('project_by_task','','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
+                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
                         <field name="end_hour" widget="float_time" string="End hour"
-                                attrs="{'required':[('project_by_task','','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
+                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" colspan="2" />
                     </group>
                 </xpath>
-                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-                    <field name="project_by_task" invisible="1"/>
-                    <field name="start_date" string="Start date"
-                            attrs="{'invisible':[('project_by_task','=','no')]}" />
-                    <field name="end_date" string="End date"
-                            attrs="{'invisible':[('project_by_task','=','no')]}" />
-                    <field name="start_hour" widget="float_time" string="Start hour"
-                            attrs="{'invisible':[('project_by_task','=','no')]}" />
-                    <field name="end_hour" widget="float_time" string="End hour"
-                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                <xpath expr="//field[@name='order_line']//form//field[@name='address_allotment_id']" position="after">
+                    <field name="apply_performance_by_quantity" />
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree//field[@name='price_unit']" position="after">
+                    <field name="apply_performance_by_quantity" />
                 </xpath>
             </field>
         </record>

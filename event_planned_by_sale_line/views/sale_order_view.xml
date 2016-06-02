@@ -1,7 +1,7 @@
 <openerp>
     <data>
-        <record id="view_order_form_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.order.form.inh.rockbotic</field>
+        <record id="view_order_form_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.order.form.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_order_line_performance.view_order_form_inh_line_performance"/>
             <field name="arch" type="xml">
@@ -13,8 +13,8 @@
                 </xpath>
             </field>
         </record>
-        <record id="view_order_form2_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.order.form2.inh.rockbotic</field>
+        <record id="view_order_form2_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.order.form2.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
@@ -22,10 +22,21 @@
                     <field name="product_category" />
                     <field name="payer" />
                 </field>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="project_by_task" invisible="1"/>
+                    <field name="start_date" string="Start date"
+                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                    <field name="end_date" string="End date"
+                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                    <field name="start_hour" widget="float_time" string="Start hour"
+                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                    <field name="end_hour" widget="float_time" string="End hour"
+                            attrs="{'invisible':[('project_by_task','=','no')]}" />
+                </xpath>
             </field>
         </record>
-        <record id="view_order_form3_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.order.form3.inh.rockbotic</field>
+        <record id="view_order_form3_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.order.form3.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_order_create_event.view_order_form_inh_sale_create_event"/>
             <field name="arch" type="xml">
@@ -34,8 +45,8 @@
                 </field>
             </field>
         </record>
-        <record id="view_order_tree_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view_order_tree.inh.rockbotic</field>
+        <record id="view_order_tree_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view_order_tree.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_tree"/>
             <field name="arch" type="xml">
@@ -45,8 +56,8 @@
                 </field>
             </field>
         </record>
-        <record id="view_quotation_tree_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.quotation.tree.inh.rockbotic</field>
+        <record id="view_quotation_tree_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.quotation.tree.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_quotation_tree"/>
             <field name="arch" type="xml">
@@ -56,8 +67,8 @@
                 </field>
             </field>
         </record>
-        <record id="view_sales_order_filter_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.sales.order.filter.inh.rockbotic</field>
+        <record id="view_sales_order_filter_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.sales.order.filter.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
@@ -71,8 +82,8 @@
                 </filter>
             </field>
         </record>
-        <record id="view_order_form4_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.order.form4.inh.rockbotic</field>
+        <record id="view_order_form4_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.order.form4.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
             <field name="arch" type="xml">
@@ -84,8 +95,8 @@
                 </xpath>
             </field>
         </record>
-        <record id="sale_order_form_quote_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">sale.order.form.quote.inh.rockbotic</field>
+        <record id="sale_order_form_quote_inh_planned_line" model="ir.ui.view" >
+            <field name="name">sale.order.form.quote.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="website_quote.sale_order_form_quote"/>
             <field name="arch" type="xml">
@@ -94,8 +105,8 @@
                 </field>
             </field>
         </record>
-        <record id="view_order_form5_inh_rockbotic" model="ir.ui.view" >
-            <field name="name">view.order.form5.inh.rockbotic</field>
+        <record id="view_order_form5_inh_planned_line" model="ir.ui.view" >
+            <field name="name">view.order.form5.inh.planned.line</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_product_variants.sale_order_extended_form_view"/>
             <field name="arch" type="xml">
