@@ -152,7 +152,10 @@ class SaleOrder(models.Model):
             self, event, num_session, line, date):
         event_obj = self.env['event.event']
         if line.performance:
-            duration = (line.performance * line.product_uom_qty)
+            if line.apply_performance_by_quantity:
+                duration = (line.performance * line.product_uom_qty)
+            else:
+                duration = line.performance
         else:
             duration = line.product_uom_qty
         if line.project_by_task:
@@ -180,6 +183,8 @@ class SaleOrderLine(models.Model):
     start_hour = fields.Float(string='Start hour', default=0.0)
     end_date = fields.Date(string='End date')
     end_hour = fields.Float(string='End hour', default=0.0)
+    apply_performance_by_quantity = fields.Boolean(
+        string='performance = performance * quantity', default=True)
 
     @api.multi
     def product_id_change_with_wh(
@@ -217,3 +222,11 @@ class SaleOrderLine(models.Model):
                       ' their routes defined, consequently, this product will'
                       ' not create task in the event.'))
         return res
+
+    @api.onchange('start_hour', 'end_hour')
+    def onchange_date_begin(self):
+        print '*** estoy en onchange'
+        self.ensure_one()
+        event_obj = self.env['event.event']
+        if self.start_hour and self.end_hour:
+            self.performance = self.end_hour - self.start_hour

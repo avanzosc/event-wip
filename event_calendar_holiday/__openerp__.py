@@ -13,8 +13,9 @@
     ],
     "category": "Event Management",
     "depends": [
+        'hr_attendance',
         'calendar_holiday',
-        'sale_order_create_event'
+        'sale_order_create_event',
     ],
     "data": [
         'wizard/wiz_put_presence_as_worked_view.xml',
