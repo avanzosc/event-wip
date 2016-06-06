@@ -225,8 +225,6 @@ class SaleOrderLine(models.Model):
 
     @api.onchange('start_hour', 'end_hour')
     def onchange_date_begin(self):
-        print '*** estoy en onchange'
         self.ensure_one()
-        event_obj = self.env['event.event']
         if self.start_hour and self.end_hour:
             self.performance = self.end_hour - self.start_hour

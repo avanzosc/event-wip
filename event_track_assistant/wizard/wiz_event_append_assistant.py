@@ -212,8 +212,9 @@ class WizEventAppendAssistant(models.TransientModel):
             fbegin = event_obj._convert_date_to_local_format_with_hour(
                 event.date_begin).strftime('%Y-%m-%d %H:%M:%S')
             fbegin = fields.Datetime.from_string(fbegin)
-            if (fbegin.strftime('%H') != '00' or fbegin.strftime('%M') != '00'
-                    or fbegin.strftime('%S') != '00'):
+            if (fbegin.strftime('%H') != '00' or
+                    fbegin.strftime('%M') != '00' or
+                    fbegin.strftime('%S') != '00'):
                 to_date = (fields.Datetime.from_string(str(to_date)) +
                            (relativedelta(days=1)))
                 to_date = fields.Datetime.to_string(to_date)
