@@ -141,6 +141,7 @@
         </record>
         <menuitem id="event_track_presence_option_view" name="Session presences"
                   action="action_event_track_presence_view" 
-                  parent="event.event_main_menu"/>
+                  parent="event.event_main_menu"
+                  groups="event.group_event_user"/>
     </data>
 </openerp>

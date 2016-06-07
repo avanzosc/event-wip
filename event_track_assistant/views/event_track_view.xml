@@ -141,6 +141,6 @@
         </record>
         <menuitem name="Event Tracks" id="website_event_track.menu_event_track"
             action="website_event_track.action_event_track" parent="event.event_main_menu"
-            sequence="11" groups="base.group_no_one"/>
+            sequence="11" groups="event.group_event_user"/>
     </data>
 </openerp>

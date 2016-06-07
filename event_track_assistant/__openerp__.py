@@ -17,6 +17,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/event_track_assistant.xml",
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_event_delete_assistant_view.xml",
         "views/event_event_view.xml",
