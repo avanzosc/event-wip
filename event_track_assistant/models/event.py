@@ -171,11 +171,20 @@ class EventTrack(models.Model):
 
     @api.constrains('date')
     def _check_session_date(self):
-        if self.date and self.date < self.event_id.date_begin:
+        event_obj = self.env['event.event']
+        date_begin = event_obj._convert_date_to_local_format_with_hour(
+            self.event_id.date_begin).date()
+        session_date = False
+        if self.session_date:
+            session_date = fields.Datetime.from_string(
+                self.session_date).date()
+        if session_date and session_date < date_begin:
             raise exceptions.Warning(
                 _('Session %s with date lower than the event start date')
                 % self.name)
-        if self.date and self.date > self.event_id.date_end:
+        date_end = event_obj._convert_date_to_local_format_with_hour(
+            self.event_id.date_end).date()
+        if session_date and session_date > date_end:
             raise exceptions.Warning(
                 _('Session %s with date greater than the event start date')
                 % self.name)
@@ -259,7 +268,7 @@ class EventTrackPresence(models.Model):
                     self._calculate_real_daynightlightt_hours_same_day(
                         presence, fec_ini, fec_fin)
                 else:
-                    self._calculate_real_daynightlightt_hours_in_distincts_days(
+                    self._calculate_real_daynightlightt_hours_in_distinct_days(
                         presence, fec_ini, fec_fin)
 
     name = fields.Char(
@@ -405,7 +414,7 @@ class EventTrackPresence(models.Model):
             hour = self._calculate_hour_between_dates(
                 presence.estimated_date_end, fec_ini2)
 
-    def _calculate_real_daynightlightt_hours_in_distincts_days(
+    def _calculate_real_daynightlightt_hours_in_distinct_days(
             self, presence, fec_ini, fec_fin):
         event_obj = self.env['event.event']
         fec_ini2 = (fields.Date.from_string(str(fec_ini)) +
