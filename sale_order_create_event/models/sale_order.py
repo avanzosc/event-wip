@@ -68,12 +68,12 @@ class SaleOrder(models.Model):
                        'sale_order': sale.id})
         utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
                                                 0.0)
-        if line and line.project_by_task:
+        if line and line.project_by_task == 'yes':
             utc_dt = event_obj._put_utc_format_date(line.start_date,
                                                     line.start_hour)
         event_vals['date_begin'] = utc_dt
         utc_dt = event_obj._put_utc_format_date(self.project_id.date, 0.0)
-        if line and line.project_by_task:
+        if line and line.project_by_task == 'yes':
             utc_dt = event_obj._put_utc_format_date(line.end_date,
                                                     line.end_hour)
         event_vals['date_end'] = utc_dt
@@ -83,7 +83,7 @@ class SaleOrder(models.Model):
                                                  line):
         task_obj = self.env['project.task']
         event_obj = self.env['event.event']
-        if line.project_by_task:
+        if line.project_by_task == 'yes':
             utc_dt = event_obj._put_utc_format_date(line.start_date,
                                                     line.start_hour)
             fec_ini = utc_dt.date()
@@ -113,7 +113,7 @@ class SaleOrder(models.Model):
             if fec_ini.weekday() == 0:
                 num_week += 1
             valid = False
-            if line.project_by_task:
+            if line.project_by_task == 'yes':
                 utc_dt = event_obj._put_utc_format_date(line.start_date,
                                                         line.start_hour)
                 line_fec_ini = utc_dt.date()
@@ -158,7 +158,7 @@ class SaleOrder(models.Model):
                 duration = line.performance
         else:
             duration = line.product_uom_qty
-        if line.project_by_task:
+        if line.project_by_task == 'yes':
             utc_dt = event_obj._put_utc_format_date(date, line.start_hour)
         else:
             utc_dt = event_obj._put_utc_format_date(date, 0.0)
