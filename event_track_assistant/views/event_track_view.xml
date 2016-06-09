@@ -71,8 +71,11 @@
                     <filter string="Real end month" domain="[]" context="{'group_by': 'real_date_end:month'}"/>
                     <separator/>
                     <filter string="Session week" domain="[]" context="{'group_by': 'date:week'}"/>
+                    <filter string="Session day" domain="[]" context="{'group_by': 'date:day'}"/>
                     <filter string="Estimated end week" domain="[]" context="{'group_by': 'estimated_date_end:week'}"/>
                     <filter string="Real end week" domain="[]" context="{'group_by': 'real_date_end:week'}"/>
+                    <filter string="Estimated end day" domain="[]" context="{'group_by': 'estimated_date_end:day'}"/>
+                    <filter string="Real end day" domain="[]" context="{'group_by': 'real_date_end:day'}"/>
                 </filter>
             </field>
         </record>
