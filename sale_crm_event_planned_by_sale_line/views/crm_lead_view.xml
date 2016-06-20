@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="crm_case_tree_view_oppor_inh_event_planned">
+            <field name="name">crm.case.tree.view.oppor.inh.eventplanned</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="sale_order" />
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_crm_case_opportunities_filter_inh_event_planned">
+            <field name="name">view.crm.case.opportunities.filter.inh.eventplanned</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="sale_order" />
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="crm_case_form_view_oppor_inh_event_planned">
+            <field name="name">crm.case.form.view.oppor.inh.eventplanned</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <field name="categ_ids" position="after">
+                    <field name="sale_order" attrs="{'invisible': [('type', '!=', 'opportunity')]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

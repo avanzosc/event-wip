@@ -1,0 +1,63 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_crm_event_planned_by_sale_line
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-20 14:02+0000\n"
+"PO-Revision-Date: 2016-06-20 16:03+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: model:ir.model,name:sale_crm_event_planned_by_sale_line.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Iniciativa/Oportunidad"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: model:ir.model,name:sale_crm_event_planned_by_sale_line.model_crm_make_sale
+msgid "Make sales"
+msgstr "Crear ventas"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: field:crm.make.sale,payer:0
+msgid "Payer"
+msgstr "Pagador"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: field:crm.make.sale,product_category:0
+msgid "Product category"
+msgstr "Categoría producto"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: field:crm.lead,sale_order:0
+msgid "Sale order"
+msgstr "Pedido venta"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: model:ir.model,name:sale_crm_event_planned_by_sale_line.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: selection:crm.make.sale,payer:0
+msgid "School"
+msgstr "Escuela"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: selection:crm.make.sale,payer:0
+msgid "Student"
+msgstr "Alumno"
+
+#. module: sale_crm_event_planned_by_sale_line
+#: code:addons/sale_crm_event_planned_by_sale_line/wizard/crm_make_sale.py:24
+#, python-format
+msgid "You can only convert to quotation a unique opportunity"
+msgstr "Solo puede convertir a presupuesto una única oportunidad"
