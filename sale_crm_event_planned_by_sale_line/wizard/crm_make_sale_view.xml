@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_crm_make_sale_inh_event_planned">
+            <field name="name">view.crm.make.sale.inh.event.planned</field>
+            <field name="model">crm.make.sale</field>
+            <field name="inherit_id" ref="sale_crm.view_crm_make_sale"/>
+            <field name="arch" type="xml">
+                <field name="close" position="after">
+                    <field name="product_category" />
+                    <field name="payer" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
