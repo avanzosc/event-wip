@@ -2,7 +2,6 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, exceptions, _
-from dateutil.relativedelta import relativedelta
 
 
 class WizEventAppendAssistant(models.TransientModel):
@@ -207,17 +206,6 @@ class WizEventAppendAssistant(models.TransientModel):
     def _prepare_track_condition_search(self, event):
         from_date, to_date = self._calc_dates_for_search_track(
             self.from_date, self.to_date)
-        event_obj = self.env['event.event']
-        if event.sale_order.project_by_task == 'yes':
-            fbegin = event_obj._convert_date_to_local_format_with_hour(
-                event.date_begin).strftime('%Y-%m-%d %H:%M:%S')
-            fbegin = fields.Datetime.from_string(fbegin)
-            if (fbegin.strftime('%H') != '00' or
-                    fbegin.strftime('%M') != '00' or
-                    fbegin.strftime('%S') != '00'):
-                to_date = (fields.Datetime.from_string(str(to_date)) +
-                           (relativedelta(days=1)))
-                to_date = fields.Datetime.to_string(to_date)
         cond = [('id', 'in', event.track_ids.ids),
                 ('date', '!=', False),
                 ('date', '>=', from_date),
