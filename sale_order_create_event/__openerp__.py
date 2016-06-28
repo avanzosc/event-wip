@@ -26,7 +26,8 @@
         'views/account_analytic_account_view.xml',
         'views/sale_order_view.xml',
         'views/project_project_view.xml',
-        'views/project_task_view.xml'
+        'views/project_task_view.xml',
+        'views/event_event_view.xml'
     ],
     "installable": True,
 }

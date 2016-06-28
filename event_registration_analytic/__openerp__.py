@@ -13,6 +13,7 @@
     ],
     "category": "Event Management",
     "depends": [
+        'stock',
         'partner_group',
         'analytic',
         'account_analytic_analysis',

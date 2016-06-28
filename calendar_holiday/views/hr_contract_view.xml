@@ -40,7 +40,7 @@
                                 <separator string="Holiday calendars" colspan="10" />
                                 <field name="holiday_calendars" nolabel="1" colspan="10" />
                             </group>
-	                    </group>
+                        </group>
                     </page>
                 </page>
                 <sheet position="after">
