@@ -17,10 +17,10 @@ class EventEvent(models.Model):
             else:
                 self.my_task_ids = [(6, 0, [])]
 
-    @api.one
     @api.depends('my_task_ids')
     def _count_tasks(self):
-        self.count_tasks = len(self.my_task_ids)
+        for event in self:
+            event.count_tasks = len(event.my_task_ids)
 
     my_task_ids = fields.One2many(
         comodel_name='project.task', compute='_compute_event_tasks',

@@ -27,4 +27,5 @@
         "views/product_category_view.xml",
     ],
     "installable": True,
+    "post_init_hook": "fill_charge_information_is_sales",
 }

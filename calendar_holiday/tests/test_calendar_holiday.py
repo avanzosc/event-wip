@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# (c) 2016 Alfredo de la Fuente - AvanzOSC
+# (c) 2025 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
 
@@ -13,7 +13,7 @@ class TestCalendarHoliday(common.TransactionCase):
         self.calendar_model = self.env['res.partner.calendar']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
         calendar_line_vals = {
-            'date': '2016-01-06',
+            'date': '2025-01-06',
             'absence_type': self.ref('hr_holidays.holiday_status_comp')}
         calendar_vals = {'name': 'Holidays calendar',
                          'lines': [(0, 0, calendar_line_vals)]}
@@ -24,16 +24,16 @@ class TestCalendarHoliday(common.TransactionCase):
                          'type_id':
                          self.ref('hr_contract.hr_contract_type_emp'),
                          'wage': 500,
-                         'date_start': '2016-01-02',
-                         'date_end': '2016-12-30',
+                         'date_start': '2025-01-02',
+                         'date_end': '2025-12-30',
                          'holiday_calendars':
                          [(6, 0, [self.calendar_holiday.id])]}
         self.contract = self.contract_model.create(contract_vals)
 
     def test_calendar_holiday(self):
-        self.calendar_holiday.lines[0].write({'date': '2016-01-06'})
+        self.calendar_holiday.lines[0].write({'date': '2025-01-06'})
         wiz = self.wiz_model.with_context(
-            {'active_id': self.contract.id}).create({'year': 2016})
+            {'active_id': self.contract.id}).create({'year': 2025})
         vals = ['year']
         wiz.with_context(
             {'active_id': self.contract.id}).default_get(vals)
@@ -41,7 +41,7 @@ class TestCalendarHoliday(common.TransactionCase):
             {'active_id':
              self.contract.id}).button_calculate_workables_and_festives()
         cond = [('partner', '=', self.ref('base.public_partner')),
-                ('year', '=', 2016)]
+                ('year', '=', 2025)]
         calendar = self.calendar_model.search(cond)
         self.assertNotEqual(
             len(calendar), 0, 'Calendar not generated for partner')
