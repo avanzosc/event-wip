@@ -13,6 +13,7 @@ class WizCalculateWorkableFestive(models.TransientModel):
 
     @api.model
     def default_get(self, var_fields):
+        res = super(WizCalculateWorkableFestive, self).default_get(var_fields)
         partner_calendar_obj = self.env['res.partner.calendar']
         contract = self.env['hr.contract'].browse(
             self.env.context['active_id'])
@@ -21,13 +22,13 @@ class WizCalculateWorkableFestive(models.TransientModel):
                 ('year', '=', year_begin)]
         calendar = partner_calendar_obj.search(cond, limit=1)
         if not calendar:
-            return {'year': year_begin}
+            res.update({'year': year_begin})
         else:
             if contract.date_end:
                 year_end = fields.Datetime.from_string(contract.date_end).year
                 if year_begin == year_end:
-                    return {'year': year_begin}
-        return {}
+                    res.update({'year': year_begin})
+        return res
 
     @api.multi
     def button_calculate_workables_and_festives(self):
