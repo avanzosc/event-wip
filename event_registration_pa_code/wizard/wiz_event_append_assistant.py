@@ -21,12 +21,12 @@ class WizEventAppendAssistant(models.TransientModel):
                                                                registration)
             new_account = account_obj.create(vals)
             registration.analytic_account = new_account.id
-            if registration.partner_id.ampa_partner:
+            if registration.partner_id.pa_partner:
                 lines = event.event_ticket_ids.filtered(
-                    lambda x: x.ampa_partner)
+                    lambda x: x.pa_partner)
             else:
                 lines = event.event_ticket_ids.filtered(
-                    lambda x: not x.ampa_partner)
+                    lambda x: not x.pa_partner)
             if not lines:
                 raise exceptions.Warning(
                     _('Ticket not found for %s') %

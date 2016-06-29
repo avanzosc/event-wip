@@ -3,10 +3,10 @@
    :alt: License: AGPL-3
 
 ============================
-Event registration ampa code
+Event registration pa code
 ============================
 
-* AMPA code in partners, and event tickects.
+* pa code in partners, and event tickects.
 
 
 Credits

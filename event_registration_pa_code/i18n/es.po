@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_registration_ampa_code
+#	* event_registration_pa_code
 #
 msgid ""
 msgstr ""
@@ -15,29 +15,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 
-#. module: event_registration_ampa_code
-#: field:event.event.ticket,ampa_partner:0
-#: field:res.partner,ampa_partner:0
-msgid "AMPA partner"
-msgstr "Socio AMPA"
+#. module: event_registration_pa_code
+#: field:event.event.ticket,pa_partner:0
+#: field:res.partner,pa_partner:0
+msgid "pa partner"
+msgstr "Socio pa"
 
-#. module: event_registration_ampa_code
-#: view:event.event:event_registration_ampa_code.view_event_form_inh_ampa_code
+#. module: event_registration_pa_code
+#: view:event.event:event_registration_pa_code.view_event_form_inh_pa_code
 msgid "Badge"
 msgstr "Insignia"
 
-#. module: event_registration_ampa_code
-#: model:ir.model,name:event_registration_ampa_code.model_event_event
+#. module: event_registration_pa_code
+#: model:ir.model,name:event_registration_pa_code.model_event_event
 msgid "Event"
 msgstr "Evento"
 
-#. module: event_registration_ampa_code
-#: model:ir.model,name:event_registration_ampa_code.model_res_partner
+#. module: event_registration_pa_code
+#: model:ir.model,name:event_registration_pa_code.model_res_partner
 msgid "Partner"
 msgstr "Empresa"
 
-#. module: event_registration_ampa_code
-#: code:addons/event_registration_ampa_code/wizard/wiz_event_append_assistant.py:32
+#. module: event_registration_pa_code
+#: code:addons/event_registration_pa_code/wizard/wiz_event_append_assistant.py:32
 #, python-format
 msgid "Ticket not found for %s"
 msgstr "Ticket no encontrad para %s"

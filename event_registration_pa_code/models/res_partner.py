@@ -7,4 +7,5 @@ from openerp import models, fields
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    ampa_partner = fields.Boolean(string='AMPA partner', default=False)
+    pa_partner = fields.Boolean(
+        string='Parents association partner', default=False)

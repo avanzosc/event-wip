@@ -9,11 +9,10 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     product_category = fields.Many2one(
-        comodel_name='product.category', string='Product category',
-        required=True)
+        comodel_name='product.category', string='Product category')
     payer = fields.Selection(
-        [('school', 'School'),
-         ('student', 'Student')], string='Payer', required=True)
+        selection=[('school', 'School'), ('student', 'Student')],
+        string='Payer', required=True, default='student')
 
     @api.multi
     def onchange_template_id(self, template_id, partner=False,
