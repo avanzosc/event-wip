@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_event_form_inh_ampa_code" model="ir.ui.view" >
+            <field name="name">view.event.form.inh.ampa.codec</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event_sale.view_event_form"/>
+            <field name="arch" type="xml">
+                <page string="Badge" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </page>
+                <xpath expr="//tree[@string='Payments']//field[@name='product_id']" position="after">
+                    <field name="ampa_partner" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
