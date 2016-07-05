@@ -1,25 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_registration_pa_code
+# 	* event_registration_pa_code
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-29 09:35+0000\n"
-"PO-Revision-Date: 2016-06-29 11:35+0100\n"
-"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"POT-Creation-Date: 2016-07-05 15:04+0000\n"
+"PO-Revision-Date: 2016-07-05 17:05+0100\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
-
-#. module: event_registration_pa_code
-#: field:event.event.ticket,pa_partner:0
-#: field:res.partner,pa_partner:0
-msgid "pa partner"
-msgstr "Socio pa"
+"X-Generator: Poedit 1.5.4\n"
 
 #. module: event_registration_pa_code
 #: view:event.event:event_registration_pa_code.view_event_form_inh_pa_code
@@ -32,13 +27,18 @@ msgid "Event"
 msgstr "Evento"
 
 #. module: event_registration_pa_code
+#: field:event.event.ticket,pa_partner:0 field:res.partner,pa_partner:0
+msgid "Parents association partner"
+msgstr "Parents association partner"
+
+#. module: event_registration_pa_code
 #: model:ir.model,name:event_registration_pa_code.model_res_partner
 msgid "Partner"
 msgstr "Empresa"
 
 #. module: event_registration_pa_code
+#: code:addons/event_registration_pa_code/wizard/wiz_event_append_assistant.py:31
 #: code:addons/event_registration_pa_code/wizard/wiz_event_append_assistant.py:32
 #, python-format
 msgid "Ticket not found for %s"
-msgstr "Ticket no encontrad para %s"
-
+msgstr "Ticket no encontrado para %s"

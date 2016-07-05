@@ -2,9 +2,9 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-============================
+==========================
 Event registration pa code
-============================
+==========================
 
 * pa code in partners, and event tickects.
 
