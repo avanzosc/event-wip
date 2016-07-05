@@ -11,8 +11,7 @@ class WizEventAppendAssistant(models.TransientModel):
             self, event, registration):
         account_obj = self.env['account.analytic.account']
         analytic_invoice_line_obj = self.env['account.analytic.invoice.line']
-        if (event.sale_order.payer == 'student' or
-                len(event.event_ticket_ids) == 1):
+        if event.sale_order.payer == 'student':
             super(WizEventAppendAssistant,
                   self)._create_account_for_not_employee_from_wizard(
                       event, registration)

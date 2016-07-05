@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
         comodel_name='product.category', string='Product category')
     payer = fields.Selection(
         selection=[('school', 'School'), ('student', 'Student')],
-        string='Payer', required=True, default='student')
+        string='Payer', default='student')
 
     @api.multi
     def onchange_template_id(self, template_id, partner=False,

@@ -20,7 +20,7 @@
             <field name="arch" type="xml">
                 <field name="project_id" position="after">
                     <field name="product_category" />
-                    <field name="payer" />
+                    <field name="payer" required="1"/>
                 </field>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
                     <field name="project_by_task" invisible="1"/>
