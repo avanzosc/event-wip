@@ -2,6 +2,7 @@
 # © 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, _
+from dateutil.relativedelta import relativedelta
 import calendar
 
 
@@ -108,3 +109,49 @@ class SaleOrderLine(models.Model):
                 cond.append(('categ_id', '=', self.product_category.id))
                 res['domain']['product_id'] = cond
         return res
+
+    @api.onchange('start_date', 'end_date')
+    def onchange_start_end_date(self):
+        self.ensure_one()
+        self.january = False
+        self.february = False
+        self.march = False
+        self.april = False
+        self.may = False
+        self.june = False
+        self.july = False
+        self.august = False
+        self.september = False
+        self.october = False
+        self.november = False
+        self.december = False
+        if self.start_date and self.end_date:
+            fec_ini = fields.Datetime.from_string(self.start_date).date()
+            fec_fin = fields.Datetime.from_string(self.end_date).date()
+            while fec_ini <= fec_fin:
+                if fec_ini.month == 1:
+                    self.january = True
+                if fec_ini.month == 2:
+                    self.february = True
+                if fec_ini.month == 3:
+                    self.march = True
+                if fec_ini.month == 4:
+                    self.april = True
+                if fec_ini.month == 5:
+                    self.may = True
+                if fec_ini.month == 6:
+                    self.june = True
+                if fec_ini.month == 7:
+                    self.july = True
+                if fec_ini.month == 8:
+                    self.august = True
+                if fec_ini.month == 9:
+                    self.september = True
+                if fec_ini.month == 10:
+                    self.october = True
+                if fec_ini.month == 11:
+                    self.november = True
+                if fec_ini.month == 12:
+                    self.december = True
+                fec_ini = (fields.Date.from_string(str(fec_ini)) +
+                           (relativedelta(days=1)))
