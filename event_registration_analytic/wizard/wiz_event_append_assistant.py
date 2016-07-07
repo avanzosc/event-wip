@@ -10,7 +10,7 @@ class WizEventAppendAssistant(models.TransientModel):
     _inherit = 'wiz.event.append.assistant'
 
     create_account = fields.Boolean(
-        'Show create account', default=False)
+        string='Show create account', default=False)
 
     @api.onchange('partner')
     def onchange_partner(self):

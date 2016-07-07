@@ -122,16 +122,16 @@
         <record id="event.act_event_list_register_event" model="ir.actions.act_window">
             <field name="res_model">event.registration</field>
             <field name="view_type">form</field>
-            <field name="name">Registrations</field>
+            <field name="name">Registered students</field>
             <field name="view_mode">tree,form,calendar,graph</field>
             <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
             <field name="domain">[('employee','=',False)]</field>
         </record>
-        <menuitem name="Student assistants"
+        <menuitem name="Registered students"
             id="event.menu_action_registration" parent="event.event_main_menu"
             action="event.action_registration" groups="event.group_event_manager,event.group_event_user"/>
         <record model="ir.actions.act_window" id="event.action_registration">
-          <field name="name">Student assistants</field>
+          <field name="name">Registered students</field>
           <field name="res_model">event.registration</field>
           <field name="view_type">form</field>
           <field name="domain"></field>
@@ -141,7 +141,7 @@
           <field name="domain">[('employee','=',False)]</field>
         </record>
         <record model="ir.actions.act_window" id="action_registration2">
-          <field name="name">Teacher assistants</field>
+          <field name="name">Teacher presences</field>
           <field name="res_model">event.registration</field>
           <field name="view_type">form</field>
           <field name="domain"></field>

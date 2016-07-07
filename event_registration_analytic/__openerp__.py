@@ -27,6 +27,8 @@
         'views/event_event_view.xml',
         'views/event_registration_view.xml',
         'views/sale_order_view.xml',
+        'views/event_track_view.xml',
+        'views/event_track_assistant_view.xml',
     ],
     "installable": True,
 }

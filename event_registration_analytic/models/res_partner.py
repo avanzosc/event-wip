@@ -8,6 +8,6 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     parent_is_company = fields.Boolean(
-        'Parent is company', related='parent_id.is_company', store=True)
+        string='Parent is company', related='parent_id.is_company', store=True)
     parent_is_group = fields.Boolean(
-        'Parent is group', related='parent_id.is_group', store=True)
+        string='Parent is group', related='parent_id.is_group', store=True)
