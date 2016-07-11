@@ -137,10 +137,10 @@ class EventRegistration(models.Model):
     required_account = fields.Boolean(
         string='Required account', compute='_calculate_required_account')
     analytic_account = fields.Many2one(
-        'account.analytic.account', string='Analytic account')
+        comodel_name='account.analytic.account', string='Analytic account')
     employee = fields.Many2one(
-        'hr.employee', string='Employee', related='partner_id.employee_id',
-        store=True)
+        comodel_name='hr.employee', string='Employee',
+        related='partner_id.employee_id', store=True)
 
     @api.onchange('partner_id', 'partner_id.employee_id')
     def _onchange_partner(self):
@@ -160,4 +160,25 @@ class EventEventTicket(models.Model):
     _inherit = 'event.event.ticket'
 
     sale_line = fields.Many2one(
-        'sale.order.line', string='Sale line')
+        comodel_name='sale.order.line', string='Sale line')
+
+
+class EventTrackPresence(models.Model):
+    _inherit = 'event.track.presence'
+
+    employee = fields.Many2one(
+        comodel_name='hr.employee', string='Employee',
+        related='partner.employee_id', store=True)
+
+
+class EventTrack(models.Model):
+    _inherit = 'event.track'
+
+    no_employee_presences = fields.One2many(
+        comodel_name='event.track.presence', inverse_name='session',
+        string='Student presences', readonly=False,
+        domain=[('employee', '=', False)])
+    employee_presences = fields.One2many(
+        comodel_name='event.track.presence', inverse_name='session',
+        string='Teacher presences', readonly=False,
+        domain=[('employee', '!=', False)])
