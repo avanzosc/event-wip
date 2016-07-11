@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-05 15:04+0000\n"
-"PO-Revision-Date: 2016-07-05 17:05+0100\n"
+"POT-Creation-Date: 2016-07-07 11:40+0000\n"
+"PO-Revision-Date: 2016-07-07 13:40+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,6 +22,11 @@ msgid "Badge"
 msgstr "Insignia"
 
 #. module: event_registration_pa_code
+#: view:event.event:event_registration_pa_code.view_event_form_inh_pa_code
+msgid "Duplicate line"
+msgstr "Duplicar línea"
+
+#. module: event_registration_pa_code
 #: model:ir.model,name:event_registration_pa_code.model_event_event
 msgid "Event"
 msgstr "Evento"
@@ -29,7 +34,7 @@ msgstr "Evento"
 #. module: event_registration_pa_code
 #: field:event.event.ticket,pa_partner:0 field:res.partner,pa_partner:0
 msgid "Parents association partner"
-msgstr "Parents association partner"
+msgstr "Código PA"
 
 #. module: event_registration_pa_code
 #: model:ir.model,name:event_registration_pa_code.model_res_partner
@@ -38,7 +43,6 @@ msgstr "Empresa"
 
 #. module: event_registration_pa_code
 #: code:addons/event_registration_pa_code/wizard/wiz_event_append_assistant.py:31
-#: code:addons/event_registration_pa_code/wizard/wiz_event_append_assistant.py:32
 #, python-format
 msgid "Ticket not found for %s"
 msgstr "Ticket no encontrado para %s"
