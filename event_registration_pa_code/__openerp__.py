@@ -13,6 +13,7 @@
         "Alfredo de la Fuente <alfredodelafuente@avanzosc.es>",
     ],
     "depends": [
+        "event_sale",
         "event_registration_analytic",
         "event_planned_by_sale_line"
     ],

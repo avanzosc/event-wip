@@ -6,13 +6,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-27 14:36+0000\n"
-"PO-Revision-Date: 2016-06-27 16:38+0100\n"
-"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"POT-Creation-Date: 2016-07-07 11:37+0000\n"
+"PO-Revision-Date: 2016-07-07 11:37+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. module: event_registration_analytic
@@ -46,6 +46,11 @@ msgid "Confirm Registration"
 msgstr "Confirmación registro"
 
 #. module: event_registration_analytic
+#: field:event.track.presence,employee:0
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: event_registration_analytic
 #: model:ir.model,name:event_registration_analytic.model_event_event
 msgid "Event"
 msgstr "Evento"
@@ -54,6 +59,11 @@ msgstr "Evento"
 #: model:ir.model,name:event_registration_analytic.model_event_registration
 msgid "Event Registration"
 msgstr "Registro evento"
+
+#. module: event_registration_analytic
+#: model:ir.model,name:event_registration_analytic.model_event_track
+msgid "Event Tracks"
+msgstr "Sesiones del evento"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -81,6 +91,11 @@ msgstr "Empresa"
 #: field:event.event,count_pickings:0
 msgid "Pickings"
 msgstr "Albaranes"
+
+#. module: event_registration_analytic
+#: view:event.track:event_registration_analytic.view_event_track_inh_analytic
+msgid "Presences"
+msgstr "Asistentes"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -131,6 +146,11 @@ msgid "Sales Order"
 msgstr "Pedido de venta"
 
 #. module: event_registration_analytic
+#: model:ir.model,name:event_registration_analytic.model_event_track_presence
+msgid "Session assistants"
+msgstr "Asistentes a sesión"
+
+#. module: event_registration_analytic
 #: field:wiz.event.append.assistant,create_account:0
 msgid "Show create account"
 msgstr "Show create account"
@@ -139,6 +159,12 @@ msgstr "Show create account"
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
 msgid "Student"
 msgstr "Estudiante"
+
+#. module: event_registration_analytic
+#: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
+#: field:event.track,no_employee_presences:0
+msgid "Student presences"
+msgstr "Presencias estudiantes"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -154,15 +180,23 @@ msgstr "Profesor"
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/models/event.py:87
 #: field:event.event,count_teacher_registrations:0
-#: model:ir.actions.act_window,name:event_registration_analytic.action_registration2
 #, python-format
 msgid "Teacher assistants"
-msgstr "Profesores asistentes"
+msgstr "Presencias profesores"
+
+#. module: event_registration_analytic
+#: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
+#: field:event.track,employee_presences:0
+#: model:ir.actions.act_window,name:event_registration_analytic.action_event_track_teacher_presence_view
+#: model:ir.actions.act_window,name:event_registration_analytic.action_registration2
+#: model:ir.ui.menu,name:event_registration_analytic.event_track_presence_option_view
+msgid "Teacher presences"
+msgstr "Presencias profesores"
 
 #. module: event_registration_analytic
 #: model:ir.ui.menu,name:event_registration_analytic.menu_action_registration2
 msgid "Teacher registrations"
-msgstr "Profesores asistentes"
+msgstr "Profesores registrados"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -181,4 +215,24 @@ msgstr "Movimientos profesor"
 #, python-format
 msgid "Teachers pickings"
 msgstr "Albaranes profesor"
+
+#. module: event_registration_analytic
+#: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
+msgid "Tot. daylight hours"
+msgstr "Tot. daylight hours"
+
+#. module: event_registration_analytic
+#: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
+msgid "Tot. nightlight hours"
+msgstr "Tot. nightlight hours"
+
+#. module: event_registration_analytic
+#: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
+msgid "Tot. real duration"
+msgstr "Tot. duración real"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_event_registration_tree_inh_assistant
+msgid "red:employee!=False"
+msgstr "red:employee!=False"
 
