@@ -17,6 +17,12 @@ class EventEvent(models.Model):
         event = super(EventEvent, self).create(vals)
         return event
 
+    @api.multi
+    def button_duplicate_ticket(self):
+        for event in self:
+            if event.event_ticket_ids:
+                event.event_ticket_ids[0].copy()
+
 
 class EventEventTicket(models.Model):
     _inherit = 'event.event.ticket'
