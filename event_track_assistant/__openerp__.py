@@ -20,6 +20,7 @@
         "security/event_track_assistant.xml",
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_event_delete_assistant_view.xml",
+        "wizard/wiz_event_confirm_assistant_view.xml",
         "wizard/wiz_change_session_hour_view.xml",
         "views/event_event_view.xml",
         "views/event_registration_view.xml",
