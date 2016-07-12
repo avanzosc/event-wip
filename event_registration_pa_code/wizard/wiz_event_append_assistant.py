@@ -14,7 +14,7 @@ class WizEventAppendAssistant(models.TransientModel):
         if event.sale_order.payer == 'school':
             super(WizEventAppendAssistant,
                   self)._create_account_for_not_employee_from_wizard(
-                      event, registration)
+                event, registration)
         else:
             vals = self._prepare_data_for_account_not_employee(event,
                                                                registration)
