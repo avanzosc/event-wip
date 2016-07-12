@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 12:31+0000\n"
-"PO-Revision-Date: 2016-06-09 14:32+0100\n"
+"POT-Creation-Date: 2016-07-12 13:30+0000\n"
+"PO-Revision-Date: 2016-07-12 15:33+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,6 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:536
 #: code:addons/event_track_assistant/models/event.py:545
 #: model:ir.actions.act_window,name:event_track_assistant.action_create_assistant_from_event
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
@@ -58,6 +57,7 @@ msgstr "Inicio semana siguiente"
 #. module: event_track_assistant
 #: view:wiz.change.session.hour:event_track_assistant.wiz_change_session_hour_form
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
+#: view:wiz.event.confirm.assistant:event_track_assistant.wiz_event_confirm_assistant_form
 #: view:wiz.event.delete.assistant:event_track_assistant.wiz_event_delete_assistant_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -98,9 +98,21 @@ msgid "Completed"
 msgstr "Completado"
 
 #. module: event_track_assistant
+#: view:wiz.event.confirm.assistant:event_track_assistant.wiz_event_confirm_assistant_form
+msgid "Confirm assistants"
+msgstr "Confirmar presencias"
+
+#. module: event_track_assistant
+#: model:ir.actions.act_window,name:event_track_assistant.action_confirm_assistant_from_event_session
+#: view:wiz.event.confirm.assistant:event_track_assistant.wiz_event_confirm_assistant_form
+msgid "Confirm assistants to event"
+msgstr "Confirmar presencias al evento"
+
+#. module: event_track_assistant
 #: field:event.track.presence,create_uid:0
 #: field:wiz.change.session.hour,create_uid:0
 #: field:wiz.event.append.assistant,create_uid:0
+#: field:wiz.event.confirm.assistant,create_uid:0
 #: field:wiz.event.delete.assistant,create_uid:0
 msgid "Created by"
 msgstr "Creado por"
@@ -109,6 +121,7 @@ msgstr "Creado por"
 #: field:event.track.presence,create_date:0
 #: field:wiz.change.session.hour,create_date:0
 #: field:wiz.event.append.assistant,create_date:0
+#: field:wiz.event.confirm.assistant,create_date:0
 #: field:wiz.event.delete.assistant,create_date:0
 msgid "Created on"
 msgstr "Creado el"
@@ -129,14 +142,12 @@ msgid "Date end"
 msgstr "Fecha fin"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:501
 #: code:addons/event_track_assistant/models/event.py:510
 #, python-format
 msgid "Date end of registration greater than date end of event"
 msgstr "Fecha fin del registro mayor que fecha fin del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:509
 #: code:addons/event_track_assistant/models/event.py:518
 #, python-format
 msgid "Date end of registration less than date start of event"
@@ -148,14 +159,12 @@ msgid "Date start"
 msgstr "Fecha inicio"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:487
 #: code:addons/event_track_assistant/models/event.py:496
 #, python-format
 msgid "Date start of registration greater than date end of event"
 msgstr "Fecha inicio del registro mayor que fecha fin del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:479
 #: code:addons/event_track_assistant/models/event.py:488
 #, python-format
 msgid "Date start of registration less than date begin of event"
@@ -167,7 +176,6 @@ msgid "Day"
 msgstr "Día"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:584
 #: code:addons/event_track_assistant/models/event.py:593
 #: model:ir.actions.act_window,name:event_track_assistant.action_delete_assistant_from_event_session
 #: view:wiz.event.delete.assistant:event_track_assistant.wiz_event_delete_assistant_form
@@ -176,9 +184,15 @@ msgid "Delete Person From Event-Session"
 msgstr "Borrar persona de Evento-Sesión"
 
 #. module: event_track_assistant
+#: field:wiz.event.confirm.assistant,name:0
+msgid "Description"
+msgstr "Description"
+
+#. module: event_track_assistant
 #: field:event.track.presence,display_name:0
 #: field:wiz.change.session.hour,display_name:0
 #: field:wiz.event.append.assistant,display_name:0
+#: field:wiz.event.confirm.assistant,display_name:0
 #: field:wiz.event.delete.assistant,display_name:0
 msgid "Display Name"
 msgstr "Mostrar descripción"
@@ -282,8 +296,6 @@ msgstr "Error en fecha inicio"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/models/event.py:39
-#: code:addons/event_track_assistant/models/event.py:499
-#: code:addons/event_track_assistant/models/event.py:507
 #: code:addons/event_track_assistant/models/event.py:508
 #: code:addons/event_track_assistant/models/event.py:516
 #, python-format
@@ -291,8 +303,6 @@ msgid "Error in date end"
 msgstr "Error en fecha fin"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:477
-#: code:addons/event_track_assistant/models/event.py:485
 #: code:addons/event_track_assistant/models/event.py:486
 #: code:addons/event_track_assistant/models/event.py:494
 #, python-format
@@ -300,14 +310,14 @@ msgid "Error in date start"
 msgstr "Error en fecha inicio"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:94
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:93
 #, python-format
 msgid "Error in dates"
 msgstr "Error en fechas"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:55
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:63
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:54
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:62
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:95
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:103
 #, python-format
@@ -315,11 +325,21 @@ msgid "Error in from date"
 msgstr "Error en fecha desde"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:72
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:71
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:112
 #, python-format
 msgid "Error in to date"
 msgstr "Error en fecha hasta"
+
+#. module: event_track_assistant
+#: field:event.track.presence,estimated_date_end:0
+msgid "Estimated date end"
+msgstr "Fecha fin estimada"
+
+#. module: event_track_assistant
+#: field:event.track.presence,estimated_daylight_hours:0
+msgid "Estimated daylight hours"
+msgstr "Estimated daylight hours"
 
 #. module: event_track_assistant
 #: view:event.track:event_track_assistant.view_event_track_for_inh_assistant
@@ -363,7 +383,12 @@ msgid "Estimated end week"
 msgstr "Finalización estimada semana"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:288
+#: field:event.track.presence,estimated_nightlight_hours:0
+msgid "Estimated nightlight hours"
+msgstr "Estimated nightlight hours"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:276
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:241
 #: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_form_view
@@ -396,21 +421,21 @@ msgid "From date"
 msgstr "De fecha"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:57
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:56
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:97
 #, python-format
 msgid "From date greater than date to"
 msgstr "Fecha desde mayor que fecha hasta"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:74
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:73
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:114
 #, python-format
 msgid "From date greater than end date of the event %s"
 msgstr "Fecha desde mayor que fecha fin del evento %s"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:65
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:64
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:105
 #, python-format
 msgid "From date less than start date of the event %s"
@@ -423,12 +448,14 @@ msgstr "Agrupa por"
 
 #. module: event_track_assistant
 #: field:event.track.presence,id:0 field:wiz.change.session.hour,id:0
-#: field:wiz.event.append.assistant,id:0 field:wiz.event.delete.assistant,id:0
+#: field:wiz.event.append.assistant,id:0
+#: field:wiz.event.confirm.assistant,id:0
+#: field:wiz.event.delete.assistant,id:0
 msgid "ID"
 msgstr "ID"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:144
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:143
 #, python-format
 msgid ""
 "It has been found more than one registration in draft state for %s, in the "
@@ -441,6 +468,7 @@ msgstr ""
 #: field:event.track.presence,__last_update:0
 #: field:wiz.change.session.hour,__last_update:0
 #: field:wiz.event.append.assistant,__last_update:0
+#: field:wiz.event.confirm.assistant,__last_update:0
 #: field:wiz.event.delete.assistant,__last_update:0
 msgid "Last Modified on"
 msgstr "Última modificación el"
@@ -449,6 +477,7 @@ msgstr "Última modificación el"
 #: field:event.track.presence,write_uid:0
 #: field:wiz.change.session.hour,write_uid:0
 #: field:wiz.event.append.assistant,write_uid:0
+#: field:wiz.event.confirm.assistant,write_uid:0
 #: field:wiz.event.delete.assistant,write_uid:0
 msgid "Last Updated by"
 msgstr "Última actualización por"
@@ -457,6 +486,7 @@ msgstr "Última actualización por"
 #: field:event.track.presence,write_date:0
 #: field:wiz.change.session.hour,write_date:0
 #: field:wiz.event.append.assistant,write_date:0
+#: field:wiz.event.confirm.assistant,write_date:0
 #: field:wiz.event.delete.assistant,write_date:0
 msgid "Last Updated on"
 msgstr "Última actualización el"
@@ -467,9 +497,29 @@ msgid "Later Sessions"
 msgstr "Sesiones posteriores"
 
 #. module: event_track_assistant
+#: field:wiz.event.delete.assistant,max_event:0
+msgid "Max. event"
+msgstr "Max. event"
+
+#. module: event_track_assistant
+#: field:wiz.event.delete.assistant,max_to_date:0
+msgid "Max. to date"
+msgstr "Max. to date"
+
+#. module: event_track_assistant
 #: field:wiz.event.delete.assistant,message:0
 msgid "Message"
 msgstr "Mensaje"
+
+#. module: event_track_assistant
+#: field:wiz.event.delete.assistant,min_event:0
+msgid "Min. event"
+msgstr "Min. event"
+
+#. module: event_track_assistant
+#: field:wiz.event.delete.assistant,min_from_date:0
+msgid "Min. from date"
+msgstr "Min. from date"
 
 #. module: event_track_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
@@ -502,6 +552,11 @@ msgid "Notes"
 msgstr "Notas"
 
 #. module: event_track_assistant
+#: field:event.track,lit_presences:0
+msgid "Num. presences"
+msgstr "Num. presences"
+
+#. module: event_track_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
 #: field:event.track.presence,name:0 field:event.track.presence,partner:0
 #: model:ir.model,name:event_track_assistant.model_res_partner
@@ -509,6 +564,12 @@ msgstr "Notas"
 #: field:wiz.event.delete.assistant,partner:0
 msgid "Partner"
 msgstr "Empresa"
+
+#. module: event_track_assistant
+#: field:wiz.event.append.assistant,registration:0
+#: field:wiz.event.delete.assistant,registration:0
+msgid "Partner registration"
+msgstr "Partner registration"
 
 #. module: event_track_assistant
 #: field:event.track,allowed_partners:0
@@ -547,6 +608,16 @@ msgstr "Contador presencias"
 #, python-format
 msgid "Presences: "
 msgstr "Presencias:"
+
+#. module: event_track_assistant
+#: field:event.track.presence,real_date_end:0
+msgid "Real date end"
+msgstr "Real date end"
+
+#. module: event_track_assistant
+#: field:event.track.presence,real_daylight_hours:0
+msgid "Real daylight hours"
+msgstr "Real daylight hours"
 
 #. module: event_track_assistant
 #: field:event.track,real_duration:0
@@ -590,6 +661,11 @@ msgid "Real end week"
 msgstr "Real fecha fin en la semana"
 
 #. module: event_track_assistant
+#: field:event.track.presence,real_nightlight_hours:0
+msgid "Real nightlight hours"
+msgstr "Real nightlight hours"
+
+#. module: event_track_assistant
 #: view:event.registration:event_track_assistant.view_registration_search_inh_assistant
 msgid "Registration Day"
 msgstr "Día de registro"
@@ -622,14 +698,12 @@ msgid "Session"
 msgstr "Sesión"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:180
 #: code:addons/event_track_assistant/models/event.py:189
 #, python-format
 msgid "Session %s with date greater than the event start date"
 msgstr "Sesión %s con fecha mayor que fecha inicio del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:176
 #: code:addons/event_track_assistant/models/event.py:183
 #, python-format
 msgid "Session %s with date lower than the event start date"
@@ -668,6 +742,16 @@ msgid "Session day"
 msgstr "Día sesión"
 
 #. module: event_track_assistant
+#: field:event.track,session_end_date:0
+msgid "Session end date"
+msgstr "Session end date"
+
+#. module: event_track_assistant
+#: field:event.track.presence,session_end_date_without_hour:0
+msgid "Session end date withour hour"
+msgstr "Session end date withour hour"
+
+#. module: event_track_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_form_view
 msgid "Session presence"
 msgstr "Asistencia a sesión"
@@ -675,8 +759,6 @@ msgstr "Asistencia a sesión"
 #. module: event_track_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_calendar_view
 #: view:event.track.presence:event_track_assistant.event_track_presence_view
-#: model:ir.actions.act_window,name:event_track_assistant.action_event_track_presence_view
-#: model:ir.ui.menu,name:event_track_assistant.event_track_presence_option_view
 msgid "Session presences"
 msgstr "Asistencias a sesión"
 
@@ -773,6 +855,12 @@ msgid "State"
 msgstr "Estado"
 
 #. module: event_track_assistant
+#: model:ir.actions.act_window,name:event_track_assistant.action_event_track_presence_view
+#: model:ir.ui.menu,name:event_track_assistant.event_track_presence_option_view
+msgid "Student presences"
+msgstr "Presencias de estudiantes"
+
+#. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:83
 #, python-format
 msgid "This person has sessions with dates after"
@@ -840,7 +928,7 @@ msgid "Year"
 msgstr "Año"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:189
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:188
 #, python-format
 msgid ""
 "You can not add employe to registration/event,because the dates overlap in "
@@ -850,9 +938,8 @@ msgstr ""
 "en el evento: %s, del registro: %s"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:528
 #: code:addons/event_track_assistant/models/event.py:537
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:96
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:95
 #, python-format
 msgid ""
 "You can not confirm this registration, because their dates overlap with "
@@ -862,7 +949,6 @@ msgstr ""
 "registro del mismo empleado"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:627
 #: code:addons/event_track_assistant/models/event.py:636
 #, python-format
 msgid "You can only delete registration in draft status"
@@ -881,6 +967,7 @@ msgstr "horas"
 #. module: event_track_assistant
 #: view:wiz.change.session.hour:event_track_assistant.wiz_change_session_hour_form
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
+#: view:wiz.event.confirm.assistant:event_track_assistant.wiz_event_confirm_assistant_form
 #: view:wiz.event.delete.assistant:event_track_assistant.wiz_event_delete_assistant_form
 msgid "or"
 msgstr "o"

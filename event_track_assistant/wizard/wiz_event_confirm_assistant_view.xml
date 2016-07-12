@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_event_confirm_assistant_form">
+            <field name="name">wiz.event.confirm.assistant.form</field>
+            <field name="model">wiz.event.confirm.assistant</field>
+            <field name="arch" type="xml">
+                <form string="Confirm assistants to event" version="7.0">
+                    <group string="Confirm assistants">
+                        <field name="name" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm_assistant" type="object"
+                            string="Confirm assistants" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="action_confirm_assistant_from_event_session"
+            key2="client_action_multi" name="Confirm assistants to event"
+            res_model="wiz.event.confirm.assistant" src_model="event.event"
+            view_mode="form" target="new" />
+    </data>
+</openerp>
