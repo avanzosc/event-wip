@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_track_form">
+            <field name="name">view.event.track.form</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="website_event_track.view_event_track_form" />
+            <field name="arch" type="xml">
+                <sheet string="Track" position="inside">
+                    <group>
+                        <group>
+                            <label for="planification" colspan="4"/>
+                            <field name="planification" nolabel="1"/>
+                        </group>
+                        <group>
+                            <label for="resolution" colspan="4"/>
+                            <field name="resolution" nolabel="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </field>
+        </record>
+
+        <record id="website_event_track.act_event_list_tracks" model="ir.actions.act_window">
+            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
+        </record>
+    </data>
+</openerp>
