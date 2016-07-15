@@ -27,5 +27,5 @@ class EventEvent(models.Model):
 class EventEventTicket(models.Model):
     _inherit = 'event.event.ticket'
 
-    pa_partner = fields.Boolean(
+    is_pa_partner = fields.Boolean(
         string='Parents association partner', default=False)

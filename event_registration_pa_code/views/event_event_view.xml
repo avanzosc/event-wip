@@ -10,7 +10,7 @@
                     <attribute name="invisible">1</attribute>
                 </page>
                 <xpath expr="//tree[@string='Payments']//field[@name='product_id']" position="after">
-                    <field name="pa_partner" />
+                    <field name="is_pa_partner" />
                 </xpath>
                 <field name="event_ticket_ids" position="before">
                     <group colspan="4" col="8">
