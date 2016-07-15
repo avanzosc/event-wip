@@ -20,7 +20,8 @@ class WizEventAppendAssistant(models.TransientModel):
                                                                registration)
             new_account = account_obj.create(vals)
             registration.analytic_account = new_account.id
-            if registration.partner_id.pa_partner:
+            if (registration.partner_id.commercial_partner_id and
+                    registration.partner_id.commercial_partner_id.pa_partner):
                 lines = event.event_ticket_ids.filtered(
                     lambda x: x.pa_partner)
             else:
