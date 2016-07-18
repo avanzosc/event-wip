@@ -1,0 +1,23 @@
+<openerp>
+    <data>
+        <record id="view_order_form_inh_event_group_desc" model="ir.ui.view" >
+            <field name="name">view.order.form.inh.event.group.desc</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[@string='Sales Order Lines']//field[@name='invoice_lines']/.." position="before">
+                    <group colspan="4" col="8">
+                        <field name="courses" colspan="4" />
+                        <group colspan="4"/>
+                        <field name="group_description" colspan="6"/>
+                        <button name="button_group_description" type="object"
+                                string="Generate group description" colspan="2"/>
+                    </group>
+                </xpath>
+                <field name="sequence" position="attributes">
+                    <attribute name="widget"></attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

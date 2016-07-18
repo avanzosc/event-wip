@@ -51,6 +51,10 @@ class TestEventRegistrationHrContract(common.TransactionCase):
             'project_by_task': 'no'}
         sale_line_vals = {
             'product_id': service_product.id,
+            'start_date': '2016-03-01',
+            'start_hour': 5.0,
+            'end_hour': 10.0,
+            'end_date': '2016-03-31',
             'name': service_product.name,
             'product_uom_qty': 7,
             'product_uos_qty': 7,
@@ -92,8 +96,8 @@ class TestEventRegistrationHrContract(common.TransactionCase):
             'holiday_type': 'employee',
             'holiday_status_id': self.ref('hr_holidays.holiday_status_sl'),
             'employee_id': self.employee.id,
-            'date_from': '2020-03-15 00:00:00',
-            'date_to': '2020-03-20 00:00:00',
+            'date_from': '2020-03-15 05:00:00',
+            'date_to': '2020-03-20 10:00:00',
             'type': 'remove'}
         self.holidays = self.hr_holidays_model.create(holiday_vals)
         self.holidays.signal_workflow('confirm')
