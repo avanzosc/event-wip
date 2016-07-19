@@ -61,6 +61,10 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         sale_line_vals = {
             'product_id': service_product.id,
             'name': service_product.name,
+            'start_date': '2016-01-15',
+            'start_hour': 5.0,
+            'end_hour': 10.0,
+            'end_date': '2016-02-28',
             'product_uom_qty': 7,
             'product_uos_qty': 7,
             'product_uom': service_product.uom_id.id,
