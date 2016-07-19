@@ -67,15 +67,17 @@ class EventTrackLocationReservation(models.Model):
                         ('day', '>', day),
                         ('end_date', '<', date_end.strftime(DFORMAT))])
         if len(reservations) > 0:
-            raise Warning(_('this place is reserved for this date, place: ' +
-                            ' %s date: %s') % (location.name, day))
+            raise Warning(_(
+                'this place is reserved for this date, place: ' +
+                ' %s date: %s') % (location.name, day))
 
     @api.model
     @api.returns('self', lambda value: value.id)
     def create(self, vals):
         res = super(EventTrackLocationReservation, self).create(vals)
-        self.check_avairavility(res.et_location_id, res.day, res.id,
-                                res.duration)
+        self.check_avairavility(
+            res.et_location_id, res.day, res.id,
+            res.duration)
         return res
 
     @api.multi
@@ -92,11 +94,11 @@ class event_track(models.Model):
 
     @api.multi
     def do_reservation(self, location, day, duration, track):
-        self.env['event.track.location.reservation'].create(
-            {'et_location_id': location.id,
-             'day': day,
-             'duration': duration,
-             'track_id': track})
+        self.env['event.track.location.reservation'].create({
+            'et_location_id': location.id,
+            'day': day,
+            'duration': duration,
+            'track_id': track})
 
     @api.model
     @api.returns('self', lambda value: value.id)
@@ -119,8 +121,8 @@ class event_track(models.Model):
                         ('et_location_id', '=', location.id),
                         ('day', '=', res.date)])
             result = super(event_track, res).write(vals)
-            if res.location_id and not location or \
-                    location != res.location_id:
+            if (res.location_id and not location) or (
+                    location != res.location_id):
                 self.do_reservation(res.location_id, res.date, res.duration,
                                     res.id)
                 if reservation:
