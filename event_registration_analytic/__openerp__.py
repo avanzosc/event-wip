@@ -24,6 +24,7 @@
     ],
     "data": [
         'wizard/wiz_event_append_assistant_view.xml',
+        'wizard/wiz_impute_in_presence_from_session_view.xml',
         'views/event_event_view.xml',
         'views/event_registration_view.xml',
         'views/sale_order_view.xml',

@@ -18,4 +18,4 @@ class WizPutPresenceAsWorked(models.TransientModel):
             presences.write({'state': 'completed'})
             presences = day.presences.filtered(lambda x: not x.absence_type)
             for presence in presences:
-                presence.real_duration = presence.session_duration
+                presence._update_presence_duration(presence.session_duration)

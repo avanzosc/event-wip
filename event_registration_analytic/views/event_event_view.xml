@@ -15,7 +15,7 @@
                                 <tree string="Registered teachers" editable="top">
                                     <field name="event_id" invisible="1" />
                                     <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
-                                        domain="[('employee','!=',False)]" string="Teacher"/>
+                                        domain="[('employee_id','!=',False)]" string="Teacher"/>
                                     <field name="name" />
                                     <field name="replaces_to" readonly="1" />
                                     <field name="required_account" invisible="1"/>

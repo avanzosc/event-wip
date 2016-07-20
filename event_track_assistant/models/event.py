@@ -454,6 +454,14 @@ class EventTrackPresence(models.Model):
             seconds = float(time[2]) / 360
         return hour + minutes + seconds
 
+    def _update_presence_duration(self, hours, state=False, notes=False):
+        vals = {'real_duration': hours}
+        if state:
+            vals['state'] = state
+        if notes:
+            vals['notes'] = notes
+        self.write(vals)
+
 
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
