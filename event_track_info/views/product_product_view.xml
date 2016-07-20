@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="product_form_view_inh_track_info" model="ir.ui.view">
+            <field name="name">product.form.view.inh.track.info</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <page string="Sales" position="after">
+                    <page string="Event track templates">
+                        <field name="event_track_templates" nolabel="1"
+                            context="{'default_product':active_id}"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>

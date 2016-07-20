@@ -6,6 +6,9 @@
 Event Track Info
 ================
 
+* With this module, each product they can define templates for sessions. When
+  confirming a sales order, each session will apply that template.
+
 * New planification and resource text fields in event track to
   add extra info.
 
@@ -18,3 +21,4 @@ Contributors
 ------------
 * Ana Juaristi <anajuaristi@avanzosc.es>
 * Ainara Galdona <ainaragaldona@avanzosc.es>
+* Alfredo de la Fuente <alfredodelafuente@avanzosc.es>
