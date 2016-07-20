@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-14 11:07+0000\n"
-"PO-Revision-Date: 2016-07-14 13:08+0100\n"
+"POT-Creation-Date: 2016-07-20 09:02+0000\n"
+"PO-Revision-Date: 2016-07-20 11:05+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,21 +17,161 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_track_info
+#: field:product.event.track.template,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: event_track_info
+#: field:product.event.track.template,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: event_track_info
+#: field:product.event.track.template,html_info:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: event_track_info
+#: field:product.event.track.template,display_name:0
+msgid "Display Name"
+msgstr "Mostrar nombre"
+
+#. module: event_track_info
 #: model:ir.model,name:event_track_info.model_event_track
 msgid "Event Tracks"
 msgstr "Sesiones del evento"
 
 #. module: event_track_info
+#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
+msgid "Event track template"
+msgstr "Plantilla de sesión"
+
+#. module: event_track_info
+#: view:product.event.track.template:event_track_info.product_event_track_template_tree_view
+#: view:product.product:event_track_info.product_form_view_inh_track_info
+#: field:product.product,event_track_templates:0
+msgid "Event track templates"
+msgstr "Plantillas de sesines"
+
+#. module: event_track_info
+#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: event_track_info
+#: view:event.track:event_track_info.event_track_description_form_inh_track_info
+#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
+msgid "HTML"
+msgstr "HTML"
+
+#. module: event_track_info
+#: field:product.event.track.template,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: event_track_info
+#: field:product.event.track.template,__last_update:0
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: event_track_info
+#: field:product.event.track.template,write_uid:0
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: event_track_info
+#: field:product.event.track.template,write_date:0
+msgid "Last Updated on"
+msgstr "Última modificación el"
+
+#. module: event_track_info
+#: field:product.product,purchase_line_warn_msg:0
+msgid "Message for Purchase Order Line"
+msgstr "Mensaje para línea pedido de compra"
+
+#. module: event_track_info
+#: field:product.product,sale_line_warn_msg:0
+msgid "Message for Sales Order Line"
+msgstr "Mensaje para línea pedido de venta"
+
+#. module: event_track_info
 #: field:event.track,planification:0
+#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
+#: field:product.event.track.template,planification:0
 msgid "Planification"
 msgstr "Planificación"
 
 #. module: event_track_info
+#: model:ir.model,name:event_track_info.model_product_product
+#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
+#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
+#: field:product.event.track.template,product:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: event_track_info
+#: field:product.product,purchase_line_warn:0
+msgid "Purchase Order Line"
+msgstr "Línea pedido de compra"
+
+#. module: event_track_info
 #: field:event.track,resolution:0
+#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
+#: field:product.event.track.template,resolution:0
 msgid "Resolution"
 msgstr "Resolución"
+
+#. module: event_track_info
+#: view:product.product:event_track_info.product_form_view_inh_track_info
+msgid "Sales"
+msgstr "Ventas"
+
+#. module: event_track_info
+#: model:ir.model,name:event_track_info.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: event_track_info
+#: field:product.product,sale_line_warn:0
+msgid "Sales Order Line"
+msgstr "Línea pedido de venta"
+
+#. module: event_track_info
+#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
+msgid "Search event track template"
+msgstr "Buscar plantilla sesiones"
+
+#. module: event_track_info
+#: field:product.event.track.template,sequence:0
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: event_track_info
+#: help:product.product,purchase_line_warn:0
+#: help:product.product,sale_line_warn:0
+msgid ""
+"Si selecciona la opción \"Aviso\" se notificará a los usuarios con el "
+"mensaje, si selecciona \"Mensaje de bloqueo\" se lanzará una excepción con "
+"el mensaje y se bloqueará el flujo. El mensaje debe escribirse en el "
+"siguiente campo."
+msgstr ""
+"Si selecciona la opción \"Aviso\" se notificará a los usuarios con el "
+"mensaje, si selecciona \"Mensaje de bloqueo\" se lanzará una excepción con "
+"el mensaje y se bloqueará el flujo. El mensaje debe escribirse en el "
+"siguiente campo."
+
+#. module: event_track_info
+#: model:ir.model,name:event_track_info.model_product_event_track_template
+msgid "Templates for event track"
+msgstr "Plantillas para sesiones"
 
 #. module: event_track_info
 #: view:event.track:event_track_info.view_event_track_form
 msgid "Track"
 msgstr "Sesión"
+
+#. module: event_track_info
+#: view:event.track:event_track_info.event_track_description_form_inh_track_info
+#: field:event.track,url:0 field:product.event.track.template,url:0
+msgid "URL"
+msgstr "URL"

@@ -11,13 +11,20 @@
     "contributors": [
         "Ana Juaristi <anajuaristi@avanzosc.es>",
         "Ainara Galdona <ainaragaldona@avanzosc.es>",
+        "Alfredo de la Fuente <alfredodelafuente@avanzosc.es",
     ],
     "category": "Event Management",
     "depends": [
+        "product",
+        "event_report",
         "website_event_track",
+        "sale_order_create_event"
     ],
     "data": [
+        "security/ir.model.access.csv",
         "views/event_track_view.xml",
+        "views/product_product_view.xml",
+        "views/product_event_track_template_view.xml",
     ],
     "installable": True,
 }

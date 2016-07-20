@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="product_event_track_template_tree_view" model="ir.ui.view">
+            <field name="name">product.event.track.template.tree.view</field>
+            <field name="model">product.event.track.template</field>
+            <field name="arch" type="xml">
+                <tree string="Event track templates">
+                    <field name="product" invisible="1"/>
+                    <field name="sequence"/>
+                    <field name="planification" />
+                    <field name="resolution" />
+                    <field name="html_info" />
+                    <field name="url" />
+                </tree>
+            </field>
+        </record>
+        <record id="product_event_track_template_search_view" model="ir.ui.view">
+            <field name="name">product.event.track.template.search.view</field>
+            <field name="model">product.event.track.template</field>
+            <field name="arch" type="xml">
+                <search string="Search event track template">
+                    <field name="product" />
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" context="{'group_by':'product'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="product_event_track_template_form_view" model="ir.ui.view">
+            <field name="name">product.event.track.template.form.view</field>
+            <field name="model">product.event.track.template</field>
+            <field name="arch" type="xml">
+                <form string="Event track template">
+                    <sheet>
+                        <h1>
+                            <label string="Product" />
+                            <field name="product" class="oe_inline" />
+                        </h1>
+                        <group name="body" colspan="4" col="8">
+                            <field name="sequence" colspan="2"/>
+                            <field name="url" colspan="6"/>
+                            <separator string="HTML" colspan="8" />
+                            <field name="html_info" colspan="8" nolabel="1"/> 
+                            <separator string="Planification" colspan="8" />
+                            <field name="planification" colspan="8" nolabel="1"/> 
+                            <separator string="Resolution" colspan="8" />
+                            <field name="resolution" colspan="8" nolabel="1"/> 
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
