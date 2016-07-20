@@ -4,23 +4,25 @@
 from openerp import fields, models, api
 
 
-class WizImputePresenceWithIncident(models.TransientModel):
-    _name = 'wiz.impute.presence.with.incident'
+class WizImputeInPresenceFromSession(models.TransientModel):
+    _name = 'wiz.impute.in.presence.from.session'
 
     lines = fields.One2many(
-        comodel_name='wiz.impute.presence.with.incident.line',
+        comodel_name='wiz.impute.in.presence.from.session.line',
         inverse_name='wiz_id', string='Presences')
 
     @api.model
     def default_get(self, var_fields):
-        day_obj = self.env['res.partner.calendar.day']
+        track_obj = self.env['event.track']
         vals = []
-        for day in day_obj.browse(self.env.context.get('active_ids')):
-            presences = day.presences.filtered(lambda x: x.state != 'canceled')
+        for track in track_obj.browse(self.env.context.get('active_ids')):
+            presences = track.presences.filtered(
+                lambda x: x.state != 'canceled')
             for presence in presences:
                 line_vals = {'presence': presence.id,
                              'session': presence.session.id,
                              'session_date': presence.session_date,
+                             'partner': presence.partner.id,
                              'notes': presence.notes}
                 if presence.real_duration > 0:
                     line_vals['hours'] = presence.real_duration
@@ -34,20 +36,24 @@ class WizImputePresenceWithIncident(models.TransientModel):
         self.ensure_one()
         for wiz in self:
             for line in wiz.lines:
+                if line.unassisted:
+                    hours = 0.0
+                else:
+                    hours = line.hours
                 line.presence._update_presence_duration(
-                    line.hours, state='completed', notes=line.notes)
+                    hours, state='completed', notes=line.notes)
 
 
-class WizImputePresenceWithIncidentLine(models.TransientModel):
-    _name = 'wiz.impute.presence.with.incident.line'
+class WizImputeInPresenceFromSessionLine(models.TransientModel):
+    _name = 'wiz.impute.in.presence.from.session.line'
 
     wiz_id = fields.Many2one(
-        comodel_name='wiz.impute.presence.with.incident',
-        string='Wizard')
-    presence = fields.Many2one(
-        'event.track.presence', string='Presence')
-    session = fields.Many2one(
-        'event.track', string='Session')
+        comodel_name='wiz.impute.presence.with.incident', string='Wizard',
+        ondelete='cascade')
+    presence = fields.Many2one('event.track.presence', string='Presence')
+    session = fields.Many2one('event.track', string='Session')
     session_date = fields.Datetime('Session date')
+    partner = fields.Many2one('res.partner', string='Partner')
+    unassisted = fields.Boolean(string='Unassisted', default=False)
     hours = fields.Float('Hours')
     notes = fields.Char('Notes')

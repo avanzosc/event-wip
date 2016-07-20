@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_impute_in_presence_from_session_form">
+            <field name="name">wiz.impute.in.presence.from.session.form</field>
+            <field name="model">wiz.impute.in.presence.from.session</field>
+            <field name="arch" type="xml">
+                <form string="Impute hours in presences" version="7.0">
+                    <group>
+                        <separator string="Impute hours" colspan="4" />
+                        <field name="lines" nolabel="1">
+                            <tree string="Presences" editable="botton">
+                                <field name="wiz_id" invisible="1" />
+                                <field name="presence" invisible="1" />
+                                <field name="session" readonly="1" />
+                                <field name="session_date" readonly="1" />
+                                <field name="partner" readonly="1" />
+                                <field name="unassisted" />
+                                <field name="hours" widget="float_time" required="1" />
+                                <field name="notes"
+                                    attrs="{'required': [('unassisted','=',True)]}"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="button_impute_hours" type="object"
+                            string="Impute hours" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window name="Impute hours in presences"
+                    key2="client_action_multi"
+                    res_model="wiz.impute.in.presence.from.session"
+                    src_model="event.track"
+                    view_mode="form"
+                    target="new"
+                    id="action_impute_in_presence_from_session"/>
+    </data>
+</openerp>
