@@ -19,7 +19,7 @@
             <field name="res_model">event.track.presence</field>
             <field name="view_type">form</field>
             <field name="view_mode">calendar,tree,form</field>
-            <field name="domain">[('employee','=',True)]</field>
+            <field name="domain">[('employee','!=',False)]</field>
         </record>
         <menuitem id="event_track_presence_option_view" name="Teacher presences"
                   action="action_event_track_teacher_presence_view" 
