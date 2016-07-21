@@ -317,7 +317,7 @@ class EventTrackPresence(models.Model):
         [('pending', 'Pending'),
          ('completed', 'Completed'),
          ('canceled', 'Canceled')
-         ], string="State", default='pending')
+         ], string="State", default='pending', required=True)
 
     @api.onchange('session')
     def onchange_session(self):

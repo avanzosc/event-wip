@@ -39,7 +39,7 @@ class WizImputeInPresenceFromSession(models.TransientModel):
         for line in self.mapped('lines'):
             hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
-                hours, state='completed' if not line.unassisted else None,
+                hours, state='completed' if not line.unassisted else 'pending',
                 notes=line.notes)
 
 
