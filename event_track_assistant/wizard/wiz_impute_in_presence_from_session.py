@@ -37,9 +37,10 @@ class WizImputeInPresenceFromSession(models.TransientModel):
     @api.multi
     def button_impute_hours(self):
         for line in self.mapped('lines'):
-            hours = line.hours if line.unassisted else 0.0
+            hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
-                hours, state='completed', notes=line.notes)
+                hours, state='completed' if not line.unassisted else None,
+                notes=line.notes)
 
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):
