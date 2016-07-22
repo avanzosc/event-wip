@@ -18,6 +18,7 @@
     ],
     "data": [
         "views/sale_order_line_view.xml",
+        "views/event_event_view.xml",
     ],
     "installable": True,
 }
