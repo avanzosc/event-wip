@@ -1,0 +1,17 @@
+<openerp>
+    <data>
+        <record id="view_event_form_inh_event_group_desc" model="ir.ui.view" >
+            <field name="name">view.event.form.inh.event.group.desc</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="sale_order_create_event.view_event_form_inh_sale_order"/>
+            <field name="arch" type="xml">
+                <field name="sale_order_line" position="after">
+                    <field name="group_description" />
+                </field>
+                <field name="sale_order_line" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

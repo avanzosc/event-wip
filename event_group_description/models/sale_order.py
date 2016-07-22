@@ -60,10 +60,10 @@ class SaleOrderLine(models.Model):
                                                     line.start_hour)
             local = event_obj._convert_date_to_local_format_with_hour(
                 str(utc_dt)[0:19])
-            description += '-' + str(local)[11:19]
+            description += '-' + str(local)[11:16]
             utc_dt = event_obj._put_utc_format_date(line.end_date,
                                                     line.end_hour)
             local = event_obj._convert_date_to_local_format_with_hour(
                 str(utc_dt)[0:19])
-            description += '-' + str(local)[11:19]
+            description += '-' + str(local)[11:16]
             line.group_description = description

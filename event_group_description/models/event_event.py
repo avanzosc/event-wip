@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 # © 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, api
+from openerp import models, fields, api
 
 
 class EventEvent(models.Model):
     _inherit = 'event.event'
+
+    group_description = fields.Char(
+        string='Group description',
+        related='sale_order_line.group_description')
 
     @api.model
     def create(self, vals):
