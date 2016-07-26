@@ -174,6 +174,15 @@ class EventTrackPresence(models.Model):
 class EventTrack(models.Model):
     _inherit = 'event.track'
 
+    @api.depends('presences', 'presences.real_duration')
+    def _calc_real_duration(self):
+        for track in self:
+            track.real_duration = 0
+            if track.presences:
+                presence = max(track.presences, key=lambda x: x.real_duration)
+                if presence:
+                    track.real_duration = presence.real_duration
+
     no_employee_presences = fields.One2many(
         comodel_name='event.track.presence', inverse_name='session',
         string='Student presences', readonly=False,
