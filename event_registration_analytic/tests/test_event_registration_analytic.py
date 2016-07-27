@@ -117,8 +117,10 @@ class TestEventRegistrationAnalytic(common.TransactionCase):
                     'from_date': '2025-01-15 00:00:00',
                     'to_date': '2025-02-28 00:00:00',
                     'partner': self.env.ref('base.res_partner_26').id}
-        self.wiz_add_model.with_context(
+        wiz = self.wiz_add_model.with_context(
             {'active_ids': [event.id]}).create(wiz_vals)
+        wiz.onchange_partner()
+        wiz.with_context({'active_ids': [event.id]}).action_append()
         event._count_registrations()
         event._count_teacher_registrations()
         event._count_teacher_pickings()
