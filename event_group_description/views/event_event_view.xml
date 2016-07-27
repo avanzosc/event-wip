@@ -13,5 +13,19 @@
                 </field>
             </field>
         </record>
+        <record id="view_event_form_inh2_event_group_desc" model="ir.ui.view" >
+            <field name="name">view.event.form.inh2.event.group.desc</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form"/>
+            <field name="arch" type="xml">
+                <button help="Register with this event" position="after">
+                    <button name="show_sale_lines" type="object"
+                            class="oe_stat_button oe_inline"
+                            icon="fa-github" >
+                           <field name="count_sale_lines" string="Sale lines" widget="statinfo" />
+                    </button>
+                </button>
+            </field>
+        </record>
     </data>
 </openerp>
