@@ -72,13 +72,16 @@ class WizEventAppendAssistant(models.TransientModel):
             registration.date_start).date()
         to_date = event_obj._convert_date_to_local_format_with_hour(
             registration.date_end).date()
-        vals = {'name': (_('Registration partner %s, event: %s') %
+        parent_id = event.project_id.analytic_account_id.id or False
+        if len(event.my_task_ids) == 1:
+            parent_id = event.my_task_ids[0].project_id.analytic_account_id.id
+        vals = {'name': (_('Student: %s - Payer: %s') %
                          (registration.partner_id.name,
-                          event.name)),
+                          registration.partner_id.parent_id.name)),
                 'type': 'contract',
                 'date_start': from_date,
                 'date': to_date,
-                'parent_id': event.project_id.analytic_account_id.id or False,
+                'parent_id': parent_id,
                 'code': code,
                 'partner_id': registration.partner_id.id,
                 'recurring_invoices': True,

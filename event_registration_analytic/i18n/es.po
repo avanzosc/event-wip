@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_registration_analytic
+# 	* event_registration_analytic
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-07 11:37+0000\n"
-"PO-Revision-Date: 2016-07-07 11:37+0000\n"
+"POT-Creation-Date: 2016-07-27 13:28+0000\n"
+"PO-Revision-Date: 2016-07-27 15:29+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. module: event_registration_analytic
 #: field:event.registration,analytic_account:0
@@ -47,6 +48,7 @@ msgstr "Confirmación registro"
 
 #. module: event_registration_analytic
 #: field:event.track.presence,employee:0
+#: field:wiz.impute.in.presence.from.session.line,employee:0
 msgid "Employee"
 msgstr "Empleado"
 
@@ -94,8 +96,9 @@ msgstr "Albaranes"
 
 #. module: event_registration_analytic
 #: view:event.track:event_registration_analytic.view_event_track_inh_analytic
+#: view:wiz.impute.in.presence.from.session:event_registration_analytic.wiz_impute_presence_from_session_form_inh_analytic
 msgid "Presences"
-msgstr "Asistentes"
+msgstr "Presencias"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -148,12 +151,12 @@ msgstr "Pedido de venta"
 #. module: event_registration_analytic
 #: model:ir.model,name:event_registration_analytic.model_event_track_presence
 msgid "Session assistants"
-msgstr "Asistentes a sesión"
+msgstr "Presencias a sesión"
 
 #. module: event_registration_analytic
 #: field:wiz.event.append.assistant,create_account:0
 msgid "Show create account"
-msgstr "Show create account"
+msgstr "Mostrar crear cuenta"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
@@ -165,6 +168,12 @@ msgstr "Estudiante"
 #: field:event.track,no_employee_presences:0
 msgid "Student presences"
 msgstr "Presencias estudiantes"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:78
+#, python-format
+msgid "Student: %s - Payer: %s"
+msgstr "Estudiante: %s - Pagador: %s"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -182,7 +191,7 @@ msgstr "Profesor"
 #: field:event.event,count_teacher_registrations:0
 #, python-format
 msgid "Teacher assistants"
-msgstr "Presencias profesores"
+msgstr "Profesores asistentes"
 
 #. module: event_registration_analytic
 #: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
@@ -196,7 +205,7 @@ msgstr "Presencias profesores"
 #. module: event_registration_analytic
 #: model:ir.ui.menu,name:event_registration_analytic.menu_action_registration2
 msgid "Teacher registrations"
-msgstr "Profesores registrados"
+msgstr "Profesores asistentes"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -230,9 +239,4 @@ msgstr "Tot. nightlight hours"
 #: view:event.track:event_registration_analytic.view_event_track2_inh_analytic
 msgid "Tot. real duration"
 msgstr "Tot. duración real"
-
-#. module: event_registration_analytic
-#: view:event.registration:event_registration_analytic.view_event_registration_tree_inh_assistant
-msgid "red:employee!=False"
-msgstr "red:employee!=False"
 
