@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-18 14:14+0000\n"
-"PO-Revision-Date: 2016-07-18 16:15+0100\n"
+"POT-Creation-Date: 2016-07-27 10:24+0000\n"
+"PO-Revision-Date: 2016-07-27 12:25+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgid "Event"
 msgstr "Evento"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:54
+#: code:addons/event_group_description/models/sale_order.py:55
 #, python-format
 msgid "Friday"
 msgstr "Viernes"
@@ -38,20 +38,33 @@ msgid "Generate group description"
 msgstr "Generar descripción grupo"
 
 #. module: event_group_description
+#: field:event.event,group_description:0
 #: field:sale.order.line,group_description:0
 msgid "Group description"
 msgstr "Descripción grupo"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:46
+#: code:addons/event_group_description/models/sale_order.py:47
 #, python-format
 msgid "Monday"
 msgstr "Lunes"
 
 #. module: event_group_description
-#: model:ir.model,name:event_group_description.model_project_project
-msgid "Project"
-msgstr "Proyecto"
+#: view:event.event:event_group_description.view_event_form_inh2_event_group_desc
+msgid "Register with this event"
+msgstr "Registrar en este evento"
+
+#. module: event_group_description
+#: view:event.event:event_group_description.view_event_form_inh2_event_group_desc
+#: field:event.event,count_sale_lines:0
+msgid "Sale lines"
+msgstr "Líneas de ventas"
+
+#. module: event_group_description
+#: code:addons/event_group_description/models/event_event.py:38
+#, python-format
+msgid "Sale order lines"
+msgstr "Líneas pedido venta"
 
 #. module: event_group_description
 #: model:ir.model,name:event_group_description.model_sale_order
@@ -64,31 +77,31 @@ msgid "Sales Order Line"
 msgstr "Línea pedido de venta"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:56
+#: code:addons/event_group_description/models/sale_order.py:57
 #, python-format
 msgid "Saturday"
 msgstr "Sábado"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:58
+#: code:addons/event_group_description/models/sale_order.py:59
 #, python-format
 msgid "Sunday"
 msgstr "Domingo"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:52
+#: code:addons/event_group_description/models/sale_order.py:53
 #, python-format
 msgid "Thursday"
 msgstr "Jueves"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:48
+#: code:addons/event_group_description/models/sale_order.py:49
 #, python-format
 msgid "Tuesday"
 msgstr "Martes"
 
 #. module: event_group_description
-#: code:addons/event_group_description/models/sale_order.py:50
+#: code:addons/event_group_description/models/sale_order.py:51
 #, python-format
 msgid "Wednesday"
 msgstr "Miércoles"
