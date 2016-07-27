@@ -17,13 +17,14 @@ class SaleOrder(models.Model):
         for sale in self:
             for line in sale.order_line:
                 if line.service_project_task:
+                    pos = line.group_description.find('-')
                     line.service_project_task.write(
-                        {'name': line.group_description,
-                         'description': line.group_description})
+                        {'name': line.group_description[pos+1:],
+                         'description': line.group_description[pos+1:]})
                     project = line.service_project_task.project_id
                     if project and project.analytic_account_id:
                         project.analytic_account_id.write(
-                            {'name': line.group_description})
+                            {'name': line.group_description[pos+1:]})
         return res
 
 
