@@ -13,9 +13,9 @@ class EventEvent(models.Model):
             cond = [('event_id', '=', event.id)]
             tasks = task_obj.search(cond)
             if tasks:
-                self.my_task_ids = [(6, 0, tasks.ids)]
+                event.my_task_ids = [(6, 0, tasks.ids)]
             else:
-                self.my_task_ids = [(6, 0, [])]
+                event.my_task_ids = [(6, 0, [])]
 
     @api.depends('my_task_ids')
     def _count_tasks(self):
