@@ -23,6 +23,13 @@ class EventEvent(models.Model):
             if event.event_ticket_ids:
                 event.event_ticket_ids[0].copy()
 
+    @api.multi
+    def write(self, vals):
+        if ('event_ticket_ids' in vals and
+                'no_employee_registration_ids' in vals):
+            vals.pop('no_employee_registration_ids')
+        return super(EventEvent, self).write(vals)
+
 
 class EventEventTicket(models.Model):
     _inherit = 'event.event.ticket'
