@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, fields, exceptions, _
+from openerp import models, fields, api, exceptions, _
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
@@ -32,6 +32,26 @@ class ResPartner(models.Model):
             start_date = (fields.Date.from_string(str(start_date)) +
                           (relativedelta(days=1)))
         calendar.write({'dates': day_vals})
+
+    def _put_estimated_hours_in_calendar(self, year, contract):
+        partner_calendar_day_obj = self.env['res.partner.calendar.day']
+        for attendance in contract.working_hours.attendance_ids:
+            cond = [('partner', '=', contract.partner.id),
+                    ('year', '=', year),
+                    ('weekday', '=', attendance.dayofweek)]
+            if attendance.date_from:
+                cond.append(('date', '>=', attendance.date_from))
+            elif contract.date_start:
+                cond.append(('date', '>=', contract.date_start))
+            if contract.date_end:
+                cond.append(('date', '<=', contract.date_end))
+            else:
+                cond.append(('date', '<=', "{}-12-31".format(year)))
+            partner_calendar_days = partner_calendar_day_obj.search(cond)
+            if partner_calendar_days:
+                for day in partner_calendar_days:
+                    hours = attendance.hour_to - attendance.hour_from
+                    day.estimated_hours = day.estimated_hours + hours
 
     def _generate_festives_in_calendar(self, year, calendar):
         calendar_obj = self.env['res.partner.calendar']
@@ -79,6 +99,15 @@ class ResPartnerCalendarDay(models.Model):
     _description = 'Employee calendar day'
     _rec_name = 'date'
 
+    @api.depends('date')
+    @api.multi
+    def _compute_weekday(self):
+        for day in self:
+            if day.date:
+                date = fields.Date.from_string(day.date)
+                day.year = date.year
+                day.weekday = str(date.weekday())
+
     calendar = fields.Many2one(
         comodel_name='res.partner.calendar', string='Calendar',
         ondelete='cascade')
@@ -86,6 +115,17 @@ class ResPartnerCalendarDay(models.Model):
         comodel_name='res.partner', related='calendar.partner',
         string='Partner', store=True, select=True)
     date = fields.Date(string='Date', select=True)
+    year = fields.Integer(
+        string='year', compute='_compute_weekday', store=True)
+    weekday = fields.Selection(
+        [('0', 'Monday'),
+         ('1', 'Tuesday'),
+         ('2', 'Wednesday'),
+         ('3', 'Thursday'),
+         ('4', 'Friday'),
+         ('5', 'Saturday'),
+         ('6', 'Sunday')],
+        string='Weekday', compute='_compute_weekday', store=True)
     contract = fields.Many2one(
         comodel_name='hr.contract', string='Partner contract')
     estimated_hours = fields.Float(string='Estimated hours', default=0.0)

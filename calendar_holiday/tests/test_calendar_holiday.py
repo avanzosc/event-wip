@@ -26,6 +26,8 @@ class TestCalendarHoliday(common.TransactionCase):
                          'wage': 500,
                          'date_start': '2025-01-02',
                          'date_end': '2025-12-30',
+                         'working_hours':
+                         self.ref('resource.timesheet_group1'),
                          'holiday_calendars':
                          [(6, 0, [self.calendar_holiday.id])]}
         self.contract = self.contract_model.create(contract_vals)

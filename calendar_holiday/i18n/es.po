@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* calendar_holiday
+# 	* calendar_holiday
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 19:06+0000\n"
-"PO-Revision-Date: 2016-03-31 21:08+0100\n"
-"Last-Translator: Alfredo <alfredodelafuente@avanzosc.com>\n"
+"POT-Creation-Date: 2016-08-01 13:54+0000\n"
+"PO-Revision-Date: 2016-08-01 15:59+0100\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. module: calendar_holiday
 #: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
@@ -95,14 +96,14 @@ msgid "Contract"
 msgstr "Contrato"
 
 #. module: calendar_holiday
+#: field:hr.contract,partner:0
 #: view:hr.employee:calendar_holiday.view_employee_filter_inh_calendarholiday
 #: view:hr.employee:calendar_holiday.view_employee_tree_inh_calendarholiday
 msgid "Contract employee"
 msgstr "Asociado a"
 
 #. module: calendar_holiday
-#: field:calendar.holiday,create_uid:0
-#: field:calendar.holiday.day,create_uid:0
+#: field:calendar.holiday,create_uid:0 field:calendar.holiday.day,create_uid:0
 #: field:res.partner.calendar,create_uid:0
 #: field:res.partner.calendar.day,create_uid:0
 #: field:wiz.calculate.workable.festive,create_uid:0
@@ -119,8 +120,7 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: calendar_holiday
-#: field:calendar.holiday.day,date:0
-#: field:res.partner.calendar.day,date:0
+#: field:calendar.holiday.day,date:0 field:res.partner.calendar.day,date:0
 msgid "Date"
 msgstr "Fecha"
 
@@ -140,6 +140,15 @@ msgstr "Días"
 #: field:calendar.holiday,name:0
 msgid "Description"
 msgstr "Descripción"
+
+#. module: calendar_holiday
+#: field:calendar.holiday,display_name:0
+#: field:calendar.holiday.day,display_name:0
+#: field:res.partner.calendar,display_name:0
+#: field:res.partner.calendar.day,display_name:0
+#: field:wiz.calculate.workable.festive,display_name:0
+msgid "Display Name"
+msgstr "Display Name"
 
 #. module: calendar_holiday
 #: model:ir.actions.act_window,name:calendar_holiday.action_res_partner_calendar_view
@@ -194,11 +203,26 @@ msgid "Followers"
 msgstr "Seguidores"
 
 #. module: calendar_holiday
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Friday"
+msgstr "Viernes"
+
+#. module: calendar_holiday
 #: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
 #: view:res.partner.calendar:calendar_holiday.res_partner_calendar_search_view
 #: view:res.partner.calendar.day:calendar_holiday.res_partner_calendar_day_search_view
 msgid "Group By"
 msgstr "Agrupar por"
+
+#. module: calendar_holiday
+#: help:hr.contract,message_summary:0
+#: help:res.partner.calendar,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
 
 #. module: calendar_holiday
 #: view:hr.contract:calendar_holiday.hr_contract_view_form_inh_calendarholiday
@@ -207,10 +231,8 @@ msgid "Holiday calendars"
 msgstr "Calendario festivos"
 
 #. module: calendar_holiday
-#: field:calendar.holiday,id:0
-#: field:calendar.holiday.day,id:0
-#: field:res.partner.calendar,id:0
-#: field:res.partner.calendar.day,id:0
+#: field:calendar.holiday,id:0 field:calendar.holiday.day,id:0
+#: field:res.partner.calendar,id:0 field:res.partner.calendar.day,id:0
 #: field:wiz.calculate.workable.festive,id:0
 msgid "ID"
 msgstr "ID"
@@ -234,8 +256,16 @@ msgid "Last Message Date"
 msgstr "Fecha último mensaje"
 
 #. module: calendar_holiday
-#: field:calendar.holiday,write_uid:0
-#: field:calendar.holiday.day,write_uid:0
+#: field:calendar.holiday,__last_update:0
+#: field:calendar.holiday.day,__last_update:0
+#: field:res.partner.calendar,__last_update:0
+#: field:res.partner.calendar.day,__last_update:0
+#: field:wiz.calculate.workable.festive,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: calendar_holiday
+#: field:calendar.holiday,write_uid:0 field:calendar.holiday.day,write_uid:0
 #: field:res.partner.calendar,write_uid:0
 #: field:res.partner.calendar.day,write_uid:0
 #: field:wiz.calculate.workable.festive,write_uid:0
@@ -243,8 +273,7 @@ msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: calendar_holiday
-#: field:calendar.holiday,write_date:0
-#: field:calendar.holiday.day,write_date:0
+#: field:calendar.holiday,write_date:0 field:calendar.holiday.day,write_date:0
 #: field:res.partner.calendar,write_date:0
 #: field:res.partner.calendar.day,write_date:0
 #: field:wiz.calculate.workable.festive,write_date:0
@@ -257,16 +286,19 @@ msgid "Manager"
 msgstr "Director"
 
 #. module: calendar_holiday
-#: field:hr.contract,message_ids:0
-#: field:res.partner.calendar,message_ids:0
+#: field:hr.contract,message_ids:0 field:res.partner.calendar,message_ids:0
 msgid "Messages"
 msgstr "Mensajes"
 
 #. module: calendar_holiday
-#: help:hr.contract,message_ids:0
-#: help:res.partner.calendar,message_ids:0
+#: help:hr.contract,message_ids:0 help:res.partner.calendar,message_ids:0
 msgid "Messages and communication history"
 msgstr "Historial de mensajes y comunicaciones"
+
+#. module: calendar_holiday
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Monday"
+msgstr "Lunes"
 
 #. module: calendar_holiday
 #: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
@@ -293,6 +325,11 @@ msgstr "Contrato"
 #: field:res.partner.calendar.day,real_hours:0
 msgid "Real hours"
 msgstr "Horas reales"
+
+#. module: calendar_holiday
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Saturday"
+msgstr "Sábado"
 
 #. module: calendar_holiday
 #: view:calendar.holiday:calendar_holiday.calendar_holiday_search_view
@@ -333,24 +370,31 @@ msgid "Summary"
 msgstr "Sumario"
 
 #. module: calendar_holiday
-#: code:addons/calendar_holiday/models/res_partner.py:45
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Sunday"
+msgstr "Domingo"
+
+#. module: calendar_holiday
 #: code:addons/calendar_holiday/models/res_partner.py:47
 #, python-format
 msgid "The calendar %s was not found, for employee %s"
 msgstr "El calendario %s no ha sido encontrado,para el empleado %s"
 
 #. module: calendar_holiday
-#: code:addons/calendar_holiday/models/res_partner.py:53
 #: code:addons/calendar_holiday/models/res_partner.py:54
 #, python-format
 msgid "The day %s was not found in the calendar %s, for employee %s"
 msgstr "El día %s no ha sido encontrado en el calendario %s, del empleado %s"
 
 #. module: calendar_holiday
-#: code:addons/calendar_holiday/models/calendar_holiday.py:52
-#, python-format
-msgid "There is already a date with day %s and month %s and year %s, in festive calendar %s"
-msgstr "Ya existe una fecha con día %s y mes %s y año %s, en calendario festivos %s"
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Thursday"
+msgstr "Jueves"
+
+#. module: calendar_holiday
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Tuesday"
+msgstr "Martes"
 
 #. module: calendar_holiday
 #: field:hr.contract,message_unread:0
@@ -359,16 +403,41 @@ msgid "Unread Messages"
 msgstr "Mensajes sin leer"
 
 #. module: calendar_holiday
+#: field:hr.contract,website_message_ids:0
+#: field:res.partner.calendar,website_message_ids:0
+msgid "Website Messages"
+msgstr "Website Messages"
+
+#. module: calendar_holiday
+#: help:hr.contract,website_message_ids:0
+#: help:res.partner.calendar,website_message_ids:0
+msgid "Website communication history"
+msgstr "Website communication history"
+
+#. module: calendar_holiday
+#: selection:res.partner.calendar.day,weekday:0
+msgid "Wednesday"
+msgstr "Miércoles"
+
+#. module: calendar_holiday
 #: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
 #: view:res.partner.calendar.day:calendar_holiday.res_partner_calendar_day_search_view
 msgid "Week"
 msgstr "Semana"
 
 #. module: calendar_holiday
+#: field:res.partner.calendar.day,weekday:0
+msgid "Weekday"
+msgstr "Día semana"
+
+#. module: calendar_holiday
 #: model:ir.actions.act_window,name:calendar_holiday.action_calculate_workables_festives
 #: view:wiz.calculate.workable.festive:calendar_holiday.wiz_calculate_workable_festive_view
-msgid "Wizard for calculate workable and festive days in the calendar of the employee"
-msgstr "Wizard para calcular días laborables y festivos en el calendario de empleado"
+msgid ""
+"Wizard for calculate workable and festive days in the calendar of the "
+"employee"
+msgstr ""
+"Wizard para calcular días laborables y festivos en el calendario de empleado"
 
 #. module: calendar_holiday
 #: model:ir.model,name:calendar_holiday.model_wiz_calculate_workable_festive
@@ -388,12 +457,14 @@ msgstr "Año"
 
 #. module: calendar_holiday
 #: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:41
+#: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:42
 #, python-format
 msgid "Year introduced less than year contract beginning"
 msgstr "El año introducido es menor que el año de inicio de contrato"
 
 #. module: calendar_holiday
 #: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:46
+#: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:47
 #, python-format
 msgid "Year introduced more than year end contract"
 msgstr "El año introducido el mayor que el año fin del contrado"
@@ -406,6 +477,6 @@ msgstr "o"
 #. module: calendar_holiday
 #: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
 #: view:res.partner.calendar.day:calendar_holiday.res_partner_calendar_day_search_view
+#: field:res.partner.calendar.day,year:0
 msgid "year"
 msgstr "año"
-
