@@ -82,6 +82,28 @@ class EventEvent(models.Model):
                     'event_ok': True})
 
     @api.multi
+    def write(self, vals):
+        if (vals.get('employee_registration_ids', False) and
+                vals.get('no_employee_registration_ids', False)):
+            new_lines = []
+            for line in vals.get('no_employee_registration_ids'):
+                if line[0] != 2 and line[2] is not False:
+                    new_lines.append(line)
+            if new_lines:
+                vals['no_employee_registration_ids'] = new_lines
+            else:
+                vals.pop('no_employee_registration_ids')
+            new_lines = []
+            for line in vals.get('employee_registration_ids'):
+                if line[0] != 2 and line[2] is not False:
+                    new_lines.append(line)
+            if new_lines:
+                vals['employee_registration_ids'] = new_lines
+            else:
+                vals.pop('employee_registration_ids')
+        return super(EventEvent, self).write(vals)
+
+    @api.multi
     def show_teacher_registrations(self):
         self.ensure_one()
         return {'name': _('Teacher assistants'),
