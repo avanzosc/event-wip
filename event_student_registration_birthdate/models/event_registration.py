@@ -12,8 +12,7 @@ class EventRegistration(models.Model):
         partner_obj = self.env['res.partner']
         if vals.get('partner_id', False):
             partner = partner_obj.browse(vals.get('partner_id'))
-            if (not partner.is_group and not partner.is_company and
-                    not partner.birthdate_date):
+            if not partner.employee_id and not partner.birthdate_date:
                 raise exceptions.Warning(
                     _('Yoy must define the birthdate for the student %s')
                     % (partner.name))
