@@ -132,3 +132,5 @@ class TestEventRegistrationAnalytic(common.TransactionCase):
             registration._calculate_required_account()
         for track in event.track_ids:
             track._calc_real_duration()
+        event.write({'no_employee_registration_ids': [[2, 3, False]],
+                     'employee_registration_ids': [[2, 3, False]]})
