@@ -17,6 +17,11 @@ class TestEventRegistrationPaCode(common.TransactionCase):
         self.procurement_model = self.env['procurement.order']
         self.wiz_add_model = self.env['wiz.event.append.assistant']
         self.registration_model = self.env['event.registration']
+        self.partner = self.env.ref('base.res_partner_26')
+        self.partner.write({'parent_id': 1,
+                            'is_group': False,
+                            'is_company': False,
+                            'birthdate_date': '2005-01-15'})
         account_vals = {'name': 'account procurement service project',
                         'date_start': '2025-01-15',
                         'date': '2025-02-28'}
@@ -73,7 +78,7 @@ class TestEventRegistrationPaCode(common.TransactionCase):
                     'max_to_date': '2025-02-28 00:00:00',
                     'from_date': '2025-01-15 00:00:00',
                     'to_date': '2025-02-28 00:00:00',
-                    'partner': self.env.ref('base.res_partner_26').id}
+                    'partner': self.partner.id}
         wiz = self.wiz_add_model.with_context(
             {'active_ids': [event.id]}).create(wiz_vals)
         wiz.with_context({'active_ids': [event.id]}).action_append()
