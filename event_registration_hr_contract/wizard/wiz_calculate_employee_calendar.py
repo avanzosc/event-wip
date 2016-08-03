@@ -52,5 +52,9 @@ class WizCalculateEmployeeCalendar(models.TransientModel):
         contracts = contract_obj.search(cond)
         contracts = contract_obj.search(cond)
         for contract in contracts:
+            if (contract.working_hours and
+                    contract.working_hours.attendance_ids):
+                contract.partner._put_estimated_hours_in_calendar(year,
+                                                                  contract)
             for calendar in contract.holiday_calendars:
                 partner._generate_festives_in_calendar(year, calendar)
