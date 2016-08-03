@@ -16,6 +16,7 @@ class TestEventRegistrationHrContract(common.TransactionCase):
         self.event_model = self.env['event.event']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
         self.registration_model = self.env['event.registration']
+        self.calc_calendar_model = self.env['wiz.calculate.employee.calendar']
         self.employee = self.env.ref('hr.employee')
         self.hr_holidays_model = self.env['hr.holidays']
         self.employee.address_home_id = self.ref('base.public_partner')
@@ -72,7 +73,9 @@ class TestEventRegistrationHrContract(common.TransactionCase):
                          'type_id':
                          self.ref('hr_contract.hr_contract_type_emp'),
                          'wage': 500,
-                         'date_start': '2020-02-01'}
+                         'date_start': '2020-02-01',
+                         'working_hours':
+                         self.ref('resource.timesheet_group1')}
         self.contract = self.contract_model.create(contract_vals)
         wiz_vals = {'year': 2020}
         wiz = self.wiz_model.create(wiz_vals)
@@ -101,5 +104,9 @@ class TestEventRegistrationHrContract(common.TransactionCase):
             'type': 'remove'}
         self.holidays = self.hr_holidays_model.create(holiday_vals)
         self.holidays.signal_workflow('confirm')
+        wiz_vals = {'validate_ausence': True,
+                    'ausence': self.holidays.id}
+        calculate_calendar = self.calc_calendar_model.create(wiz_vals)
+        calculate_calendar.button_calculate_employee_calendar()
         self.holidays.signal_workflow('validate')
         self.holidays.signal_workflow('refuse')
