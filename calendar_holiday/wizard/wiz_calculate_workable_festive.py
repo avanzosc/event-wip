@@ -13,8 +13,8 @@ class WizCalculateWorkableFestive(models.TransientModel):
 
     @api.model
     def default_get(self, var_fields):
-        res = super(WizCalculateWorkableFestive, self).default_get(var_fields)
         partner_calendar_obj = self.env['res.partner.calendar']
+        res = super(WizCalculateWorkableFestive, self).default_get(var_fields)
         contract = self.env['hr.contract'].browse(
             self.env.context['active_id'])
         year_begin = fields.Datetime.from_string(contract.date_start).year
@@ -45,6 +45,9 @@ class WizCalculateWorkableFestive(models.TransientModel):
                 raise exceptions.Warning(
                     _('Year introduced more than year end contract'))
         contract.partner._generate_calendar(self.year)
+        if contract.working_hours and contract.working_hours.attendance_ids:
+            contract.partner._put_estimated_hours_in_calendar(self.year,
+                                                              contract)
         if contract.holiday_calendars:
             for calendar in contract.holiday_calendars:
                 contract.partner._generate_festives_in_calendar(
