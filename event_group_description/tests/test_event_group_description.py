@@ -52,8 +52,13 @@ class TestEventGroupDescription(common.TransactionCase):
             'february': True,
             'week4': True,
             'week5': True,
+            'monday': True,
             'tuesday': True,
+            'wednesday': True,
             'thursday': True,
+            'friday': True,
+            'saturday': True,
+            'sunday': True,
             'start_date': '2025-01-15',
             'start_hour': 8.00,
             'end_date': '2025-02-28',
@@ -95,8 +100,13 @@ class TestEventGroupDescription(common.TransactionCase):
             'february': True,
             'week4': True,
             'week5': True,
+            'monday': True,
             'tuesday': True,
+            'wednesday': True,
             'thursday': True,
+            'friday': True,
+            'saturday': True,
+            'sunday': True,
             'start_date': '2025-01-15',
             'start_hour': 8.00,
             'end_date': '2025-02-28',
@@ -113,3 +123,4 @@ class TestEventGroupDescription(common.TransactionCase):
         event._count_sale_lines()
         event.show_sale_lines()
         event.sale_order_line.button_group_description()
+        event.sale_order_line._compute_line_days()
