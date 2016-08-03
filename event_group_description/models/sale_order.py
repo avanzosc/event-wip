@@ -35,6 +35,36 @@ class SaleOrderLine(models.Model):
         string='Group description', copy=False)
     courses = fields.Char(
         string='Courses', copy=False)
+    days = fields.Char(
+        string='Days', compute='_compute_line_days', store=True, copy=False)
+
+    @api.depends('monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                 'saturday', 'sunday')
+    @api.multi
+    def _compute_line_days(self):
+        for line in self:
+            line.days = ''
+            if line.monday:
+                line.days = (_('Monday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Monday')))
+            if line.tuesday:
+                line.days = (_('Tuesday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Tuesday')))
+            if line.wednesday:
+                line.days = (_('Wednesday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Wednesday')))
+            if line.thursday:
+                line.days = (_('Thursday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Thursday')))
+            if line.friday:
+                line.days = (_('Friday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Friday')))
+            if line.saturday:
+                line.days = (_('Saturday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Saturday')))
+            if line.sunday:
+                line.days = (_('Sunday') if len(line.days) == 0 else
+                             "{}-{}".format(line.days, _('Sunday')))
 
     @api.multi
     def button_group_description(self):
