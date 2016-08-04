@@ -153,3 +153,6 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             date_order=self.sale_order2.date_order,
             warehouse_id=self.sale_order2.warehouse_id.id)
         self.sale_order2.order_line[0].onchange_date_begin()
+        self.sale_order2.order_line[0].event_id = event.id
+        event._compute_event_tasks()
+        self.sale_order2.action_cancel()
