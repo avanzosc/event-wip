@@ -91,6 +91,18 @@ class SaleOrder(models.Model):
                         'date': max_fec}
         self.project_id = account_obj.create(account_vals)
 
+    @api.multi
+    def action_cancel(self):
+        project_obj = self.env['project.project']
+        res = super(SaleOrder, self).action_cancel()
+        analytics = self.filtered(
+            lambda x: x.project_by_task == 'yes').mapped('project_id')
+        projects = project_obj.search([('analytic_account_id', 'in',
+                                       analytics.ids)])
+        projects.unlink()
+        analytics.unlink()
+        return res
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
