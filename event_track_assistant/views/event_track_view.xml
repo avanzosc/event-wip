@@ -99,6 +99,9 @@
             <field name="model">event.track</field>
             <field name="inherit_id" ref="website_event_track.view_event_track_form" />
             <field name="arch" type="xml">
+                <field name="stage_id" position="attributes">
+                    <attribute name="clickable">True</attribute>
+                </field>
                 <field name="duration" position="attributes">
                     <attribute name="string">Estimated duration</attribute>
                 </field>
