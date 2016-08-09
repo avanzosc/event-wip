@@ -120,28 +120,32 @@
                     <field name="color" />
                 </field>
                 <xpath expr="//field[@name='date']/../.." position="after">
-                    <group>
-                        <separator string="Presences" colspan="4"/>
-                        <field name="allowed_partners" invisible="1"/>
-                        <field name="presences" nolabel="1" 
-                                context="{'default_session': active_id}">
-                            <tree string="Presences" editable="bottom">
+                    <notebook>
+                        <page string="Presences">
+                            <group>
+                                <separator string="Presences" colspan="4"/>
                                 <field name="allowed_partners" invisible="1"/>
-                                <field name="partner" 
-                                       domain="[('id','in',allowed_partners[0][2])]"/>
-                                <field name="session" invisible="1"/>
-                                <field name="session_date" invisible="1"/>
-                                <field name="session_duration" invisible="1"/>
-                                <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
-                                <field name="real_daylight_hours" widget="float_time"
-                                     sum='Tot. daylight hours'/>
-                                <field name="real_nightlight_hours" widget="float_time"
-                                     sum='Tot. nightlight hours'/>
-                                <field name="notes" />
-                                <field name="state" />
-                            </tree>
-                        </field>
-                    </group>
+                                <field name="presences" nolabel="1" 
+                                        context="{'default_session': active_id}">
+                                    <tree string="Presences" editable="bottom">
+                                        <field name="allowed_partners" invisible="1"/>
+                                        <field name="partner" 
+                                               domain="[('id','in',allowed_partners[0][2])]"/>
+                                        <field name="session" invisible="1"/>
+                                        <field name="session_date" invisible="1"/>
+                                        <field name="session_duration" invisible="1"/>
+                                        <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
+                                        <field name="real_daylight_hours" widget="float_time"
+                                             sum='Tot. daylight hours'/>
+                                        <field name="real_nightlight_hours" widget="float_time"
+                                             sum='Tot. nightlight hours'/>
+                                        <field name="notes" />
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </group>
+                       </page>
+                    </notebook>
                 </xpath>
             </field>
         </record>
