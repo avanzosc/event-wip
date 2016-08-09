@@ -6,59 +6,47 @@
             <field name="model">event.track</field>
             <field name="inherit_id" ref="event_track_assistant.view_event_track_for_inh_assistant" />
             <field name="arch" type="xml">
-                <separator string="Presences" position="attributes">
+                <page string="Presences" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </separator>
-                <field name="presences" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </field>
-            </field>
-        </record>
-        <record model="ir.ui.view" id="view_event_track2_inh_analytic">
-            <field name="name">view.event.track2.inh.analytic</field>
-            <field name="model">event.track</field>
-            <field name="inherit_id" ref="website_event_track.view_event_track_form" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='date']/../.." position="after">
-                    <notebook>
-                        <page string="Student presences">
-                            <field name="no_employee_presences" nolabel="1" context="{'default_session': active_id}">
-                                <tree string="Student presences" editable="bottom">
-                                    <field name="partner" 
-                                           domain="[('id','in',allowed_partners[0][2])]"/>
-                                    <field name="session" invisible="1"/>
-                                    <field name="session_date" invisible="1"/>
-                                    <field name="session_duration" invisible="1"/>
-                                    <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
-                                    <field name="real_daylight_hours" widget="float_time"
-                                         sum='Tot. daylight hours'/>
-                                    <field name="real_nightlight_hours" widget="float_time"
-                                         sum='Tot. nightlight hours'/>
-                                    <field name="notes" />
-                                    <field name="state" />
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Teacher presences">
-                            <field name="employee_presences" nolabel="1" context="{'default_session': active_id}">
-                                <tree string="Teacher presences" editable="bottom">
-                                    <field name="partner" 
-                                           domain="[('id','in',allowed_partners[0][2])]"/>
-                                    <field name="session" invisible="1"/>
-                                    <field name="session_date" invisible="1"/>
-                                    <field name="session_duration" invisible="1"/>
-                                    <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
-                                    <field name="real_daylight_hours" widget="float_time"
-                                         sum='Tot. daylight hours'/>
-                                    <field name="real_nightlight_hours" widget="float_time"
-                                         sum='Tot. nightlight hours'/>
-                                    <field name="notes" />
-                                    <field name="state" />
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </xpath>
+                </page>
+                <page string="Presences" position="after">
+                  <page string="Student presences">
+                      <field name="no_employee_presences" nolabel="1" context="{'default_session': active_id}">
+                          <tree string="Student presences" editable="bottom">
+                              <field name="partner" 
+                                     domain="[('id','in',allowed_partners[0][2])]"/>
+                              <field name="session" invisible="1"/>
+                              <field name="session_date" invisible="1"/>
+                              <field name="session_duration" invisible="1"/>
+                              <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
+                              <field name="real_daylight_hours" widget="float_time"
+                                   sum='Tot. daylight hours'/>
+                              <field name="real_nightlight_hours" widget="float_time"
+                                   sum='Tot. nightlight hours'/>
+                              <field name="notes" />
+                              <field name="state" />
+                          </tree>
+                      </field>
+                  </page>
+                  <page string="Teacher presences">
+                      <field name="employee_presences" nolabel="1" context="{'default_session': active_id}">
+                          <tree string="Teacher presences" editable="bottom">
+                              <field name="partner" 
+                                     domain="[('id','in',allowed_partners[0][2])]"/>
+                              <field name="session" invisible="1"/>
+                              <field name="session_date" invisible="1"/>
+                              <field name="session_duration" invisible="1"/>
+                              <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
+                              <field name="real_daylight_hours" widget="float_time"
+                                   sum='Tot. daylight hours'/>
+                              <field name="real_nightlight_hours" widget="float_time"
+                                   sum='Tot. nightlight hours'/>
+                              <field name="notes" />
+                              <field name="state" />
+                          </tree>
+                      </field>
+                  </page>
+                </page>
             </field>
         </record>
     </data>
