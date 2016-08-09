@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_form_inh_project_issue">
+            <field name="name">view.event.form.inh.project.issue</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form" />
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Issues">
+                        <field name="issue_ids" nolabel="1"
+                            context="{'search_default_event':active_id, 'default_event': active_id, 'default_name': name}" />
+                    </page>
+                </notebook>
+                <button help="Register with this event" position="before">
+                    <button name="show_event_issues" type="object"
+                            class="oe_stat_button oe_inline"
+                            icon="fa-github" >
+                           <field name="count_issues" string="Issues" widget="statinfo" />
+                    </button>
+                </button>
+            </field>
+        </record>
+    </data>
+</openerp>
