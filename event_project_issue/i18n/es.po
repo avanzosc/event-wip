@@ -1,0 +1,73 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_project_issue
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-09 13:30+0000\n"
+"PO-Revision-Date: 2016-08-09 13:30+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_project_issue
+#: model:ir.model,name:event_project_issue.model_event_event
+#: view:project.issue:event_project_issue.view_project_issue_filter_inh_project_issue
+#: field:project.issue,event:0
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_project_issue
+#: model:ir.model,name:event_project_issue.model_event_track
+msgid "Event Tracks"
+msgstr "Sesiones del evento"
+
+#. module: event_project_issue
+#: code:addons/event_project_issue/models/event.py:27
+#, python-format
+msgid "Event issues"
+msgstr "Incidencias evento"
+
+#. module: event_project_issue
+#: view:project.issue:event_project_issue.view_project_issue_filter_inh_project_issue
+#: field:project.issue,session:0
+msgid "Event session"
+msgstr "Sesión de evento"
+
+#. module: event_project_issue
+#: view:event.event:event_project_issue.view_event_form_inh_project_issue
+#: field:event.event,count_issues:0
+#: field:event.event,issue_ids:0
+#: view:event.track:event_project_issue.view_event_track_assistant_inh_project_issue
+#: view:event.track:event_project_issue.view_event_track_form_inh_project_issue
+#: field:event.track,count_issues:0
+#: field:event.track,issue_ids:0
+msgid "Issues"
+msgstr "Indicencias"
+
+#. module: event_project_issue
+#: model:ir.model,name:event_project_issue.model_project_issue
+msgid "Project Issue"
+msgstr "Incidencia proyecto"
+
+#. module: event_project_issue
+#: view:event.event:event_project_issue.view_event_form_inh_project_issue
+msgid "Register with this event"
+msgstr "Registrar en este evento"
+
+#. module: event_project_issue
+#: code:addons/event_project_issue/models/event.py:56
+#, python-format
+msgid "Session issues"
+msgstr "Incidencias sesiones"
+
+#. module: event_project_issue
+#: view:project.issue:event_project_issue.view_project_issue_filter_inh_project_issue
+msgid "Task"
+msgstr "Tarea"
+

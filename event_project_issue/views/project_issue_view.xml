@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="project_issue_form_view_inh_project_issue">
+            <field name="name">project.issue.form.view.inh.project.issue</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.project_issue_form_view" />
+            <field name="arch" type="xml">
+                <notebook position="before">
+                    <group colspan="4" col="8">
+                        <field name="event_id" colspan="4"/>
+                        <field name="session_id" colspan="4"/>
+                    </group>
+                </notebook>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_issue_filter_inh_project_issue">
+            <field name="name">view.project.issue.filter.inh.project.issue</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.view_project_issue_filter" />
+            <field name="arch" type="xml">
+                <field name="project_id" position="before">
+                   <field name="event_id" />
+                   <field name="session_id" />
+                </field>
+                <filter string="Task" position="after">
+                    <filter string="Event" context="{'group_by':'event_id'}"/>
+                    <filter string="Event session" context="{'group_by':'session_id'}"/>
+                </filter>
+            </field>
+        </record>
+    </data>
+</openerp>

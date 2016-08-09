@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_track_assistant_inh_project_issue">
+            <field name="name">view.event.track.assistant.inh.project.issue</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="event_track_assistant.view_event_track_for_inh_assistant" />
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Issues">
+                        <field name="issue_ids" nolabel="1"
+                            context="{'search_default_session':active_id, 'default_session': active_id, 'default_name': name}" />
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_event_track_form_inh_project_issue">
+            <field name="name">view.event.track.form.inh.project.issue</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="website_event_track.view_event_track_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='website_url']/.." position="before">
+                   <div class="oe_right oe_button_box" groups="base.group_user">
+	                    <button name="show_session_issues" type="object"
+	                            class="oe_stat_button oe_inline"
+	                            icon="fa-github" >
+	                           <field name="count_issues" string="Issues" widget="statinfo" />
+	                    </button>
+                   </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
