@@ -14,32 +14,28 @@ class ProjectIssue(models.Model):
 
     @api.onchange('event_id')
     def onchange_event(self):
-        if self.event_id and len(self.event_id.my_task_ids) == 1:
-            self.task_id = self.event_id.my_task_ids[0].id
-            self.project_id = self.event_id.my_task_ids[0].project_id.id
+        event_obj = self.env['event.event']
+        if 'default_event_id' in self.env.context:
+            event = event_obj.browse(self.env.context.get('default_event_id'))
+        else:
+            event = self.event_id
+        if event and event.sale_order:
+            if (event.sale_order.project_by_task == 'yes' and
+                    event.my_task_ids):
+                self.task_id = event.my_task_ids[0].id
+                self.project_id = event.my_task_ids[0].project_id.id
+            elif event.sale_order.project_by_task == 'no':
+                self.project_id = event.project_id.id
 
     @api.onchange('session_id')
     def onchange_session(self):
-        if (self.session_id and self.session_id.event_id and
-                len(self.session_id.event_id.my_task_ids) == 1):
-            event = self.session_id.event_id
-            self.event = event.id
-            self.task_id = event.my_task_ids[0].id
-            self.project_id = event.my_task_ids[0].project_id.id
-
-    @api.model
-    def create(self, vals):
-        event_obj = self.env['event.event']
         session_obj = self.env['event.track']
-        if vals.get('event_id', False):
-            event = event_obj.browse(vals.get('event_id'))
-            if len(event.my_task_ids) == 1:
-                vals.update({'project_id': event.my_task_ids[0].project_id.id,
-                             'task_id': event.my_task_ids[0].id})
-        if vals.get('session_id', False):
-            session = session_obj.browse(vals.get('session_id'))
-            if len(session.event_id.my_task_ids) == 1:
-                event = session.event_id
-                vals.update({'project_id': event.my_task_ids[0].project_id.id,
-                             'task_id': event.my_task_ids[0].id})
-        return super(ProjectIssue, self).create(vals)
+        if 'default_session_id' in self.env.context:
+            session = session_obj.browse(
+                self.env.context.get('default_session_id'))
+        else:
+            session = self.session_id
+        if session:
+            self.event_id = session.event_id.id
+            self.task_id = session.tasks[:1]
+            self.project_id = session.tasks[:1].project_id

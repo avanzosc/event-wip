@@ -17,6 +17,7 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         self.procurement_model = self.env['procurement.order']
         self.wiz_add_model = self.env['wiz.event.append.assistant']
         self.wiz_del_model = self.env['wiz.event.delete.assistant']
+        self.type_hour_model = self.env['hr.type.hour']
         self.contract_model = self.env['hr.contract']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
         self.employee = self.env.ref('hr.employee')
@@ -203,3 +204,7 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         event.registration_ids[0].with_context(
             {'event_id': event.id}).registration_open()
         event.registration_ids[0].button_reg_cancel()
+        hour_vals = {'name': 'aaaaaaa'}
+        type_hour = self.type_hour_model.create(hour_vals)
+        type_hour.write({'name': 'bbbbbb'})
+        type_hour.unlink()
