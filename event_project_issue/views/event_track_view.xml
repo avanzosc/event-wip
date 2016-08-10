@@ -9,7 +9,7 @@
                 <notebook position="inside">
                     <page string="Issues">
                         <field name="issue_ids" nolabel="1"
-                            context="{'search_default_session':active_id, 'default_session': active_id, 'default_name': name}" />
+                            context="{'search_default_session_id':active_id, 'default_session_id': active_id, 'default_name': name}" />
                     </page>
                 </notebook>
             </field>

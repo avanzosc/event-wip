@@ -9,7 +9,7 @@
                 <notebook position="inside">
                     <page string="Issues">
                         <field name="issue_ids" nolabel="1"
-                            context="{'search_default_event':active_id, 'default_event': active_id, 'default_name': name}" />
+                            context="{'search_default_event_id':active_id, 'default_event_id': active_id, 'default_name': name}" />
                     </page>
                 </notebook>
                 <button help="Register with this event" position="before">
