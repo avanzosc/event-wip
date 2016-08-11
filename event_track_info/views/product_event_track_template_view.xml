@@ -2,11 +2,11 @@
 <openerp>
     <data>
         <record id="product_event_track_template_tree_view" model="ir.ui.view">
-            <field name="name">product.event.track.template.tree.view</field>
+            <field name="name">product.event.track.template.tree</field>
             <field name="model">product.event.track.template</field>
             <field name="arch" type="xml">
                 <tree string="Event track templates">
-                    <field name="product" invisible="1"/>
+                    <field name="product_id" invisible="1"/>
                     <field name="sequence"/>
                     <field name="planification" />
                     <field name="resolution" />
@@ -15,28 +15,30 @@
                 </tree>
             </field>
         </record>
+
         <record id="product_event_track_template_search_view" model="ir.ui.view">
-            <field name="name">product.event.track.template.search.view</field>
+            <field name="name">product.event.track.template.search</field>
             <field name="model">product.event.track.template</field>
             <field name="arch" type="xml">
                 <search string="Search event track template">
-                    <field name="product" />
+                    <field name="product_id" />
                     <separator/>
                     <group expand="0" string="Group By">
-                        <filter string="Product" context="{'group_by':'product'}"/>
+                        <filter string="Product" context="{'group_by':'product_id'}"/>
                     </group>
                 </search>
             </field>
         </record>
+
         <record id="product_event_track_template_form_view" model="ir.ui.view">
-            <field name="name">product.event.track.template.form.view</field>
+            <field name="name">product.event.track.template.form</field>
             <field name="model">product.event.track.template</field>
             <field name="arch" type="xml">
                 <form string="Event track template">
                     <sheet>
                         <h1>
                             <label string="Product" />
-                            <field name="product" class="oe_inline" />
+                            <field name="product_id" class="oe_inline" />
                         </h1>
                         <group name="body" colspan="4" col="8">
                             <field name="sequence" colspan="2"/>

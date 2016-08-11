@@ -13,11 +13,11 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self).action_button_confirm()
         for sale in self:
             for line in sale.order_line:
-                if line.event_id and line.product_id.event_track_templates:
+                if line.event_id and line.product_id.event_track_template_ids:
                     sequence = 0
                     for track in line.event_id.track_ids:
                         sequence += 1
-                        cond = [('product', '=', line.product_id.id),
+                        cond = [('product_id', '=', line.product_id.id),
                                 ('sequence', '=', sequence)]
                         template = template_obj.search(cond, limit=1)
                         if template:

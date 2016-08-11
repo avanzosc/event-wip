@@ -24,11 +24,11 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         project_vals = {'name': 'project 1',
                         'analytic_account_id': self.account.id}
         self.project = self.project_model.create(project_vals)
-        service_product = self.env.ref('product.product_product_consultant')
-        service_product.write({'performance': 5.0,
-                               'recurring_service': True})
-        service_product.performance = 5.0
-        service_product.route_ids = [
+        self.service_product = self.env.ref(
+            'product.product_product_consultant')
+        self.service_product.write({'performance': 5.0,
+                                    'recurring_service': True})
+        self.service_product.route_ids = [
             (6, 0,
              [self.ref('procurement_service_project.route_serv_project')])]
         sale_vals = {
@@ -41,12 +41,12 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             'project_by_task': 'no'}
         sale_line_vals = {
             'partner_id': self.ref('base.res_partner_1'),
-            'product_id': service_product.id,
-            'name': service_product.name,
+            'product_id': self.service_product.id,
+            'name': self.service_product.name,
             'product_uom_qty': 7,
             'product_uos_qty': 7,
-            'product_uom': service_product.uom_id.id,
-            'price_unit': service_product.list_price,
+            'product_uom': self.service_product.uom_id.id,
+            'price_unit': self.service_product.list_price,
             'performance': 5.0,
             'january': True,
             'february': True,
@@ -67,13 +67,6 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         project_vals = {'name': 'project 1',
                         'analytic_account_id': self.account2.id}
         self.project2 = self.project_model.create(project_vals)
-        service_product = self.env.ref('product.product_product_consultant')
-        service_product.write({'performance': 5.0,
-                               'recurring_service': True})
-        service_product.performance = 5.0
-        service_product.route_ids = [
-            (6, 0,
-             [self.ref('procurement_service_project.route_serv_project')])]
         sale_vals = {
             'name': 'sale order 2',
             'partner_id': self.ref('base.res_partner_1'),
@@ -84,12 +77,12 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             'project_by_task': 'yes'}
         sale_line_vals = {
             'partner_id': self.ref('base.res_partner_1'),
-            'product_id': service_product.id,
-            'name': service_product.name,
+            'product_id': self.service_product.id,
+            'name': self.service_product.name,
             'product_uom_qty': 7,
             'product_uos_qty': 7,
-            'product_uom': service_product.uom_id.id,
-            'price_unit': service_product.list_price,
+            'product_uom': self.service_product.uom_id.id,
+            'price_unit': self.service_product.list_price,
             'performance': 5.0,
             'january': True,
             'february': True,

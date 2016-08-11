@@ -7,18 +7,18 @@ from openerp import models, fields
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    event_track_templates = fields.One2many(
-        comodel_name='product.event.track.template', inverse_name='product',
+    event_track_template_ids = fields.One2many(
+        comodel_name='product.event.track.template', inverse_name='product_id',
         string='Event track templates')
 
 
 class ProductEventTrackTemplate(models.Model):
     _name = 'product.event.track.template'
     _description = 'Templates for event track'
-    _rec_name = 'product'
-    _order = 'product, sequence asc'
+    _rec_name = 'product_id'
+    _order = 'product_id, sequence asc'
 
-    product = fields.Many2one(
+    product_id = fields.Many2one(
         comodel_name='product.product', string='Product', required=True)
     sequence = fields.Integer(string="Sequence", required=True)
     planification = fields.Text(string="Planification")
