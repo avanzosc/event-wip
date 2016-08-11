@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_project_issue
+# 	* event_project_issue
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-10 09:40+0000\n"
-"PO-Revision-Date: 2016-08-10 09:40+0000\n"
+"PO-Revision-Date: 2016-08-11 08:56+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. module: event_project_issue
 #: model:ir.model,name:event_project_issue.model_event_event
@@ -41,14 +42,12 @@ msgstr "Sesión de evento"
 
 #. module: event_project_issue
 #: view:event.event:event_project_issue.view_event_form_inh_project_issue
-#: field:event.event,count_issues:0
-#: field:event.event,issue_ids:0
+#: field:event.event,count_issues:0 field:event.event,issue_ids:0
 #: view:event.track:event_project_issue.view_event_track_assistant_inh_project_issue
 #: view:event.track:event_project_issue.view_event_track_form_inh_project_issue
-#: field:event.track,count_issues:0
-#: field:event.track,issue_ids:0
+#: field:event.track,count_issues:0 field:event.track,issue_ids:0
 msgid "Issues"
-msgstr "Indicencias"
+msgstr "Incidencias"
 
 #. module: event_project_issue
 #: model:ir.model,name:event_project_issue.model_project_issue
@@ -70,4 +69,3 @@ msgstr "Incidencias sesiones"
 #: view:project.issue:event_project_issue.view_project_issue_filter_inh_project_issue
 msgid "Task"
 msgstr "Tarea"
-
