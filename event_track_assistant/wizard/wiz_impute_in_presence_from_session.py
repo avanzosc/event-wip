@@ -36,11 +36,22 @@ class WizImputeInPresenceFromSession(models.TransientModel):
 
     @api.multi
     def button_impute_hours(self):
+        work_obj = self.env['project.task.work']
         for line in self.mapped('lines'):
             hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
                 hours, state='completed' if not line.unassisted else 'pending',
                 notes=line.notes)
+            if line.partner.employee_id and line.hours:
+                work_vals = {'event_id': line.session.event_id.id,
+                             'date': line.session.real_date_end,
+                             'task_id': line.session.tasks[:1].id,
+                             'name': line.session.name,
+                             'hours': line.hours,
+                             'user_id': line.partner.employee_id.user_id.id}
+                work_obj.create(work_vals)
+                line.session.stage_id = self.env.ref(
+                    'website_event_track.event_track_stage5').id
 
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):
