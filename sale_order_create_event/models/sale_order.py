@@ -21,26 +21,28 @@ class SaleOrder(models.Model):
         project_obj = self.env['project.project']
         if not self.env.user.tz:
             raise exceptions.Warning(_('User without time zone'))
-        if not self.project_id:
+        if any(self.mapped('order_line.product_id.recurring_service')) and\
+                not self.project_id:
             raise exceptions.Warning(_('You must enter the project/contract'))
-        if not self.project_id.date_start:
-            raise exceptions.Warning(_('You must enter the start date of the'
-                                       ' project/contract'))
-        if not self.project_id.date:
-            raise exceptions.Warning(_('You must enter the end date of the'
-                                       ' project/contract'))
-        self.project_id.sale = self.id
-        cond = [('analytic_account_id', '=', self.project_id.id)]
-        project = project_obj.search(cond, limit=1)
-        if not project:
-            raise exceptions.Warning(_('Project/contract without project'))
+        if self.project_id:
+            if not self.project_id.date_start:
+                raise exceptions.Warning(_('You must enter the start date of'
+                                           ' the project/contract'))
+            if not self.project_id.date:
+                raise exceptions.Warning(_('You must enter the end date of the'
+                                           ' project/contract'))
+            self.project_id.sale = self.id
+            cond = [('analytic_account_id', '=', self.project_id.id)]
+            project = project_obj.search(cond, limit=1)
+            if not project:
+                raise exceptions.Warning(_('Project/contract without project'))
         res = super(SaleOrder, self).action_button_confirm()
         self._create_event_and_sessions_from_sale_order()
         return res
 
     def _create_event_and_sessions_from_sale_order(self):
         event_obj = self.env['event.event']
-        for sale in self:
+        for sale in self.filtered('project_id'):
             sale.project_id.name = sale.name
             sale_lines = sale.order_line.filtered(
                 lambda x: x.recurring_service)

@@ -12,10 +12,7 @@ class EventEvent(models.Model):
         for event in self:
             cond = [('event_id', '=', event.id)]
             tasks = task_obj.search(cond)
-            if tasks:
-                event.my_task_ids = [(6, 0, tasks.ids)]
-            else:
-                event.my_task_ids = [(6, 0, [])]
+            event.my_task_ids = [(6, 0, tasks.ids)]
 
     @api.depends('my_task_ids')
     def _count_tasks(self):
@@ -36,7 +33,7 @@ class EventEvent(models.Model):
         project = project_obj.search(cond, limit=1)
         name = sale.name
         if by_task:
-            name = name + ': ' + line.name
+            name = '{}. {}'.format(name, line.name)
         event_vals = sale._prepare_event_data(sale, line, name, project)
         if by_task:
             event_vals['sale_order_line'] = line.id
@@ -65,18 +62,11 @@ class EventRegistration(models.Model):
         wiz_obj = self.env['wiz.event.append.assistant']
         result = super(EventRegistration, self).registration_open()
         wiz = wiz_obj.browse(result['res_id'])
-        date_from = self.event_id.date_begin
-        date_to = self.event_id.date_end
-        if self.date_start:
-            date_from = self.date_start
-        if self.date_end:
-            date_to = self.date_end
+        date_from = self.date_start or self.event_id.date_begin
+        date_to = self.date_end or self.event_id.date_end
         sessions = self.event_id.track_ids.filtered(
             lambda x: x.date >= date_from and x.date <= date_to and x.date)
-        for session in sessions:
-            for task in session.tasks:
-                if task not in tasks:
-                    tasks += task
+        tasks = sessions.mapped('tasks')
         wiz.write({'permitted_tasks': [(6, 0, tasks.ids)],
                    'tasks': [(6, 0, tasks.ids)]})
         return result

@@ -8,8 +8,10 @@ from dateutil.relativedelta import relativedelta
 class WizEventAppendAssistant(models.TransientModel):
     _inherit = 'wiz.event.append.assistant'
 
-    permitted_tasks = fields.Many2many('project.task', string='Permited tasks')
-    tasks = fields.Many2many('project.task', string='Add partner to the tasks')
+    permitted_tasks = fields.Many2many(
+        comodel_name='project.task', string='Permitted tasks')
+    tasks = fields.Many2many(
+        comodel_name='project.task', string='Add partner to the tasks')
 
     @api.model
     def default_get(self, var_fields):
@@ -21,59 +23,45 @@ class WizEventAppendAssistant(models.TransientModel):
     @api.multi
     @api.onchange('from_date', 'to_date', 'partner')
     def onchange_dates_and_partner(self):
-        self.ensure_one()
         res = super(WizEventAppendAssistant, self).onchange_dates_and_partner()
         if not res:
             res = self._find_task_for_append_assistant(res)
-        if not res:
-            if not self.tasks:
-                return {'warning': {
-                        'title': _('Error in dates'),
-                        'message':
-                        _('Not tasks found for introduced dates')}}
+        if not res.get('tasks') and not self.tasks:
+            return {'warning': {
+                'title': _('Error in dates'),
+                'message': _('No tasks found for selected dates.')}}
         return res
 
     def _find_task_for_append_assistant(self, res):
         tasks = self._prepare_tasks_search_condition(res)
-        if not tasks:
-            if res:
-                res.update({'permitted_tasks': [(6, 0, [])],
-                            'tasks': [(6, 0, [])]})
-            else:
-                self.update({'permitted_tasks': [(6, 0, [])],
-                             'tasks': [(6, 0, [])]})
+        if res:
+            res.update({'permitted_tasks': [(6, 0, tasks.ids)],
+                        'tasks': [(6, 0, tasks.ids)]})
         else:
-            if res:
-                res.update({'permitted_tasks': [(6, 0, tasks.ids)],
-                            'tasks': [(6, 0, tasks.ids)]})
-            else:
-                self.update({'permitted_tasks': [(6, 0, tasks.ids)],
-                             'tasks': [(6, 0, tasks.ids)]})
+            self.update({'permitted_tasks': [(6, 0, tasks.ids)],
+                         'tasks': [(6, 0, tasks.ids)]})
         return res
 
     def _prepare_tasks_search_condition(self, res):
         session_obj = self.env['event.track']
         event_obj = self.env['event.event']
         tasks = self.env['project.task']
-        if (res.get('from_date', self.from_date) and res.get('to_date',
-                                                             self.to_date)):
+        if (res.get('from_date', self.from_date) and
+                res.get('to_date', self.to_date)):
             from_date = event_obj._convert_date_to_local_format(
                 res.get('from_date', self.from_date)).date()
-            from_date = event_obj._put_utc_format_date(
-                from_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
+            from_date = fields.Datetime.to_string(
+                event_obj._put_utc_format_date(from_date, 0.0))
             to_date = event_obj._convert_date_to_local_format(
                 res.get('to_date', self.to_date)).date()
-            to_date = event_obj._put_utc_format_date(
-                to_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
+            to_date = fields.Datetime.to_string(
+                event_obj._put_utc_format_date(to_date, 0.0))
             cond = [('event_id', 'in', self.env.context.get('active_ids')),
                     ('date', '>=', from_date),
                     ('date', '<=', to_date),
                     ('date', '!=', False)]
             sessions = session_obj.search(cond)
-            for session in sessions:
-                for task in session.tasks:
-                    if task not in tasks:
-                        tasks += task
+            tasks = sessions.mapped('tasks')
         return tasks
 
     def _prepare_project_condition(self):
