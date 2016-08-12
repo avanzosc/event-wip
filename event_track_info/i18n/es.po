@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-20 09:02+0000\n"
-"PO-Revision-Date: 2016-07-20 11:05+0100\n"
+"POT-Creation-Date: 2016-08-12 06:30+0000\n"
+"PO-Revision-Date: 2016-08-12 08:32+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,7 @@ msgstr "Creado el"
 
 #. module: event_track_info
 #: field:product.event.track.template,html_info:0
+#: field:product.event.track.template,name:0
 msgid "Description"
 msgstr "Descripción"
 
@@ -48,10 +49,10 @@ msgstr "Plantilla de sesión"
 
 #. module: event_track_info
 #: view:product.event.track.template:event_track_info.product_event_track_template_tree_view
-#: view:product.product:event_track_info.product_form_view_inh_track_info
-#: field:product.product,event_track_templates:0
+#: view:product.product:event_track_info.product_product_track_info_form_view
+#: field:product.product,event_track_template_ids:0
 msgid "Event track templates"
-msgstr "Plantillas de sesines"
+msgstr "Plantillas de sesiones"
 
 #. module: event_track_info
 #: view:product.event.track.template:event_track_info.product_event_track_template_search_view
@@ -59,7 +60,7 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: event_track_info
-#: view:event.track:event_track_info.event_track_description_form_inh_track_info
+#: view:event.track:event_track_info.event_track_description_info_form_view
 #: view:product.event.track.template:event_track_info.product_event_track_template_form_view
 msgid "HTML"
 msgstr "HTML"
@@ -105,7 +106,7 @@ msgstr "Planificación"
 #: model:ir.model,name:event_track_info.model_product_product
 #: view:product.event.track.template:event_track_info.product_event_track_template_form_view
 #: view:product.event.track.template:event_track_info.product_event_track_template_search_view
-#: field:product.event.track.template,product:0
+#: field:product.event.track.template,product_id:0
 msgid "Product"
 msgstr "Producto"
 
@@ -122,7 +123,7 @@ msgid "Resolution"
 msgstr "Resolución"
 
 #. module: event_track_info
-#: view:product.product:event_track_info.product_form_view_inh_track_info
+#: view:product.product:event_track_info.product_product_track_info_form_view
 msgid "Sales"
 msgstr "Ventas"
 
@@ -147,6 +148,12 @@ msgid "Sequence"
 msgstr "Secuencia"
 
 #. module: event_track_info
+#: code:addons/event_track_info/models/sale_order.py:24
+#, python-format
+msgid "Session"
+msgstr "Sesión"
+
+#. module: event_track_info
 #: help:product.product,purchase_line_warn:0
 #: help:product.product,sale_line_warn:0
 msgid ""
@@ -166,12 +173,12 @@ msgid "Templates for event track"
 msgstr "Plantillas para sesiones"
 
 #. module: event_track_info
-#: view:event.track:event_track_info.view_event_track_form
+#: view:event.track:event_track_info.event_track_info_form_view
 msgid "Track"
 msgstr "Sesión"
 
 #. module: event_track_info
-#: view:event.track:event_track_info.event_track_description_form_inh_track_info
+#: view:event.track:event_track_info.event_track_description_info_form_view
 #: field:event.track,url:0 field:product.event.track.template,url:0
 msgid "URL"
 msgstr "URL"

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, api
+from openerp import models, api, _
 
 
 class SaleOrder(models.Model):
@@ -21,7 +21,10 @@ class SaleOrder(models.Model):
                                 ('sequence', '=', sequence)]
                         template = template_obj.search(cond, limit=1)
                         if template:
-                            vals = {'url': template.url,
+                            name = "{} {}: {}".format(_('Session'), sequence,
+                                                      template.name)
+                            vals = {'name': name,
+                                    'url': template.url,
                                     'description': template.html_info,
                                     'planification': template.planification,
                                     'resolution': template.resolution}
