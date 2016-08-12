@@ -8,6 +8,7 @@
                 <tree string="Event track templates">
                     <field name="product_id" invisible="1"/>
                     <field name="sequence"/>
+                    <field name="name" />
                     <field name="planification" />
                     <field name="resolution" />
                     <field name="html_info" />
@@ -22,6 +23,7 @@
             <field name="arch" type="xml">
                 <search string="Search event track template">
                     <field name="product_id" />
+                    <field name="name" />
                     <separator/>
                     <group expand="0" string="Group By">
                         <filter string="Product" context="{'group_by':'product_id'}"/>
@@ -38,10 +40,11 @@
                     <sheet>
                         <h1>
                             <label string="Product" />
-                            <field name="product_id" class="oe_inline" />
+                            <field name="product_id" class="oe_inline" required="True"/>
                         </h1>
                         <group name="body" colspan="4" col="8">
-                            <field name="sequence" colspan="2"/>
+                            <field name="name" colspan="8" required="True"/>
+                            <field name="sequence" colspan="2" required="True"/>
                             <field name="url" colspan="6"/>
                             <separator string="HTML" colspan="8" />
                             <field name="html_info" colspan="8" nolabel="1"/> 

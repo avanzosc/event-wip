@@ -19,8 +19,9 @@ class ProductEventTrackTemplate(models.Model):
     _order = 'product_id, sequence asc'
 
     product_id = fields.Many2one(
-        comodel_name='product.product', string='Product', required=True)
-    sequence = fields.Integer(string="Sequence", required=True)
+        comodel_name='product.product', string='Product')
+    sequence = fields.Integer(string="Sequence")
+    name = fields.Char(string="Description")
     planification = fields.Text(string="Planification")
     resolution = fields.Text(string="Resolution")
     html_info = fields.Html(string='Description', translate=True)
