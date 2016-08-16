@@ -24,15 +24,15 @@ class SaleOrder(models.Model):
         if any(self.mapped('order_line.product_id.recurring_service')) and\
                 not self.project_id:
             raise exceptions.Warning(_('You must enter the project/contract'))
-        if self.project_id:
-            if not self.project_id.date_start:
+        for sale in self.filtered(lambda x: x.project_id):
+            if not sale.project_id.date_start:
                 raise exceptions.Warning(_('You must enter the start date of'
                                            ' the project/contract'))
-            if not self.project_id.date:
+            if not sale.project_id.date:
                 raise exceptions.Warning(_('You must enter the end date of the'
                                            ' project/contract'))
-            self.project_id.sale = self.id
-            cond = [('analytic_account_id', '=', self.project_id.id)]
+            sale.project_id.sale = sale.id
+            cond = [('analytic_account_id', '=', sale.project_id.id)]
             project = project_obj.search(cond, limit=1)
             if not project:
                 raise exceptions.Warning(_('Project/contract without project'))
@@ -58,7 +58,7 @@ class SaleOrder(models.Model):
                 if sale.project_by_task == 'yes':
                     if line.service_project_task:
                         project = line.service_project_task.project_id
-                        project.event_id = line.event
+                        project.event_id = line.event.id
             sale.project_id.name = sale.name
 
     def _prepare_event_data(self, sale, line, name, project):
