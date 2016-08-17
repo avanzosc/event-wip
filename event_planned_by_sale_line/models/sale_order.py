@@ -51,11 +51,10 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_button_confirm(self):
-        for sale in self:
-            if not sale.project_id:
-                sale._create_automatic_contract_from_sale()
+        self._create_automatic_contract_from_sale()
         res = super(SaleOrder, self).action_button_confirm()
-        for sale in self:
+        for sale in self.filtered(
+                lambda x: x.project_id and x.project_id.date_start):
             if sale.product_category.punctual_service:
                 vals = {'recurring_next_date': sale.project_id.date_start,
                         'recurring_interval': 1,
@@ -72,24 +71,29 @@ class SaleOrder(models.Model):
             if sale.payer == 'school':
                 vals['recurring_invoices'] = True
             sale.project_id.write(vals)
+            if sale.payer == 'school':
+                sale._generate_recurring_invoice_lines()
         return res
 
     def _create_automatic_contract_from_sale(self):
         account_obj = self.env['account.analytic.account']
-        min_fec = False
-        max_fec = False
-        for line in self.order_line:
-            if not min_fec or min_fec > line.start_date:
-                min_fec = line.start_date
-            if not max_fec or max_fec < line.end_date:
-                max_fec = line.end_date
-        account_vals = {'sale': self.id,
-                        'partner_id': self.partner_id.id,
-                        'name': self.name,
-                        'use_tasks': True,
-                        'date_start': min_fec,
-                        'date': max_fec}
-        self.project_id = account_obj.create(account_vals)
+        for sale in self:
+            min_fec = False
+            max_fec = False
+            for line in sale.order_line.filtered(
+                    lambda x: x.start_date and x.end_date):
+                if not min_fec or min_fec > line.start_date:
+                    min_fec = line.start_date
+                if not max_fec or max_fec < line.end_date:
+                    max_fec = line.end_date
+            if min_fec and max_fec:
+                account_vals = {'sale': sale.id,
+                                'partner_id': sale.partner_id.id,
+                                'name': sale.name,
+                                'use_tasks': True,
+                                'date_start': min_fec,
+                                'date': max_fec}
+                sale.project_id = account_obj.create(account_vals)
 
     @api.multi
     def action_cancel(self):
@@ -102,6 +106,19 @@ class SaleOrder(models.Model):
         projects.unlink()
         analytics.unlink()
         return res
+
+    def _generate_recurring_invoice_lines(self):
+        invoice_line_obj = self.env['account.analytic.invoice.line']
+        self.project_id.recurring_invoice_line_ids.unlink()
+        for line in self.order_line.filtered(lambda x: x.event_id):
+            vals = {'analytic_account_id': self.project_id.id,
+                    'product_id': line.product_id.id,
+                    'name': line.product_id.name,
+                    'quantity': 1,
+                    'uom_id': line.product_id.uom_id.id,
+                    'price_unit': line.price_unit,
+                    'event_id': line.event_id.id}
+            invoice_line_obj.create(vals)
 
 
 class SaleOrderLine(models.Model):

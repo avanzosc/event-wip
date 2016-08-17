@@ -19,7 +19,8 @@
         "sale_order_line_performance",
         "event_registration_analytic",
         "website_quote",
-        "sale_product_variants"
+        "sale_product_variants",
+        "account_analytic_analysis_recurring_day"
     ],
     "data": [
         "views/product_template_view.xml",
