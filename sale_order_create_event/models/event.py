@@ -40,7 +40,7 @@ class EventEvent(models.Model):
         event = self.with_context(
             sale_order_create_event=True).create(event_vals)
         if line:
-            line.event = event.id
+            line.event_id = event
         return event
 
 
