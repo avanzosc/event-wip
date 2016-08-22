@@ -30,5 +30,4 @@ class SaleOrder(models.Model):
                             'planification': template.planification,
                             'resolution': template.resolution}
                     track.write(vals)
-                sequence += 1
         return res
