@@ -33,7 +33,7 @@ class EventEvent(models.Model):
         project = project_obj.search(cond, limit=1)
         name = sale.name
         if by_task:
-            name = '{}. {}'.format(name, line.name)
+            name = u'{}. {}'.format(name, line.name)
         event_vals = sale._prepare_event_data(sale, line, name, project)
         if by_task:
             event_vals['sale_order_line'] = line.id

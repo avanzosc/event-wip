@@ -15,15 +15,26 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         self.planification = 'This is the planification'
         self.resolution = 'This is the resolution'
         self.html_info = 'This is the html_info'
-        self.track_template = self.env['product.event.track.template'].create({
-            'product_id': self.service_product.id,
-            'sequence': 1,
-            'name': 'Test Template',
+        track_tmpl_model = self.env['product.event.track.template']
+        vals = {
             'planification': self.planification,
             'resolution': self.resolution,
             'html_info': self.html_info,
             'url': self.url,
-        })
+        }
+        self.track_template = track_tmpl_model.search([
+            ('product_id', '=', self.service_product.id),
+            ('sequence', '=', 1),
+        ], limit=1)
+        if self.track_template:
+            self.track_template.write(vals)
+        else:
+            vals.update({
+                'product_id': self.service_product.id,
+                'sequence': 1,
+                'name': 'Test Template',
+            })
+            self.track_template = track_tmpl_model.create(vals)
 
     def test_sale_order_confirm_track_info(self):
         self.sale_order.write({
@@ -41,4 +52,4 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
             self.assertEquals(track.planification, self.planification)
             self.assertEquals(track.resolution, self.resolution)
             self.assertEquals(
-                track.description, "<p>{}</p>".format(self.html_info))
+                track.description, u"<p>{}</p>".format(self.html_info))

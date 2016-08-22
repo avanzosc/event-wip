@@ -1,33 +1,28 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, api
+from openerp import models, _
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    @api.multi
-    def action_button_confirm(self):
-        template_obj = self.env['product.event.track.template']
-        res = super(SaleOrder, self).action_button_confirm()
-        for line in self.mapped('order_line').filtered(
-                lambda l: l.event_id and
-                l.product_id.event_track_template_ids):
-            sequence = 0
-            for track in line.event_id.track_ids:
-                sequence += 1
-                cond = [('product_id', '=', line.product_id.id),
-                        ('sequence', '=', sequence)]
-                template = template_obj.search(cond, limit=1)
-                if template:
-                    # There is a problem with acuted letters, works with ascii
-                    name = "{} {}: {}".format('Session', sequence,
-                                              template.name)
-                    vals = {'name': name,
-                            'url': template.url,
-                            'description': template.html_info,
-                            'planification': template.planification,
-                            'resolution': template.resolution}
-                    track.write(vals)
+    def _prepare_session_data_from_sale_line(
+            self, event, num_session, line, date):
+        res = super(SaleOrder, self)._prepare_session_data_from_sale_line(
+            event, num_session, line, date)
+        template = self.env['product.event.track.template'].search([
+            ('product_id', '=', line.product_id.id),
+            ('sequence', '=', num_session)
+        ], limit=1)
+        if template:
+            name = u'{} {}: {}'.format(
+                _('Session'), num_session, template.name)
+            res.update({
+                'name': name,
+                'url': template.url,
+                'description': template.html_info,
+                'planification': template.planification,
+                'resolution': template.resolution
+            })
         return res
