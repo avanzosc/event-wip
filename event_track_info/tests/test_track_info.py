@@ -43,9 +43,7 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         self.sale_order.action_button_confirm()
         cond = [('sale_order_line', '=', self.sale_order.order_line[0].id)]
         event = self.event_model.search(cond, limit=1)
-        # This must be checked, it should have assigned the event to the line
-        self.sale_order.order_line[0].event_id = event.id
-        self.sale_order.action_button_confirm()
+        self.assertEquals(self.sale_order.order_line[0].event_id, event)
         for line in self.sale_order.order_line:
             track = line.event_id.track_ids[self.track_template.sequence - 1]
             self.assertEquals(track.url, self.url)

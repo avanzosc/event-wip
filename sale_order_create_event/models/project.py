@@ -104,8 +104,7 @@ class ProjectTask(models.Model):
             new_account.date = parent_account.date
             project.date = parent_account.date
             sale_name = task.service_project_sale_line.order_id.name
-            parent_account.write({'name': sale_name,
-                                  'event_id': False})
+            parent_account.write({'name': sale_name})
         return task
 
     def _create_new_account_project_by_task(self, task, parent_account, code):

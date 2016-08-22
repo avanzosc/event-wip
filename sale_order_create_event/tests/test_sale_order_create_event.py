@@ -78,18 +78,14 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
                 len(task.sessions), task.num_sessions)
         cond = [('project_id', '=', self.project.id)]
         event = self.event_model.search(cond, limit=1)[:1]
-        wiz_vals = {
-            'partner': self.ref('base.res_partner_26'),
-        }
-        wiz = self.wiz_add_model.with_context(
-            active_ids=event.ids).create(wiz_vals)
-        wiz.action_append()
         self.assertNotEqual(
             len([event]), 0, 'Sale order without event')
         self.assertEquals(
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
         self.assertEquals(len(event.my_task_ids), event.count_tasks)
+        self.sale_order.action_cancel()
+        self.assertEquals(self.sale_order.state, 'cancel')
 
     def test_sale_order_create_event_by_task(self):
         self.sale_order.write({
@@ -110,8 +106,8 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
         self.assertEquals(len(event.my_task_ids), event.count_tasks)
-        self.sale_order.action_cancel()
-        self.assertEquals(self.sale_order.state, 'cancel')
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_cancel()
 
     def test_sale_order_confirm(self):
         self.assertEquals(self.sale_order.state, 'draft')

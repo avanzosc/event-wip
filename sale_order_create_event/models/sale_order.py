@@ -58,7 +58,7 @@ class SaleOrder(models.Model):
                 if sale.project_by_task == 'yes':
                     if line.service_project_task:
                         project = line.service_project_task.project_id
-                        project.event_id = line.event
+                        project.event_id = line.event_id
             sale.project_id.name = sale.name
 
     def _prepare_event_data(self, sale, line, name, project):
