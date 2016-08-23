@@ -78,4 +78,3 @@ class TestEventPlannedBySaleLine(common.TransactionCase):
             len([event]), 0, 'Sale order withour event')
         self.sale_order2.order_line[0].event_id = event.id
         event._compute_event_tasks()
-        self.sale_order2.action_cancel()
