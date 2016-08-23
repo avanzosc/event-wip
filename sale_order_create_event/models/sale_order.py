@@ -245,6 +245,8 @@ class SaleOrderLine(models.Model):
             self.performance = self.end_hour - self.start_hour
 
     def _delete_event_information_by_task(self):
+        if self.event_ticket_id:
+            self.event_ticket_id = False
         for task in self.event_id.my_task_ids:
             project = False
             if task.project_id:
