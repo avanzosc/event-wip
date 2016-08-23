@@ -17,6 +17,8 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         self.procurement_model = self.env['procurement.order']
         self.wiz_add_model = self.env['wiz.event.append.assistant']
         self.registration_model = self.env['event.registration']
+        self.impute_model = self.env['wiz.impute.in.presence.from.session']
+        self.line_model = self.env['wiz.impute.in.presence.from.session.line']
         account_vals = {'name': 'account procurement service project',
                         'date_start': '2025-01-15',
                         'date': '2025-02-28',
@@ -60,6 +62,8 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         self.sale_order = self.sale_model.create(sale_vals)
 
     def test_sale_order_create_event(self):
+        partner = self.env.ref('base.res_partner_26')
+        partner.employee_id = self.ref('hr.employee_fp')
         self.assertEquals(len(self.project.tasks), 0)
         self.sale_order.action_button_confirm()
         self.assertNotEquals(len(self.project.tasks), 0)
@@ -78,12 +82,30 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
                 len(task.sessions), task.num_sessions)
         cond = [('project_id', '=', self.project.id)]
         event = self.event_model.search(cond, limit=1)[:1]
+        wiz_vals = {
+            'partner': self.ref('base.res_partner_26'),
+        }
+        wiz = self.wiz_add_model.with_context(
+            active_ids=event.ids).create(wiz_vals)
+        wiz.action_append()
         self.assertNotEqual(
             len([event]), 0, 'Sale order without event')
         self.assertEquals(
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
         self.assertEquals(len(event.my_task_ids), event.count_tasks)
+        wiz_impute = self.impute_model.create({})
+        wiz_impute_line = {'wiz_id': wiz_impute.id,
+                           'presence': event.track_ids[0].presences[0].id,
+                           'session': event.track_ids[0].id,
+                           'partner': partner.id,
+                           'hours': 5.0}
+        self.line_model.create(wiz_impute_line)
+        track = event.track_ids[0]
+        wiz_impute.with_context(
+            {'active_ids': [track.id]}).default_get(['lines'])
+        wiz_impute.button_impute_hours()
+        self.assertNotEqual(len(event.work_ids), 0)
         self.sale_order.action_cancel()
         self.assertEquals(self.sale_order.state, 'cancel')
 

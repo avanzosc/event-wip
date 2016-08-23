@@ -22,6 +22,7 @@
         'procurement_service_project',
         'project_task_generated_with_product_performance',
         'hr_employee_catch_partner',
+        'sale_service_recurrence_configurator'
     ],
     "data": [
         'wizard/wiz_event_append_assistant_view.xml',
