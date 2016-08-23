@@ -22,16 +22,16 @@
                     <group >
                         <field name="project_by_task" invisible="1" colspan="4"/>
                         <group>
-	                        <field name="start_date" string="Start date"
-	                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
-	                        <field name="start_hour" widget="float_time" string="Start hour"
-	                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                            <field name="start_date" string="Start date"
+                                    attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                            <field name="start_hour" widget="float_time" string="Start hour"
+                                    attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
                         </group>
                         <group>
-	                        <field name="end_date" string="End date"
-	                                attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
-	                        <field name="end_hour" widget="float_time" string="End hour"
-	                               attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                            <field name="end_date" string="End date"
+                                    attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                            <field name="end_hour" widget="float_time" string="End hour"
+                                   attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
                         </group>
                     </group>
                 </xpath>

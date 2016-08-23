@@ -32,6 +32,9 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             'route_ids':
             [(6, 0,
               [self.ref('procurement_service_project.route_serv_project')])],
+            'ticket_event_product_ids':
+            [(6, 0,
+              [self.ref('event_sale.product_product_event')])],
         })
         sale_vals = {
             'name': 'sale order 1',
@@ -80,6 +83,7 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         event = self.event_model.search(cond, limit=1)[:1]
         self.assertNotEqual(
             len([event]), 0, 'Sale order without event')
+        self.assertTrue(event.event_ticket_ids)
         self.assertEquals(
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
@@ -93,15 +97,16 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         })
         self.sale_order.action_button_confirm()
         cond = [('project_id', '=', self.project.id)]
-        event = self.event_model.search(cond, limit=1)
+        event = self.event_model.search(cond, limit=1)[:1]
+        self.assertNotEqual(
+            len([event]), 0, 'Sale order without event')
+        self.assertTrue(event.event_ticket_ids)
         wiz_vals = {
             'partner': self.ref('base.res_partner_26'),
         }
         wiz = self.wiz_add_model.with_context(
             active_ids=event.ids).create(wiz_vals)
         wiz.action_append()
-        self.assertNotEqual(
-            len([event]), 0, 'Sale order without event')
         self.assertEquals(
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
