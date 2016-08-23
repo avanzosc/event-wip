@@ -76,10 +76,7 @@ class EventEvent(models.Model):
                        'name': line.name,
                        'price': line.price_subtotal,
                        'sale_line': line.id}
-        ticket = ticket_obj.create(ticket_vals)
-        line.write({'event_id': event.id,
-                    'event_ticket_id': ticket.id,
-                    'event_ok': True})
+        ticket_obj.create(ticket_vals)
 
     @api.multi
     def write(self, vals):
