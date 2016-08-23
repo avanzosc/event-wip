@@ -35,13 +35,36 @@ class EventEvent(models.Model):
         if by_task:
             name = u'{}. {}'.format(name, line.name)
         event_vals = sale._prepare_event_data(sale, line, name, project)
+        products = sale.mapped(
+            'order_line.product_id.ticket_event_product_ids')
         if by_task:
             event_vals['sale_order_line'] = line.id
+            products = line.mapped('product_id.ticket_event_product_ids')
+        for product in products:
+            if 'event_ticket_ids' not in event_vals:
+                event_vals['event_ticket_ids'] = []
+            event_vals['event_ticket_ids'].append((0, 0, {
+                'name': product.name,
+                'product_id': product.id,
+                'price': product.lst_price,
+            }))
         event = self.with_context(
             sale_order_create_event=True).create(event_vals)
         if line:
             line.event_id = event
         return event
+
+    @api.model
+    def _default_tickets(self):
+        res = super(EventEvent, self)._default_tickets()
+        for line_dict in res:
+            try:
+                if line_dict.get('product_id', False) ==\
+                        self.env.ref('event_sale.product_product_event').id:
+                    res.remove(line_dict)
+            except:
+                pass
+        return res
 
 
 class EventTrack(models.Model):

@@ -43,7 +43,6 @@ class SaleOrder(models.Model):
     def _create_event_and_sessions_from_sale_order(self):
         event_obj = self.env['event.event']
         for sale in self.filtered('project_id'):
-            sale.project_id.name = sale.name
             sale_lines = sale.order_line.filtered(
                 lambda x: x.recurring_service)
             if sale_lines and sale.project_by_task == 'no':

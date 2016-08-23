@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="product_template_ticket_form_view" model="ir.ui.view">
+            <field name="name">product.template.ticket.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="event_sale.event_sale_product_template_form" />
+            <field name="arch" type="xml">
+                <field name="event_type_id" position="after">
+                    <field name="ticket_event_product_ids"
+                           attrs="{'invisible': ['|','|',('type','!=','service'),('event_ok','=',True),('recurring_service','=',False)]}"
+                           context="{'default_type':'service','default_event_ok':True}">
+                        <tree string="Product Variants">
+                            <field name="name"/>
+                            <field name="lst_price"/>
+                            <field name="price" invisible="not context.get('pricelist',False)"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
