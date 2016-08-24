@@ -70,7 +70,7 @@ class SaleOrderLine(models.Model):
     def button_group_description(self):
         event_obj = self.env['event.event']
         for line in self:
-            description = line.order_id.name + '-' + str(line.sequence)
+            description = u'{}-{}'.format(line.order_id.name, line.sequence)
             if line.courses:
                 description += '-' + line.courses
             if line.monday:
@@ -87,14 +87,15 @@ class SaleOrderLine(models.Model):
                 description += '-' + _('Saturday')
             if line.sunday:
                 description += '-' + _('Sunday')
-            utc_dt = event_obj._put_utc_format_date(line.start_date,
-                                                    line.start_hour)
-            local = event_obj._convert_date_to_local_format_with_hour(
-                str(utc_dt)[0:19])
-            description += '-' + str(local)[11:16]
-            utc_dt = event_obj._put_utc_format_date(line.end_date,
-                                                    line.end_hour)
-            local = event_obj._convert_date_to_local_format_with_hour(
-                str(utc_dt)[0:19])
-            description += '-' + str(local)[11:16]
+            if line.product_id.recurring_service:
+                utc_dt = event_obj._put_utc_format_date(line.start_date,
+                                                        line.start_hour)
+                local = event_obj._convert_date_to_local_format_with_hour(
+                    str(utc_dt)[0:19])
+                description += '-' + str(local)[11:16]
+                utc_dt = event_obj._put_utc_format_date(line.end_date,
+                                                        line.end_hour)
+                local = event_obj._convert_date_to_local_format_with_hour(
+                    str(utc_dt)[0:19])
+                description += '-' + str(local)[11:16]
             line.group_description = description
