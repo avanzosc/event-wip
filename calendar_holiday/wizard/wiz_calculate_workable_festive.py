@@ -35,13 +35,13 @@ class WizCalculateWorkableFestive(models.TransientModel):
         self.ensure_one()
         contract = self.env['hr.contract'].browse(
             self.env.context['active_id'])
-        year_begin = fields.Datetime.from_string(contract.date_start).year
-        if self.year < year_begin:
+        date_begin = fields.Date.from_string(contract.date_start)
+        if self.year < date_begin.year:
             raise exceptions.Warning(
                 _('Year introduced less than year contract beginning'))
         if contract.date_end:
-            year_end = fields.Datetime.from_string(contract.date_end).year
-            if self.year > year_end:
+            date_end = fields.Datetime.from_string(contract.date_end)
+            if self.year > date_end.year:
                 raise exceptions.Warning(
                     _('Year introduced more than year end contract'))
         contract.partner._generate_calendar(self.year)

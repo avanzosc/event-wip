@@ -11,7 +11,7 @@ class CalendarHoliday(models.Model):
     name = fields.Char(string='Description', required=True)
     lines = fields.One2many(
         comodel_name='calendar.holiday.day',
-        inverse_name='calendar_holiday', string='Calendar Holiday lines')
+        inverse_name='calendar_holiday', string='Holiday Days')
 
 
 class CalendarHolidayDay(models.Model):
@@ -21,8 +21,8 @@ class CalendarHolidayDay(models.Model):
     _order = 'date'
 
     calendar_holiday = fields.Many2one(
-        comodel_name='calendar.holiday', string='Calendar holiday',
+        comodel_name='calendar.holiday', string='Calendar',
         ondelete='cascade')
     date = fields.Date(string='Date')
     absence_type = fields.Many2one(
-        comodel_name='hr.holidays.status', string='Absence type')
+        comodel_name='hr.holidays.status', string='Absence Type')
