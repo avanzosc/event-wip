@@ -21,7 +21,7 @@
         'event_track_assistant',
         'procurement_service_project',
         'project_task_generated_with_product_performance',
-        'hr_employee_catch_partner',
+        'hr_employee_catch_partner'
     ],
     "data": [
         'wizard/wiz_event_append_assistant_view.xml',

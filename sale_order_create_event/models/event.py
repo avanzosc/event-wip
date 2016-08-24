@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, fields, api
+from openerp import models, fields, api, exceptions, _
 
 
 class EventEvent(models.Model):
@@ -26,6 +26,25 @@ class EventEvent(models.Model):
         'sale.order', string='Sale Order')
     sale_order_line = fields.Many2one(
         'sale.order.line', string='Sale order line')
+
+    @api.multi
+    def unlink(self):
+        for event in self:
+            if event.sale_order and event.sale_order.state != 'cancel':
+                raise exceptions.Warning(
+                    _("You can not delete the event '%s', because the sale"
+                      " order '%s', is not in cancel status ") %
+                    (event.name, event.sale_order.name))
+            if len(event.registration_ids) > 0:
+                raise exceptions.Warning(
+                    _("You can not delete the event '%s', because has people"
+                      " registered") % (event.name))
+            if event.sale_order and event.sale_order.project_by_task == 'yes':
+                event._delete_event_information_by_task()
+            else:
+                event.my_task_ids.unlink()
+            event.track_ids.unlink()
+        return super(EventEvent, self).unlink()
 
     def _create_event_from_sale(self, by_task, sale, line=False):
         project_obj = self.env['project.project']
@@ -65,6 +84,17 @@ class EventEvent(models.Model):
             except:
                 pass
         return res
+
+    def _delete_event_information_by_task(self):
+        for task in self.my_task_ids:
+            project = False
+            if task.project_id:
+                project = task.project_id
+                account = project.analytic_account_id
+            task.unlink()
+            if project:
+                project.unlink()
+                account.unlink()
 
 
 class EventTrack(models.Model):
