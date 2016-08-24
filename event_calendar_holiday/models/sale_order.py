@@ -12,13 +12,11 @@ class SaleOrder(models.Model):
         event_obj = self.env['event.event']
         project_obj = self.env['project.project']
         res = super(SaleOrder, self).action_button_confirm()
-        for sale in self:
-            if sale.project_id.festive_calendars:
-                cond = [('analytic_account_id', '=', sale.project_id.id)]
-                project = project_obj.search(cond, limit=1)
-                cond = [('project_id', '=', project.id)]
-                events = event_obj.search(cond)
-                for event in events:
-                    event._put_festives_in_sesions_from_sale_contract(
-                        sale.project_id.festive_calendars)
+        for sale in self.filtered(lambda s: s.project_id.festive_calendars):
+            cond = [('analytic_account_id', '=', sale.project_id.id)]
+            project = project_obj.search(cond, limit=1)
+            cond = [('project_id', '=', project.id)]
+            events = event_obj.search(cond)
+            events._put_festives_in_sesions_from_sale_contract(
+                sale.project_id.festive_calendars)
         return res
