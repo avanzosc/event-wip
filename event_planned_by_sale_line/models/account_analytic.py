@@ -10,40 +10,25 @@ class AccountAnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'
 
     @api.model
-    def _cron_recurring_create_invoice(self):
-        account_obj = self.env['account.analytic.account']
-        cond = [('recurring_next_date', '<=', fields.Date.context_today(self)),
-                ('state', '=', 'open'),
-                ('recurring_invoices', '=', True),
-                ('type', '=', 'contract'),
-                ('recurring_rule_type', '=', 'monthly'),
-                ('sale', '!=', False)]
-        accounts = account_obj.search(cond).filtered(
-            lambda x: x.sale.payer == 'school')
-        for account in accounts:
-            fec_ini, fec_end = account._calculate_fec_ini_end()
-            lines = account.recurring_invoice_line_ids.filtered(
-                lambda x: x.event_id)
-            lines._calculate_qty_in_analytic_invoice_line(fec_ini, fec_end)
-        return super(AccountAnalyticAccount,
-                     self)._cron_recurring_create_invoice()
+    def _prepare_invoice_line(self, line, fiscal_position):
+        values = super(AccountAnalyticAccount, self)._prepare_invoice_line(
+            line, fiscal_position)
+        if line.analytic_account_id.sale.payer == 'school':
+            quantity = line._calculate_qty_in_analytic_invoice_line()
+            values.update({
+                'quantity': quantity,
+            })
+        return values
 
-    def _calculate_fec_ini_end(self):
+    def _calculate_fec_ini_end(self, interval=0):
         date = fields.Date.from_string(self.recurring_next_date)
-        if date.month > 9:
-            fec_ini = "{}-{}-01".format(date.year, date.month)
-            fec_end = "{}-{}-{}".format(
-                date.year, date.month, calendar.monthrange(date.year,
-                                                           date.month)[1])
-        else:
-            fec_ini = "{}-0{}-01".format(date.year, date.month)
-            fec_end = "{}-0{}-{}".format(
-                date.year, date.month, calendar.monthrange(date.year,
-                                                           date.month)[1])
-        if self.recurring_interval > 1:
-            fec_ini = fields.Date.to_string(
-                fec_ini + relativedelta(months=self.recurring_interval - 1))
-        return fec_ini, fec_end
+        date += relativedelta(months=interval)
+        start_date = date.replace(day=1)
+        end_date = date.replace(
+            day=calendar.monthrange(date.year, date.month)[1])
+        start_date = fields.Date.to_string(start_date)
+        end_date = fields.Date.to_string(end_date)
+        return start_date, end_date
 
 
 class AccountAnalyticInvoiceLine(models.Model):
@@ -52,10 +37,15 @@ class AccountAnalyticInvoiceLine(models.Model):
     event_id = fields.Many2one(
         comodel_name='event.event', string='Event')
 
-    def _calculate_qty_in_analytic_invoice_line(self, fec_ini, fec_end):
-        for line in self:
-            count = len(line.event_id.no_employee_registration_ids.filtered(
+    @api.multi
+    def _calculate_qty_in_analytic_invoice_line(self):
+        self.ensure_one()
+        count = 0
+        for interval in range(0, self.analytic_account_id.recurring_interval):
+            start_date, end_date =\
+                self.analytic_account_id._calculate_fec_ini_end(interval)
+            count += len(self.event_id.no_employee_registration_ids.filtered(
                 lambda x: x.state == 'open' and
-                ((fec_end >= x.date_start and fec_end <= x.date_end) or
-                 (fec_ini <= x.date_end and fec_ini >= x.date_start))))
-            line.quantity = count
+                ((end_date >= x.date_start and end_date <= x.date_end) or
+                 (start_date <= x.date_end and start_date >= x.date_start))))
+        return count

@@ -2,7 +2,7 @@
 # © 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, _
-from dateutil.relativedelta import relativedelta
+from openerp.tools import config
 import calendar
 
 
@@ -10,10 +10,20 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     product_category = fields.Many2one(
-        comodel_name='product.category', string='Product category')
+        comodel_name='product.category', string='Product Category')
     payer = fields.Selection(
         selection=[('school', 'School'), ('student', 'Student')],
         string='Payer', default='student')
+
+    @api.onchange('product_category')
+    def onchange_product_category(self):
+        if self.mapped('order_line'):
+            self.product_category =\
+                self.mapped('order_line.product_category')[:1]
+            return {'warning':
+                    {'title': _('Product Category Change'),
+                     'message': _('You can not change category if there are'
+                                  ' lines created.')}}
 
     @api.multi
     def onchange_template_id(self, template_id, partner=False,
@@ -51,25 +61,30 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_button_confirm(self):
-        self._create_automatic_contract_from_sale()
+        for sale in self:
+            if any(sale.mapped('order_line.product_id.recurring_service')):
+                sale._create_automatic_contract_from_sale()
         res = super(SaleOrder, self).action_button_confirm()
         for sale in self.filtered(
                 lambda x: x.project_id and x.project_id.date_start):
+            vals = {
+                'recurring_invoices': sale.payer == 'school',
+                'recurring_interval': 1,
+            }
             if sale.product_category.punctual_service:
-                vals = {'recurring_next_date': sale.project_id.date_start,
-                        'recurring_interval': 1,
-                        'recurring_rule_type': 'yearly'}
+                vals.update({
+                    'recurring_next_date': sale.project_id.date_start,
+                    'recurring_rule_type': 'yearly',
+                })
             else:
-                date = fields.Datetime.from_string(
-                    sale.project_id.date_start).date()
-                recurring_next_date = "%s-%s-%s" % (
-                    date.year, date.month,
-                    calendar.monthrange(date.year, date.month)[1])
-                vals = {'recurring_next_date': recurring_next_date,
-                        'recurring_interval': 1,
-                        'recurring_rule_type': 'monthly'}
-            if sale.payer == 'school':
-                vals['recurring_invoices'] = True
+                date = fields.Date.from_string(sale.project_id.date_start)
+                recurring_next_date =\
+                    date.replace(day=calendar.monthrange(date.year,
+                                                         date.month)[1])
+                vals.update({
+                    'recurring_next_date': recurring_next_date,
+                    'recurring_rule_type': 'monthly',
+                })
             sale.project_id.write(vals)
             if sale.payer == 'school':
                 sale._generate_recurring_invoice_lines()
@@ -77,15 +92,12 @@ class SaleOrder(models.Model):
 
     def _create_automatic_contract_from_sale(self):
         account_obj = self.env['account.analytic.account']
+        if (config['test_enable'] and
+                not self.env.context.get('check_automatic_contract_creation')):
+            return True
         for sale in self:
-            min_fec = False
-            max_fec = False
-            for line in sale.order_line.filtered(
-                    lambda x: x.start_date and x.end_date):
-                if not min_fec or min_fec > line.start_date:
-                    min_fec = line.start_date
-                if not max_fec or max_fec < line.end_date:
-                    max_fec = line.end_date
+            min_fec = min(sale.mapped('order_line.start_date'))
+            max_fec = max(sale.mapped('order_line.end_date'))
             if min_fec and max_fec:
                 account_vals = {'sale': sale.id,
                                 'partner_id': sale.partner_id.id,
@@ -128,59 +140,56 @@ class SaleOrderLine(models.Model):
         comodel_name='product.category', string='Product category')
 
     @api.multi
+    def product_id_change(
+            self, pricelist, product, qty=0, uom=False, qty_uos=0,
+            uos=False, name='', partner_id=False, lang=False, update_tax=True,
+            date_order=False, packaging=False, fiscal_position=False,
+            flag=False):
+        res = super(SaleOrderLine, self).product_id_change(
+            pricelist, product, qty=qty, uom=uom, qty_uos=qty_uos, uos=uos,
+            name=name, partner_id=partner_id, lang=lang, update_tax=update_tax,
+            date_order=date_order, packaging=packaging,
+            fiscal_position=fiscal_position, flag=flag)
+        if not product and 'default_product_category' in self.env.context:
+            if 'domain' not in res:
+                res['domain'] = {}
+            if 'product_id' not in res['domain']:
+                res['domain']['product_id'] = []
+            cond = res['domain']['product_id']
+            cond.append(('categ_id', '=',
+                         self.env.context.get('default_product_category')))
+            res['domain']['product_id'] = cond
+        return res
+
+    @api.multi
     @api.onchange('product_tmpl_id')
     def onchange_product_tmpl_id(self):
         res = super(SaleOrderLine, self).onchange_product_tmpl_id()
-        if 'domain' in res:
-            domain = res.get('domain')
-            if 'product_id' in domain:
-                cond = domain.get('product_id')
-                cond.append(('categ_id', '=', self.product_category.id))
-                res['domain']['product_id'] = cond
+        if 'domain' not in res:
+            res['domain'] = {}
+        if 'product_id' not in res['domain']:
+            res['domain']['product_id'] = []
+        cond = res['domain']['product_id']
+        cond.append(('categ_id', '=', self.product_category.id))
+        res['domain']['product_id'] = cond
         return res
 
     @api.onchange('start_date', 'end_date')
     def onchange_start_end_date(self):
         self.ensure_one()
-        self.january = False
-        self.february = False
-        self.march = False
-        self.april = False
-        self.may = False
-        self.june = False
-        self.july = False
-        self.august = False
-        self.september = False
-        self.october = False
-        self.november = False
-        self.december = False
         if self.start_date and self.end_date:
-            fec_ini = fields.Datetime.from_string(self.start_date).date()
-            fec_fin = fields.Datetime.from_string(self.end_date).date()
-            while fec_ini <= fec_fin:
-                if fec_ini.month == 1:
-                    self.january = True
-                if fec_ini.month == 2:
-                    self.february = True
-                if fec_ini.month == 3:
-                    self.march = True
-                if fec_ini.month == 4:
-                    self.april = True
-                if fec_ini.month == 5:
-                    self.may = True
-                if fec_ini.month == 6:
-                    self.june = True
-                if fec_ini.month == 7:
-                    self.july = True
-                if fec_ini.month == 8:
-                    self.august = True
-                if fec_ini.month == 9:
-                    self.september = True
-                if fec_ini.month == 10:
-                    self.october = True
-                if fec_ini.month == 11:
-                    self.november = True
-                if fec_ini.month == 12:
-                    self.december = True
-                fec_ini = (fields.Date.from_string(str(fec_ini)) +
-                           (relativedelta(days=1)))
+            fec_ini = fields.Date.from_string(self.start_date)
+            fec_fin = fields.Date.from_string(self.end_date)
+            months = list(range(fec_ini.month, fec_fin.month + 1))
+            self.january = 1 in months
+            self.february = 2 in months
+            self.march = 3 in months
+            self.april = 4 in months
+            self.may = 5 in months
+            self.june = 6 in months
+            self.july = 7 in months
+            self.august = 8 in months
+            self.september = 9 in months
+            self.october = 10 in months
+            self.november = 11 in months
+            self.december = 12 in months

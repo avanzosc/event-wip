@@ -45,8 +45,9 @@
                 </field>
             </field>
         </record>
-        <record id="view_order_tree_inh_planned_line" model="ir.ui.view" >
-            <field name="name">view_order_tree.inh.planned.line</field>
+
+        <record id="sale_order_planned_line_tree_view" model="ir.ui.view" >
+            <field name="name">sale.order.planned_line.tree</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_tree"/>
             <field name="arch" type="xml">
@@ -56,8 +57,9 @@
                 </field>
             </field>
         </record>
-        <record id="view_quotation_tree_inh_planned_line" model="ir.ui.view" >
-            <field name="name">view.quotation.tree.inh.planned.line</field>
+
+        <record id="sale_order_quotation_planned_line_tree_view" model="ir.ui.view" >
+            <field name="name">sale.order.quotation.planned_line.tree</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_quotation_tree"/>
             <field name="arch" type="xml">
@@ -67,8 +69,9 @@
                 </field>
             </field>
         </record>
-        <record id="view_sales_order_filter_inh_planned_line" model="ir.ui.view" >
-            <field name="name">view.sales.order.filter.inh.planned.line</field>
+
+        <record id="sale_order_planned_line_search_view" model="ir.ui.view" >
+            <field name="name">sale.order.planned_line.search</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
@@ -77,24 +80,14 @@
                     <field name="payer" />
                 </field>
                 <filter string="Order Month" position="after">
-                    <filter string="Product category" domain="[]" context="{'group_by':'product_category'}"/>
-                    <filter string="Payer" domain="[]" context="{'group_by':'payer'}"/>
+                    <filter string="Product category" domain="[]"
+                            context="{'group_by':'product_category'}"/>
+                    <filter string="Payer" domain="[]"
+                            context="{'group_by':'payer'}"/>
                 </filter>
             </field>
         </record>
-        <record id="view_order_form4_inh_planned_line" model="ir.ui.view" >
-            <field name="name">view.order.form4.inh.planned.line</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="before">
-                    <field name="product_category" invisible="1"/>
-                </xpath>
-                <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
-                    <field name="product_category" invisible="1"/>
-                </xpath>
-            </field>
-        </record>
+
         <record id="sale_order_form_quote_inh_planned_line" model="ir.ui.view" >
             <field name="name">sale.order.form.quote.inh.planned.line</field>
             <field name="model">sale.order</field>
@@ -105,16 +98,23 @@
                 </field>
             </field>
         </record>
-        <record id="view_order_form5_inh_planned_line" model="ir.ui.view" >
-            <field name="name">view.order.form5.inh.planned.line</field>
+
+        <record id="sale_order_planned_line_form_view" model="ir.ui.view" >
+            <field name="name">sale.order.planned_line.form</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_product_variants.sale_order_extended_form_view"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="before">
+                    <field name="product_category" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
+                    <field name="product_category" invisible="1"/>
+                </xpath>
                 <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="attributes">
-                    <attribute name="domain">[('categ_id', '=', product_category)]</attribute>
+                    <attribute name="domain">[('categ_id','=',product_category)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree//field[@name='product_tmpl_id']" position="attributes">
-                    <attribute name="domain">[('categ_id', '=', product_category)]</attribute>
+                    <attribute name="domain">[('categ_id','=',product_category)]</attribute>
                 </xpath>
             </field>
         </record>

@@ -64,7 +64,8 @@ class TestEventRegistrationPaCode(common.TransactionCase):
         self.sale_order = self.sale_model.create(sale_vals)
 
     def test_event_registration_pa_code(self):
-        self.sale_order.action_button_confirm()
+        self.sale_order.with_context(
+            check_automatic_contract_creation=True).action_button_confirm()
         event = self.sale_order.order_line[0].event_id
         self.assertNotEqual(event, False, 'Event no generated')
         wiz_vals = {'min_event': event.id,
