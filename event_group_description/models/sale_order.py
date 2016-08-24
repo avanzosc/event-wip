@@ -9,22 +9,22 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_button_confirm(self):
-        for sale in self:
-            for line in sale.order_line:
-                if not line.group_description and line.recurring_service:
-                    line.button_group_description()
+        for line in self.mapped('order_line').filtered(
+                lambda l: l.product_id.recurring_service and
+                not l.group_description):
+            line.button_group_description()
         res = super(SaleOrder, self).action_button_confirm()
-        for sale in self:
-            for line in sale.order_line:
-                if line.service_project_task and line.recurring_service:
-                    pos = line.group_description.find('-')
-                    line.service_project_task.write(
-                        {'name': line.group_description[pos+1:],
-                         'description': line.group_description[pos+1:]})
-                    project = line.service_project_task.project_id
-                    if project and project.analytic_account_id:
-                        project.analytic_account_id.write(
-                            {'name': line.group_description[pos+1:]})
+        for line in self.mapped('order_line').filtered(
+                lambda l: l.product_id.recurring_service and
+                l.service_project_task):
+            pos = line.group_description.find('-')
+            line.service_project_task.write(
+                {'name': line.group_description[pos+1:],
+                 'description': line.group_description[pos+1:]})
+            project = line.service_project_task.project_id
+            if project and project.analytic_account_id:
+                project.analytic_account_id.write(
+                    {'name': line.group_description[pos+1:]})
         return res
 
 
