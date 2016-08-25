@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record id="view_order_form_inh_sale_create_event" model="ir.ui.view">
-            <field name="name">view.order.form.inh.sale.create.event</field>
+            <field name="name">sale.order.create.event.form</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
@@ -23,15 +23,15 @@
                         <field name="project_by_task" invisible="1" colspan="4"/>
                         <group>
                             <field name="start_date" string="Start date"
-                                    attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                                   attrs="{'required':[('recurring_service','=',True),('project_by_task','=','yes')], 'invisible':['|',('recurring_service','!=',True),('project_by_task','=','no')]}" />
                             <field name="start_hour" widget="float_time" string="Start hour"
-                                    attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                                   attrs="{'required':[('recurring_service','=',True),('project_by_task','=','yes')], 'invisible':['|',('recurring_service','!=',True),('project_by_task','=','no')]}" />
                         </group>
                         <group>
                             <field name="end_date" string="End date"
-                                    attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                                   attrs="{'required':[('recurring_service','=',True),('project_by_task','=','yes')], 'invisible':['|',('recurring_service','!=',True),('project_by_task','=','no')]}" />
                             <field name="end_hour" widget="float_time" string="End hour"
-                                   attrs="{'required':[('project_by_task','=','yes')], 'invisible':[('project_by_task','=','no')]}" />
+                                   attrs="{'required':[('recurring_service','=',True),('project_by_task','=','yes')], 'invisible':['|',('recurring_service','!=',True),('project_by_task','=','no')]}" />
                         </group>
                     </group>
                 </xpath>
