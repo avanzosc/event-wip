@@ -2,6 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
+from dateutil.relativedelta import relativedelta
 
 
 class EventEvent(models.Model):
@@ -96,6 +97,72 @@ class EventEvent(models.Model):
                 project.unlink()
                 account.unlink()
 
+    def _update_event_dates(self, old_date, new_days, new_date, begin=False,
+                            end=False):
+        project_obj = self.env['project.project']
+        event_obj = self.env['event.event']
+        vals = {}
+        if begin:
+            vals['date_begin'] = (
+                fields.Datetime.from_string(
+                    self.date_begin).replace(year=new_date.year,
+                                             month=new_date.month,
+                                             day=new_date.day))
+        elif end:
+            vals['date_end'] = (
+                fields.Datetime.from_string(
+                    self.date_end).replace(year=new_date.year,
+                                           month=new_date.month,
+                                           day=new_date.day))
+        self.with_context(
+            sale_order_create_event=True, no_recalculate=True).write(vals)
+        if begin:
+            registrations = self.registration_ids.filtered(
+                lambda x: fields.Datetime.from_string(x.date_start).date() ==
+                old_date)
+            for registration in registrations:
+                registration.date_start = (
+                    fields.Datetime.from_string(
+                        registration.date_start).replace(year=new_date.year,
+                                                         month=new_date.month,
+                                                         day=new_date.day))
+            self.my_task_ids.write({'date_start': self.date_begin})
+            new_date = event_obj._convert_date_to_local_format_with_hour(
+                self.date_begin).date()
+            projects = self.mapped('my_task_ids.project_id')
+            projects.write({'date_start': new_date})
+            accounts = projects.mapped('analytic_account_id')
+            accounts.write({'date_start': new_date})
+        if end:
+            registrations = self.registration_ids.filtered(
+                lambda x: fields.Datetime.from_string(x.date_end).date() ==
+                old_date)
+            for registration in registrations:
+                registration.date_end = (
+                    fields.Datetime.from_string(
+                        registration.date_end).replace(year=new_date.year,
+                                                       month=new_date.month,
+                                                       day=new_date.day))
+            self.my_task_ids.write({'date_end': self.date_end})
+            new_date = event_obj._convert_date_to_local_format_with_hour(
+                self.date_end).date()
+            projects = self.mapped('my_task_ids.project_id')
+            projects.write({'date': new_date})
+            accounts = projects.mapped('analytic_account_id')
+            accounts.write({'date': new_date})
+        if self.sale_order and self.sale_order.project_id and (begin or end):
+            if begin:
+                self.sale_order.project_id.date_start = new_date
+            if end:
+                self.sale_order.project_id.date = new_date
+            cond = [('analytic_account_id', '=',
+                     self.sale_order.project_id.id)]
+            project = project_obj.search(cond, limit=1)
+            if project and begin:
+                project.date_start = new_date
+            if project and end:
+                project.date = new_date
+
 
 class EventTrack(models.Model):
     _inherit = 'event.track'
@@ -103,6 +170,26 @@ class EventTrack(models.Model):
     tasks = fields.Many2many(
         comodel_name="project.task", relation="task_session_project_relation",
         column1="track_id", column2="task_id", copy=False, string="Tasks")
+
+    def _change_session_date(self, new_days):
+        event_begin = fields.Date.from_string(self.event_id.date_begin)
+        event_end = fields.Date.from_string(self.event_id.date_end)
+        new_date = (fields.Date.from_string(self.date) +
+                    relativedelta(days=new_days))
+        new_date_with_hour = (fields.Datetime.from_string(self.date) +
+                              relativedelta(days=new_days))
+        if new_date < event_begin:
+            self.event_id._update_event_dates(event_begin, new_days,
+                                              new_date, begin=True)
+        if new_date > event_end:
+            self.event_id._update_event_dates(event_end, new_days,
+                                              new_date, end=True)
+        estimated_date_end = (new_date_with_hour +
+                              relativedelta(hours=self.duration))
+        vals = {'date': new_date_with_hour,
+                'session_date': new_date,
+                'estimated_date_end': estimated_date_end}
+        self.write(vals)
 
 
 class EventRegistration(models.Model):

@@ -21,6 +21,7 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         self.line_model = self.env['wiz.impute.in.presence.from.session.line']
         self.contract_model = self.env['hr.contract']
         self.wiz_workable_model = self.env['wiz.calculate.workable.festive']
+        self.change_date_model = self.env['wiz.change.session.date']
         account_vals = {'name': 'account procurement service project',
                         'date_start': '2025-01-15',
                         'date': '2025-02-28',
@@ -162,3 +163,20 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             performance = line.end_hour - line.start_hour
             line.onchange_date_begin()
             self.assertEquals(line.performance, performance)
+
+    def test_change_session_date(self):
+        self.sale_order.action_button_confirm()
+        cond = [('project_id', '=', self.project.id)]
+        event = self.event_model.search(cond, limit=1)[:1]
+        wiz_vals = {'days': 35}
+        wiz = self.change_date_model.create(wiz_vals)
+        wiz.with_context(
+            {'active_ids': [event.track_ids[len(
+                event.track_ids)-1].id]}).change_session_date()
+        wiz_vals = {'days': -28}
+        wiz = self.change_date_model.create(wiz_vals)
+        wiz.with_context(
+            {'active_ids': [event.track_ids[0].id]}).change_session_date()
+        self.assertEqual(
+            event.track_ids[0].date, event.date_begin,
+            'Session and event with different start date')
