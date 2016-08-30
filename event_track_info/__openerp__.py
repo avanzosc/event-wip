@@ -19,6 +19,7 @@
         "event_sale",
         "event_report",
         "website_event_track",
+        "event_track_assistant",
         "sale_order_create_event"
     ],
     "data": [
