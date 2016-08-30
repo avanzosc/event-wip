@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-# (c) 2025 Alfredo de la Fuente - AvanzOSC
+# © 2016 Alfredo de la Fuente - AvanzOSC
+# © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+
 import openerp.tests.common as common
+from openerp import fields
 
 
 class TestCalendarHoliday(common.TransactionCase):
@@ -12,39 +15,62 @@ class TestCalendarHoliday(common.TransactionCase):
         self.contract_model = self.env['hr.contract']
         self.calendar_model = self.env['res.partner.calendar']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
+        self.today = fields.Date.from_string(fields.Date.today())
+        self.partner = self.env['res.partner'].create({
+            'name': 'Partner',
+        })
+        self.user = self.env['res.users'].create({
+            'partner_id': self.partner.id,
+            'login': 'user',
+            'password': 'pass',
+        })
+        employee_model = self.env['hr.employee']
+        employee_vals = {
+            'name': 'Test Employee',
+            'user_id': self.user.id,
+        }
+        employee_vals.update(
+            employee_model.onchange_user(
+                user_id=employee_vals['user_id'])['value'])
+        self.employee = employee_model.create(employee_vals)
         calendar_line_vals = {
-            'date': '2025-01-06',
-            'absence_type': self.ref('hr_holidays.holiday_status_comp')}
-        calendar_vals = {'name': 'Holidays calendar',
-                         'lines': [(0, 0, calendar_line_vals)]}
+            'date': self.today.replace(month=1, day=6),
+            'absence_type': self.ref('hr_holidays.holiday_status_comp'),
+        }
+        calendar_vals = {
+            'name': 'Holidays calendar',
+            'lines': [(0, 0, calendar_line_vals)],
+        }
         self.calendar_holiday = self.holiday_model.create(calendar_vals)
-        contract_vals = {'name': 'Contract 1',
-                         'employee_id': self.ref('hr.employee'),
-                         'partner': self.ref('base.public_partner'),
-                         'type_id':
-                         self.ref('hr_contract.hr_contract_type_emp'),
-                         'wage': 500,
-                         'date_start': '2025-01-02',
-                         'date_end': '2025-12-30',
-                         'working_hours':
-                         self.ref('resource.timesheet_group1'),
-                         'holiday_calendars':
-                         [(6, 0, [self.calendar_holiday.id])]}
+        contract_vals = {
+            'name': 'Test Employee Contract',
+            'date_start': self.today.replace(month=1, day=1),
+            'date_end': self.today.replace(
+                year=self.today.year+1, month=12, day=31),
+            'employee_id': self.employee.id,
+            'wage': 500,
+            'working_hours': self.ref('resource.timesheet_group1'),
+            'holiday_calendars': [(6, 0, [self.calendar_holiday.id])],
+        }
         self.contract = self.contract_model.create(contract_vals)
 
     def test_calendar_holiday(self):
-        self.calendar_holiday.lines[0].write({'date': '2025-01-06'})
-        wiz = self.wiz_model.with_context(
-            {'active_id': self.contract.id}).create({'year': 2025})
-        vals = ['year']
-        wiz.with_context(
-            {'active_id': self.contract.id}).default_get(vals)
-        wiz.with_context(
-            {'active_id':
-             self.contract.id}).button_calculate_workables_and_festives()
-        cond = [('partner', '=', self.ref('base.public_partner')),
-                ('year', '=', 2025)]
+        cond = [('partner', '=', self.contract.partner.id),
+                ('year', '=', self.today.year)]
         calendar = self.calendar_model.search(cond)
-        self.assertNotEqual(
-            len(calendar), 0, 'Calendar not generated for partner')
-        self.contract.write({'partner': self.ref('base.res_partner_1')})
+        self.assertEquals(len(calendar), 0)
+        wiz = self.wiz_model.with_context(
+            active_id=self.contract.id).create({})
+        self.assertEquals(
+            wiz.year, fields.Date.from_string(self.contract.date_start).year)
+        wiz.button_calculate_workables_and_festives()
+        calendar = self.calendar_model.search(cond)
+        self.assertNotEquals(len(calendar), 0)
+        wiz_vals = self.wiz_model.with_context(
+            active_id=self.contract.id).default_get([])
+        self.assertFalse(wiz_vals.get('year'))
+        wiz2 = self.wiz_model.with_context(
+            active_id=self.contract.id).create({
+                'year': fields.Date.from_string(self.contract.date_end).year,
+            })
+        wiz2.button_calculate_workables_and_festives()

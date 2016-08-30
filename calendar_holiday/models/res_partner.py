@@ -3,7 +3,6 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
 
 
 class ResPartner(models.Model):
@@ -11,27 +10,26 @@ class ResPartner(models.Model):
 
     def _generate_calendar(self, year):
         calendar_obj = self.env['res.partner.calendar']
-        follower_obj = self.env['mail.followers']
+        day_vals = []
+        start_date = fields.Date.from_string('{}-01-01'.format(year))
+        end_date = fields.Date.from_string('{}-12-31'.format(year))
+        while start_date <= end_date:
+            day_vals.append((0, 0, {'partner': self.id, 'date': start_date}))
+            start_date = (fields.Date.from_string(str(start_date)) +
+                          (relativedelta(days=1)))
         cond = [('partner', '=', self.id),
                 ('year', '=', year)]
         calendar = calendar_obj.search(cond, limit=1)
         if calendar:
             calendar.dates.unlink()
+            calendar.dates.write({'dates': day_vals})
         else:
-            calendar_vals = {'partner': self.id,
-                             'year': year}
+            calendar_vals = {
+                'partner': self.id,
+                'year': year,
+                'dates': day_vals,
+            }
             calendar = calendar_obj.create(calendar_vals)
-            follower_obj.create({'res_model': 'res.partner.calendar',
-                                 'res_id': calendar.id,
-                                 'partner_id': self.id})
-        day_vals = []
-        start_date = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d').date()
-        end_date = datetime.strptime(str(year) + '-12-31', '%Y-%m-%d').date()
-        while start_date.year == end_date.year:
-            day_vals.append((0, 0, {'partner': self.id, 'date': start_date}))
-            start_date = (fields.Date.from_string(str(start_date)) +
-                          (relativedelta(days=1)))
-        calendar.write({'dates': day_vals})
 
     def _put_estimated_hours_in_calendar(self, year, contract):
         partner_calendar_day_obj = self.env['res.partner.calendar.day']
@@ -93,6 +91,20 @@ class ResPartnerCalendar(models.Model):
         comodel_name='res.partner.calendar.day', inverse_name='calendar',
         string='Calendar dates')
 
+    @api.model
+    def create(self, values):
+        res = super(ResPartnerCalendar, self).create(values)
+        if values.get('partner', False):
+            res.message_subscribe([values.get('partner')])
+        return res
+
+    @api.multi
+    def write(self, values):
+        res = super(ResPartnerCalendar, self).write(values)
+        if values.get('partner', False):
+            self.message_subscribe([values.get('partner')])
+        return res
+
 
 class ResPartnerCalendarDay(models.Model):
     _name = 'res.partner.calendar.day'
@@ -100,13 +112,11 @@ class ResPartnerCalendarDay(models.Model):
     _rec_name = 'date'
 
     @api.depends('date')
-    @api.multi
     def _compute_weekday(self):
         for day in self:
-            if day.date:
-                date = fields.Date.from_string(day.date)
-                day.year = date.year
-                day.weekday = str(date.weekday())
+            date = fields.Date.from_string(day.date)
+            day.year = date.year
+            day.weekday = str(date.weekday())
 
     calendar = fields.Many2one(
         comodel_name='res.partner.calendar', string='Calendar',

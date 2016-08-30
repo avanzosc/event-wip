@@ -19,24 +19,14 @@ class HrContract(models.Model):
 
     @api.model
     def create(self, vals):
-        follower_obj = self.env['mail.followers']
         contract = super(HrContract, self).create(vals)
-        if (contract.partner and contract.partner.id not in
-                contract.message_follower_ids.ids):
-            follower_obj.create({'res_model': 'hr.contract',
-                                 'res_id': contract.id,
-                                 'partner_id': contract.partner.id})
+        if contract.partner:
+            contract.message_subscribe(contract.partner.ids)
         return contract
 
     @api.multi
     def write(self, vals):
-        follower_obj = self.env['mail.followers']
         result = super(HrContract, self).write(vals)
-        if vals.get('partner', False):
-            for contract in self:
-                if (vals.get('partner') not in
-                        contract.message_follower_ids.ids):
-                    follower_obj.create({'res_model': 'hr.contract',
-                                         'res_id': contract.id,
-                                         'partner_id': vals.get('partner')})
+        for contract in self.filtered('partner'):
+            contract.message_subscribe(contract.partner.ids)
         return result

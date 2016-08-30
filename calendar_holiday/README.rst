@@ -6,15 +6,12 @@
 Calendar holiday
 ================
 
-* This module allows you to define holiday calendars and employee calendars.
-* The holiday calendar is in Human Resources > Configuration.
-* The employee calendar is in Human Resources > Human Resources.
-* The employee calendar is generated from his contract.
+This module allows you to define holiday calendars and employee calendars.
 
-configuracion
-=============
-* Go to Settings > Configuration > Human Resources > and activate "Record
-  contracts per employee" check.
+* Holiday calendars are available in Human Resources > Configuration.
+* Employee calendars are available in Human Resources > Human Resources.
+
+* The employee calendar is generated from his contract.
 
 Credits
 =======
