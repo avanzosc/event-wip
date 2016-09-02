@@ -48,6 +48,12 @@ msgid "August"
 msgstr "Agosto"
 
 #. module: sale_order_create_event
+#: model:ir.actions.act_window,name:sale_order_create_event.action_change_session_date
+#: view:wiz.change.session.date:sale_order_create_event.wiz_change_session_date_form
+msgid "Change session date"
+msgstr "Cambiar fecha sesión"
+
+#. module: sale_order_create_event
 #: help:project.project,ca_theorical:0
 msgid "Based on the costs you had on the project, what would have been the revenue if all these costs have been invoiced at the normal sale price provided by the pricelist."
 msgstr "﻿Basado en los costes que tenía en el proyecto, lo que habría sido el ingreso si todos estos costes se hubieran facturado con el precio de venta normal proporcionado por la tarifa."
@@ -97,6 +103,12 @@ msgstr "Calculado utilizando la fórmula: (Margen real / Costes totales) * 100."
 #: field:sale.order.line,project_by_task:0
 msgid "Create project by task"
 msgstr "Crear proyecto por tarea"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/wizard/wiz_change_session_date.py:11
+#, python-format
+msgid "Positive sum days, negative subtraction days"
+msgstr "En positivo suma días, en negativo resta días"
 
 #. module: sale_order_create_event
 #: field:project.project,last_worked_date:0
@@ -300,6 +312,16 @@ msgstr "Mes"
 #: selection:sale.order,project_by_task:0
 msgid "No"
 msgstr "No"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/wizard/wiz_change_session_date.py:27
+#, python-format
+msgid ""
+"You can not change the date of the session: %s, of event %s, because session "
+"has made assists"
+msgstr ""
+"No puede cambiar la fecha de la sesión: %s, del evento %s, porque la sessión "
+"tiene asistencias realizadas"
 
 #. module: sale_order_create_event
 #: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:32
