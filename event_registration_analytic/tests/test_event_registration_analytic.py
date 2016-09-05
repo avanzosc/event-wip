@@ -11,6 +11,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
 
     def setUp(self):
         super(TestEventRegistrationAnalytic, self).setUp()
+        self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
 
     def test_sale_order_create_event(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
@@ -31,6 +32,19 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             self.assertEquals(
                 event.count_registrations + event.count_teacher_registrations,
                 len(event.registration_ids))
+            registration_vals = ({'event_id': event.id,
+                                  'partner_id':
+                                  self.env.ref('base.res_partner_25').id,
+                                  'state': 'draft',
+                                  'date_start': '2025-01-15 08:00:00',
+                                  'date_end': '2025-02-28 09:00:00'})
+            registration = self.registration_model.create(registration_vals)
+            wiz_vals = {'name': 'confirm assistants'}
+            wiz = self.wiz_confirm_model.create(wiz_vals)
+            wiz.with_context(
+                {'active_ids': [event.id]}).action_confirm_assistant()
+            self.assertNotEqual(
+                registration.state, 'draft', 'Registration not confirmed')
 
     def test_sale_order_create_event_by_task(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
