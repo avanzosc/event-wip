@@ -13,6 +13,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.registration_model = self.env['event.registration']
         self.wiz_add_model = self.env['wiz.event.append.assistant']
         self.wiz_del_model = self.env['wiz.event.delete.assistant']
+        self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
         self.wiz_change_hour_model = self.env['wiz.change.session.hour']
         event_vals = {'name': 'Registration partner test',
                       'date_begin': '2025-01-20',
@@ -304,3 +305,18 @@ class TestEventTrackAssistant(common.TransactionCase):
         wiz = self.wiz_change_hour_model.create(wiz_vals)
         wiz.with_context({'active_ids':
                           [self.event.track_ids[0].id]}).change_session_hour()
+
+    def test_event_confirm_assistant(self):
+        registration_vals = ({'event_id': self.event.id,
+                              'partner_id':
+                              self.env.ref('base.res_partner_25').id,
+                              'state': 'draft',
+                              'date_start': '2025-01-20 00:00:00',
+                              'date_end': '2025-01-31 00:00:00'})
+        registration = self.registration_model.create(registration_vals)
+        wiz_vals = {'name': 'confirm assistants'}
+        wiz = self.wiz_confirm_model.create(wiz_vals)
+        wiz.with_context(
+            {'active_ids': [self.event.id]}).action_confirm_assistant()
+        self.assertNotEqual(
+            registration.state, 'draft', 'Registration not confirmed')

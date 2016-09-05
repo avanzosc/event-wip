@@ -19,14 +19,7 @@ class WizEventConfirmAssistant(models.TransientModel):
             registrations = event.registration_ids.filtered(
                 lambda x: x.state == 'draft')
             for reg in registrations:
-                append_vals = {'from_date': reg.date_start,
-                               'min_from_date': reg.date_start,
-                               'to_date': reg.date_end,
-                               'max_to_date': reg.date_end,
-                               'registration': reg.id,
-                               'partner': reg.partner_id.id,
-                               'min_event': reg.event_id.id,
-                               'max_event': reg.event_id.id}
+                append_vals = self._prepare_data_confirm_assistant(reg)
                 append = append_obj.create(append_vals)
                 registration = append._update_create_registration(reg.event_id,
                                                                   reg)
@@ -44,3 +37,14 @@ class WizEventConfirmAssistant(models.TransientModel):
                     else:
                         append._create_presence_from_wizard(track,
                                                             reg.event_id)
+
+    def _prepare_data_confirm_assistant(self, reg):
+        append_vals = {'from_date': reg.date_start,
+                       'min_from_date': reg.date_start,
+                       'to_date': reg.date_end,
+                       'max_to_date': reg.date_end,
+                       'registration': reg.id,
+                       'partner': reg.partner_id.id,
+                       'min_event': reg.event_id.id,
+                       'max_event': reg.event_id.id}
+        return append_vals
