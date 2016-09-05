@@ -21,6 +21,7 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         self.line_model = self.env['wiz.impute.in.presence.from.session.line']
         self.contract_model = self.env['hr.contract']
         self.wiz_workable_model = self.env['wiz.calculate.workable.festive']
+        self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
         self.change_date_model = self.env['wiz.change.session.date']
         account_vals = {'name': 'account procurement service project',
                         'date_start': '2025-01-15',
@@ -180,3 +181,23 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
         self.assertEqual(
             event.track_ids[0].date, event.date_begin,
             'Session and event with different start date')
+
+    def test_event_confirm_assistant(self):
+        self.sale_order.action_button_confirm()
+        cond = [('project_id', '=', self.project.id)]
+        event = self.event_model.search(cond, limit=1)[:1]
+        self.assertNotEqual(
+            len([event]), 0, 'Sale order without event')
+        registration_vals = ({'event_id': event.id,
+                              'partner_id':
+                              self.env.ref('base.res_partner_25').id,
+                              'state': 'draft',
+                              'date_start': '2025-01-15 08:00:00',
+                              'date_end': '2025-02-28 09:00:00'})
+        registration = self.registration_model.create(registration_vals)
+        wiz_vals = {'name': 'confirm assistants'}
+        wiz = self.wiz_confirm_model.create(wiz_vals)
+        wiz.with_context(
+            {'active_ids': [event.id]}).action_confirm_assistant()
+        self.assertNotEqual(
+            registration.state, 'draft', 'Registration not confirmed')
