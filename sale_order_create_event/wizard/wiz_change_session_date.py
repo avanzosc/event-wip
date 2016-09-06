@@ -18,7 +18,7 @@ class WizChangeSessionDate(models.TransientModel):
         sessions = session_obj.browse(
             self.env.context.get('active_ids')).filtered(
             lambda x: x.stage_id !=
-            self.env.ref('website_event_track.event_track_stage5').id)
+            self.env.ref('website_event_track.event_track_stage5'))
         for session in sessions:
             count = len(session.presences.filtered(
                 lambda x: x.state == 'completed'))
