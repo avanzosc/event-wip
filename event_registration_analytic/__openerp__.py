@@ -30,6 +30,7 @@
         "views/sale_order_view.xml",
         "views/event_track_view.xml",
         "views/event_track_assistant_view.xml",
+        "views/account_analytic_account_view.xml",
     ],
     "installable": True,
     "uninstall_hook": "uninstall_hook",
