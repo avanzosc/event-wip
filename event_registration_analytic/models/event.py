@@ -210,3 +210,9 @@ class EventTrack(models.Model):
         comodel_name='event.track.presence', inverse_name='session',
         string='Teacher presences', readonly=False,
         domain=[('employee', '!=', False)])
+
+    @api.multi
+    def write(self, vals):
+        if 'no_employee_presences' in vals and 'employee_presences' in vals:
+            vals.pop('presences', None)
+        return super(EventTrack, self).write(vals)
