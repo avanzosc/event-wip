@@ -83,7 +83,10 @@ class WizEventAppendAssistant(models.TransientModel):
                 'date': to_date,
                 'parent_id': parent_id,
                 'code': code,
-                'partner_id': registration.partner_id.id,
+                'partner_id': registration.partner_id.parent_id.id,
+                'student': registration.partner_id.id,
                 'recurring_invoices': True,
                 'recurring_next_date': recurrring_next_date}
+        if registration.event_id.sale_order:
+            vals['sale'] = registration.event_id.sale_order.id
         return vals
