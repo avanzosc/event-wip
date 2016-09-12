@@ -25,6 +25,11 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             active_ids=events.ids).create(wiz_vals)
         wiz.action_append()
         for event in events:
+            event._count_teacher_pickings()
+            event._count_teacher_moves()
+            event.show_teacher_registrations()
+            event.show_teacher_pickings()
+            event.show_teacher_moves()
             self.assertEquals(event.count_registrations,
                               len(event.no_employee_registration_ids))
             self.assertEquals(event.count_teacher_registrations,
@@ -45,6 +50,11 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
                 {'active_ids': [event.id]}).action_confirm_assistant()
             self.assertNotEqual(
                 registration.state, 'draft', 'Registration not confirmed')
+            vals = {'no_employee_presences': [],
+                    'employee_presences': [],
+                    'presences': []}
+            if event.track_ids[0]:
+                event.track_ids[0].write(vals)
 
     def test_sale_order_create_event_by_task(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
