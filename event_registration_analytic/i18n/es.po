@@ -1,19 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_registration_analytic
+# 	* event_registration_analytic
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-08 07:17+0000\n"
-"PO-Revision-Date: 2016-09-08 07:17+0000\n"
+"POT-Creation-Date: 2016-09-12 10:10+0000\n"
+"PO-Revision-Date: 2016-09-12 12:12+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/wizard/wiz_event_delete_canceled_registration.py:22
+#, python-format
+msgid "%s, has presences without canceling"
+msgstr "%s, tiene presencias sin cancelar"
 
 #. module: event_registration_analytic
 #: model:ir.model,name:event_registration_analytic.model_account_analytic_account
@@ -29,6 +36,11 @@ msgstr "Cuenta analítica"
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
 msgid "Attended the Event"
 msgstr "Asistir al evento"
+
+#. module: event_registration_analytic
+#: view:wiz.event.delete.canceled.registration:event_registration_analytic.wiz_event_delete_canceled_registration_form
+msgid "Cancel"
+msgstr "Cancel"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
@@ -51,6 +63,32 @@ msgid "Confirm Registration"
 msgstr "Confirmación registro"
 
 #. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: event_registration_analytic
+#: view:wiz.event.delete.canceled.registration:event_registration_analytic.wiz_event_delete_canceled_registration_form
+msgid "Delete canceled registration"
+msgstr "Borrar registro cancelado"
+
+#. module: event_registration_analytic
+#: model:ir.actions.act_window,name:event_registration_analytic.action_delete_canceled_registration
+#: view:wiz.event.delete.canceled.registration:event_registration_analytic.wiz_event_delete_canceled_registration_form
+msgid "Delete canceled registrations"
+msgstr "Borrar registros cancelados"
+
+#. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,display_name:0
+msgid "Display Name"
+msgstr "Mostrar nombre"
+
+#. module: event_registration_analytic
 #: field:event.track.presence,employee:0
 #: field:wiz.impute.in.presence.from.session.line,employee:0
 msgid "Employee"
@@ -70,6 +108,26 @@ msgstr "Registro evento"
 #: model:ir.model,name:event_registration_analytic.model_event_track
 msgid "Event Tracks"
 msgstr "Sesiones del evento"
+
+#. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,__last_update:0
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,write_uid:0
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: event_registration_analytic
+#: field:wiz.event.delete.canceled.registration,write_date:0
+msgid "Last Updated on"
+msgstr "Última modificación el"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
@@ -240,8 +298,12 @@ msgid "Tot. real duration"
 msgstr "Tot. duración real"
 
 #. module: event_registration_analytic
+#: view:wiz.event.delete.canceled.registration:event_registration_analytic.wiz_event_delete_canceled_registration_form
+msgid "or"
+msgstr "o"
+
+#. module: event_registration_analytic
 #: view:event.registration:event_registration_analytic.view_event_registration_tree_inh_assistant
 #: view:wiz.impute.in.presence.from.session:event_registration_analytic.wiz_impute_presence_from_session_form_inh_analytic
 msgid "red:employee!=False"
 msgstr "red:employee!=False"
-

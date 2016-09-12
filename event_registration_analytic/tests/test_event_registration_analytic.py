@@ -12,6 +12,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
     def setUp(self):
         super(TestEventRegistrationAnalytic, self).setUp()
         self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
+        self.wiz_del_model = self.env['wiz.event.delete.canceled.registration']
 
     def test_sale_order_create_event(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
@@ -55,6 +56,14 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
                     'presences': []}
             if event.track_ids[0]:
                 event.track_ids[0].write(vals)
+            event.registration_ids.write({'state': 'cancel'})
+            presences = event.track_ids.mapped('presences')
+            presences.write({'state': 'canceled'})
+            wiz_del = self.wiz_del_model.create({})
+            wiz_del.with_context(
+                {'active_ids': [event.id]}).delete_canceled_registration()
+            self.assertEqual(len(event.registration_ids), 0,
+                             'Event with registrations')
 
     def test_sale_order_create_event_by_task(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
