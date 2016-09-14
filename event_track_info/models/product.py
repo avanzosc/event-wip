@@ -9,7 +9,7 @@ class ProductProduct(models.Model):
 
     event_track_template_ids = fields.One2many(
         comodel_name='product.event.track.template', inverse_name='product_id',
-        string='Event track templates')
+        string='Event track templates', copy=True)
 
 
 class ProductEventTrackTemplate(models.Model):
