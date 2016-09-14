@@ -120,6 +120,6 @@ msgstr "Debe de intorudicr la categoría del producto"
 #. module: event_planned_by_sale_line
 #: code:addons/event_planned_by_sale_line/models/event_registration.py:23
 #, python-format
-msgid "Yoy must define the company for the student %s"
+msgid "You must define the company for the student %s"
 msgstr "Debe de definir la compañia para el alumno %s"
 

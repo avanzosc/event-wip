@@ -20,7 +20,7 @@
         "event_registration_analytic",
         "website_quote",
         "sale_product_variants",
-        "account_analytic_analysis_recurring_day"
+        "account_analytic_analysis_recurring_day",
     ],
     "data": [
         "views/product_template_view.xml",

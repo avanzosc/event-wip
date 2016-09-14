@@ -24,11 +24,9 @@ class WizEventAppendAssistant(models.TransientModel):
                          'recurring_next_date':
                          event.sale_order_line.start_date})
         else:
-            date = fields.Datetime.from_string(
-                event.sale_order_line.start_date).date()
-            recurring_next_date = "%s-%s-%s" % (
-                date.year, date.month,
-                calendar.monthrange(date.year, date.month)[1])
+            date = fields.Date.from_string(event.sale_order_line.start_date)
+            recurring_next_date = date.replace(
+                day=calendar.monthrange(date.year, date.month)[1])
             vals.update({'recurring_next_date': recurring_next_date,
                          'recurring_interval': 1,
                          'recurring_rule_type': 'monthly'})
