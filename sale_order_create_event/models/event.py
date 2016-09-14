@@ -169,7 +169,7 @@ class EventTrack(models.Model):
 
     tasks = fields.Many2many(
         comodel_name="project.task", relation="task_session_project_relation",
-        column1="track_id", column2="task_id", copy=False, string="Tasks")
+        column1="track_id", column2="task_id", copy=True, string="Tasks")
 
     def _change_session_date(self, new_days):
         event_begin = fields.Date.from_string(self.event_id.date_begin)
