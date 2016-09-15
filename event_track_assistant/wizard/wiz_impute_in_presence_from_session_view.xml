@@ -16,6 +16,7 @@
                                 <field name="session_date" readonly="1" />
                                 <field name="partner" readonly="1" />
                                 <field name="unassisted" />
+                                <field name="create_claim" />
                                 <field name="hours" widget="float_time" required="1" />
                                 <field name="notes"
                                     attrs="{'required': [('unassisted','=',True)]}"/>

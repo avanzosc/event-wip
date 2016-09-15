@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import fields, models, api
+from openerp import fields, models, api, exceptions, _
 
 
 class WizImputeInPresenceFromSession(models.TransientModel):
@@ -37,10 +37,31 @@ class WizImputeInPresenceFromSession(models.TransientModel):
     @api.multi
     def button_impute_hours(self):
         for line in self.mapped('lines'):
+            if line.create_claim and not line.notes:
+                raise exceptions.Warning(
+                    _('To create a claim, you must enter the notes'))
+            if line.create_claim:
+                self._create_claim(line)
             hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
                 hours, state='completed' if not line.unassisted else 'pending',
                 notes=line.notes)
+
+    def _create_claim(self, line):
+        claim_obj = self.env['crm.claim']
+        name = _(u'Event: {}, session:{}').format(line.presence.event.name,
+                                                  line.presence.session.name)
+        description = _(u'SESSION DATE: {}, PERSON: {}, NOTES: {}').format(
+            line.presence.session.date, line.presence.partner.name,
+            line.notes)
+        claim_vals = {'name': name,
+                      'user_id': line.presence.event.user_id.id,
+                      'partner_id': self.env.user.partner_id.id,
+                      'email_from': self.env.user.login,
+                      'description': description,
+                      'ref': '{},{}'.format(line.presence._name,
+                                            line.presence.id)}
+        claim_obj.create(claim_vals)
 
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):
@@ -55,4 +76,5 @@ class WizImputeInPresenceFromSessionLine(models.TransientModel):
     partner = fields.Many2one('res.partner', string='Partner')
     unassisted = fields.Boolean(string='Unassisted', default=False)
     hours = fields.Float('Hours')
+    create_claim = fields.Boolean(string='Create claim', default=False)
     notes = fields.Char('Notes')

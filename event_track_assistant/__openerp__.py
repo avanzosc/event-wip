@@ -14,10 +14,12 @@
     "category": "Event Management",
     "depends": [
         "website_event_track",
+        "crm_claim"
     ],
     "data": [
         "security/ir.model.access.csv",
         "security/event_track_assistant.xml",
+        "data/event_track_assistant_data.xml",
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_event_delete_assistant_view.xml",
         "wizard/wiz_event_confirm_assistant_view.xml",
