@@ -9,10 +9,6 @@
                     <field name="product_id" invisible="1"/>
                     <field name="sequence"/>
                     <field name="name" />
-                    <field name="planification" />
-                    <field name="resolution" />
-                    <field name="html_info" />
-                    <field name="url" />
                 </tree>
             </field>
         </record>
@@ -46,12 +42,12 @@
                             <field name="name" colspan="8" required="True"/>
                             <field name="sequence" colspan="2" required="True"/>
                             <field name="url" colspan="6"/>
-                            <separator string="HTML" colspan="8" />
-                            <field name="html_info" colspan="8" nolabel="1"/> 
                             <separator string="Planification" colspan="8" />
                             <field name="planification" colspan="8" nolabel="1"/> 
                             <separator string="Resolution" colspan="8" />
                             <field name="resolution" colspan="8" nolabel="1"/> 
+                            <separator string="HTML" colspan="8" />
+                            <field name="html_info" colspan="8" nolabel="1"/> 
                         </group>
                     </sheet>
                 </form>
