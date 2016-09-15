@@ -2,6 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
+from openerp import exceptions
 
 
 class TestEventTrackAssistant(common.TransactionCase):
@@ -15,6 +16,8 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_del_model = self.env['wiz.event.delete.assistant']
         self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
         self.wiz_change_hour_model = self.env['wiz.change.session.hour']
+        self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
+        self.claim_model = self.env['crm.claim']
         event_vals = {'name': 'Registration partner test',
                       'date_begin': '2025-01-20',
                       'date_end': '2025-01-31',
@@ -320,3 +323,22 @@ class TestEventTrackAssistant(common.TransactionCase):
             {'active_ids': [self.event.id]}).action_confirm_assistant()
         self.assertNotEqual(
             registration.state, 'draft', 'Registration not confirmed')
+        self.wiz_impute_model.with_context(
+            {'active_ids':
+             [self.event.track_ids[0].id]}).default_get(['lines'])
+        impute_line_vals = {
+            'presence': self.event.track_ids[0].presences[0].id,
+            'session': self.event.track_ids[0].presences[0].session.id,
+            'session_date': self.event.track_ids[0].presences[0].session_date,
+            'partner': self.event.track_ids[0].presences[0].partner.id,
+            'create_claim': True}
+        wiz_impute = self.wiz_impute_model.create({'lines':
+                                                   [(0, 0, impute_line_vals)]})
+        with self.assertRaises(exceptions.Warning):
+            wiz_impute.button_impute_hours()
+        wiz_impute.lines[0].notes = 'Created claim from event.track.presence'
+        wiz_impute.button_impute_hours()
+        cond = [('description', 'ilike', '%Created claim from event%')]
+        claim = self.claim_model.search(cond, limit=1)
+        self.assertNotEqual(
+            len(claim), 0, 'Created claim from presence, not found')
