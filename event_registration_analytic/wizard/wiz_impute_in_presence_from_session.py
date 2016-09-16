@@ -20,6 +20,15 @@ class WizImputeInPresenceFromSession(models.TransientModel):
                     line['employee'] = partner.employee_id.id
         return res
 
+    def _get_values_for_create_claim(self, line):
+        claim_vals = super(WizImputeInPresenceFromSession,
+                           self)._get_values_for_create_claim(line)
+        claim_vals['categ_id'] = (self.env.ref(
+            'event_registration_analytic.crm_case_categ_teacher').id
+            if line.employee else self.env.ref(
+                'event_registration_analytic.crm_case_categ_student').id)
+        return claim_vals
+
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):
     _inherit = 'wiz.impute.in.presence.from.session.line'
