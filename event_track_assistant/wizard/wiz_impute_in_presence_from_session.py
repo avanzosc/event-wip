@@ -36,19 +36,19 @@ class WizImputeInPresenceFromSession(models.TransientModel):
 
     @api.multi
     def button_impute_hours(self):
+        claim_obj = self.env['crm.claim']
         for line in self.mapped('lines'):
             if line.create_claim and not line.notes:
                 raise exceptions.Warning(
                     _('To create a claim, you must enter the notes'))
             if line.create_claim:
-                self._create_claim(line)
+                claim_obj.create(self._get_values_for_create_claim(line))
             hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
                 hours, state='completed' if not line.unassisted else 'pending',
                 notes=line.notes)
 
-    def _create_claim(self, line):
-        claim_obj = self.env['crm.claim']
+    def _get_values_for_create_claim(self, line):
         name = _(u'Event: {}, session:{}').format(line.presence.event.name,
                                                   line.presence.session.name)
         description = _(u'SESSION DATE: {}, PERSON: {}, NOTES: {}').format(
@@ -59,9 +59,11 @@ class WizImputeInPresenceFromSession(models.TransientModel):
                       'partner_id': self.env.user.partner_id.id,
                       'email_from': self.env.user.login,
                       'description': description,
+                      'event_id': line.presence.event.id,
+                      'session_id': line.presence.session.id,
                       'ref': '{},{}'.format(line.presence._name,
                                             line.presence.id)}
-        claim_obj.create(claim_vals)
+        return claim_vals
 
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):

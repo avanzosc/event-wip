@@ -10,6 +10,9 @@ from pytz import timezone, utc
 class EventEvent(models.Model):
     _inherit = 'event.event'
 
+    claim_ids = fields.One2many(
+        comodel_name='crm.claim', inverse_name='event_id', string='Claims')
+
     @api.onchange('date_begin')
     def onchange_date_begin(self):
         self.ensure_one()
@@ -168,6 +171,8 @@ class EventTrack(models.Model):
     lit_presences = fields.Char(
         string='Num. presences', compute='_compute_num_presences',
         store=True)
+    claim_ids = fields.One2many(
+        comodel_name='crm.claim', inverse_name='session_id', string='Claims')
 
     @api.constrains('date')
     def _check_session_date(self):
