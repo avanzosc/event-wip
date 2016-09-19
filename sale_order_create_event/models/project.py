@@ -136,25 +136,16 @@ class ProjectTask(models.Model):
         self.ensure_one()
         self.sessions.unlink()
         num_session = 0
-        fec_ini = fields.Datetime.from_string(self.date_start).date()
-        if fec_ini.day != 1:
-            while fec_ini.day != 1:
-                fec_ini = fec_ini + relativedelta(days=-1)
-        if fec_ini.weekday() == 0:
-            num_week = 0
-        else:
-            num_week = 1
+        fec_ini = fields.Date.from_string(self.date_start).replace(day=1)
+        num_week = 0 if fec_ini.weekday() == 0 else 1
         month = fec_ini.month
-        while fec_ini <= fields.Datetime.from_string(self.date_end).date():
+        while fec_ini <= fields.Date.from_string(self.date_end):
             if month != fec_ini.month:
                 month = fec_ini.month
-                if fec_ini.weekday() == 0:
-                    num_week = 0
-                else:
-                    num_week = 1
+                num_week = 0 if fec_ini.weekday() == 0 else 1
             if fec_ini.weekday() == 0:
                 num_week += 1
-            if fec_ini >= fields.Datetime.from_string(self.date_start).date():
+            if fec_ini >= fields.Date.from_string(self.date_start):
                 valid = self._validate_event_session_month(self, fec_ini)
                 if valid:
                     valid = self._validate_event_session_week(
