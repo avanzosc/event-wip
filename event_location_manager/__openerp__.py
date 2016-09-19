@@ -20,7 +20,7 @@
 ##############################################################################
 {
     "name": "Event location manager",
-    "version": "1",
+    "version": "8.0.1.0.0",
     "author": "Acysos S.L., Odoo Community Association (OCA)",
     "website": "www.acysos.com",
     "contributors": ['Alexander Ezquevo <alexander@acysos.com>', ],

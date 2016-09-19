@@ -4,11 +4,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp.exceptions import Warning as UserError
 from datetime import datetime, timedelta
-
-
-DFORMAT = "%Y-%m-%d %H:%M:%S"
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DFORMAT
 
 
 class EventTrackLocation(models.Model):
@@ -32,20 +30,19 @@ class EventTrackLocationReservation(models.Model):
     @api.depends('day', 'duration')
     @api.multi
     def _get_end_date(self):
-        for res in self:
-            if res.day:
-                date = datetime.strptime(res.day, DFORMAT)
-                res.end_date = date + timedelta(hours=res.duration)
+        for res in self.filtered('day'):
+            date = datetime.strptime(res.day, DFORMAT)
+            res.end_date = date + timedelta(hours=res.duration)
     et_location_id = fields.Many2one(string='Location',
                                      comodel_name='event.track.location',
-                                     requiered=True)
+                                     required=True)
     day = fields.Datetime(string='start date', requiered=True)
     duration = fields.Float(string='duration')
-    end_date = fields.Datetime(string='End date', compute=_get_end_date,
+    end_date = fields.Datetime(string='End date', compute='_get_end_date',
                                store=True)
     track_id = fields.Many2one(string='Session', comodel_name='event.track')
 
-    def check_avairavility(self, location, day, ide, duration):
+    def check_availability(self, location, day, ide, duration):
         date = datetime.strptime(day, DFORMAT)
         date_end = date + timedelta(hours=duration)
         reservations = self.env[
@@ -67,7 +64,7 @@ class EventTrackLocationReservation(models.Model):
                         ('day', '>', day),
                         ('end_date', '<', date_end.strftime(DFORMAT))])
         if len(reservations) > 0:
-            raise Warning(_(
+            raise UserError(_(
                 'this place is reserved for this date, place: ' +
                 ' %s date: %s') % (location.name, day))
 
@@ -75,21 +72,23 @@ class EventTrackLocationReservation(models.Model):
     @api.returns('self', lambda value: value.id)
     def create(self, vals):
         res = super(EventTrackLocationReservation, self).create(vals)
-        self.check_avairavility(
-            res.et_location_id, res.day, res.id,
-            res.duration)
+        if res.et_location_id:
+            self.check_availability(
+                res.et_location_id, res.day, res.id,
+                res.duration)
         return res
 
     @api.multi
     def write(self, vals):
         result = super(EventTrackLocationReservation, self).write(vals)
         for res in self:
-            self.check_avairavility(res.et_location_id, res.day, res.id,
-                                    res.duration)
+            if res.et_location_id:
+                self.check_availability(res.et_location_id, res.day, res.id,
+                                        res.duration)
         return result
 
 
-class event_track(models.Model):
+class EventTrack(models.Model):
     _inherit = 'event.track'
 
     @api.multi
@@ -103,7 +102,7 @@ class event_track(models.Model):
     @api.model
     @api.returns('self', lambda value: value.id)
     def create(self, vals):
-        res = super(event_track, self).create(vals)
+        res = super(EventTrack, self).create(vals)
         if res.location_id:
             self.do_reservation(
                 res.location_id, res.date, res.duration, res.id)
@@ -120,7 +119,7 @@ class event_track(models.Model):
                     'event.track.location.reservation'].search([
                         ('et_location_id', '=', location.id),
                         ('day', '=', res.date)])
-            result = super(event_track, res).write(vals)
+            result = super(EventTrack, res).write(vals)
             if (res.location_id and not location) or (
                     location != res.location_id):
                 self.do_reservation(res.location_id, res.date, res.duration,
