@@ -2,7 +2,6 @@
 # © 2016 Alfredo de la Fuente - AvanzOSC
 # © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-
 from openerp.addons.sale_order_create_event.tests.\
     test_sale_order_create_event import TestSaleOrderCreateEvent
 
@@ -13,6 +12,8 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         super(TestEventRegistrationAnalytic, self).setUp()
         self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
         self.wiz_del_model = self.env['wiz.event.delete.canceled.registration']
+        self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
+        self.claim_model = self.env['crm.claim']
 
     def test_sale_order_create_event(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
@@ -51,11 +52,23 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
                 {'active_ids': [event.id]}).action_confirm_assistant()
             self.assertNotEqual(
                 registration.state, 'draft', 'Registration not confirmed')
-            vals = {'no_employee_presences': [],
-                    'employee_presences': [],
-                    'presences': []}
-            if event.track_ids[0]:
-                event.track_ids[0].write(vals)
+            registration._calculate_required_account()
+            registration._onchange_partner()
+            registration.registration_open()
+            self.wiz_impute_model.with_context(
+                {'active_ids':
+                 [event.track_ids[0].id]}).default_get(['lines'])
+            impute_line_vals = {
+                'presence': event.track_ids[0].presences[0].id,
+                'session': event.track_ids[0].presences[0].session.id,
+                'session_date': event.track_ids[0].presences[0].session_date,
+                'partner': event.track_ids[0].presences[0].partner.id,
+                'notes': 'presence notes',
+                'create_claim': True}
+            wiz_impute = self.wiz_impute_model.create(
+                {'lines': [(0, 0, impute_line_vals)]})
+            wiz_impute._get_values_for_create_claim(wiz_impute.lines[0])
+            wiz_impute.button_impute_hours()
             event.registration_ids.write({'state': 'cancel'})
             presences = event.track_ids.mapped('presences')
             presences.write({'state': 'canceled'})

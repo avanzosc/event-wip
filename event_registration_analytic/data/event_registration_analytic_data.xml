@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="crm_case_categ_teacher" model="crm.case.categ">
+            <field name="name">Teacher</field>
+        </record>
+        <record id="crm_case_categ_student" model="crm.case.categ">
+            <field name="name">Student</field>
+        </record>
+    </data>
+</openerp>
