@@ -60,7 +60,8 @@ class SaleOrder(models.Model):
                     if line.service_project_task:
                         project = line.service_project_task.project_id
                         project.event_id = line.event_id
-            sale.project_id.name = sale.name
+            if not self.env.context.get('without_sale_name', False):
+                sale.project_id.name = sale.name
 
     def _prepare_event_data(self, sale, line, name, project):
         event_obj = self.env['event.event']
