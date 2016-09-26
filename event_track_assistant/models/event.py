@@ -2,6 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
+from openerp.tools import DEFAULT_SERVER_TIME_FORMAT
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from pytz import timezone, utc
@@ -46,6 +47,8 @@ class EventEvent(models.Model):
         return res
 
     def _convert_date_to_local_format(self, date):
+        if not date:
+            return False
         new_date = fields.Datetime.from_string(date).date()
         local_date = datetime(
             int(new_date.strftime("%Y")), int(new_date.strftime("%m")),
@@ -74,16 +77,12 @@ class EventEvent(models.Model):
 
     def _convert_times_to_float(self, date):
         event_obj = self.env['event.event']
-        minutes = 0.0
-        seconds = 0.0
         local_time = event_obj._convert_date_to_local_format_with_hour(
-            date).strftime("%H:%M:%S")
+            date).strftime(DEFAULT_SERVER_TIME_FORMAT)
         time = local_time.split(':')
         hour = float(time[0])
-        if int(time[1]) > 0:
-            minutes = float(time[1]) / 60
-        if int(time[2]) > 0:
-            seconds = float(time[2]) / 360
+        minutes = float(time[1]) / 60 if float(time[1]) > 0.0 else 0.0
+        seconds = float(time[2]) / 360 if float(time[2]) > 0.0 else 0.0
         return hour + minutes + seconds
 
 
@@ -447,16 +446,12 @@ class EventTrackPresence(models.Model):
                 presence.real_date_end, fec_ini2)
 
     def _calculate_hour_between_dates(self, to_date, from_date):
-        minutes = 0.0
-        seconds = 0.0
-        hours = (datetime.strptime(to_date, '%Y-%m-%d %H:%M:%S') -
-                 datetime.strptime(from_date, '%Y-%m-%d %H:%M:%S'))
+        hours = (fields.Datetime.from_string(to_date) -
+                 fields.Datetime.from_string(from_date))
         time = str(hours).split(':')
         hour = float(time[0])
-        if int(time[1]) > 0:
-            minutes = float(time[1]) / 60
-        if int(time[2]) > 0:
-            seconds = float(time[2]) / 360
+        minutes = float(time[1]) / 60 if float(time[1]) > 0.0 else 0.0
+        seconds = float(time[2]) / 360 if float(time[2]) > 0.0 else 0.0
         return hour + minutes + seconds
 
     def _update_presence_duration(self, hours, state=False, notes=False):
