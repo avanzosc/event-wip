@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="address_event_registration_view_tree" model="ir.ui.view">
+            <field name="name">address.event.registration.tree</field>
+            <field name="model">event.registration</field>
+            <field name="inherit_id" ref="event.view_event_registration_tree" />
+            <field name="arch" type="xml">
+                <field name="event_id" position="after">
+                    <field name="address_id" />
+                    <field name="sepa_active" />
+                    <field name="sepa_draft" />
+                </field>
+            </field>
+        </record>
+        <record id="address_event_registration_view_search" model="ir.ui.view">
+            <field name="name">address.event.registration.search</field>
+            <field name="model">event.registration</field>
+            <field name="inherit_id" ref="event.view_registration_search" />
+            <field name="arch" type="xml">
+                <filter string="Confirmed" position="after">
+                    <filter string="Sepa Active" domain="[('sepa_active', '!=', 0)]" />
+                    <filter string="Sepa Draft" domain="[('sepa_draft', '!=', 0)]" />
+                </filter>
+                <field name="name" position="after">
+                    <field name="address_id"/>
+                </field>
+                <filter string="Registration Month" position="after">
+                    <filter string="Address" domain="[]" context="{'group_by': 'address_id'}" />
+                </filter>
+            </field>
+        </record>
+    </data>
+</openerp>
