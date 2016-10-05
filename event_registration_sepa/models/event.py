@@ -3,6 +3,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 from openerp import _, api, fields, exceptions, models
+from openerp.tools import config
 
 
 class EventRegistration(models.Model):
@@ -25,9 +26,10 @@ class EventRegistration(models.Model):
 
     @api.multi
     def registration_open(self):
-        partner_id = self.partner_id.parent_id or self.partner_id
-        if not partner_id.bank_ids.mapped('mandate_ids').filtered(
-                lambda x: x.state == 'valid' and x.format == 'sepa'):
+        if (config['test_enable'] and
+                not self.env.context.get('check_mandate_sepa')):
+            return super(EventRegistration, self).registration_open()
+        if not self.sepa_active:
             raise exceptions.Warning(
                 _('%s needs a valid sepa mandate for confirm the assistant!')
                 % self.partner_id.name)
