@@ -13,6 +13,16 @@
                 </field>
             </field>
         </record>
+        <record id="address_event_registration_view_form" model="ir.ui.view">
+            <field name="name">address.event.registration.form</field>
+            <field name="model">event.registration</field>
+            <field name="inherit_id" ref="event.view_event_registration_form" />
+            <field name="arch" type="xml">
+                <field name="email" position="after">
+                    <field name="address_id" />
+                </field>
+            </field>
+        </record>
         <record id="address_event_registration_view_search" model="ir.ui.view">
             <field name="name">address.event.registration.search</field>
             <field name="model">event.registration</field>

@@ -18,10 +18,10 @@ class EventRegistration(models.Model):
             partner_id = record.partner_id.parent_id or record.partner_id
             record.sepa_active = len(
                 partner_id.bank_ids.mapped('mandate_ids').filtered(
-                    lambda x: x.state == 'valid'))
+                    lambda x: x.state == 'valid' and x.format == 'sepa'))
             record.sepa_draft = len(
                 partner_id.bank_ids.mapped('mandate_ids').filtered(
-                    lambda x: x.state == 'draft'))
+                    lambda x: x.state == 'draft' and x.format == 'sepa'))
 
     address_id = fields.Many2one(
         comodel_name='res.partner', related='event_id.address_id', store=True)
