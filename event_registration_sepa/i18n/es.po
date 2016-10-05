@@ -1,0 +1,68 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_registration_sepa
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-05 10:05+0000\n"
+"PO-Revision-Date: 2016-10-05 12:05+0100\n"
+"Last-Translator: Esther Martín <esthermartin@avanzosc.es>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: event_registration_sepa
+#: code:addons/event_registration_sepa/models/event.py:32
+#, python-format
+msgid "%s needs a valid sepa mandate for confirm the assistant!"
+msgstr "%s necesita un mandato SEPA válido"
+
+#. module: event_registration_sepa
+#: view:event.registration:event_registration_sepa.address_event_registration_view_search
+msgid "Address"
+msgstr "Dirección"
+
+#. module: event_registration_sepa
+#: view:event.registration:event_registration_sepa.address_event_registration_view_search
+msgid "Confirmed"
+msgstr "Confirmado"
+
+#. module: event_registration_sepa
+#: model:ir.model,name:event_registration_sepa.model_event_registration
+msgid "Event Registration"
+msgstr "Registro evento"
+
+#. module: event_registration_sepa
+#: field:event.registration,address_id:0
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: event_registration_sepa
+#: view:event.registration:event_registration_sepa.address_event_registration_view_search
+msgid "Registration Month"
+msgstr "Mes de registro"
+
+#. module: event_registration_sepa
+#: view:event.registration:event_registration_sepa.address_event_registration_view_search
+msgid "Sepa Active"
+msgstr "Sepa Activo"
+
+#. module: event_registration_sepa
+#: view:event.registration:event_registration_sepa.address_event_registration_view_search
+msgid "Sepa Draft"
+msgstr "Sepa Borrador"
+
+#. module: event_registration_sepa
+#: field:event.registration,sepa_active:0
+msgid "Sepa active"
+msgstr "Sepa active"
+
+#. module: event_registration_sepa
+#: field:event.registration,sepa_draft:0
+msgid "Sepa draft"
+msgstr "Sepa draft"

@@ -14,8 +14,8 @@
     ],
     "category": "Event Management",
     "depends": [
-        "event",
-        "account_banking_mandate",
+        "partner_event",
+        "account_banking_sepa_direct_debit",
     ],
     "data": [
         "views/event_registration_view.xml",
