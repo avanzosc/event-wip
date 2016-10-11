@@ -35,6 +35,7 @@
         </record>
 
         <record id="website_event_track.act_event_list_tracks" model="ir.actions.act_window">
+            <field name="view_id" ref="website_event_track.view_event_track_tree"/>
             <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
         </record>
     </data>
