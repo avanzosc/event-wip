@@ -6,10 +6,10 @@
 Sale order create event hour
 ============================
 
-* Include two new fields: Start time and End time type "time" on the sale
-  contract. Take this times to the event dates. The start and end dates of the
-  wizards "Add Person To Session" and "" Delete Person From Event-Session ",
-  become fields of type" datetime ".
+Include two new fields: Start time and End time type "time" on the sale
+contract. Take this times to the event dates. The start and end dates of the
+wizards "Add Person To Session" and "Delete Person From Event-Session",
+become fields of type "datetime".
 
 Credits
 =======
