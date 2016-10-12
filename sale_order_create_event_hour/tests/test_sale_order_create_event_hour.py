@@ -2,6 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
+from openerp import exceptions
 
 
 class TestSaleOrderCreateEventHour(common.TransactionCase):
@@ -17,7 +18,11 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         self.procurement_model = self.env['procurement.order']
         self.wiz_add_model = self.env['wiz.event.append.assistant']
         self.wiz_del_model = self.env['wiz.event.delete.assistant']
-        self.type_hour_model = self.env['hr.type.hour']
+        self.type_hour_model = self.env['hr.type.hour'].with_context(
+            check_write_type_hour=True)
+        self.sunday = self.browse_ref(
+            'sale_order_create_event_hour.type_hour_sunday').with_context(
+            check_write_type_hour=True)
         self.contract_model = self.env['hr.contract']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
         self.employee = self.env.ref('hr.employee')
@@ -79,6 +84,19 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
             'thursday': True}
         sale_vals['order_line'] = [(0, 0, sale_line_vals)]
         self.sale_order = self.sale_model.create(sale_vals)
+
+    def test_disabled_editing_module_type_hour(self):
+        with self.assertRaises(exceptions.Warning):
+            self.sunday.name = 'SUNDAY'
+        with self.assertRaises(exceptions.Warning):
+            self.sunday.unlink()
+
+    def test_type_hour(self):
+        hour_type = self.type_hour_model.create({
+            'name': 'Test',
+        })
+        hour_type.name = 'New Name'
+        hour_type.unlink()
 
     def test_sale_order_create_event_hour(self):
         self.sale_order.action_button_confirm()
@@ -204,7 +222,3 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         event.registration_ids[0].with_context(
             {'event_id': event.id}).registration_open()
         event.registration_ids[0].button_reg_cancel()
-        hour_vals = {'name': 'aaaaaaa'}
-        type_hour = self.type_hour_model.create(hour_vals)
-        type_hour.write({'name': 'bbbbbb'})
-        type_hour.unlink()
