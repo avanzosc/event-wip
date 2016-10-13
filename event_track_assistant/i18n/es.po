@@ -84,7 +84,7 @@ msgstr "Cancelar persona NO CANCELANDO fechas anteriores y posteriores"
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
 #: selection:event.track.presence,state:0
 msgid "Canceled"
-msgstr "AUSENTE"
+msgstr "Cancelado"
 
 #. module: event_track_assistant
 #: model:ir.actions.act_window,name:event_track_assistant.action_change_session_hour
