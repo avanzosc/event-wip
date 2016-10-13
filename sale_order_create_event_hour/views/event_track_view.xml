@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record id="view_event_track_tree_inh_hour" model="ir.ui.view">
-            <field name="name">view.event.track.tree.inh.hour</field>
+        <record id="event_track_type_hour_tree_view" model="ir.ui.view">
+            <field name="name">event.track.type_hour.tree</field>
             <field name="model">event.track</field>
             <field name="inherit_id" ref="website_event_track.view_event_track_tree" />
             <field name="arch" type="xml">
@@ -11,8 +11,9 @@
                 </field>
             </field>
         </record>
-        <record id="view_event_track_search_inh_hour" model="ir.ui.view">
-            <field name="name">view.event.track.search.inh.hour</field>
+
+        <record id="event_track_type_hour_search_view" model="ir.ui.view">
+            <field name="name">event.track.type_hour.search</field>
             <field name="model">event.track</field>
             <field name="inherit_id" ref="website_event_track.view_event_track_search" />
             <field name="arch" type="xml">
@@ -24,8 +25,9 @@
                 </filter>
             </field>
         </record>
-        <record id="view_event_track_form_inh2_hour" model="ir.ui.view">
-            <field name="name">view.event.track.form.inh2.hour</field>
+
+        <record id="event_track_type_hour_form_view" model="ir.ui.view">
+            <field name="name">event.track.type_hour.form</field>
             <field name="model">event.track</field>
             <field name="inherit_id" ref="event_track_assistant.view_event_track_for_inh_assistant" />
             <field name="arch" type="xml">
