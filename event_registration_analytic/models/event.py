@@ -26,6 +26,9 @@ class EventEvent(models.Model):
     count_moves = fields.Integer(
         string='Moves',
         compute='_count_teacher_moves')
+    seats_canceled = fields.Integer(
+        string='Canceled registrations', store=True, readonly=True,
+        compute='_compute_seats')
 
     @api.one
     @api.depends('registration_ids')
@@ -55,6 +58,24 @@ class EventEvent(models.Model):
         cond = [('partner_id', 'in', partners.ids)]
         moves = move_obj.search(cond)
         self.count_moves = len(moves)
+
+    @api.multi
+    @api.depends('seats_max', 'registration_ids', 'registration_ids.state',
+                 'registration_ids.nb_register')
+    def _compute_seats(self):
+        super(EventEvent, self)._compute_seats()
+        for event in self:
+            event.seats_unconfirmed = len(
+                event.no_employee_registration_ids.filtered(
+                    lambda x: x.state == 'draft'))
+            event.seats_reserved = len(
+                event.no_employee_registration_ids.filtered(
+                    lambda x: x.state in ('open', 'done')))
+            event.seats_canceled = len(
+                event.no_employee_registration_ids.filtered(
+                    lambda x: x.state == 'cancel'))
+            event.seats_available = (event.seats_unconfirmed +
+                                     event.seats_reserved)
 
     def _create_event_from_sale(self, by_task, sale, line=False):
         event = super(EventEvent, self)._create_event_from_sale(
