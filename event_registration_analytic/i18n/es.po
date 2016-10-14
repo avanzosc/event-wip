@@ -1,19 +1,20 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* event_registration_analytic
+# 	* event_registration_analytic
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 08:40+0000\n"
-"PO-Revision-Date: 2016-09-16 08:40+0000\n"
+"POT-Creation-Date: 2016-10-14 06:25+0000\n"
+"PO-Revision-Date: 2016-10-14 08:26+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/wizard/wiz_event_delete_canceled_registration.py:22
@@ -47,6 +48,16 @@ msgid "Cancel Registration"
 msgstr "Cancelar registro"
 
 #. module: event_registration_analytic
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+msgid "Canceled"
+msgstr "Cancelados"
+
+#. module: event_registration_analytic
+#: field:event.event,seats_canceled:0
+msgid "Canceled registrations"
+msgstr "Registos cancelados"
+
+#. module: event_registration_analytic
 #: help:res.partner,parent_is_company:0
 msgid "Check if the contact is a company, otherwise it is a person"
 msgstr "Check si el contacto es una compañia, sino es una persona"
@@ -60,6 +71,11 @@ msgstr "Check si el partner es un grupo"
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
 msgid "Confirm Registration"
 msgstr "Confirmación registro"
+
+#. module: event_registration_analytic
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+msgid "Confirmed"
+msgstr "Confirmado"
 
 #. module: event_registration_analytic
 #: field:wiz.event.delete.canceled.registration,create_uid:0
@@ -94,6 +110,7 @@ msgid "Employee"
 msgstr "Empleado"
 
 #. module: event_registration_analytic
+#: field:account.invoice,event_id:0
 #: model:ir.model,name:event_registration_analytic.model_event_event
 msgid "Event"
 msgstr "Evento"
@@ -109,9 +126,19 @@ msgid "Event Tracks"
 msgstr "Sesiones del evento"
 
 #. module: event_registration_analytic
+#: field:account.invoice,event_address_id:0
+msgid "Event address"
+msgstr "Dirección evento"
+
+#. module: event_registration_analytic
 #: field:wiz.event.delete.canceled.registration,id:0
 msgid "ID"
 msgstr "ID"
+
+#. module: event_registration_analytic
+#: model:ir.model,name:event_registration_analytic.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
 
 #. module: event_registration_analytic
 #: field:wiz.event.delete.canceled.registration,__last_update:0
@@ -133,6 +160,11 @@ msgstr "Última modificación el"
 #: field:event.event,count_moves:0
 msgid "Moves"
 msgstr "Movimientos"
+
+#. module: event_registration_analytic
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+msgid "No confirmed"
+msgstr "No confirmados"
 
 #. module: event_registration_analytic
 #: field:res.partner,parent_is_company:0
@@ -199,6 +231,11 @@ msgid "Sale line"
 msgstr "Línea pedido venta"
 
 #. module: event_registration_analytic
+#: field:account.invoice,sale_order_id:0
+msgid "Sale order"
+msgstr "Pedido venta"
+
+#. module: event_registration_analytic
 #: model:ir.model,name:event_registration_analytic.model_sale_order
 msgid "Sales Order"
 msgstr "Pedido de venta"
@@ -214,7 +251,7 @@ msgid "Show create account"
 msgstr "Mostrar crear cuenta"
 
 #. module: event_registration_analytic
-#: field:account.analytic.account,student:0
+#: field:account.analytic.account,student:0 field:account.invoice,student:0
 #: model:crm.case.categ,name:event_registration_analytic.crm_case_categ_student
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
 msgid "Student"
@@ -225,6 +262,11 @@ msgstr "Estudiante"
 #: field:event.track,no_employee_presences:0
 msgid "Student presences"
 msgstr "Asistencia Alumnos/as"
+
+#. module: event_registration_analytic
+#: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+msgid "Student registrations"
+msgstr "Estudiantes registrados"
 
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/wizard/wiz_event_append_assistant.py:78
@@ -246,6 +288,7 @@ msgstr "Profesor"
 
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/models/event.py:106
+#: code:addons/event_registration_analytic/models/event.py:127
 #: field:event.event,count_teacher_registrations:0
 #, python-format
 msgid "Teacher assistants"
@@ -273,12 +316,14 @@ msgstr "Profesores"
 
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/models/event.py:135
+#: code:addons/event_registration_analytic/models/event.py:156
 #, python-format
 msgid "Teachers moves"
 msgstr "Movimientos profesor"
 
 #. module: event_registration_analytic
 #: code:addons/event_registration_analytic/models/event.py:121
+#: code:addons/event_registration_analytic/models/event.py:142
 #, python-format
 msgid "Teachers pickings"
 msgstr "Albaranes profesor"
@@ -308,4 +353,3 @@ msgstr "o"
 #: view:wiz.impute.in.presence.from.session:event_registration_analytic.wiz_impute_presence_from_session_form_inh_analytic
 msgid "red:employee!=False"
 msgstr "red:employee!=False"
-
