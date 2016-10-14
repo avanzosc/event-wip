@@ -41,6 +41,23 @@
                         </group>
                     </page>
                 </page>
+                <xpath expr="//page[@string='Registrations']//field[@name='seats_min']" position="replace" />
+                <xpath expr="//page[@string='Registrations']//field[@name='seats_max']" position="replace" />
+                <xpath expr="//page[@string='Registrations']//label[@string='Current Registrations']" position="replace" />
+                <xpath expr="//page[@string='Registrations']//field[@name='seats_unconfirmed']" position="replace" />
+                <xpath expr="//page[@string='Registrations']//field[@name='seats_reserved']" position="replace" />
+                <xpath expr="//page[@string='Registrations']//field[@name='seats_used']" position="replace" />
+                <xpath expr="//page[@string='Registrations']/group/group" position="replace" />
+                <xpath expr="//page[@string='Registrations']/group" position="attributes">
+                    <attribute name="colspan">4</attribute>
+                    <attribute name="col">6</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Registrations']/group" position="inside">
+                    <field name="seats_unconfirmed" string="No confirmed" />
+                    <field name="seats_reserved" string="Confirmed" />
+                    <field name="seats_canceled" string="Canceled" />
+                    <field name="seats_available" string="Student registrations" />
+                </xpath>
                 <page string="Registrations" position="attributes">
                     <attribute name="string">Students</attribute>
                 </page>
