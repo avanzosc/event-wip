@@ -17,19 +17,19 @@ class EventRegistration(models.Model):
     def _compute_sepa(self):
         for record in self:
             partner_id = record.partner_id.parent_id or record.partner_id
-            record.sepa_active = len(
-                partner_id.bank_ids.mapped('mandate_ids').filtered(
-                    lambda x: x.state == 'valid' and x.format == 'sepa'))
-            record.sepa_draft = len(
-                partner_id.bank_ids.mapped('mandate_ids').filtered(
-                    lambda x: x.state == 'draft' and x.format == 'sepa'))
+            mandates = partner_id.mapped('bank_ids.mandate_ids').filtered(
+                lambda x: x.format == 'sepa')
+            record.sepa_active = len(mandates.filtered(
+                lambda x: x.state == 'valid'))
+            record.sepa_draft = len(mandates.filtered(
+                lambda x: x.state == 'draft'))
 
     @api.multi
     def registration_open(self):
         if (config['test_enable'] and
                 not self.env.context.get('check_mandate_sepa')):
             return super(EventRegistration, self).registration_open()
-        if not self.sepa_active:
+        if self.sepa_active == 0:
             raise exceptions.Warning(
                 _('%s needs a valid sepa mandate for confirm the assistant!')
                 % self.partner_id.name)
