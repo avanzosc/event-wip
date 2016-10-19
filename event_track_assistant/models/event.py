@@ -157,7 +157,7 @@ class EventTrack(models.Model):
     presences = fields.One2many(
         comodel_name='event.track.presence', inverse_name='session',
         string='Presences')
-    duration = fields.Float('Estimated duration')
+    duration = fields.Float(string='Estimated duration', digits=(12, 4))
     real_duration = fields.Float(
         compute='_calc_real_duration', string='Real duration', store=True)
     real_date_end = fields.Datetime(
