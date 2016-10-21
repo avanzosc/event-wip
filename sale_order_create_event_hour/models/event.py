@@ -19,13 +19,13 @@ class EventTrack(models.Model):
 
     @api.model
     def create(self, vals):
-        session = super(EventTrack, self).create(vals)
-        fec = fields.Datetime.from_string(session.session_date).date()
-        day = fec.weekday()
-        if day == 6:
-            session.type_hour = self.env.ref(
+        session_date = self.env['event.event'].\
+            _convert_date_to_local_format_with_hour(
+                fields.Datetime.to_string(vals.get('date')))
+        if session_date.weekday() == 6:
+            vals['type_hour'] = self.env.ref(
                 'sale_order_create_event_hour.type_hour_sunday').id
-        return session
+        return super(EventTrack, self).create(vals)
 
 
 class EventTrackPresence(models.Model):
