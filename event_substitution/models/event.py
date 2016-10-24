@@ -7,18 +7,20 @@ from openerp import models, fields
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
 
-    replaces_to = fields.Many2one('res.partner', strint='Replaces to')
+    replaces_to = fields.Many2one(
+        comodel_name='res.partner', string='Replaces to')
 
     def _prepare_wizard_registration_open_vals(self):
         wiz_vals = super(EventRegistration,
                          self)._prepare_wizard_registration_open_vals()
-        if self.replaces_to:
-            wiz_vals['replaces_to'] = self.replaces_to.id
+        wiz_vals.update({'replaces_to': self.replaces_to.id})
         return wiz_vals
 
 
 class EventTrackPresence(models.Model):
     _inherit = 'event.track.presence'
 
-    replaced_by = fields.Many2one('res.partner', strint='Replaced by')
-    replaces_to = fields.Many2one('res.partner', strint='Replaces to')
+    replaced_by = fields.Many2one(
+        comodel_name='res.partner', string='Replaced by')
+    replaces_to = fields.Many2one(
+        comodel_name='res.partner', string='Replaces to')

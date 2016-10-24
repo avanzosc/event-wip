@@ -2,16 +2,32 @@
 <openerp>
     <data>
         <record model="ir.ui.view" id="view_event_registration_tree_inh_assistant">
-            <field name="name">view.event.registration.tree.inh.assistant</field>
+            <field name="name">event.registration.dates.tree</field>
             <field name="model">event.registration</field>
             <field name="inherit_id" ref="event.view_event_registration_tree" />
+            <field name="priority">5</field>
             <field name="arch" type="xml">
                 <field name="event_id" position="after">
                     <field name="date_start" />
                     <field name="date_end"  />
                 </field>
+                <button name="registration_open" position="attributes">
+                    <attribute name="name">button_registration_open</attribute>
+                </button>
             </field>
         </record>
+        
+        <record id="event_registration_open_button_form_view" model="ir.ui.view">
+            <field name="name">event.registration.open_button.form</field>
+            <field name="model">event.registration</field>
+            <field name="inherit_id" ref="event.view_event_registration_form" />
+            <field name="arch" type="xml">
+                <button name="registration_open" position="attributes">
+                    <attribute name="name">button_registration_open</attribute>
+                </button>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_registration_search_inh_assistant">
             <field name="name">view.registration.search.inh.assistant</field>
             <field name="model">event.registration</field>

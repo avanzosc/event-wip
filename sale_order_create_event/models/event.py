@@ -195,18 +195,16 @@ class EventTrack(models.Model):
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
 
-    @api.multi
-    def registration_open(self):
-        self.ensure_one()
-        tasks = self.env['project.task']
-        wiz_obj = self.env['wiz.event.append.assistant']
-        result = super(EventRegistration, self).registration_open()
-        wiz = wiz_obj.browse(result['res_id'])
+    def _prepare_wizard_registration_open_vals(self):
+        wiz_vals = super(EventRegistration,
+                         self)._prepare_wizard_registration_open_vals()
         date_from = self.date_start or self.event_id.date_begin
         date_to = self.date_end or self.event_id.date_end
         sessions = self.event_id.track_ids.filtered(
             lambda x: x.date >= date_from and x.date <= date_to and x.date)
         tasks = sessions.mapped('tasks')
-        wiz.write({'permitted_tasks': [(6, 0, tasks.ids)],
-                   'tasks': [(6, 0, tasks.ids)]})
-        return result
+        wiz_vals.update({
+            'permitted_tasks': [(6, 0, tasks.ids)],
+            'tasks': [(6, 0, tasks.ids)],
+        })
+        return wiz_vals

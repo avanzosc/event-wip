@@ -92,7 +92,7 @@ class TestEventRegistrationHrContract(common.TransactionCase):
                              'contract': self.contract.id}
         registration = self.registration_model.create(registration_vals)
         registration.with_context(
-            {'event_id': event.id}).registration_open()
+            {'event_id': event.id}).button_registration_open()
         registration.button_reg_cancel()
         holiday_vals = {
             'name': 'Administrator',

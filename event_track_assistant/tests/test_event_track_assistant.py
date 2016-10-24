@@ -2,7 +2,8 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
-from openerp import exceptions
+from openerp import exceptions, fields
+to_string = fields.Datetime.to_string
 
 
 class TestEventTrackAssistant(common.TransactionCase):
@@ -300,19 +301,29 @@ class TestEventTrackAssistant(common.TransactionCase):
         regis = self.registration_model.search(cond)
         regis.write({'state': 'draft'})
         regis.unlink()
-        registration.registration_open()
-        registration.unlink()
 
     def test_event_track_assistant_change_session_hour(self):
-        wiz_vals = {'new_hour': 5.00}
-        wiz = self.wiz_change_hour_model.create(wiz_vals)
-        wiz.with_context({'active_ids':
-                          [self.event.track_ids[0].id]}).change_session_hour()
+        track = self.event.track_ids[0]
+        new_hour = 10.0
+        track_date = self.event_model._convert_date_to_local_format_with_hour(
+            track.date).date()
+        new_date = self.event_model._put_utc_format_date(track_date, new_hour)
+        wiz = self.wiz_change_hour_model.with_context({
+            'active_ids': track.ids,
+        }).create({
+            'new_hour': new_hour,
+        })
+        wiz.change_session_hour()
+        self.assertEquals(track.date, to_string(new_date))
 
     def test_event_confirm_assistant(self):
+        cond = [('event_id', '=', self.event.id)]
+        claim = self.claim_model.search(cond, limit=1)
+        self.assertEquals(
+            len(claim), 0, 'There are not claims for the event.')
+        track = self.event.track_ids[0]
         registration_vals = ({'event_id': self.event.id,
-                              'partner_id':
-                              self.env.ref('base.res_partner_25').id,
+                              'partner_id': self.ref('base.res_partner_25'),
                               'state': 'draft',
                               'date_start': '2025-01-20 00:00:00',
                               'date_end': '2025-01-31 00:00:00'})
@@ -320,25 +331,24 @@ class TestEventTrackAssistant(common.TransactionCase):
         wiz_vals = {'name': 'confirm assistants'}
         wiz = self.wiz_confirm_model.create(wiz_vals)
         wiz.with_context(
-            {'active_ids': [self.event.id]}).action_confirm_assistant()
+            {'active_ids': self.event.ids}).action_confirm_assistant()
         self.assertNotEqual(
-            registration.state, 'draft', 'Registration not confirmed')
-        self.wiz_impute_model.with_context(
-            {'active_ids':
-             [self.event.track_ids[0].id]}).default_get(['lines'])
-        impute_line_vals = {
-            'presence': self.event.track_ids[0].presences[0].id,
-            'session': self.event.track_ids[0].presences[0].session.id,
-            'session_date': self.event.track_ids[0].presences[0].session_date,
-            'partner': self.event.track_ids[0].presences[0].partner.id,
-            'create_claim': True}
-        wiz_impute = self.wiz_impute_model.create({'lines':
-                                                   [(0, 0, impute_line_vals)]})
+            registration.state, 'draft',
+            'Registration should have been confirmed.')
+        wiz_impute = self.wiz_impute_model.with_context(
+            {'active_ids': track.ids}).create({})
+        self.assertNotEquals(len(wiz_impute.lines), 0)
+        wiz_impute.lines.write({
+            'notes': False,
+            'create_claim': True,
+        })
         with self.assertRaises(exceptions.Warning):
             wiz_impute.button_impute_hours()
-        wiz_impute.lines[0].notes = 'Created claim from event.track.presence'
+        wiz_impute.lines.write({
+            'notes': 'Created claim from event.track.presence',
+        })
         wiz_impute.button_impute_hours()
-        cond = [('description', 'ilike', '%Created claim from event%')]
+        cond = [('event_id', '=', self.event.id)]
         claim = self.claim_model.search(cond, limit=1)
         self.assertNotEqual(
             len(claim), 0, 'Created claim from presence, not found')

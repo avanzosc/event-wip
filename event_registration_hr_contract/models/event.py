@@ -154,18 +154,19 @@ class EventRegistration(models.Model):
                 permitted_contracts += contract
         return permitted_contracts
 
+    def _prepare_wizard_registration_open_vals(self):
+        wiz_vals = super(EventRegistration,
+                         self)._prepare_wizard_registration_open_vals()
+        wiz_vals.update({'contract': self.contract.id})
+        return wiz_vals
+
     @api.multi
-    def registration_open(self):
+    def button_registration_open(self):
         self.ensure_one()
-        wiz_obj = self.env['wiz.event.append.assistant']
         if self.employee and not self.contract:
             raise exceptions.Warning(
                 _("You must enter the employee's contract"))
-        result = super(EventRegistration, self).registration_open()
-        wiz = wiz_obj.browse(result['res_id'])
-        if self.contract:
-            wiz.write({'contract': self.contract.id})
-        return result
+        return super(EventRegistration, self).button_registration_open()
 
 
 class EventTrackPresence(models.Model):
