@@ -4,9 +4,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning as UserError
-from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DFORMAT
+from openerp.exceptions import ValidationError, Warning as UserError
+from datetime import timedelta
 
 
 class EventTrackLocation(models.Model):
@@ -23,107 +22,91 @@ class EventTrackLocation(models.Model):
         comodel_name='event.track.location.reservation',
         inverse_name='et_location_id')
 
+    @api.multi
+    def do_reservation(self, day, duration, track_id=False):
+        reservation_obj = self.env['event.track.location.reservation']
+        for location in self:
+            if location.check_availability(day, duration):
+                reservation_obj.create({
+                    'et_location_id': location.id,
+                    'day': day,
+                    'duration': duration,
+                    'track_id': track_id,
+                })
+            else:
+                raise UserError(
+                    _('Location %s is reserved for date %s') %
+                    (location.name, day))
+
+    @api.multi
+    def do_unreservation(self, track):
+        self.mapped('reservation_days').filtered(
+            lambda r: r.track_id == track).unlink()
+
+    @api.multi
+    def check_availability(self, day, duration):
+        self.ensure_one()
+        end_day = fields.Datetime.to_string(fields.Datetime.from_string(day) +
+                                            timedelta(hours=duration))
+        reservations = self.reservation_days.filtered(
+            lambda r: (r.day < end_day and r.end_date >= end_day) or
+                      (r.day <= day and r.end_date > day) or
+                      (r.day > day and r.end_date < end_day))
+        available = True if len(reservations) == 0 else False
+        return available
+
 
 class EventTrackLocationReservation(models.Model):
     _name = 'event.track.location.reservation'
 
     @api.depends('day', 'duration')
-    @api.multi
-    def _get_end_date(self):
+    def _compute_end_date(self):
         for res in self.filtered('day'):
-            date = datetime.strptime(res.day, DFORMAT)
-            res.end_date = date + timedelta(hours=res.duration)
-    et_location_id = fields.Many2one(string='Location',
-                                     comodel_name='event.track.location',
-                                     required=True)
-    day = fields.Datetime(string='start date', requiered=True)
-    duration = fields.Float(string='duration')
-    end_date = fields.Datetime(string='End date', compute='_get_end_date',
-                               store=True)
+            res.end_date = fields.Datetime.from_string(res.day) +\
+                timedelta(hours=res.duration)
+
+    et_location_id = fields.Many2one(
+        string='Location', comodel_name='event.track.location',
+        required=True)
+    day = fields.Datetime(string='Start Date', required=True)
+    duration = fields.Float(string='Duration')
+    end_date = fields.Datetime(
+        string='End Date', compute='_compute_end_date', store=True)
     track_id = fields.Many2one(string='Session', comodel_name='event.track')
 
-    def check_availability(self, location, day, ide, duration):
-        date = datetime.strptime(day, DFORMAT)
-        date_end = date + timedelta(hours=duration)
-        reservations = self.env[
-            'event.track.location.reservation'].search([
-                ('et_location_id', '=', location.id),
-                ('id', '!=', ide), ('day', '<', date_end.strftime(DFORMAT)),
-                ('end_date', '>=', date_end.strftime(DFORMAT))])
-        if len(reservations) == 0:
-            reservations = self.env[
-                'event.track.location.reservation'].search([
-                    ('et_location_id', '=', location.id),
-                    ('id', '!=', ide), ('day', '<=', day),
-                    ('day', '<=', day), ('end_date', '>', day)])
-            if len(reservations) == 0:
-                reservations = self.env[
-                    'event.track.location.reservation'].search([
-                        ('et_location_id', '=', location.id),
-                        ('id', '!=', ide), ('day', '<=', day),
-                        ('day', '>', day),
-                        ('end_date', '<', date_end.strftime(DFORMAT))])
-        if len(reservations) > 0:
-            raise UserError(_(
-                'this place is reserved for this date, place: ' +
-                ' %s date: %s') % (location.name, day))
-
-    @api.model
-    @api.returns('self', lambda value: value.id)
-    def create(self, vals):
-        res = super(EventTrackLocationReservation, self).create(vals)
-        if res.et_location_id:
-            self.check_availability(
-                res.et_location_id, res.day, res.id,
-                res.duration)
-        return res
-
-    @api.multi
-    def write(self, vals):
-        result = super(EventTrackLocationReservation, self).write(vals)
-        for res in self:
-            if res.et_location_id:
-                self.check_availability(res.et_location_id, res.day, res.id,
-                                        res.duration)
-        return result
+    @api.constrains('et_location_id', 'day', 'duration')
+    def _check_location_availability(self):
+        for record in self:
+            if not len(record.et_location_id.reservation_days.filtered(
+                lambda r: r.id != record.id and
+                ((r.day < record.end_date and r.end_date >= record.end_date) or
+                 (r.day <= record.day and r.end_date > record.day) or
+                 (r.day > record.day and r.end_date < record.end_date)))) == 0:
+                raise ValidationError(
+                    _('Location %s is reserved for date %s') %
+                    (record.et_location_id.name, record.day))
 
 
 class EventTrack(models.Model):
     _inherit = 'event.track'
 
-    @api.multi
-    def do_reservation(self, location, day, duration, track):
-        self.env['event.track.location.reservation'].create({
-            'et_location_id': location.id,
-            'day': day,
-            'duration': duration,
-            'track_id': track})
-
     @api.model
-    @api.returns('self', lambda value: value.id)
     def create(self, vals):
-        res = super(EventTrack, self).create(vals)
-        if res.location_id:
-            self.do_reservation(
-                res.location_id, res.date, res.duration, res.id)
-        return res
+        track = super(EventTrack, self).create(vals)
+        if track.location_id:
+            track.location_id.do_reservation(
+                track.date, track.duration, track.id)
+        return track
 
     @api.multi
     def write(self, vals):
-        for res in self:
-            location = False
-            reservation = False
-            if res.location_id:
-                location = res.location_id
-                reservation = self.env[
-                    'event.track.location.reservation'].search([
-                        ('et_location_id', '=', location.id),
-                        ('day', '=', res.date)])
-            result = super(EventTrack, res).write(vals)
-            if (res.location_id and not location) or (
-                    location != res.location_id):
-                self.do_reservation(res.location_id, res.date, res.duration,
-                                    res.id)
-                if reservation:
-                    reservation.unlink()
-        return result
+        for track in self:
+            location_change = 'location_id' in vals and\
+                              (vals.get('location_id') != track.location_id.id)
+            if location_change:
+                track.location_id.do_unreservation(track)
+            super(EventTrack, track).write(vals)
+            if location_change:
+                track.location_id.do_reservation(
+                    track.date, track.duration, track.id)
+        return True

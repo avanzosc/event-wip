@@ -19,22 +19,21 @@
 #
 ##############################################################################
 {
-    "name": "Event location manager",
+    "name": "Event Location Manager",
     "version": "8.0.1.0.0",
-    "author": "Acysos S.L., Odoo Community Association (OCA)",
+    "author": "Acysos S.L.",
     "website": "www.acysos.com",
     "contributors": ['Alexander Ezquevo <alexander@acysos.com>', ],
-    "category": "",
+    "category": "Event Management",
     "license": "AGPL-3",
     "depends": [
         "website_event_track",
         "event",
-        "base",
-        ],
+    ],
     "data": [
         "views/event_event.xml",
         "security/event_location_security.xml",
         "security/ir.model.access.csv",
-        ],
+    ],
     "installable": True,
 }
