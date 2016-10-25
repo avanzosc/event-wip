@@ -7,7 +7,8 @@ from openerp import fields, models, api
 class WizEventAppendAssistant(models.TransientModel):
     _inherit = 'wiz.event.append.assistant'
 
-    replaces_to = fields.Many2one('res.partner', strint='Replaces to')
+    replaces_to = fields.Many2one(
+        comodel_name='res.partner', string='Replaces to')
 
     @api.multi
     def action_append(self):

@@ -27,13 +27,13 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         self.wiz_model = self.env['wiz.calculate.workable.festive']
         self.employee = self.env.ref('hr.employee')
         self.employee.address_home_id = self.env.ref('base.res_partner_26').id
-        contract_vals = {'name': 'Contract 1',
-                         'employee_id': self.employee.id,
-                         'partner': self.env.ref('base.res_partner_26').id,
-                         'type_id':
-                         self.ref('hr_contract.hr_contract_type_emp'),
-                         'wage': 500,
-                         'date_start': '2016-01-02'}
+        contract_vals = {
+            'name': 'Contract 1',
+            'employee_id': self.employee.id,
+            'partner': self.ref('base.res_partner_26'),
+            'type_id': self.ref('hr_contract.hr_contract_type_emp'),
+            'wage': 500,
+            'date_start': '2016-01-02'}
         self.contract = self.contract_model.create(contract_vals)
         wiz = self.wiz_model.with_context(
             {'active_id': self.contract.id}).create({'year': 2016})
@@ -44,11 +44,11 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
                         'date_start': '2016-01-15 00:00:00',
                         'start_time': 5.0,
                         'end_time': 10.0,
-                        'date': '2016-02-28 00:00:00'}
+                        'date': '2016-02-28 00:00:00',
+                        'use_tasks': True}
         self.account = self.account_model.create(account_vals)
-        project_vals = {'name': 'project procurement service project',
-                        'analytic_account_id': self.account.id}
-        self.project = self.project_model.create(project_vals)
+        self.project = self.env['project.project'].search(
+            [('analytic_account_id', '=', self.account.id)], limit=1)[:1]
         service_product = self.env.ref('product.product_product_consultant')
         service_product.write({'performance': 5.0,
                                'recurring_service': True})
@@ -99,6 +99,11 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         hour_type.unlink()
 
     def test_sale_order_create_event_hour(self):
+        self.project.write({
+            'type_hour':
+                self.ref('sale_order_create_event_hour.type_hour_working'),
+        })
+        self.sale_order.order_line.write({'sunday': True})
         self.sale_order.action_button_confirm()
         self.project.tasks[0]._calc_num_sessions()
         self.project.tasks[0].show_sessions_from_task()
@@ -203,7 +208,7 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         wiz.with_context(
             {'active_ids': [event.id]}).action_delete_past_and_later()
         event.registration_ids[0].with_context(
-            {'event_id': event.id}).registration_open()
+            {'event_id': event.id}).button_registration_open()
         event.registration_ids[0].button_reg_cancel()
         self.assertNotEqual(
             len(self.project.tasks[0].sessions), 0,
@@ -220,5 +225,5 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         wiz.write(wiz_vals)
         wiz.onchange_information()
         event.registration_ids[0].with_context(
-            {'event_id': event.id}).registration_open()
+            {'event_id': event.id}).button_registration_open()
         event.registration_ids[0].button_reg_cancel()

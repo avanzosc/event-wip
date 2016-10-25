@@ -528,7 +528,7 @@ class EventRegistration(models.Model):
         return res
 
     @api.multi
-    def registration_open(self):
+    def button_registration_open(self):
         self.ensure_one()
         wiz_obj = self.env['wiz.event.append.assistant']
         if self.date_start and self.date_end:

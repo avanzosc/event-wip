@@ -187,13 +187,11 @@ class EventRegistration(models.Model):
         super(EventRegistration, self)._onchange_partner()
         self.employee = self.partner_id.employee_id
 
-    @api.multi
-    def registration_open(self):
-        wiz_obj = self.env['wiz.event.append.assistant']
-        result = super(EventRegistration, self).registration_open()
-        wiz = wiz_obj.browse(result.get('res_id'))
-        wiz.create_account = self.required_account
-        return result
+    def _prepare_wizard_registration_open_vals(self):
+        wiz_vals = super(EventRegistration,
+                         self)._prepare_wizard_registration_open_vals()
+        wiz_vals.update({'create_account': self.required_account})
+        return wiz_vals
 
 
 class EventEventTicket(models.Model):

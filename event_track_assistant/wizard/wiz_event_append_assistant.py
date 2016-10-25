@@ -99,8 +99,8 @@ class WizEventAppendAssistant(models.TransientModel):
 
     def _prepare_date_for_control(self, date):
         event_obj = self.env['event.event']
-        new_date = event_obj._put_utc_format_date(date, 0.0).strftime(
-            "%Y-%m-%d %H:%M:%S")
+        new_date = fields.Datetime.to_string(
+            event_obj._put_utc_format_date(date, 0.0))
         return new_date
 
     @api.multi
@@ -118,8 +118,7 @@ class WizEventAppendAssistant(models.TransientModel):
             else:
                 self._compute_update_registration_end_date(self.registration)
             self._update_registration_data(self.registration)
-            self.registration.confirm_registration()
-            self.registration.mail_user()
+            self.registration.registration_open()
             cond = self._prepare_track_condition_search(
                 self.registration.event_id)
             tracks = track_obj.search(cond)
@@ -213,30 +212,49 @@ class WizEventAppendAssistant(models.TransientModel):
         return cond
 
     def _update_registration_start_date(self, registration):
-        registration.date_start = self._local_date(self.from_date, 0.0)
-        from_date = self._local_date(self.from_date, 0.0).strftime(
-            '%Y-%m-%d %H:%M:%S')
+        start_time = 0.0
+        try:
+            start_time = self.start_time
+        except:
+            pass
+        from_date = fields.Datetime.to_string(
+            self._local_date(self.from_date, start_time))
         if from_date < registration.event_id.date_begin:
             registration.date_start = registration.event_id.date_begin
 
     def _compute_update_registration_start_date(self, registration):
-        from_date = self._local_date(self.from_date, 0.0).strftime(
-            '%Y-%m-%d %H:%M:%S')
+        start_time = 0.0
+        try:
+            start_time = self.start_time
+        except:
+            pass
+        from_date = fields.Datetime.to_string(
+            self._local_date(self.from_date, start_time))
         if from_date < registration.date_start:
             registration.date_start = from_date
             if from_date < registration.event_id.date_begin:
                 registration.date_start = registration.event_id.date_begin
 
     def _update_registration_date_end(self, registration):
-        registration.date_end = self._local_date(self.to_date, 0.0)
-        to_date = self._local_date(self.to_date, 0.0).strftime(
-            '%Y-%m-%d %H:%M:%S')
+        end_time = 0.0
+        try:
+            end_time = self.end_time
+        except:
+            pass
+        registration.date_end = self._local_date(self.to_date, end_time)
+        to_date = fields.Datetime.to_string(
+            self._local_date(self.to_date, end_time))
         if to_date > registration.event_id.date_end:
             registration.date_end = registration.event_id.date_end
 
     def _compute_update_registration_end_date(self, registration):
-        to_date = self._local_date(self.to_date, 0.0).strftime(
-            '%Y-%m-%d %H:%M:%S')
+        end_time = 0.0
+        try:
+            end_time = self.end_time
+        except:
+            pass
+        to_date = fields.Datetime.to_string(
+            self._local_date(self.to_date, end_time))
         if to_date > registration.date_end:
             registration.date_end = to_date
             if to_date > registration.event_id.date_end:
@@ -266,10 +284,10 @@ class WizEventAppendAssistant(models.TransientModel):
 
     def _calc_dates_for_search_track(self, from_date, to_date):
         event_obj = self.env['event.event']
-        from_date = event_obj._put_utc_format_date(
-            from_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
-        to_date = event_obj._put_utc_format_date(
-            to_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
+        from_date = fields.Datetime.to_string(event_obj._put_utc_format_date(
+            from_date, 0.0))
+        to_date = fields.Datetime.to_string(event_obj._put_utc_format_date(
+            to_date, 0.0))
         return from_date, to_date
 
     def _exit_from_append_wizard(self):

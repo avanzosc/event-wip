@@ -36,22 +36,13 @@ class EventTrackPresence(models.Model):
 
 
 class EventRegistration(models.Model):
-
     _inherit = 'event.registration'
-
-    @api.multi
-    def registration_open(self):
-        self.ensure_one()
-        wiz_obj = self.env['wiz.event.append.assistant']
-        result = super(EventRegistration, self).registration_open()
-        wiz = wiz_obj.browse(result['res_id'])
-        wiz.update({'type_hour': self.event_id.type_hour})
-        return result
 
     def _prepare_wizard_registration_open_vals(self):
         wiz_vals = super(EventRegistration,
                          self)._prepare_wizard_registration_open_vals()
         wiz_vals = self._update_wizard_vals(wiz_vals)
+        wiz_vals.update({'type_hour': self.event_id.type_hour.id})
         return wiz_vals
 
     def _prepare_wizard_reg_cancel_vals(self):
@@ -62,36 +53,20 @@ class EventRegistration(models.Model):
 
     def _update_wizard_vals(self, wiz_vals):
         event_obj = self.env['event.event']
-        if self.date_start:
-            start_time = event_obj._convert_times_to_float(self.date_start)
-            wiz_vals.update({'from_date':
-                             event_obj._convert_date_to_local_format_with_hour(
-                                 self.date_start).date(),
-                             'min_from_date': self.date_start,
-                             'start_time': start_time})
-        else:
-            start_time = event_obj._convert_times_to_float(
-                self.event_id.date_begin)
-            wiz_vals.update({'from_date':
-                             event_obj._convert_date_to_local_format_with_hour(
-                                 self.event_id.date_begin).date(),
-                             'min_from_date': self.event_id.date_begin,
-                             'start_time': start_time})
-        if self.date_end:
-            end_time = event_obj._convert_times_to_float(self.date_end)
-            wiz_vals.update({'to_date':
-                             event_obj._convert_date_to_local_format_with_hour(
-                                 self.date_end).date(),
-                             'max_to_date': self.date_end,
-                             'end_time': end_time})
-        else:
-            end_time = event_obj._convert_times_to_float(
-                self.event_id.date_end)
-            wiz_vals.update({'to_date':
-                             event_obj._convert_date_to_local_format_with_hour(
-                                 self.event_id.date_end).date(),
-                             'max_to_date': self.event_id.date_end,
-                             'end_time': end_time})
-        wiz_vals.update({'start_time': start_time,
-                         'end_time': end_time})
+        date_start = self.date_start if self.date_start else\
+            self.event_id.date_begin
+        date_end = self.date_end if self.date_end else self.event_id.date_end
+        from_date = event_obj._convert_date_to_local_format_with_hour(
+            date_start)
+        start_time = event_obj._convert_times_to_float(date_start)
+        to_date = event_obj._convert_date_to_local_format_with_hour(date_end)
+        end_time = event_obj._convert_times_to_float(date_end)
+        wiz_vals.update({
+            'from_date': from_date.date(),
+            'min_from_date': date_start,
+            'start_time': start_time,
+            'to_date': to_date.date(),
+            'max_to_date': date_end,
+            'end_time': end_time,
+        })
         return wiz_vals

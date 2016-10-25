@@ -14,7 +14,7 @@
     "category": "Event Management",
     "depends": [
         "website_event_track",
-        "crm_claim"
+        "crm_claim",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -33,5 +33,4 @@
         "views/crm_claim_view.xml",
     ],
     "installable": True,
-    "auto_install": False,
 }

@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-# For copyright and license notices, see __openerp__.py file in root directory
-##############################################################################
+# (c) 2016 Alfredo de la Fuente - AvanzOSC
+# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+
 from openerp import models, fields, api, _
 
 
 class WizEventSubstitution(models.TransientModel):
-
     _name = 'wiz.event.substitution'
     _description = 'Wizard for substitution employee absences'
 
-    holiday = fields.Many2one('hr.holidays', strint="Absence")
+    holiday = fields.Many2one(
+        comodel_name='hr.holidays', string="Absence")
     lines = fields.One2many(
         comodel_name='wiz.event.substitution.line',
         inverse_name='wiz', string='Events for substitution')
@@ -72,10 +72,10 @@ class WizEventSubstitution(models.TransientModel):
 
 
 class WizEventSubstitutionLine(models.TransientModel):
-
     _name = 'wiz.event.substitution.line'
     _description = 'Wizard Events for substitution'
 
-    wiz = fields.Many2one('wiz.event.substitution', strint='Wizard')
-    event = fields.Many2one('event.event', strint='Event')
-    employee = fields.Many2one('hr.employee', strint='Employee')
+    wiz = fields.Many2one(
+        comodel_name='wiz.event.substitution', string='Wizard')
+    event = fields.Many2one(comodel_name='event.event', string='Event')
+    employee = fields.Many2one(comodel_name='hr.employee', string='Employee')
