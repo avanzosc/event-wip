@@ -53,9 +53,8 @@ class EventRegistration(models.Model):
 
     def _update_wizard_vals(self, wiz_vals):
         event_obj = self.env['event.event']
-        date_start = self.date_start if self.date_start else\
-            self.event_id.date_begin
-        date_end = self.date_end if self.date_end else self.event_id.date_end
+        date_start = self.date_start or self.event_id.date_begin
+        date_end = self.date_end or self.event_id.date_end
         from_date = event_obj._convert_date_to_local_format_with_hour(
             date_start)
         start_time = event_obj._convert_times_to_float(date_start)
