@@ -16,6 +16,7 @@
     "depends": [
         "partner_event",
         "account_banking_sepa_direct_debit",
+        "hr_employee_catch_partner",
     ],
     "data": [
         "views/event_registration_view.xml",
