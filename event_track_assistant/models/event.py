@@ -446,6 +446,8 @@ class EventTrackPresence(models.Model):
                 presence.real_date_end, fec_ini2)
 
     def _calculate_hour_between_dates(self, to_date, from_date):
+        if from_date > to_date:
+            return 0.0
         hours = (fields.Datetime.from_string(to_date) -
                  fields.Datetime.from_string(from_date))
         time = str(hours).split(':')
