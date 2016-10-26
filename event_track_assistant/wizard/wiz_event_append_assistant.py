@@ -109,14 +109,8 @@ class WizEventAppendAssistant(models.TransientModel):
         event_obj = self.env['event.event']
         track_obj = self.env['event.track']
         if self.registration:
-            if not self.registration.date_start:
-                self._update_registration_start_date(self.registration)
-            else:
-                self._compute_update_registration_start_date(self.registration)
-            if not self.registration.date_end:
-                self._update_registration_date_end(self.registration)
-            else:
-                self._compute_update_registration_end_date(self.registration)
+            self._update_registration_start_date(self.registration)
+            self._update_registration_date_end(self.registration)
             self.registration.registration_open()
             cond = self._prepare_track_condition_search(
                 self.registration.event_id)
@@ -160,14 +154,8 @@ class WizEventAppendAssistant(models.TransientModel):
         registration_obj = self.env['event.registration']
         if len(registrations) == 1:
             registration = registrations[0]
-            if not registration.date_start:
-                self._update_registration_start_date(registration)
-            else:
-                self._compute_update_registration_start_date(registration)
-            if not registration.date_end:
-                self._update_registration_date_end(registration)
-            else:
-                self._compute_update_registration_end_date(registration)
+            self._update_registration_start_date(registration)
+            self._update_registration_date_end(registration)
             registration.registration_open()
             registrations = registration.event_id.registration_ids.filtered(
                 lambda x: x.id != registration.id and
@@ -215,23 +203,14 @@ class WizEventAppendAssistant(models.TransientModel):
             start_time = self.start_time
         except:
             pass
-        from_date = fields.Datetime.to_string(
-            self._local_date(self.from_date, start_time))
-        if from_date < registration.event_id.date_begin:
-            registration.date_start = registration.event_id.date_begin
-
-    def _compute_update_registration_start_date(self, registration):
-        start_time = 0.0
-        try:
-            start_time = self.start_time
-        except:
-            pass
-        from_date = fields.Datetime.to_string(
-            self._local_date(self.from_date, start_time))
-        if from_date < registration.date_start:
+        date_start = registration.date_start
+        date_begin = registration.event_id.date_begin
+        from_date = datetime2str(self._local_date(self.from_date, start_time))
+        if date_start and from_date < date_start and from_date >= date_begin:
             registration.date_start = from_date
-            if from_date < registration.event_id.date_begin:
-                registration.date_start = registration.event_id.date_begin
+        elif from_date < date_begin and (from_date < date_start or
+                                         not date_start):
+            registration.date_start = date_begin
 
     def _update_registration_date_end(self, registration):
         end_time = 0.0
@@ -239,24 +218,14 @@ class WizEventAppendAssistant(models.TransientModel):
             end_time = self.end_time
         except:
             pass
-        registration.date_end = self._local_date(self.to_date, end_time)
-        to_date = fields.Datetime.to_string(
-            self._local_date(self.to_date, end_time))
-        if to_date > registration.event_id.date_end:
-            registration.date_end = registration.event_id.date_end
-
-    def _compute_update_registration_end_date(self, registration):
-        end_time = 0.0
-        try:
-            end_time = self.end_time
-        except:
-            pass
-        to_date = fields.Datetime.to_string(
-            self._local_date(self.to_date, end_time))
-        if to_date > registration.date_end:
+        date_stop = registration.date_end
+        date_end = registration.event_id.date_end
+        to_date = datetime2str(self._local_date(self.to_date, end_time))
+        if date_stop and to_date < date_stop and to_date >= date_end:
             registration.date_end = to_date
-            if to_date > registration.event_id.date_end:
-                registration.date_end = registration.event_id.date_end
+        elif to_date < date_end and (to_date < date_stop or
+                                     not date_stop):
+            registration.date_end = date_end
 
     def _prepare_registration_data(self, event):
         tz = self.env.user.tz

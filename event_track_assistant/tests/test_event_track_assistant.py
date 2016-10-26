@@ -57,6 +57,10 @@ class TestEventTrackAssistant(common.TransactionCase):
         }
         self.event = self.event_model.create(event_vals)
 
+    def test_date_convert_method(self):
+        local_date = _convert_to_local_date(self.datetime_now, tz=u'UTC')
+        self.assertEquals(self.datetime_now, local_date)
+
     def test_company_daytime_nighttime_hours(self):
         self.assertEquals(self.company.daytime_start_hour, 6.0)
         self.assertEquals(self.company.nighttime_start_hour, 22.0)
@@ -234,93 +238,50 @@ class TestEventTrackAssistant(common.TransactionCase):
         difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
         self.assertEquals(difftime, (daytime + nighttime))
 
-    def test_event_track_assistant(self):
-        self.event.date_begin = '2025-01-24 00:00:00'
-        self.event.onchange_date_begin()
-        self.event.date_end = '2025-01-26 00:00:00'
-        self.event.onchange_date_end()
-        self.event.date_begin = '2025-01-20 00:00:00'
-        self.event.date_end = '2025-01-31 00:00:00'
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20 00:00:00',
-                    'max_to_date': '2025-01-31 00:00:00',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        var_fields = ['tasks', 'replaces_to', 'permitted_tasks', 'contract',
-                      'contracts_permitted', 'type_hour']
-        wiz.with_context(
-            {'active_ids': [self.event.id]}).default_get(var_fields)
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20 00:00:00',
-                    'max_to_date': '2025-01-31 00:00:00',
-                    'from_date': '2025-01-20',
-                    'to_date': '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        wiz.with_context({'active_ids': [self.event.id]}).action_append()
-        self.assertEqual(
-            len(self.event.registration_ids), 1,
-            'Not registration found for event')
-        self.assertEqual(
-            self.event.registration_ids[0].partner_id.id,
-            self.ref('base.res_partner_26'),
-            'Not partner found in registration')
-        self.event.track_ids[0].write({'date': '2025-01-20 00:00:00',
-                                       'real_duration': 5.0})
-        self.event.track_ids[0]._compute_real_date_end()
-        wiz.from_date = '2025-05-01'
-        wiz.onchange_dates_and_partner()
-        wiz.write({'from_date': '2025-01-20',
-                   'to_date': '2025-01-15'})
-        wiz.onchange_dates_and_partner()
-        wiz.write({'from_date': '2025-01-01',
-                   'to_date': '2025-01-31'})
-        wiz.onchange_dates_and_partner()
-        wiz.write({'from_date': '2025-01-01',
-                   'min_from_date': '2025-01-20'})
-        wiz.onchange_dates_and_partner()
-        wiz.write({'from_date': '2025-01-31',
-                   'max_to_date': '2025-01-25'})
-        wiz.onchange_dates_and_partner()
-        wiz.write({'to_date': '2025-01-01',
-                   'min_from_date': '2025-01-20'})
-        wiz.onchange_dates_and_partner()
-        wiz.write({'to_date': '2025-01-31',
-                   'max_to_date': '2025-01-20'})
-        wiz.onchange_dates_and_partner()
-        wiz_vals = {'from_date': '2025-01-20',
-                    'to_date':  '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        wiz.with_context({'active_ids': [self.event.id]}).action_append()
-        sessions = self.event.track_ids[0].presences.filtered(
-            lambda x: x.partner.id ==
-            self.event.registration_ids[0].partner_id.id)
-        sessions[0].button_completed()
-        sessions[0].button_canceled()
-        self.assertNotEquals(sessions[0].partner.session_count, 0)
-        self.assertNotEquals(sessions[0].partner.presences_count, 0)
-        show_sessions = sessions[0].partner.show_sessions_from_partner()
-        self.assertEquals(
-            show_sessions.get('res_model'), 'event.track')
-        show_presences = sessions[0].partner.show_presences_from_partner()
-        self.assertEquals(
-            show_presences.get('res_model'), 'event.track.presence')
-        self.assertNotEqual(
-            len(sessions), 0, 'Partner not found in session')
-        wiz_vals = {'registration': self.event.registration_ids[0].id,
-                    'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20 00:00:00',
-                    'max_to_date': '2025-01-31 00:00:00',
-                    'from_date': '2025-01-20',
-                    'to_date': '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        self.event.registration_ids[0].state = 'open'
-        wiz.with_context({'active_ids': [self.event.id]}).action_append()
+    def test_event_track_registration_open_button(self):
+        self.assertEquals(len(self.event.mapped('track_ids.presences')), 0)
+        registration_vals = {
+            'event_id': self.event.id,
+            'partner_id': self.partner.id,
+        }
+        registration = self.registration_model.create(registration_vals)
+        dict_add_wiz = registration.with_context().button_registration_open()
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).browse(dict_add_wiz.get('res_id'))
+        add_wiz.action_append()
+        self.assertNotEquals(len(self.event.mapped('track_ids.presences')), 0)
+        registration.date_start = str2datetime(self.event.date_begin) -\
+            relativedelta(days=1)
+        self.assertNotEquals(registration.date_start, self.event.date_begin)
+        res = registration._onchange_date_start()
+        self.assertTrue(res.get('warning'))
+        self.assertEquals(registration.date_start, self.event.date_begin)
+        registration.date_end = str2datetime(self.event.date_end) +\
+            relativedelta(days=1)
+        self.assertNotEquals(registration.date_end, self.event.date_end)
+        res = registration._onchange_date_end()
+        self.assertTrue(res.get('warning'))
+        self.assertEquals(registration.date_end, self.event.date_end)
+        registration.write({
+            'date_start': str2datetime(self.event.date_begin) +
+            relativedelta(days=1),
+            'date_end': str2datetime(self.event.date_begin) -
+            relativedelta(days=1),
+        })
+        self.assertNotEquals(registration.date_end, self.event.date_end)
+        res = registration._onchange_date_end()
+        self.assertTrue(res.get('warning'))
+        self.assertEquals(registration.date_end, self.event.date_end)
+        registration.write({
+            'date_start': str2datetime(self.event.date_end) +
+            relativedelta(days=1),
+            'date_end': str2datetime(self.event.date_end) -
+            relativedelta(days=1),
+        })
+        self.assertNotEquals(registration.date_start, self.event.date_begin)
+        res = registration._onchange_date_start()
+        self.assertTrue(res.get('warning'))
+        self.assertEquals(registration.date_start, self.event.date_begin)
 
     def test_event_track_assistant_delete(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)

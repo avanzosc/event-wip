@@ -153,11 +153,9 @@ class WizEventDeleteAssistant(models.TransientModel):
         self.ensure_one()
         event_obj = self.env['event.event']
         presence_obj = self.env['event.track.presence']
-        if self.registration:
-            events = [self.registration.event_id]
-        else:
-            events = event_obj.browse(self.env.context.get('active_ids'))
-        for event in events:
+        event_ids = self.registration.event_id.ids if self.registration else\
+            self.env.context.get('active_ids', [])
+        for event in event_obj.browse(event_ids):
             sessions = self.partner.session_ids.filtered(
                 lambda x: x.event_id == event)
             self._delete_registrations_between_dates(sessions)
