@@ -583,8 +583,6 @@ class EventRegistration(models.Model):
                     'max_event': self.event_id.id,
                     'to_date': to_date,
                     'max_to_date': max_to_date}
-        if str(from_date) < fields.Date.context_today(self):
-            wiz_vals['from_date'] = fields.Date.context_today(self)
         return wiz_vals
 
     @api.multi
