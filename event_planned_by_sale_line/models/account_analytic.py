@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 # © 2016 Alfredo de la Fuente - AvanzOSC
+# © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+
 from openerp import models, fields, api
 from dateutil.relativedelta import relativedelta
 import calendar
+
+str2datetime = fields.Datetime.from_string
+datetime2str = fields.Datetime.to_string
 
 
 class AccountAnalyticAccount(models.Model):
@@ -21,13 +26,14 @@ class AccountAnalyticAccount(models.Model):
         return values
 
     def _calculate_fec_ini_end(self, interval=0):
-        date = fields.Date.from_string(self.recurring_next_date)
+        date = str2datetime(self.recurring_next_date)
         date += relativedelta(months=interval)
-        start_date = date.replace(day=1)
+        start_date = date.replace(day=1, hour=0, minute=0, second=0)
         end_date = date.replace(
-            day=calendar.monthrange(date.year, date.month)[1])
-        start_date = fields.Date.to_string(start_date)
-        end_date = fields.Date.to_string(end_date)
+            day=calendar.monthrange(date.year, date.month)[1],
+            hour=23, minute=59, second=59)
+        start_date = datetime2str(start_date)
+        end_date = datetime2str(end_date)
         return start_date, end_date
 
 
