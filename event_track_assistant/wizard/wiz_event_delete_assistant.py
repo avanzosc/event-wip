@@ -54,7 +54,7 @@ class WizEventDeleteAssistant(models.TransientModel):
         self.message = ''
         if self.from_date and self.to_date and self.partner:
             if self.registration:
-                sessions = self.partner.sessions.filtered(
+                sessions = self.partner.session_ids.filtered(
                     lambda x: x.event_id.id == self.registration.event_id.id)
                 from_date = event_obj._put_utc_format_date(
                     self.from_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
@@ -65,7 +65,7 @@ class WizEventDeleteAssistant(models.TransientModel):
                 if self.registration.date_end != to_date:
                     self.later_sessions = True
             else:
-                sessions = self.partner.sessions.filtered(
+                sessions = self.partner.session_ids.filtered(
                     lambda x: x.event_id.id in
                     self.env.context.get('active_ids'))
                 cond = self._prepare_track_condition_from_date(sessions)
@@ -163,7 +163,7 @@ class WizEventDeleteAssistant(models.TransientModel):
         else:
             events = event_obj.browse(self.env.context.get('active_ids'))
         for event in events:
-            sessions = self.partner.sessions.filtered(
+            sessions = self.partner.session_ids.filtered(
                 lambda x: x.event_id == event)
             self._delete_registrations_between_dates(sessions)
             if self.registration:

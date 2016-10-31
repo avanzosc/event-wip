@@ -18,9 +18,6 @@
                                string="Sessions Presences"/>
                     </button>
                 </div>
-                <notebook position="before">
-                    <field name="sessions" invisible="1"/>
-                </notebook>
             </field>
         </record>
     </data>
