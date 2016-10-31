@@ -17,6 +17,7 @@
                 </field>
             </field>
         </record>
+
         <record model="ir.ui.view" id="view_event_track_search_inh_assistant">
             <field name="name">view.event.track.search.inh.assistant</field>
             <field name="model">event.track</field>
@@ -79,6 +80,7 @@
                 </filter>
             </field>
         </record>
+
         <record model="ir.ui.view" id="view_event_track_tree_inh_assistant">
             <field name="name">view.event.track.tree.inh.assistant</field>
             <field name="model">event.track</field>
@@ -94,6 +96,7 @@
                 </field>
             </field>
         </record>
+
         <record model="ir.ui.view" id="view_event_track_for_inh_assistant">
             <field name="name">view.event.track.for.inh.assistant</field>
             <field name="model">event.track</field>
@@ -126,7 +129,7 @@
                                 <separator string="Presences" colspan="4"/>
                                 <field name="allowed_partners" invisible="1"/>
                                 <field name="presences" nolabel="1" 
-                                        context="{'default_session': active_id}">
+                                       context="{'default_session': active_id}">
                                     <tree string="Presences" editable="bottom">
                                         <field name="allowed_partners" invisible="1"/>
                                         <field name="partner" 
@@ -136,9 +139,9 @@
                                         <field name="session_duration" invisible="1"/>
                                         <field name="real_duration" widget="float_time" sum='Tot. real duration'/>
                                         <field name="real_daylight_hours" widget="float_time"
-                                             sum='Tot. daylight hours'/>
+                                               sum='Tot. daylight hours'/>
                                         <field name="real_nightlight_hours" widget="float_time"
-                                             sum='Tot. nightlight hours'/>
+                                               sum='Tot. nightlight hours'/>
                                         <field name="notes" />
                                         <field name="state" />
                                     </tree>
@@ -167,8 +170,9 @@
                 </xpath>
             </field>
         </record>
+
         <menuitem name="Event Tracks" id="website_event_track.menu_event_track"
-            action="website_event_track.action_event_track" parent="event.event_main_menu"
-            sequence="11" groups="event.group_event_user"/>
+                  action="website_event_track.action_event_track" parent="event.event_main_menu"
+                  sequence="11" groups="event.group_event_user"/>
     </data>
 </openerp>

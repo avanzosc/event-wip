@@ -16,7 +16,7 @@
                 </button>
             </field>
         </record>
-        
+
         <record id="event_registration_open_button_form_view" model="ir.ui.view">
             <field name="name">event.registration.open_button.form</field>
             <field name="model">event.registration</field>
@@ -29,7 +29,7 @@
         </record>
 
         <record model="ir.ui.view" id="view_registration_search_inh_assistant">
-            <field name="name">view.registration.search.inh.assistant</field>
+            <field name="name">event.registration.extended.search</field>
             <field name="model">event.registration</field>
             <field name="inherit_id" ref="event.view_registration_search" />
             <field name="arch" type="xml">

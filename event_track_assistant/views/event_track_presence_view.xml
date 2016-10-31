@@ -5,13 +5,15 @@
             <field name="name">event.track.presence.calendar.view</field>
             <field name="model">event.track.presence</field>
             <field name="arch" type="xml">
-                <calendar string="Session presences" color="state" date_start="session_date_without_hour">
+                <calendar string="Session presences" color="state"
+                          date_start="session_date_without_hour" date_delay="session_duration">
                     <field name="partner" />
                     <field name="session_duration" />
                     <field name="real_duration" />
                 </calendar>
             </field>
         </record>
+
         <record id="event_track_presence_view" model="ir.ui.view">
             <field name="name">event.track.presence.tree.view</field>
             <field name="model">event.track.presence</field>
@@ -23,24 +25,25 @@
                     <field name="session_date" />
                     <field name="partner" />
                     <field name="session_duration" widget="float_time" 
-                        sum='Tot. estimated duration'/>
+                           sum='Tot. estimated duration'/>
                     <field name="estimated_date_end" />
                     <field name="estimated_daylight_hours" widget="float_time"
-                        sum='Tot. estimated daylight hours'/>
+                           sum='Tot. estimated daylight hours'/>
                     <field name="estimated_nightlight_hours" widget="float_time"
-                        sum='Tot. estimated nightlight hours'/>
+                           sum='Tot. estimated nightlight hours'/>
                     <field name="real_duration" widget="float_time"
-                        sum='Tot. real duration'/>
+                           sum='Tot. real duration'/>
                     <field name="real_date_end" />
                     <field name="real_daylight_hours" widget="float_time"
-                        sum='Tot. daylight hours'/>
+                           sum='Tot. daylight hours'/>
                     <field name="real_nightlight_hours" widget="float_time"
-                        sum='Tot. nightlight hours'/>
+                           sum='Tot. nightlight hours'/>
                     <field name="notes" />
                     <field name="state" />
                 </tree>
             </field>
         </record>
+
         <record id="event_track_presence_search_view" model="ir.ui.view">
             <field name="name">event.track.presence.search.view</field>
             <field name="model">event.track.presence</field>
@@ -53,21 +56,19 @@
                     <field name="state" />
                     <separator/>
                     <group expand="0" string="Period">
-                        <filter string="Current week"
+                        <filter string="Current week" name="current_week_filter"
                                 domain="[('session_date','&lt;=', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
                                 ('session_date','&gt;',(context_today() - relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"
                                 help="Display all elements in the current week." />
-                        <filter string="Current month"
+                        <filter string="Current month" name="current_month_filter"
                                 domain="[('session_date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
                                 ('session_date','&gt;=',time.strftime('%%Y-%%m-01'))]"
                                 help="Display all elements in the current month." />
-                        <filter string="Next week"
-                                name="next_week"
+                        <filter string="Next week" name="next_week_filter"
                                 domain="[('session_date','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
                                 ('session_date','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"
                                 help="Display all elements in the next week." />
-                        <filter string="Next month"
-                                name="next_month"
+                        <filter string="Next month" name="next_month_filter"
                                 domain="[('session_date','&gt;=',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
                                 ('session_date','&lt;',(context_today()+relativedelta(months=2)).strftime('%%Y-%%m-01'))]"
                                 help="Display all elements in the next month." />
@@ -76,62 +77,72 @@
                         <filter string="Canceled" name="canceled" domain="[('state','=','canceled')]"/>
                     </group>
                     <group expand="1" string="Group By">
-                        <filter string="Day"
+                        <filter string="Day" name="daily_group"
                                 domain="[]" context="{'group_by':'session_date:day'}"/>
-                        <filter string="Week"
+                        <filter string="Week" name="weekly_group"
                                 domain="[]" context="{'group_by':'session_date:week'}"/>
-                        <filter string="Month"
+                        <filter string="Month" name="monthly_group"
                                 domain="[]" context="{'group_by': 'session_date:month'}"/>
-                        <filter string="Year"
+                        <filter string="Year" name="yearly_group"
                                 domain="[]" context="{'group_by':'session_date:year'}"/>
-                        <filter string="Event" 
+                        <filter string="Event" name="group_event"
                                 domain="[]" context="{'group_by':'event'}"/>
-                        <filter string="Session" 
+                        <filter string="Session" name="group_session"
                                 domain="[]" context="{'group_by':'session'}"/>
-                        <filter string="Partner" 
+                        <filter string="Partner" name="group_partner"
                                 domain="[]" context="{'group_by':'partner'}"/>
-                        <filter string="State" 
+                        <filter string="State" name="group_state"
                                 domain="[]" context="{'group_by':'state'}"/>
                     </group>
                 </search>
             </field>
         </record>
+
         <record id="event_track_presence_form_view" model="ir.ui.view">
             <field name="name">event.track.presence.form.view</field>
             <field name="model">event.track.presence</field>
             <field name="arch" type="xml">
                 <form string="Session presence">
+                    <header>
+                        <button name="button_completed" states="pending"
+                                string="Completed" type="object"/>
+                        <button name="button_canceled" states="pending"
+                                string="Canceled" type="object"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="pending,completed,canceled"/>
+                    </header>
                     <sheet>
-                        <header>
-                            <button name="button_completed" states="pending" string="Completed"
-                                    type="object"/>
-                            <button name="button_canceled" states="pending" string="Canceled"
-                                    type="object"/>
-                            <field name="state" widget="statusbar"
-                                statusbar_visible="pending,completed,canceled"/>
-                        </header>
+                        <label string="Event and Session" />
                         <h1>
-                            <label string="Event" />
-                            <field name="event" required="1"/>
+                            <field name="event" required="1" class="oe_inline" />
+                            <label string="/" />
+                            <field name="session" required="1" class="oe_inline" />
                         </h1>
-                        <group name="head" colspan="4" col="8" >
-                            <field name="allowed_partners" colspan="8"
-                                    invisible="1"/>
-                            <field name="session" required="1" colspan="4"
-                                    domain="[('event_id','=', event)]"/>
-                            <field name="session_date" colspan="2" readonly="1"/>
-                            <field name="session_duration" colspan="2" readonly="1" widget="float_time"/>
-                            <field name="estimated_daylight_hours" widget="float_time" />
-                            <field name="partner" colspan="6"
+                        <field name="allowed_partners" invisible="1"/>
+                        <group name="head">
+                            <field name="session_date" readonly="1"/>
+                            <field name="partner"
                                    domain="[('id','in',allowed_partners[0][2])]"/>
-                            <field name="real_duration" colspan="2" widget="float_time"/>
-                            <newline/>
-                            <field name="notes" colspan="8"/>
+                            <group>
+                                <field name="session_duration" widget="float_time" />
+                                <field name="estimated_daylight_hours" widget="float_time" />
+                                <field name="estimated_nightlight_hours" widget="float_time" />
+                                <field name="estimated_date_end" />
+                            </group>
+                            <group>
+                                <field name="real_duration" widget="float_time" />
+                                <field name="real_daylight_hours" widget="float_time" />
+                                <field name="real_nightlight_hours" widget="float_time" />
+                                <field name="real_date_end" />
+                            </group>
+                            <label for="notes" colspan="4" />
+                            <field name="notes" nolabel="1" colspan="4" />
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
+
         <record id="action_event_track_presence_view" model="ir.actions.act_window">
             <field name="name">Session presences</field>
             <field name="type">ir.actions.act_window</field>
@@ -139,9 +150,10 @@
             <field name="view_type">form</field>
             <field name="view_mode">calendar,tree,form</field>
         </record>
+
         <menuitem id="event_track_presence_option_view" name="Session presences"
                   action="action_event_track_presence_view" 
-                  parent="event.event_main_menu"
-                  groups="event.group_event_user"/>
+                  parent="event.event_main_menu" sequence="15"
+                  groups="event.group_event_user" />
     </data>
 </openerp>
