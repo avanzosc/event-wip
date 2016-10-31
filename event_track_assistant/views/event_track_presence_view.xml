@@ -14,7 +14,7 @@
             </field>
         </record>
 
-        <record id="event_track_presence_view" model="ir.ui.view">
+        <record id="event_track_presence_tree_view" model="ir.ui.view">
             <field name="name">event.track.presence.tree.view</field>
             <field name="model">event.track.presence</field>
             <field name="arch" type="xml">
