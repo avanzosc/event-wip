@@ -10,15 +10,17 @@ class WizEventDeleteAssistant(models.TransientModel):
     from_date = fields.Date(string='From date')
     to_date = fields.Date(string='To date')
     registration = fields.Many2one(
-        'event.registration', string='Partner registration')
-    partner = fields.Many2one('res.partner', string='Partner')
-    min_event = fields.Many2one('event.event', string='Min. event')
+        comodel_name='event.registration', string='Partner registration')
+    partner = fields.Many2one(comodel_name='res.partner', string='Partner')
+    min_event = fields.Many2one(
+        comodel_name='event.event', string='Min. event')
     min_from_date = fields.Date(string='Min. from date')
-    max_event = fields.Many2one('event.event', string='Max. event')
+    max_event = fields.Many2one(
+        comodel_name='event.event', string='Max. event')
     max_to_date = fields.Date(string='Max. to date')
-    past_sessions = fields.Boolean('Past Sessions')
-    later_sessions = fields.Boolean('Later Sessions')
-    message = fields.Char('Message', readonly=True)
+    past_sessions = fields.Boolean(string='Past Sessions')
+    later_sessions = fields.Boolean(string='Later Sessions')
+    message = fields.Char(string='Message', readonly=True)
 
     @api.model
     def default_get(self, var_fields):

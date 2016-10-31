@@ -7,5 +7,5 @@ from openerp import models, fields
 class CrmClaim(models.Model):
     _inherit = 'crm.claim'
 
-    event_id = fields.Many2one('event.event', string='Event')
-    session_id = fields.Many2one('event.track', string='Session')
+    event_id = fields.Many2one(comodel_name='event.event', string='Event')
+    session_id = fields.Many2one(comodel_name='event.track', string='Session')
