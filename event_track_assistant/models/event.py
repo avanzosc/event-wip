@@ -148,7 +148,7 @@ class EventTrack(models.Model):
             track.lit_presences = _('Presences: ') + str(len(track.presences))
 
     estimated_date_end = fields.Datetime(
-        'Estimated date end', compute='_compute_estimated_date_end',
+        string='Estimated date end', compute='_compute_estimated_date_end',
         store=True)
     allowed_partners = fields.Many2many(
         comodel_name="res.partner", relation="rel_partner_event_track",
@@ -161,12 +161,13 @@ class EventTrack(models.Model):
     real_duration = fields.Float(
         compute='_calc_real_duration', string='Real duration', store=True)
     real_date_end = fields.Datetime(
-        'Real date end', compute='_compute_real_date_end',
+        string='Real date end', compute='_compute_real_date_end',
         store=True)
     session_date = fields.Date(
-        'Session date', compute='_calculate_session_date', store=True)
+        string='Session date', compute='_calculate_session_date', store=True)
     session_end_date = fields.Date(
-        'Session end date', compute='_calculate_session_end_date', store=True)
+        string='Session end date', compute='_calculate_session_end_date',
+        store=True)
     lit_presences = fields.Char(
         string='Num. presences', compute='_compute_num_presences',
         store=True)
@@ -276,11 +277,11 @@ class EventTrackPresence(models.Model):
                         presence, fec_ini, fec_fin)
 
     name = fields.Char(
-        'Partner', related='partner.name', store=True)
+        string='Partner', related='partner.name', store=True)
     session = fields.Many2one(
-        'event.track', string='Session', ondelete='cascade')
+        comodel_name='event.track', string='Session', ondelete='cascade')
     event = fields.Many2one(
-        'event.event', string='Event', store=True,
+        comodel_name='event.event', string='Event', store=True,
         related='session.event_id')
     allowed_partners = fields.Many2many(
         comodel_name='res.partner', compute='_get_allowed_partners',
@@ -288,21 +289,21 @@ class EventTrackPresence(models.Model):
     session_date = fields.Datetime(
         related='session.date', string='Session date', store=True)
     session_date_without_hour = fields.Date(
-        'Session date withour hour', related='session.session_date',
+        string='Session date without hour', related='session.session_date',
         store=True)
     session_end_date_without_hour = fields.Date(
-        'Session end date withour hour', related='session.session_end_date',
-        store=True)
+        string='Session end date without hour',
+        related='session.session_end_date', store=True)
     session_duration = fields.Float(
         related='session.duration', string='Duration', store=True)
     partner = fields.Many2one(
-        'res.partner', string='Partner', required=True)
+        comodel_name='res.partner', string='Partner', required=True)
     real_duration = fields.Float(string='Real duration', default=0.0)
     estimated_date_end = fields.Datetime(
-        'Estimated date end', related='session.estimated_date_end',
+        string='Estimated date end', related='session.estimated_date_end',
         store=True)
     real_date_end = fields.Datetime(
-        'Real date end', compute='_calculate_real_date_end', store=True)
+        string='Real date end', compute='_calculate_real_date_end', store=True)
     estimated_daylight_hours = fields.Float(
         string='Estimated daylight hours', default=0.0,
         compute='_calculate_estimated_daynightlight_hours', store=True)
@@ -318,10 +319,9 @@ class EventTrackPresence(models.Model):
     notes = fields.Text(
         string='Notes')
     state = fields.Selection(
-        [('pending', 'Pending'),
-         ('completed', 'Completed'),
-         ('canceled', 'Canceled')
-         ], string="State", default='pending', required=True)
+        selection=[('pending', 'Pending'), ('completed', 'Completed'),
+                   ('canceled', 'Canceled')], string="State",
+        default='pending', required=True)
 
     @api.onchange('session')
     def onchange_session(self):
@@ -331,11 +331,11 @@ class EventTrackPresence(models.Model):
 
     @api.multi
     def button_completed(self):
-        self.state = 'completed'
+        self.write({'state': 'completed'})
 
     @api.multi
     def button_canceled(self):
-        self.state = 'canceled'
+        self.write({'state': 'canceled'})
 
     def _calculate_daynightlightt_hours_same_day(
             self, presence, fec_ini, fec_fin):
@@ -468,13 +468,11 @@ class EventTrackPresence(models.Model):
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
 
-    date_start = fields.Datetime('Date start')
-    date_end = fields.Datetime('Date end')
+    date_start = fields.Datetime(string='Date start')
+    date_end = fields.Datetime(string='Date end')
     state = fields.Selection(
-        [('draft', 'Unconfirmed'),
-         ('cancel', 'Cancelled'),
-         ('open', 'Confirmed'),
-         ('done', 'Finalized')])
+        selection=[('draft', 'Unconfirmed'), ('cancel', 'Cancelled'),
+                   ('open', 'Confirmed'), ('done', 'Finalized')])
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
@@ -549,9 +547,11 @@ class EventRegistration(models.Model):
                       ' employee'))
         wiz = wiz_obj.create(self._prepare_wizard_registration_open_vals())
         context = self.env.context.copy()
-        context['active_id'] = self.event_id.id
-        context['active_ids'] = [self.event_id.id]
-        context['active_model'] = 'event.event'
+        context.update({
+            'active_id': self.event_id.id,
+            'active_ids': self.event_id.ids,
+            'active_model': 'event.event',
+        })
         return {'name': _('Add Person To Session'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'wiz.event.append.assistant',
@@ -595,9 +595,11 @@ class EventRegistration(models.Model):
                        'later_sessions': False,
                        'message': ''})
         context = self.env.context.copy()
-        context['active_id'] = self.event_id.id
-        context['active_ids'] = [self.event_id.id]
-        context['active_model'] = 'event.event'
+        context.update({
+            'active_id': self.event_id.id,
+            'active_ids': self.event_id.ids,
+            'active_model': 'event.event',
+        })
         return {'name': _('Delete Person From Event-Session'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'wiz.event.delete.assistant',
@@ -638,8 +640,7 @@ class EventRegistration(models.Model):
 
     @api.multi
     def unlink(self):
-        for registration in self:
-            if registration.state != 'draft':
-                raise exceptions.Warning(
-                    _('You can only delete registration in draft status'))
+        if any(self.filtered(lambda r: r.state != 'draft')):
+            raise exceptions.Warning(
+                _('You can only delete registration in draft status'))
         return super(EventRegistration, self).unlink()
