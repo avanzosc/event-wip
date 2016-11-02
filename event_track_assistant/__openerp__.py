@@ -31,6 +31,7 @@
         "views/event_track_presence_view.xml",
         "views/res_partner_view.xml",
         "views/crm_claim_view.xml",
+        "views/res_company_view.xml",
     ],
     "installable": True,
 }

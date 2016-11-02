@@ -5,30 +5,29 @@ from openerp import models, fields, api
 
 
 class ResPartner(models.Model):
-
     _inherit = 'res.partner'
 
     @api.multi
-    def _count_session(self):
+    def _compute_session_count(self):
         for partner in self:
-            partner.session_count = len(partner.sessions)
+            partner.session_count = len(partner.session_ids)
 
     @api.multi
-    def _count_presences(self):
+    def _compute_presences_count(self):
         for partner in self:
-            partner.presences_count = len(partner.presences)
+            partner.presences_count = len(partner.presence_ids)
 
-    sessions = fields.Many2many(
+    session_ids = fields.Many2many(
         comodel_name="event.track", relation="rel_partner_event_track",
         column1="partner_id", column2="event_track_id", string="Sessions",
         copy=False)
     session_count = fields.Integer(
-        string='Sessions counter', compute='_count_session')
-    presences = fields.One2many(
+        string='Sessions counter', compute='_compute_session_count')
+    presence_ids = fields.One2many(
         comodel_name='event.track.presence', inverse_name='partner',
         string='Presences')
     presences_count = fields.Integer(
-        string='Presences counter', compute='_count_presences')
+        string='Presences counter', compute='_compute_presences_count')
 
     @api.multi
     def show_sessions_from_partner(self):
@@ -37,7 +36,7 @@ class ResPartner(models.Model):
                'view_id': False,
                'type': 'ir.actions.act_window',
                'view_type': 'form',
-               'domain': [('id', 'in', self.sessions.ids)]}
+               'domain': [('id', 'in', self.mapped('session_ids').ids)]}
         return res
 
     @api.multi

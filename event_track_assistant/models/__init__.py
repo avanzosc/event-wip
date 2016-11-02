@@ -4,3 +4,4 @@
 from . import event
 from . import partner
 from . import crm_claim
+from . import res_company

@@ -21,7 +21,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.claim_model = self.env['crm.claim']
         event_vals = {'name': 'Registration partner test',
                       'date_begin': '2025-01-20',
-                      'date_end': '2025-01-31',
+                      'date_end': '2025-01-30',
                       'track_ids': [(0, 0, {'name': 'sesion 2',
                                             'date': '2025-01-22 00:00:00'}),
                                     (0, 0, {'name': 'sesion 4',
@@ -29,6 +29,35 @@ class TestEventTrackAssistant(common.TransactionCase):
                                     (0, 0, {'name': 'sesion 4',
                                             'date': '2025-01-28 00:00:00'})]}
         self.event = self.event_model.create(event_vals)
+
+    def test_onchange_dates_event(self):
+        self.event.date_begin = self.event.track_ids[1].date
+        res = self.event.onchange_date_begin()
+        self.assertTrue(res.get('warning'))
+        self.assertNotEquals(
+            self.event.date_begin, self.event.track_ids[1].date)
+        self.assertEquals(self.event.date_begin, self.event.track_ids[0].date)
+        self.event.date_end = self.event.track_ids[1].date
+        res = self.event.onchange_date_end()
+        self.assertTrue(res.get('warning'))
+        self.assertNotEquals(
+            self.event.date_end, self.event.track_ids[1].date)
+        self.assertEquals(self.event.date_end, self.event.track_ids[2].date)
+
+    def test_event_track_dates(self):
+        track_model = self.env['event.track']
+        with self.assertRaises(exceptions.ValidationError):
+            track_model.create({
+                'event_id': self.event.id,
+                'name': 'Date before',
+                'date': '2025-01-19',
+            })
+        with self.assertRaises(exceptions.ValidationError):
+            track_model.create({
+                'event_id': self.event.id,
+                'name': 'Date after',
+                'date': '2025-01-31',
+            })
 
     def test_event_track_assistant(self):
         self.event.date_begin = '2025-01-24 00:00:00'
@@ -102,10 +131,14 @@ class TestEventTrackAssistant(common.TransactionCase):
         sessions[0].onchange_session()
         sessions[0].button_completed()
         sessions[0].button_canceled()
-        sessions[0].partner._count_session()
-        sessions[0].partner._count_presences()
-        sessions[0].partner.show_sessions_from_partner()
-        sessions[0].partner.show_presences_from_partner()
+        self.assertNotEquals(sessions[0].partner.session_count, 0)
+        self.assertNotEquals(sessions[0].partner.presences_count, 0)
+        show_sessions = sessions[0].partner.show_sessions_from_partner()
+        self.assertEquals(
+            show_sessions.get('res_model'), 'event.track')
+        show_presences = sessions[0].partner.show_presences_from_partner()
+        self.assertEquals(
+            show_presences.get('res_model'), 'event.track.presence')
         self.assertNotEqual(
             len(sessions), 0, 'Partner not found in session')
         wiz_vals = {'registration': self.event.registration_ids[0].id,
@@ -220,14 +253,14 @@ class TestEventTrackAssistant(common.TransactionCase):
                    'to_date': '2025-01-31'})
         wiz.with_context(
             {'active_ids': [self.event.id]}).action_nodelete_past_and_later()
-        sessions = self.env.ref('base.res_partner_26').sessions
+        sessions = self.env.ref('base.res_partner_26').session_ids
         wiz.with_context(
             {'active_ids':
              [self.event.id]})._delete_registrations_between_dates(sessions)
         wiz.with_context(
             {'active_ids': [self.event.id]}).action_delete_past_and_later()
         self.assertNotEqual(
-            len(self.env.ref('base.res_partner_26').sessions),
+            len(self.env.ref('base.res_partner_26').session_ids),
             0, 'Not partner found in registration')
         wiz_vals = {'min_event': self.event.id,
                     'max_event': self.event.id,
@@ -317,8 +350,8 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertEquals(track.date, to_string(new_date))
 
     def test_event_confirm_assistant(self):
-        cond = [('event_id', '=', self.event.id)]
-        claim = self.claim_model.search(cond, limit=1)
+        event_domain = [('event_id', '=', self.event.id)]
+        claim = self.claim_model.search(event_domain, limit=1)
         self.assertEquals(
             len(claim), 0, 'There are not claims for the event.')
         track = self.event.track_ids[0]
@@ -348,7 +381,6 @@ class TestEventTrackAssistant(common.TransactionCase):
             'notes': 'Created claim from event.track.presence',
         })
         wiz_impute.button_impute_hours()
-        cond = [('event_id', '=', self.event.id)]
-        claim = self.claim_model.search(cond, limit=1)
+        claim = self.claim_model.search(event_domain, limit=1)
         self.assertNotEqual(
             len(claim), 0, 'Created claim from presence, not found')
