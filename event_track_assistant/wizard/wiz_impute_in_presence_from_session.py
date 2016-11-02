@@ -42,28 +42,11 @@ class WizImputeInPresenceFromSession(models.TransientModel):
                 raise exceptions.Warning(
                     _('To create a claim, you must enter the notes'))
             if line.create_claim:
-                claim_obj.create(self._get_values_for_create_claim(line))
+                claim_obj.create(line._get_values_for_create_claim())
             hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
                 hours, state='completed' if not line.unassisted else 'pending',
                 notes=line.notes)
-
-    def _get_values_for_create_claim(self, line):
-        name = _(u'Event: {}, session:{}').format(line.presence.event.name,
-                                                  line.presence.session.name)
-        description = _(u'SESSION DATE: {}, PERSON: {}, NOTES: {}').format(
-            line.presence.session.date, line.presence.partner.name,
-            line.notes)
-        claim_vals = {'name': name,
-                      'user_id': line.presence.event.user_id.id,
-                      'partner_id': self.env.user.partner_id.id,
-                      'email_from': self.env.user.login,
-                      'description': description,
-                      'event_id': line.presence.event.id,
-                      'session_id': line.presence.session.id,
-                      'ref': '{},{}'.format(line.presence._name,
-                                            line.presence.id)}
-        return claim_vals
 
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):
@@ -72,11 +55,32 @@ class WizImputeInPresenceFromSessionLine(models.TransientModel):
     wiz_id = fields.Many2one(
         comodel_name='wiz.impute.in.presence.from.session', string='Wizard',
         ondelete='cascade')
-    presence = fields.Many2one('event.track.presence', string='Presence')
-    session = fields.Many2one('event.track', string='Session')
-    session_date = fields.Datetime('Session date')
-    partner = fields.Many2one('res.partner', string='Partner')
+    presence = fields.Many2one(
+        comodel_name='event.track.presence', string='Presence')
+    session = fields.Many2one(comodel_name='event.track', string='Session')
+    session_date = fields.Datetime(string='Session date')
+    partner = fields.Many2one(comodel_name='res.partner', string='Partner')
     unassisted = fields.Boolean(string='Unassisted', default=False)
-    hours = fields.Float('Hours')
+    hours = fields.Float(string='Hours')
     create_claim = fields.Boolean(string='Create claim', default=False)
-    notes = fields.Char('Notes')
+    notes = fields.Char(string='Notes')
+
+    @api.multi
+    def _get_values_for_create_claim(self):
+        self.ensure_one()
+        name = _(u'Event: {}, session:{}').format(self.presence.event.name,
+                                                  self.presence.session.name)
+        description = _(u'SESSION DATE: {}, PERSON: {}, NOTES: {}').format(
+            self.presence.session.date, self.presence.partner.name,
+            self.notes)
+        claim_vals = {
+            'name': name,
+            'user_id': self.presence.event.user_id.id,
+            'partner_id': self.env.user.partner_id.id,
+            'email_from': self.env.user.partner_id.email,
+            'description': description,
+            'event_id': self.presence.event.id,
+            'session_id': self.presence.session.id,
+            'ref': '{},{}'.format(self.presence._name, self.presence.id),
+        }
+        return claim_vals
