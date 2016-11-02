@@ -147,8 +147,7 @@ class WizEventAppendAssistant(models.TransientModel):
                     % (self.partner.name, event.name))
             registration = self._update_create_registration(event,
                                                             registrations)
-            registration.confirm_registration()
-            registration.mail_user()
+            registration.registration_open()
             cond = self._prepare_track_condition_search(event)
             tracks = track_obj.search(cond)
             for track in tracks:
