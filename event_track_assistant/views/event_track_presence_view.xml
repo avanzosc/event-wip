@@ -19,7 +19,7 @@
             <field name="model">event.track.presence</field>
             <field name="arch" type="xml">
                 <tree string="Session presences">
-                    <field name="allowed_partners" invisible="1"/>
+                    <field name="allowed_partner_ids" invisible="1"/>
                     <field name="event" />
                     <field name="session" />
                     <field name="session_date" />
@@ -118,11 +118,11 @@
                             <label string="/" />
                             <field name="session" required="1" class="oe_inline" />
                         </h1>
-                        <field name="allowed_partners" invisible="1"/>
+                        <field name="allowed_partner_ids" invisible="1"/>
                         <group name="head">
                             <field name="session_date" readonly="1"/>
                             <field name="partner"
-                                   domain="[('id','in',allowed_partners[0][2])]"/>
+                                   domain="[('id','in',allowed_partner_ids[0][2])]"/>
                             <group>
                                 <field name="session_duration" widget="float_time" />
                                 <field name="estimated_daylight_hours" widget="float_time" />

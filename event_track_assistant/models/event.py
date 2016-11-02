@@ -99,19 +99,15 @@ class EventTrack(models.Model):
                 track.estimated_date_end = new_date
 
     @api.depends('event_id', 'event_id.registration_ids')
-    def _compute_partners(self):
+    def _compute_allowed_partner_ids(self):
         for track in self:
-            partners = []
-            for registration in track.event_id.registration_ids:
-                if (registration.partner_id and
-                        registration.partner_id.id not in partners):
-                    partners.append(registration.partner_id.id)
-            track.allowed_partners = [(6, 0, partners)]
+            partners = track.mapped('event_id.registration_ids.partner_id')
+            track.allowed_partner_ids = [(6, 0, partners.ids)]
 
     @api.depends('presences', 'presences.real_duration')
-    def _calc_real_duration(self):
+    def _compute_real_duration(self):
         for track in self:
-            track.real_duration = sum(x.real_duration for x in track.presences)
+            track.real_duration = sum(track.mapped('presences.real_duration'))
 
     @api.depends('date', 'real_duration')
     def _compute_real_date_end(self):
@@ -150,16 +146,16 @@ class EventTrack(models.Model):
     estimated_date_end = fields.Datetime(
         string='Estimated date end', compute='_compute_estimated_date_end',
         store=True)
-    allowed_partners = fields.Many2many(
+    allowed_partner_ids = fields.Many2many(
         comodel_name="res.partner", relation="rel_partner_event_track",
         column1="event_track_id", column2="partner_id", string="Partners",
-        copy=False, compute='_compute_partners', store=True)
+        copy=False, compute='_compute_allowed_partner_ids', store=True)
     presences = fields.One2many(
         comodel_name='event.track.presence', inverse_name='session',
         string='Presences')
     duration = fields.Float(string='Estimated duration', digits=(12, 4))
     real_duration = fields.Float(
-        compute='_calc_real_duration', string='Real duration', store=True)
+        compute='_compute_real_duration', string='Real duration', store=True)
     real_date_end = fields.Datetime(
         string='Real date end', compute='_compute_real_date_end',
         store=True)
@@ -199,31 +195,11 @@ class EventTrackPresence(models.Model):
     _name = 'event.track.presence'
     _description = 'Session assistants'
 
-    @api.depends('session', 'session.date')
-    def _catch_session_date(self):
+    @api.depends('session', 'session.allowed_partner_ids')
+    def _compute_allowed_partner_ids(self):
         for presence in self:
-            presence.session_date = presence.session.date
-
-    @api.depends('session', 'session.duration')
-    def _catch_session_duration(self):
-        for presence in self:
-            presence.session_duration = presence.session.duration
-
-    @api.depends('session', 'session.allowed_partners')
-    def _get_allowed_partners(self):
-        for presence in self:
-            presence.allowed_partners = (
-                [(6, 0, presence.session.allowed_partners.ids)])
-
-    @api.depends('partner', 'partner.name')
-    def _catch_name(self):
-        for presence in self:
-            presence.name = presence.name
-
-    @api.depends('session', 'session.event_id')
-    def _catch_event(self):
-        for presence in self:
-            presence.event = presence.session.event_id
+            presence.allowed_partner_ids = (
+                [(6, 0, presence.session.allowed_partner_ids.ids)])
 
     @api.depends('session_date', 'real_duration')
     def _calculate_real_date_end(self):
@@ -283,8 +259,8 @@ class EventTrackPresence(models.Model):
     event = fields.Many2one(
         comodel_name='event.event', string='Event', store=True,
         related='session.event_id')
-    allowed_partners = fields.Many2many(
-        comodel_name='res.partner', compute='_get_allowed_partners',
+    allowed_partner_ids = fields.Many2many(
+        comodel_name='res.partner', compute='_compute_allowed_partner_ids',
         string='Allowed partners')
     session_date = fields.Datetime(
         related='session.date', string='Session date', store=True)
@@ -322,12 +298,6 @@ class EventTrackPresence(models.Model):
         selection=[('pending', 'Pending'), ('completed', 'Completed'),
                    ('canceled', 'Canceled')], string="State",
         default='pending', required=True)
-
-    @api.onchange('session')
-    def onchange_session(self):
-        self.event = self.session.event_id
-        self.session_date = self.session.date
-        self.session_duration = self.session.duration
 
     @api.multi
     def button_completed(self):
@@ -477,11 +447,9 @@ class EventRegistration(models.Model):
     @api.onchange('partner_id')
     def _onchange_partner(self):
         super(EventRegistration, self)._onchange_partner()
-        self.date_start = False
-        self.date_end = False
-        if self.partner_id:
-            self.date_start = self.event_id.date_begin
-            self.date_end = self.event_id.date_end
+        self.date_start = self.event_id.date_begin if self.partner_id else\
+            False
+        self.date_end = self.event_id.date_end if self.partner_id else False
 
     @api.multi
     @api.onchange('date_start')

@@ -4,6 +4,7 @@
         <record model="ir.actions.act_window" id="website_event_track.action_event_track">
             <field name="view_mode">calendar,tree,form</field>
         </record>
+
         <record model="ir.ui.view" id="view_event_track_calendar_inh_assistant">
             <field name="name">view.event.track.calendar.inh.assistant</field>
             <field name="model">event.track</field>
@@ -127,13 +128,13 @@
                         <page string="Presences">
                             <group>
                                 <separator string="Presences" colspan="4"/>
-                                <field name="allowed_partners" invisible="1"/>
+                                <field name="allowed_partner_ids" invisible="1"/>
                                 <field name="presences" nolabel="1" 
                                        context="{'default_session': active_id}">
                                     <tree string="Presences" editable="bottom">
-                                        <field name="allowed_partners" invisible="1"/>
+                                        <field name="allowed_partner_ids" invisible="1"/>
                                         <field name="partner" 
-                                               domain="[('id','in',allowed_partners[0][2])]"/>
+                                               domain="[('id','in',allowed_partner_ids[0][2])]"/>
                                         <field name="session" invisible="1"/>
                                         <field name="session_date" invisible="1"/>
                                         <field name="session_duration" invisible="1"/>
