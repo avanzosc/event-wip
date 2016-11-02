@@ -123,12 +123,6 @@ class TestEventTrackAssistant(common.TransactionCase):
         sessions = self.event.track_ids[0].presences.filtered(
             lambda x: x.partner.id ==
             self.event.registration_ids[0].partner_id.id)
-        sessions[0]._catch_session_date()
-        sessions[0]._catch_session_duration()
-        sessions[0]._catch_name()
-        sessions[0]._catch_event()
-        sessions[0]._get_allowed_partners()
-        sessions[0].onchange_session()
         sessions[0].button_completed()
         sessions[0].button_canceled()
         self.assertNotEquals(sessions[0].partner.session_count, 0)
