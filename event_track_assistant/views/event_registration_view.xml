@@ -14,6 +14,9 @@
                 <button name="registration_open" position="attributes">
                     <attribute name="name">button_registration_open</attribute>
                 </button>
+                <button name="button_reg_cancel" position="attributes">
+                    <attribute name="name">new_button_reg_cancel</attribute>
+                </button>
             </field>
         </record>
 
@@ -24,6 +27,9 @@
             <field name="arch" type="xml">
                 <button name="registration_open" position="attributes">
                     <attribute name="name">button_registration_open</attribute>
+                </button>
+                <button name="button_reg_cancel" position="attributes">
+                    <attribute name="name">new_button_reg_cancel</attribute>
                 </button>
             </field>
         </record>

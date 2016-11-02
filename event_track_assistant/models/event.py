@@ -586,28 +586,32 @@ class EventRegistration(models.Model):
         return wiz_vals
 
     @api.multi
-    def button_reg_cancel(self):
+    def new_button_reg_cancel(self):
         self.ensure_one()
         wiz_obj = self.env['wiz.event.delete.assistant']
         wiz = wiz_obj.create(self._prepare_wizard_reg_cancel_vals())
         if wiz.from_date and wiz.to_date and wiz.partner:
-            wiz.write({'past_sessions': False,
-                       'later_sessions': False,
-                       'message': ''})
+            wiz.write({
+                'past_sessions': False,
+                'later_sessions': False,
+                'message': '',
+            })
         context = self.env.context.copy()
         context.update({
             'active_id': self.event_id.id,
             'active_ids': self.event_id.ids,
             'active_model': 'event.event',
         })
-        return {'name': _('Delete Person From Event-Session'),
-                'type': 'ir.actions.act_window',
-                'res_model': 'wiz.event.delete.assistant',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_id': wiz.id,
-                'target': 'new',
-                'context': context}
+        return {
+            'name': _('Delete Person From Event-Session'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'wiz.event.delete.assistant',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': wiz.id,
+            'target': 'new',
+            'context': context,
+        }
 
     def _prepare_wizard_reg_cancel_vals(self):
         event_obj = self.env['event.event']

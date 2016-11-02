@@ -183,7 +183,7 @@ class WizEventDeleteAssistant(models.TransientModel):
                         ('session_date', '>', to_date)]
                 presences = presence_obj.search(cond, limit=1)
                 if not presences:
-                    registration.state = 'cancel'
+                    registration.button_reg_cancel()
         return self._open_event_tree_form()
 
     def _prepare_dates_for_search_registrations(self):
@@ -202,7 +202,8 @@ class WizEventDeleteAssistant(models.TransientModel):
                     ('partner_id', '=', self.partner.id),
                     ('state', '=', 'open')]
             registrations = self.env['event.registration'].search(cond)
-        registrations.write({'state': 'cancel'})
+        for registration in registrations:
+            registration.button_reg_cancel()
         return registrations
 
     def _cancel_presences(self):
