@@ -2,7 +2,8 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
-from openerp.tools import DEFAULT_SERVER_TIME_FORMAT
+from .._common import _convert_to_local_date, _convert_time_to_float,\
+    _convert_to_utc_date
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from pytz import timezone, utc
@@ -57,33 +58,13 @@ class EventEvent(models.Model):
         return local_date
 
     def _convert_date_to_local_format_with_hour(self, date):
-        if not date:
-            return False
-        new_date = fields.Datetime.from_string(date).date()
-        local_date = datetime(
-            int(new_date.strftime("%Y")), int(new_date.strftime("%m")),
-            int(new_date.strftime("%d")), int(date[11:13]), int(date[14:16]),
-            int(date[17:19]), tzinfo=utc).astimezone(
-            timezone(self.env.user.tz)).replace(tzinfo=None)
-        return local_date
+        return _convert_to_local_date(date, tz=self.env.user.tz)
 
-    def _put_utc_format_date(self, date, time):
-        new_date = (datetime.strptime(str(date), '%Y-%m-%d') +
-                    relativedelta(hours=float(time)))
-        local = timezone(self.env.user.tz)
-        local_dt = local.localize(new_date, is_dst=None)
-        utc_dt = local_dt.astimezone(utc)
-        return utc_dt
+    def _put_utc_format_date(self, date, time=0.0):
+        return _convert_to_utc_date(date, time=time, tz=self.env.user.tz)
 
     def _convert_times_to_float(self, date):
-        event_obj = self.env['event.event']
-        local_time = event_obj._convert_date_to_local_format_with_hour(
-            date).strftime(DEFAULT_SERVER_TIME_FORMAT)
-        time = local_time.split(':')
-        hour = float(time[0])
-        minutes = float(time[1]) / 60 if float(time[1]) > 0.0 else 0.0
-        seconds = float(time[2]) / 360 if float(time[2]) > 0.0 else 0.0
-        return hour + minutes + seconds
+        return _convert_time_to_float(date, tz=self.env.user.tz)
 
 
 class EventTrack(models.Model):
