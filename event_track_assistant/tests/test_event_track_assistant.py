@@ -11,6 +11,7 @@ class TestEventTrackAssistant(common.TransactionCase):
     def setUp(self):
         super(TestEventTrackAssistant, self).setUp()
         self.event_model = self.env['event.event']
+        self.track_model = self.env['event.track']
         self.presence_model = self.env['event.track.presence']
         self.registration_model = self.env['event.registration']
         self.wiz_add_model = self.env['wiz.event.append.assistant']
@@ -19,18 +20,45 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_change_hour_model = self.env['wiz.change.session.hour']
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
         self.claim_model = self.env['crm.claim']
-        event_vals = {'name': 'Registration partner test',
-                      'date_begin': '2025-01-20',
-                      'date_end': '2025-01-30',
-                      'track_ids': [(0, 0, {'name': 'sesion 2',
-                                            'date': '2025-01-22 00:00:00'}),
-                                    (0, 0, {'name': 'sesion 4',
-                                            'date': '2025-01-25 00:00:00'}),
-                                    (0, 0, {'name': 'sesion 4',
-                                            'date': '2025-01-28 00:00:00'})]}
+        self.company = self.env['res.company'].create({
+            'name': 'Test Company',
+        })
+        event_vals = {
+            'name': 'Registration partner test',
+            'date_begin': '2025-01-20',
+            'date_end': '2025-01-30',
+            'track_ids': [(0, 0, {'name': 'Session 1',
+                                  'date': '2025-01-22 00:00:00'}),
+                          (0, 0, {'name': 'Session 2',
+                                  'date': '2025-01-25 00:00:00'}),
+                          (0, 0, {'name': 'Session 3',
+                                  'date': '2025-01-28 00:00:00'})]
+        }
         self.event = self.event_model.create(event_vals)
 
-    def test_onchange_dates_event(self):
+    def test_company_daytime_nighttime_hours(self):
+        self.assertEquals(self.company.daytime_start_hour, 6.0)
+        self.assertEquals(self.company.nighttime_start_hour, 22.0)
+        with self.assertRaises(exceptions.ValidationError):
+            self.company.write({
+                'daytime_start_hour': -1.0,
+            })
+        with self.assertRaises(exceptions.ValidationError):
+            self.company.write({
+                'nighttime_start_hour': 25.0,
+            })
+        with self.assertRaises(exceptions.ValidationError):
+            self.company.write({
+                'daytime_start_hour': 16.0,
+                'nighttime_start_hour': 10.0,
+            })
+        with self.assertRaises(exceptions.ValidationError):
+            self.company.write({
+                'daytime_start_hour': 15.0,
+                'nighttime_start_hour': 15.0,
+            })
+
+    def test_assistant_event_onchange_dates(self):
         self.event.date_begin = self.event.track_ids[1].date
         res = self.event.onchange_date_begin()
         self.assertTrue(res.get('warning'))
@@ -44,16 +72,15 @@ class TestEventTrackAssistant(common.TransactionCase):
             self.event.date_end, self.event.track_ids[1].date)
         self.assertEquals(self.event.date_end, self.event.track_ids[2].date)
 
-    def test_event_track_dates(self):
-        track_model = self.env['event.track']
+    def test_assistant_event_track_dates(self):
         with self.assertRaises(exceptions.ValidationError):
-            track_model.create({
+            self.track_model.create({
                 'event_id': self.event.id,
                 'name': 'Date before',
                 'date': '2025-01-19',
             })
         with self.assertRaises(exceptions.ValidationError):
-            track_model.create({
+            self.track_model.create({
                 'event_id': self.event.id,
                 'name': 'Date after',
                 'date': '2025-01-31',
