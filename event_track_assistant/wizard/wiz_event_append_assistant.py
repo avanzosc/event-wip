@@ -2,6 +2,10 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, exceptions, _
+from .._common import _convert_to_local_date, _convert_to_utc_date
+
+datetime2str = fields.Datetime.to_string
+date2str = fields.Date.to_string
 
 
 class WizEventAppendAssistant(models.TransientModel):
@@ -11,8 +15,7 @@ class WizEventAppendAssistant(models.TransientModel):
     to_date = fields.Date(string='To date')
     registration = fields.Many2one(
         comodel_name='event.registration', string='Partner registration')
-    partner = fields.Many2one(
-        comodel_name='res.partner', string='Partner')
+    partner = fields.Many2one(comodel_name='res.partner', string='Partner')
     min_event = fields.Many2one(
         comodel_name='event.event', string='Min. event')
     min_from_date = fields.Date(string='Min. from date')
@@ -22,23 +25,22 @@ class WizEventAppendAssistant(models.TransientModel):
 
     @api.model
     def default_get(self, var_fields):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         res = super(WizEventAppendAssistant, self).default_get(var_fields)
         from_date = False
         to_date = False
-        for event in event_obj.browse(self.env.context.get('active_ids')):
+        for event in self.env['event.event'].browse(
+                self.env.context.get('active_ids')):
             if not from_date or event.date_begin < from_date:
-                new_date = event_obj._convert_date_to_local_format_with_hour(
-                    event.date_begin).date()
-                res.update({'from_date': new_date.strftime('%Y-%m-%d'),
-                            'min_from_date': new_date.strftime('%Y-%m-%d'),
+                new_date = _convert_to_local_date(event.date_begin, tz).date()
+                res.update({'from_date': date2str(new_date),
+                            'min_from_date': date2str(new_date),
                             'min_event': event.id})
                 from_date = self._prepare_date_for_control(new_date)
             if not to_date or event.date_end > to_date:
-                new_date = event_obj._convert_date_to_local_format_with_hour(
-                    event.date_end).date()
-                res.update({'to_date': new_date.strftime('%Y-%m-%d'),
-                            'max_to_date': new_date.strftime('%Y-%m-%d'),
+                new_date = _convert_to_local_date(event.date_end, tz).date()
+                res.update({'to_date': date2str(new_date),
+                            'max_to_date': date2str(new_date),
                             'max_event': event.id})
                 to_date = self._prepare_date_for_control(new_date)
         return res
@@ -49,32 +51,28 @@ class WizEventAppendAssistant(models.TransientModel):
         self.ensure_one()
         event_obj = self.env['event.event']
         res = {}
-        if self.from_date and self.to_date:
-            if self.from_date > self.to_date:
-                self.from_date = self.min_from_date
-                self.to_date = self.max_to_date
-                return {'warning': {
-                        'title': _('Error in from date'),
-                        'message':
-                        (_('From date greater than date to'))}}
-        if self.from_date:
-            if self.from_date < self.min_from_date:
-                self.from_date = self.min_from_date
-                self.to_date = self.max_to_date
-                return {'warning': {
-                        'title': _('Error in from date'),
-                        'message':
-                        (_('From date less than start date of the event %s') %
-                         self.min_event.name)}}
-        if self.to_date:
-            if self.to_date > self.max_to_date:
-                self.from_date = self.min_from_date
-                self.to_date = self.max_to_date
-                return {'warning': {
-                        'title': _('Error in to date'),
-                        'message':
-                        (_('From date greater than end date of the event %s') %
-                         self.max_event.name)}}
+        if self.from_date and self.to_date and self.from_date > self.to_date:
+            self.from_date = self.min_from_date
+            self.to_date = self.max_to_date
+            return {'warning': {
+                    'title': _('Error in from date'),
+                    'message': (_('From date greater than date to'))}}
+        if self.from_date and self.from_date < self.min_from_date:
+            self.from_date = self.min_from_date
+            self.to_date = self.max_to_date
+            return {'warning': {
+                    'title': _('Error in from date'),
+                    'message':
+                    (_('From date less than start date of the event %s') %
+                     self.min_event.name)}}
+        if self.to_date and self.to_date > self.max_to_date:
+            self.from_date = self.min_from_date
+            self.to_date = self.max_to_date
+            return {'warning': {
+                    'title': _('Error in to date'),
+                    'message':
+                    (_('From date greater than end date of the event %s') %
+                     self.max_event.name)}}
         if self.from_date and self.to_date and self.partner:
             for event in event_obj.browse(self.env.context.get('active_ids')):
                 from_date = self._local_date(self.from_date, 0.0)
@@ -101,9 +99,8 @@ class WizEventAppendAssistant(models.TransientModel):
         return res
 
     def _prepare_date_for_control(self, date):
-        event_obj = self.env['event.event']
-        new_date = fields.Datetime.to_string(
-            event_obj._put_utc_format_date(date, 0.0))
+        new_date = datetime2str(
+            _convert_to_utc_date(date, tz=self.env.user.tz))
         return new_date
 
     @api.multi
@@ -266,30 +263,24 @@ class WizEventAppendAssistant(models.TransientModel):
         registration.state = 'open'
 
     def _prepare_registration_data(self, event):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
+        date_start = _convert_to_utc_date(self.from_date, tz=tz)
+        date_end = _convert_to_utc_date(self.to_date, tz=tz)
         vals = {'event_id': event.id,
                 'partner_id': self.partner.id,
                 'state': 'open',
-                'date_start': event_obj._put_utc_format_date(self.from_date,
-                                                             0.0),
-                'date_end': event_obj._put_utc_format_date(self.to_date,
-                                                           0.0)}
-        from_date = event_obj._put_utc_format_date(
-            self.from_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
-        if from_date < event.date_begin:
+                'date_start': date_start,
+                'date_end': date_end}
+        if datetime2str(date_start) < event.date_begin:
             vals['date_start'] = event.date_begin
-        to_date = event_obj._put_utc_format_date(
-            self.to_date, 0.0).strftime('%Y-%m-%d %H:%M:%S')
-        if to_date > event.date_end:
+        if datetime2str(date_end) > event.date_end:
             vals.update({'date_end': event.date_end})
         return vals
 
     def _calc_dates_for_search_track(self, from_date, to_date):
-        event_obj = self.env['event.event']
-        from_date = fields.Datetime.to_string(event_obj._put_utc_format_date(
-            from_date, 0.0))
-        to_date = fields.Datetime.to_string(event_obj._put_utc_format_date(
-            to_date, 0.0))
+        tz = self.env.user.tz
+        from_date = datetime2str(_convert_to_utc_date(from_date, tz=tz))
+        to_date = datetime2str(_convert_to_utc_date(to_date, tz=tz))
         return from_date, to_date
 
     def _exit_from_append_wizard(self):
@@ -308,7 +299,8 @@ class WizEventAppendAssistant(models.TransientModel):
     def _local_date(self, ldate, time):
         event_obj = self.env['event.event']
         new_date = event_obj._convert_date_to_local_format(ldate).date()
-        new_date = event_obj._put_utc_format_date(new_date, time)
+        new_date = _convert_to_utc_date(
+            new_date, time=time, tz=self.env.user.tz)
         return new_date
 
     def _create_presence_from_wizard(self, track, event):
