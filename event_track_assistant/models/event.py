@@ -174,14 +174,12 @@ class EventTrackPresence(models.Model):
                 [(6, 0, presence.session.allowed_partner_ids.ids)])
 
     @api.depends('session_date', 'real_duration')
-    def _calculate_real_date_end(self):
-        for presence in self:
-            presence.real_date_end = False
-            if presence.real_duration:
-                new_date = (datetime.strptime(
-                    str(presence.session_date), '%Y-%m-%d %H:%M:%S') +
-                    relativedelta(hours=presence.real_duration))
-                presence.real_date_end = new_date
+    def _compute_real_date_end(self):
+        for presence in self.filtered('real_duration'):
+            start_date = str2datetime(presence.session_date)
+            end_date = start_date + relativedelta(
+                hours=presence.real_duration)
+            presence.real_date_end = end_date
 
     @api.depends('session_date', 'session_duration')
     def _calculate_estimated_daynightlight_hours(self):
@@ -251,7 +249,7 @@ class EventTrackPresence(models.Model):
         string='Estimated date end', related='session.estimated_date_end',
         store=True)
     real_date_end = fields.Datetime(
-        string='Real date end', compute='_calculate_real_date_end', store=True)
+        string='Real date end', compute='_compute_real_date_end', store=True)
     estimated_daylight_hours = fields.Float(
         string='Estimated daylight hours', default=0.0,
         compute='_calculate_estimated_daynightlight_hours', store=True)
