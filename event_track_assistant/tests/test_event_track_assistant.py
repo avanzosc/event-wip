@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
-# (c) 2016 Alfredo de la Fuente - AvanzOSC
+# © 2016 Alfredo de la Fuente - AvanzOSC
+# © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+
 import openerp.tests.common as common
 from openerp import exceptions, fields
-to_string = fields.Datetime.to_string
+from .._common import _convert_to_local_date, _convert_to_utc_date
+
+datetime2str = fields.Datetime.to_string
+str2datetime = fields.Datetime.from_string
 
 
 class TestEventTrackAssistant(common.TransactionCase):
@@ -20,6 +25,13 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_change_hour_model = self.env['wiz.change.session.hour']
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
         self.claim_model = self.env['crm.claim']
+        self.partner_model = self.env['res.partner']
+        self.parent = self.partner_model.create({
+            'name': 'Parent Partner',
+        })
+        self.partner = self.partner_model.create({
+            'name': 'Test Partner',
+        })
         self.company = self.env['res.company'].create({
             'name': 'Test Company',
         })
@@ -177,7 +189,6 @@ class TestEventTrackAssistant(common.TransactionCase):
             '2025-01-30 15:00:00')
         self.event.track_ids[0].presences[0].real_duration = 5.00
         presence = self.event.track_ids[0].presences[0]
-        presence._calculate_real_date_end()
         presence._calculate_real_daynightlight_hours()
         self.presence_model._calculate_real_daynightlightt_hours_same_day(
             presence, '2025-01-15 00:00:00', '2025-01-30 00:00:00')
@@ -223,154 +234,69 @@ class TestEventTrackAssistant(common.TransactionCase):
         pre_model._calculate_real_daynightlightt_hours_in_distinct_days(
             presence, fec_ini, fec_fin)
 
+    def test_event_track_assistant_delete(self):
+        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
+        self.assertEquals(self.partner.session_count, 0)
+        self.assertEquals(self.partner.presences_count, 0)
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({
+                'partner': self.partner.id,
+            })
+        add_wiz.action_append()
+        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        self.assertNotEquals(self.partner.session_count, 0)
+        self.assertNotEquals(self.partner.presences_count, 0)
+        self.assertIn(
+            self.partner.id,
+            self.event.mapped('registration_ids.partner_id').ids,
+            'Partner should be registered')
+        show_sessions = self.partner.show_sessions_from_partner()
+        self.assertEquals(
+            show_sessions.get('res_model'), 'event.track')
+        show_presences = self.partner.show_presences_from_partner()
+        self.assertEquals(
+            show_presences.get('res_model'), 'event.track.presence')
+        presences = self.event.mapped('track_ids.presences')
+        self.assertNotEquals(len(presences), 0)
+        new_presence = self.presence_model.new({
+            'session': self.event.track_ids[:1].id,
+        })
+        self.assertEquals(new_presence.event, self.event)
+        self.assertIn(self.partner, new_presence.allowed_partner_ids)
+        del_wiz = self.wiz_del_model.with_context(
+            active_ids=self.event.ids).create({
+                'partner': self.partner.id,
+            })
+        del_wiz.action_delete()
+
     def test_event_sessions_delete_past_and_later_date(self):
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20',
-                    'max_to_date': '2025-01-31',
-                    'from_date': '2025-01-20',
-                    'to_date': '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        wiz.with_context({'active_ids': [self.event.id]}).action_append()
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20',
-                    'max_to_date': '2025-01-31',
-                    'from_date': '2025-01-24',
-                    'to_date': '2025-01-27',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_del_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': [self.event.id]}).onchange_information()
-        vals = ['max_event', 'max_to_date', 'min_from_date', 'min_event',
-                'from_date', 'later_sessions', 'past_sessions', 'partner',
-                'message', 'to_date']
-        wiz.with_context(
-            {'active_ids': [self.event.id]}).default_get(vals)
-        wiz.from_date = '2025-05-01'
-        wiz._dates_control()
-        wiz.write({'from_date': '2025-01-20',
-                   'to_date': '2025-01-15'})
-        wiz._dates_control()
-        wiz.write({'from_date': '2025-01-01',
-                   'to_date': '2025-01-31'})
-        wiz._dates_control()
-        wiz.write({'from_date': '2025-01-01',
-                   'min_from_date': '2025-01-20'})
-        wiz._dates_control()
-        wiz.write({'from_date': '2025-01-31',
-                   'max_to_date': '2025-01-25'})
-        wiz._dates_control()
-        wiz.write({'to_date': '2025-01-01',
-                   'min_from_date': '2025-01-20'})
-        wiz._dates_control()
-        wiz.write({'to_date': '2025-01-31',
-                   'max_to_date': '2025-01-20'})
-        wiz._dates_control()
-        wiz.write({'min_from_date': '2025-01-20',
-                   'max_to_date': '2025-01-31',
-                   'from_date': '2025-01-20',
-                   'to_date': '2025-01-31'})
-        wiz.with_context(
-            {'active_ids': [self.event.id]}).action_nodelete_past_and_later()
-        sessions = self.env.ref('base.res_partner_26').session_ids
-        wiz.with_context(
-            {'active_ids':
-             [self.event.id]})._delete_registrations_between_dates(sessions)
-        wiz.with_context(
-            {'active_ids': [self.event.id]}).action_delete_past_and_later()
-        self.assertNotEqual(
-            len(self.env.ref('base.res_partner_26').session_ids),
-            0, 'Not partner found in registration')
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20',
-                    'max_to_date': '2025-01-31',
-                    'from_date': '2025-01-20',
-                    'to_date': '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        wiz.with_context({'active_ids': [self.event.id]}).action_append()
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20',
-                    'max_to_date': '2025-01-31',
-                    'from_date': '2025-01-20',
-                    'to_date': '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        wiz.onchange_dates_and_partner()
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'registration': self.event.registration_ids[0].id,
-                    'min_from_date': '2025-01-20',
-                    'max_to_date': '2025-01-31',
-                    'from_date': '2025-01-24',
-                    'to_date': '2025-01-27',
-                    'partner': self.env.ref('base.res_partner_26').id}
-        wiz = self.wiz_del_model.create(wiz_vals)
-        wiz.onchange_information()
-        registration_vals = ({'event_id': self.event.id,
-                              'partner_id':
-                              self.env.ref('base.res_partner_26').id,
-                              'state': 'draft'})
-        registration = self.registration_model.create(registration_vals)
-        registration._onchange_partner()
-        wiz_vals = {'min_event': self.event.id,
-                    'max_event': self.event.id,
-                    'min_from_date': '2025-01-20',
-                    'max_to_date': '2025-01-31',
-                    'from_date': '2025-01-20',
-                    'to_date': '2025-01-31',
-                    'partner': self.env.ref('base.res_partner_25').id}
-        wiz = self.wiz_add_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': [self.event.id]}).onchange_dates_and_partner()
-        wiz._update_create_registration(self.event, [registration])
-        wiz.update({'from_date': '2025-01-10'})
-        registration.date_start = '2025-01-20 00:00:00'
-        registration.event_id.date_begin = '2025-01-05'
-        wiz._compute_update_registration_start_date(registration)
-        wiz.update({'to_date': '2025-03-30'})
-        registration.date_end = '2025-01-15 00:00:00'
-        registration.event_id.date_end = '2025-01-20 00:00:00'
-        wiz._compute_update_registration_end_date(registration)
-        registration._onchange_date_start()
-        registration._onchange_date_end()
-        registration._prepare_wizard_registration_open_vals()
-        registration._prepare_wizard_reg_cancel_vals()
-        registration.button_reg_cancel()
-        registration.state = 'draft'
-        registration.date_start = '2025-01-04 00:00:00'
-        registration._onchange_date_start()
-        registration.date_start = '2025-01-05 00:00:00'
-        registration.date_end = '2025-01-03 00:00:00'
-        registration._onchange_date_start()
-        registration.date_start = '2025-01-05 00:00:00'
-        registration.date_end = '2025-01-21 00:00:00'
-        registration._onchange_date_end()
-        cond = [('id', '!=', registration.id),
-                ('event_id', '=', registration.event_id.id)]
-        regis = self.registration_model.search(cond)
-        regis.write({'state': 'draft'})
-        regis.unlink()
+        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({
+                'partner': self.partner.id,
+            })
+        add_wiz.action_append()
+        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        del_wiz = self.wiz_del_model.with_context(
+            active_ids=self.event.ids).create({
+                'partner': self.partner.id,
+            })
+        del_wiz.action_delete_past_and_later()
+        del_wiz.action_nodelete_past_and_later()
 
     def test_event_track_assistant_change_session_hour(self):
         track = self.event.track_ids[0]
         new_hour = 10.0
-        track_date = self.event_model._convert_date_to_local_format_with_hour(
-            track.date).date()
-        new_date = self.event_model._put_utc_format_date(track_date, new_hour)
-        wiz = self.wiz_change_hour_model.with_context({
-            'active_ids': track.ids,
-        }).create({
-            'new_hour': new_hour,
-        })
+        track_date = _convert_to_local_date(track.date, self.env.user.tz)
+        new_date = _convert_to_utc_date(track_date, new_hour, self.env.user.tz)
+        wiz = self.wiz_change_hour_model.with_context(
+            active_ids=track.ids).create({
+                'new_hour': new_hour,
+            })
         wiz.change_session_hour()
-        self.assertEquals(track.date, to_string(new_date))
+        self.assertEquals(track.date, datetime2str(new_date))
 
-    def test_event_confirm_assistant(self):
+    def test_event_assistant_track_assistant_confirm_assistant(self):
         event_domain = [('event_id', '=', self.event.id)]
         claim = self.claim_model.search(event_domain, limit=1)
         self.assertEquals(
