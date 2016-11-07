@@ -6,6 +6,7 @@
 import openerp.tests.common as common
 from openerp import exceptions, fields
 from .._common import _convert_to_local_date, _convert_to_utc_date
+from dateutil.relativedelta import relativedelta
 
 datetime2str = fields.Datetime.to_string
 str2datetime = fields.Datetime.from_string
@@ -15,6 +16,9 @@ class TestEventTrackAssistant(common.TransactionCase):
 
     def setUp(self):
         super(TestEventTrackAssistant, self).setUp()
+        self.env.user.write({
+            'tz': u'UTC',
+        })
         self.event_model = self.env['event.event']
         self.track_model = self.env['event.track']
         self.presence_model = self.env['event.track.presence']
@@ -26,14 +30,19 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
         self.claim_model = self.env['crm.claim']
         self.partner_model = self.env['res.partner']
+        self.datetime_now = str2datetime(fields.Datetime.now())
         self.parent = self.partner_model.create({
             'name': 'Parent Partner',
         })
         self.partner = self.partner_model.create({
             'name': 'Test Partner',
         })
-        self.company = self.env['res.company'].create({
-            'name': 'Test Company',
+        company_model = self.env['res.company']
+        company_id = company_model._company_default_get('event.track.presence')
+        self.company = company_model.browse(company_id)
+        self.company.write({
+            'daytime_start_hour': 6.0,
+            'nighttime_start_hour': 22.0,
         })
         event_vals = {
             'name': 'Registration partner test',
@@ -97,6 +106,133 @@ class TestEventTrackAssistant(common.TransactionCase):
                 'name': 'Date after',
                 'date': '2025-01-31',
             })
+
+    def test_event_track_daynight_hours_error(self):
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = start_date
+        self.assertTrue(start_date == end_date)
+        with self.assertRaises(exceptions.ValidationError):
+            daytime, nighttime = self.presence_model._get_nightlight_hours(
+                start_date, end_date)
+        end_date = start_date.replace(hour=3, minute=0, second=0)
+        self.assertTrue(start_date > end_date)
+        with self.assertRaises(exceptions.ValidationError):
+            daytime, nighttime = self.presence_model._get_nightlight_hours(
+                start_date, end_date)
+
+    def test_event_track_daynight_hours_same_day1(self):
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = self.datetime_now.replace(hour=5, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_same_day2(self):
+        start_date = self.datetime_now.replace(hour=7, minute=0, second=0)
+        end_date = self.datetime_now.replace(hour=21, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_same_day3(self):
+        start_date = self.datetime_now.replace(hour=22, minute=30, second=0)
+        end_date = self.datetime_now.replace(hour=23, minute=30, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_same_day4(self):
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = self.datetime_now.replace(hour=23, minute=30, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_same_day5(self):
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = self.datetime_now.replace(hour=21, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_same_day6(self):
+        start_date = self.datetime_now.replace(hour=7, minute=30, second=0)
+        end_date = self.datetime_now.replace(hour=23, minute=30, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_diff_day1(self):
+        tomorrow = self.datetime_now + relativedelta(days=1)
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = tomorrow.replace(hour=5, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_diff_day2(self):
+        tomorrow = self.datetime_now + relativedelta(days=1)
+        start_date = self.datetime_now.replace(hour=7, minute=0, second=0)
+        end_date = tomorrow.replace(hour=21, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_diff_day3(self):
+        tomorrow = self.datetime_now + relativedelta(days=1)
+        start_date = self.datetime_now.replace(hour=22, minute=30, second=0)
+        end_date = tomorrow.replace(hour=23, minute=30, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_diff_day4(self):
+        tomorrow = self.datetime_now + relativedelta(days=1)
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = tomorrow.replace(hour=23, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_diff_day5(self):
+        tomorrow = self.datetime_now + relativedelta(days=1)
+        start_date = self.datetime_now.replace(hour=4, minute=0, second=0)
+        end_date = tomorrow.replace(hour=21, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
+
+    def test_event_track_daynight_hours_diff_day6(self):
+        tomorrow = self.datetime_now + relativedelta(days=1)
+        start_date = self.datetime_now.replace(hour=7, minute=0, second=0)
+        end_date = tomorrow.replace(hour=23, minute=0, second=0)
+        daytime, nighttime = self.presence_model._get_nightlight_hours(
+            start_date, end_date)
+        diff = end_date - start_date
+        difftime = (diff.days * 24) + (float(diff.seconds) / 3600)
+        self.assertEquals(difftime, (daytime + nighttime))
 
     def test_event_track_assistant(self):
         self.event.date_begin = '2025-01-24 00:00:00'
@@ -185,54 +321,6 @@ class TestEventTrackAssistant(common.TransactionCase):
         wiz = self.wiz_add_model.create(wiz_vals)
         self.event.registration_ids[0].state = 'open'
         wiz.with_context({'active_ids': [self.event.id]}).action_append()
-        self.event_model._convert_date_to_local_format_with_hour(
-            '2025-01-30 15:00:00')
-        self.event.track_ids[0].presences[0].real_duration = 5.00
-        presence = self.event.track_ids[0].presences[0]
-        presence._calculate_real_daynightlight_hours()
-        self.presence_model._calculate_real_daynightlightt_hours_same_day(
-            presence, '2025-01-15 00:00:00', '2025-01-30 00:00:00')
-        self.presence_model._calculate_real_daynightlightt_hours_same_day(
-            presence, '2025-02-01 00:00:00', '2025-01-30 00:00:00')
-        self.presence_model._calculate_real_daynightlightt_hours_same_day(
-            presence, '2025-01-20 01:00:00', '2025-01-30 00:00:00')
-        self.presence_model._calculate_real_daynightlightt_hours_same_day(
-            presence, '2025-01-19 00:00:00', '2025-01-20 04:00:00')
-        self.presence_model._calculate_daynightlightt_hours_same_day(
-            presence, '2025-01-20 00:00:00', '2025-01-20 01:30:00')
-        self.presence_model._calculate_daynightlightt_hours_same_day(
-            presence, '2025-01-20 02:00:00', '2025-01-20 02:00:00')
-        self.presence_model._calculate_daynightlightt_hours_same_day(
-            presence, '2025-01-20 01:00:00', '2025-01-20 02:00:00')
-        self.presence_model._calculate_daynightlightt_hours_same_day(
-            presence, '2025-01-19 00:00:00', '2025-01-20 01:00:00')
-        self.event_model._convert_times_to_float('2025-01-20 18:00:00')
-        fec_ini = self.event_model._put_utc_format_date(
-            '2025-01-19', 6.0).strftime('%Y-%m-%d %H:%M:%S')
-        fec_fin = self.event_model._put_utc_format_date(
-            '2025-01-20', 2.0).strftime('%Y-%m-%d %H:%M:%S')
-        self.presence_model._calculate_daynightlightt_hours_in_distincts_days(
-            presence, fec_ini, fec_fin)
-        fec_ini = self.event_model._put_utc_format_date(
-            '2025-01-21', 6.0).strftime('%Y-%m-%d %H:%M:%S')
-        fec_fin = self.event_model._put_utc_format_date(
-            '2025-01-19', 0.0).strftime('%Y-%m-%d %H:%M:%S')
-        self.presence_model._calculate_daynightlightt_hours_in_distincts_days(
-            presence, fec_ini, fec_fin)
-        fec_ini = self.event_model._put_utc_format_date(
-            '2025-01-19', 6.0).strftime('%Y-%m-%d %H:%M:%S')
-        fec_fin = self.event_model._put_utc_format_date(
-            '2025-01-20', 2.0).strftime('%Y-%m-%d %H:%M:%S')
-        pre_model = self.presence_model
-        pre_model._calculate_real_daynightlightt_hours_in_distinct_days(
-            presence, fec_ini, fec_fin)
-        fec_ini = self.event_model._put_utc_format_date(
-            '2025-01-21', 6.0).strftime('%Y-%m-%d %H:%M:%S')
-        fec_fin = self.event_model._put_utc_format_date(
-            '2025-01-19', 0.0).strftime('%Y-%m-%d %H:%M:%S')
-        pre_model = self.presence_model
-        pre_model._calculate_real_daynightlightt_hours_in_distinct_days(
-            presence, fec_ini, fec_fin)
 
     def test_event_track_assistant_delete(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
@@ -263,11 +351,13 @@ class TestEventTrackAssistant(common.TransactionCase):
         })
         self.assertEquals(new_presence.event, self.event)
         self.assertIn(self.partner, new_presence.allowed_partner_ids)
+        registration = self.event.registration_ids[:1]
+        dict_del_wiz = registration.new_button_reg_cancel()
+        self.assertNotEquals(registration.state, 'cancel')
         del_wiz = self.wiz_del_model.with_context(
-            active_ids=self.event.ids).create({
-                'partner': self.partner.id,
-            })
+            active_ids=self.event.ids).browse(dict_del_wiz.get('res_id'))
         del_wiz.action_delete()
+        self.assertEquals(registration.state, 'cancel')
 
     def test_event_sessions_delete_past_and_later_date(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)

@@ -180,47 +180,21 @@ class EventTrackPresence(models.Model):
             end_date = start_date + relativedelta(
                 hours=presence.real_duration)
             presence.real_date_end = end_date
+            daytime, nighttime = presence._get_nightlight_hours(start_date,
+                                                                end_date)
+            presence.real_daylight_hours = daytime
+            presence.real_nightlight_hours = nighttime
 
     @api.depends('session_date', 'session_duration')
-    def _calculate_estimated_daynightlight_hours(self):
-        event_obj = self.env['event.event']
-        for presence in self:
-            presence.estimated_daylight_hours = 0
-            presence.estimated_nightlight_hours = 0
-            fec_ini = event_obj._put_utc_format_date(
-                presence.session_date_without_hour, 6.0).strftime(
-                '%Y-%m-%d %H:%M:%S')
-            fec_fin = event_obj._put_utc_format_date(
-                presence.session_date_without_hour, 22.0).strftime(
-                '%Y-%m-%d %H:%M:%S')
-            if (presence.session_date_without_hour ==
-                    presence.session_end_date_without_hour):
-                self._calculate_daynightlightt_hours_same_day(
-                    presence, fec_ini, fec_fin)
-            else:
-                self._calculate_daynightlightt_hours_in_distincts_days(
-                    presence, fec_ini, fec_fin)
-
-    @api.depends('real_date_end')
-    def _calculate_real_daynightlight_hours(self):
-        event_obj = self.env['event.event']
-        for presence in self:
-            presence.real_daylight_hours = 0
-            presence.real_nightlight_hours = 0
-            if presence.real_date_end:
-                fec_ini = event_obj._put_utc_format_date(
-                    presence.session_date_without_hour, 6.0).strftime(
-                    '%Y-%m-%d %H:%M:%S')
-                fec_fin = event_obj._put_utc_format_date(
-                    presence.session_date_without_hour, 22.0).strftime(
-                    '%Y-%m-%d %H:%M:%S')
-                if (presence.session_date_without_hour ==
-                        presence.session_end_date_without_hour):
-                    self._calculate_real_daynightlightt_hours_same_day(
-                        presence, fec_ini, fec_fin)
-                else:
-                    self._calculate_real_daynightlightt_hours_in_distinct_days(
-                        presence, fec_ini, fec_fin)
+    def _compute_estimated_daynightlight_hours(self):
+        for presence in self.filtered('session_duration'):
+            start_date = str2datetime(presence.session_date)
+            end_date = start_date + relativedelta(
+                hours=presence.session_duration)
+            daytime, nighttime = presence._get_nightlight_hours(start_date,
+                                                                end_date)
+            presence.estimated_daylight_hours = daytime
+            presence.estimated_nightlight_hours = nighttime
 
     name = fields.Char(
         string='Partner', related='partner.name', store=True)
@@ -252,16 +226,16 @@ class EventTrackPresence(models.Model):
         string='Real date end', compute='_compute_real_date_end', store=True)
     estimated_daylight_hours = fields.Float(
         string='Estimated daylight hours', default=0.0,
-        compute='_calculate_estimated_daynightlight_hours', store=True)
+        compute='_compute_estimated_daynightlight_hours', store=True)
     estimated_nightlight_hours = fields.Float(
         string='Estimated nightlight hours', default=0.0,
-        compute='_calculate_estimated_daynightlight_hours', store=True)
+        compute='_compute_estimated_daynightlight_hours', store=True)
     real_daylight_hours = fields.Float(
         string='Real daylight hours', default=0.0,
-        compute='_calculate_real_daynightlight_hours', store=True)
+        compute='_compute_real_date_end', store=True)
     real_nightlight_hours = fields.Float(
         string='Real nightlight hours', default=0.0,
-        compute='_calculate_real_daynightlight_hours', store=True)
+        compute='_compute_real_date_end', store=True)
     notes = fields.Text(string='Notes')
     state = fields.Selection(
         selection=[('pending', 'Pending'), ('completed', 'Completed'),
@@ -276,124 +250,75 @@ class EventTrackPresence(models.Model):
     def button_canceled(self):
         self.write({'state': 'canceled'})
 
-    def _calculate_daynightlightt_hours_same_day(
-            self, presence, fec_ini, fec_fin):
-        if (presence.session_date >= fec_ini and
-                presence.estimated_date_end <= fec_fin):
-            presence.estimated_daylight_hours = presence.session_duration
-        elif ((presence.session_date < fec_ini and
-               presence.estimated_date_end < fec_ini) or
-              (presence.session_date > fec_fin and
-                  presence.estimated_date_end > fec_fin)):
-            presence.estimated_nightlight_hours = presence.session_duration
-        elif (presence.session_date < fec_ini and presence.estimated_date_end >
-              fec_ini and presence.estimated_date_end < fec_fin):
-            hour = self._calculate_hour_between_dates(
-                fec_ini, presence.session_date)
-            presence.estimated_nightlight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.estimated_date_end, fec_ini)
-            presence.estimated_daylight_hours = hour
-        elif (presence.session_date > fec_ini and presence.estimated_date_end >
-              fec_fin):
-            hour = self._calculate_hour_between_dates(
-                fec_fin, presence.session_date)
-            presence.estimated_daylight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.estimated_date_end, fec_fin)
-            presence.estimated_nightlight_hours = hour
-
-    def _calculate_real_daynightlightt_hours_same_day(
-            self, presence, fec_ini, fec_fin):
-        if (presence.session_date >= fec_ini and
-                presence.real_date_end <= fec_fin):
-            presence.real_daylight_hours = presence.real_duration
-        elif ((presence.session_date < fec_ini and
-               presence.real_date_end < fec_ini) or
-              (presence.session_date > fec_fin and
-                  presence.real_date_end > fec_fin)):
-            presence.real_nightlight_hours = presence.real_duration
-        elif (presence.session_date < fec_ini and presence.real_date_end >
-              fec_ini and presence.real_date_end < fec_fin):
-            hour = self._calculate_hour_between_dates(
-                fec_ini, presence.session_date)
-            presence.real_nightlight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.real_date_end, fec_ini)
-            presence.real_daylight_hours = hour
-        elif (presence.session_date > fec_ini and presence.real_date_end >
-              fec_fin):
-            hour = self._calculate_hour_between_dates(
-                fec_fin, presence.session_date)
-            presence.real_daylight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.real_date_end, fec_fin)
-            presence.real_nightlight_hours = hour
-
-    def _calculate_daynightlightt_hours_in_distincts_days(
-            self, presence, fec_ini, fec_fin):
-        event_obj = self.env['event.event']
-        fec_ini2 = (fields.Date.from_string(str(fec_ini)) +
-                    (relativedelta(days=1)))
-        fec_ini2 = event_obj._put_utc_format_date(
-            fec_ini2, 6.0).strftime('%Y-%m-%d %H:%M:%S')
-        if presence.session_date > fec_ini and presence.session_date < fec_fin:
-            hour = self._calculate_hour_between_dates(
-                fec_fin, presence.session_date)
-            presence.estimated_daylight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.estimated_date_end, fec_fin)
-            presence.estimated_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and
-              presence.estimated_date_end <= fec_ini2):
-            hour = self._calculate_hour_between_dates(
-                presence.estimated_date_end, presence.session_date)
-            presence.estimated_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and
-              presence.estimated_date_end > fec_ini2):
-            hour = self._calculate_hour_between_dates(
-                fec_ini2, presence.session_date)
-            presence.estimated_nightlight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.estimated_date_end, fec_ini2)
-
-    def _calculate_real_daynightlightt_hours_in_distinct_days(
-            self, presence, fec_ini, fec_fin):
-        event_obj = self.env['event.event']
-        fec_ini2 = (fields.Date.from_string(str(fec_ini)) +
-                    (relativedelta(days=1)))
-        fec_ini2 = event_obj._put_utc_format_date(
-            fec_ini2, 6.0).strftime('%Y-%m-%d %H:%M:%S')
-        if presence.session_date > fec_ini and presence.session_date < fec_fin:
-            hour = self._calculate_hour_between_dates(
-                fec_fin, presence.session_date)
-            presence.real_daylight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.real_date_end, fec_fin)
-            presence.real_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and
-              presence.real_date_end <= fec_ini2):
-            hour = self._calculate_hour_between_dates(
-                presence.real_date_end, presence.session_date)
-            presence.real_nightlight_hours = hour
-        elif (presence.session_date >= fec_fin and
-              presence.real_date_end > fec_ini2):
-            hour = self._calculate_hour_between_dates(
-                fec_ini2, presence.session_date)
-            presence.real_nightlight_hours = hour
-            hour = self._calculate_hour_between_dates(
-                presence.real_date_end, fec_ini2)
-
-    def _calculate_hour_between_dates(self, to_date, from_date):
-        if from_date > to_date:
-            return 0.0
-        hours = (fields.Datetime.from_string(to_date) -
-                 fields.Datetime.from_string(from_date))
-        time = str(hours).split(':')
-        hour = float(time[0])
-        minutes = float(time[1]) / 60 if float(time[1]) > 0.0 else 0.0
-        seconds = float(time[2]) / 360 if float(time[2]) > 0.0 else 0.0
-        return hour + minutes + seconds
+    def _get_nightlight_hours(self, start_date, end_date):
+        company_obj = self.env['res.company']
+        company_id = self.event.company_id.id or\
+            company_obj._company_default_get('event.track.presence')
+        company = company_obj.browse(company_id)
+        tz = self.env.user.tz
+        daytime = nighttime = 0
+        start_date = str2datetime(start_date)\
+            if isinstance(start_date, str) else start_date
+        end_date = str2datetime(end_date) \
+            if isinstance(end_date, str) else end_date
+        if start_date >= end_date:
+            raise exceptions.ValidationError(
+                _('Dates are incorrectly selected.'))
+        start_hour = _convert_time_to_float(start_date, tz)
+        start_date = _convert_to_local_date(start_date, tz)
+        end_hour = _convert_time_to_float(end_date, tz)
+        end_date = _convert_to_local_date(end_date, tz)
+        daytime_start = company.daytime_start_hour
+        nighttime_start = company.nighttime_start_hour
+        if start_date.date() == end_date.date():
+            if ((start_hour < daytime_start and end_hour < daytime_start) or
+                    (start_hour > nighttime_start and
+                     end_hour > nighttime_start)):
+                nighttime += end_hour - start_hour
+            elif ((start_hour >= daytime_start and
+                    start_hour <= nighttime_start) and
+                    (end_hour >= daytime_start and
+                     end_hour <= nighttime_start)):
+                daytime += end_hour - start_hour
+            elif ((start_hour < daytime_start and
+                    (end_hour >= daytime_start and
+                     end_hour <= nighttime_start))):
+                daytime += end_hour - daytime_start
+                nighttime += daytime_start - start_hour
+            elif ((start_hour >= daytime_start and
+                    start_hour <= nighttime_start) and
+                    (end_hour > nighttime_start)):
+                daytime += nighttime_start - start_hour
+                nighttime += end_hour - nighttime_start
+            elif (start_hour < daytime_start and end_hour > nighttime_start):
+                nighttime += ((daytime_start - start_hour) +
+                              (end_hour - nighttime_start))
+                daytime += (nighttime_start - daytime_start)
+        else:
+            if (start_hour < daytime_start):
+                daytime += nighttime_start - daytime_start
+                nighttime += 24 - (nighttime_start - daytime_start) -\
+                    start_hour
+            elif (start_hour >= daytime_start and
+                    start_hour <= nighttime_start):
+                daytime += nighttime_start - start_hour
+                nighttime += 24 - nighttime_start
+            elif (start_hour > nighttime_start):
+                nighttime += 24 - start_hour
+            if (end_hour < daytime_start):
+                nighttime += end_hour
+            elif (end_hour >= daytime_start and
+                    end_hour <= nighttime_start):
+                daytime += end_hour - daytime_start
+                nighttime += daytime_start
+            elif (end_hour > nighttime_start):
+                daytime += nighttime_start - daytime_start
+                nighttime += end_hour - (nighttime_start - daytime_start)
+            alldays = (end_date.date() - start_date.date()).days
+            daytime += (alldays - 1) * (nighttime_start - daytime_start)
+            nighttime += (alldays - 1) *\
+                (24 - (nighttime_start - daytime_start))
+        return daytime, nighttime
 
     def _update_presence_duration(self, hours, state=False, notes=False):
         vals = {'real_duration': hours}
@@ -511,7 +436,7 @@ class EventRegistration(models.Model):
             'partner': self.partner_id.id,
             'min_event': self.event_id.id,
             'max_event': self.event_id.id,
-            'from_date': from_date.date,
+            'from_date': from_date.date(),
             'min_from_date': min_from_date.date(),
             'to_date': to_date.date(),
             'max_to_date': max_to_date.date(),
@@ -559,7 +484,7 @@ class EventRegistration(models.Model):
             'partner': self.partner_id.id,
             'min_event': self.event_id.id,
             'max_event': self.event_id.id,
-            'from_date': from_date.date,
+            'from_date': from_date.date(),
             'min_from_date': min_from_date.date(),
             'to_date': to_date.date(),
             'max_to_date': max_to_date.date(),
