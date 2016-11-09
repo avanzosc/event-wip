@@ -5,8 +5,6 @@ from openerp import models, fields, api, exceptions, _
 from .._common import _convert_to_local_date, _convert_time_to_float,\
     _convert_to_utc_date
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
-from pytz import timezone, utc
 
 str2datetime = fields.Datetime.from_string
 str2date = fields.Date.from_string
@@ -56,12 +54,8 @@ class EventEvent(models.Model):
         if not date:
             return False
         new_date = str2datetime(date) if isinstance(date, str) else date
-        new_date = new_date.date()
-        local_date = datetime(
-            int(new_date.strftime("%Y")), int(new_date.strftime("%m")),
-            int(new_date.strftime("%d")), tzinfo=utc).astimezone(
-            timezone(self.env.user.tz)).replace(tzinfo=None)
-        return local_date
+        return _convert_to_local_date(
+            new_date.replace(hour=0, minute=0, second=0), tz=self.env.user.tz)
 
     def _convert_date_to_local_format_with_hour(self, date):
         return _convert_to_local_date(date, tz=self.env.user.tz)
