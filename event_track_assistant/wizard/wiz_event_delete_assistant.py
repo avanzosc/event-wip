@@ -227,7 +227,7 @@ class WizEventDeleteAssistant(models.TransientModel):
         return cond
 
     def _open_event_tree_form(self):
-        active_ids = self.env.context.get('active_ids')
+        active_ids = self.env.context.get('active_ids', [])
         view_mode = 'kanban,calendar,tree,form' if len(active_ids) > 1 else\
             'form,kanban,calendar,tree'
         result = {'name': _('Event'),
@@ -235,7 +235,7 @@ class WizEventDeleteAssistant(models.TransientModel):
                   'res_model': 'event.event',
                   'view_type': 'form',
                   'view_mode': view_mode,
-                  'res_id': active_ids[0],
+                  'res_id': active_ids[:1],
                   'target': 'current',
                   'context': self.env.context}
         return result

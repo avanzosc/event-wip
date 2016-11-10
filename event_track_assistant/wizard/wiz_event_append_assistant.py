@@ -117,7 +117,6 @@ class WizEventAppendAssistant(models.TransientModel):
                 self._update_registration_date_end(self.registration)
             else:
                 self._compute_update_registration_end_date(self.registration)
-            self._update_registration_data(self.registration)
             self.registration.registration_open()
             cond = self._prepare_track_condition_search(
                 self.registration.event_id)
@@ -169,7 +168,7 @@ class WizEventAppendAssistant(models.TransientModel):
                 self._update_registration_date_end(registration)
             else:
                 self._compute_update_registration_end_date(registration)
-            self._update_registration_data(registration)
+            registration.registration_open()
             registrations = registration.event_id.registration_ids.filtered(
                 lambda x: x.id != registration.id and
                 x.partner_id.id == self.partner.id and
@@ -259,22 +258,19 @@ class WizEventAppendAssistant(models.TransientModel):
             if to_date > registration.event_id.date_end:
                 registration.date_end = registration.event_id.date_end
 
-    def _update_registration_data(self, registration):
-        registration.state = 'open'
-
     def _prepare_registration_data(self, event):
         tz = self.env.user.tz
-        date_start = _convert_to_utc_date(self.from_date, tz=tz)
-        date_end = _convert_to_utc_date(self.to_date, tz=tz)
-        vals = {'event_id': event.id,
-                'partner_id': self.partner.id,
-                'state': 'open',
-                'date_start': date_start,
-                'date_end': date_end}
-        if datetime2str(date_start) < event.date_begin:
-            vals['date_start'] = event.date_begin
-        if datetime2str(date_end) > event.date_end:
-            vals.update({'date_end': event.date_end})
+        date_start = datetime2str(_convert_to_utc_date(self.from_date, tz=tz))
+        date_end = datetime2str(_convert_to_utc_date(self.to_date, tz=tz))
+        vals = {
+            'event_id': event.id,
+            'partner_id': self.partner.id,
+            'state': 'open',
+            'date_start': event.date_begin if date_start < event.date_begin
+            else date_start,
+            'date_end': event.date_end if date_end < event.date_end
+            else date_end,
+        }
         return vals
 
     def _calc_dates_for_search_track(self, from_date, to_date):
@@ -284,16 +280,17 @@ class WizEventAppendAssistant(models.TransientModel):
         return from_date, to_date
 
     def _exit_from_append_wizard(self):
+        active_ids = self.env.context.get('active_ids', [])
+        view_mode = 'kanban,calendar,tree,form' if len(active_ids) > 1 else\
+            'form,kanban,calendar,tree'
         result = {'name': _('Event'),
                   'type': 'ir.actions.act_window',
                   'res_model': 'event.event',
                   'view_type': 'form',
-                  'view_mode': 'form,kanban,calendar,tree',
-                  'res_id': self.env.context.get('active_ids')[0],
+                  'view_mode': view_mode,
+                  'res_id': active_ids[:1],
                   'target': 'current',
                   'context': self.env.context}
-        if len(self.env.context.get('active_ids')) > 1:
-            result['view_mode'] = 'kanban,calendar,tree,form'
         return result
 
     def _local_date(self, ldate, time):
