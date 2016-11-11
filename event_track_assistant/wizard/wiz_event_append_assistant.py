@@ -288,7 +288,7 @@ class WizEventAppendAssistant(models.TransientModel):
                   'res_model': 'event.event',
                   'view_type': 'form',
                   'view_mode': view_mode,
-                  'res_id': active_ids[:1],
+                  'res_id': active_ids[0],
                   'target': 'current',
                   'context': self.env.context}
         return result
