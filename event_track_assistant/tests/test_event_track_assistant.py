@@ -286,7 +286,7 @@ class TestEventTrackAssistant(common.TransactionCase):
     def test_event_track_assistant_delete(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         self.assertEquals(self.partner.session_count, 0)
-        self.assertEquals(self.partner.presences_count, 0)
+        self.assertEquals(self.partner.presence_count, 0)
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).create({
                 'partner': self.partner.id,
@@ -294,7 +294,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
         self.assertNotEquals(self.partner.session_count, 0)
-        self.assertNotEquals(self.partner.presences_count, 0)
+        self.assertNotEquals(self.partner.presence_count, 0)
         self.assertIn(
             self.partner.id,
             self.event.mapped('registration_ids.partner_id').ids,
