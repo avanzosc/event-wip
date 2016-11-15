@@ -7,19 +7,8 @@
             <field name="inherit_id" ref="event.view_event_registration_tree" />
             <field name="arch" type="xml">
                 <field name="event_id" position="after">
-                    <field name="address_id" />
                     <field name="sepa_active" />
                     <field name="sepa_draft" />
-                </field>
-            </field>
-        </record>
-        <record id="address_event_registration_view_form" model="ir.ui.view">
-            <field name="name">address.event.registration.form</field>
-            <field name="model">event.registration</field>
-            <field name="inherit_id" ref="event.view_event_registration_form" />
-            <field name="arch" type="xml">
-                <field name="email" position="after">
-                    <field name="address_id" />
                 </field>
             </field>
         </record>
@@ -31,12 +20,6 @@
                 <filter string="Confirmed" position="after">
                     <filter string="Sepa Active" domain="[('sepa_active', '!=', 0)]" />
                     <filter string="Sepa Draft" domain="[('sepa_draft', '!=', 0)]" />
-                </filter>
-                <field name="name" position="after">
-                    <field name="address_id"/>
-                </field>
-                <filter string="Registration Month" position="after">
-                    <filter string="Address" domain="[]" context="{'group_by': 'address_id'}" />
                 </filter>
             </field>
         </record>

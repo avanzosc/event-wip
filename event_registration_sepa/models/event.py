@@ -35,7 +35,5 @@ class EventRegistration(models.Model):
                 % self.partner_id.name)
         return super(EventRegistration, self).registration_open()
 
-    address_id = fields.Many2one(
-        comodel_name='res.partner', related='event_id.address_id', store=True)
     sepa_active = fields.Integer(compute='_compute_sepa', store=True)
     sepa_draft = fields.Integer(compute='_compute_sepa', store=True)
