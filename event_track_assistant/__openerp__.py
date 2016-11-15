@@ -25,6 +25,7 @@
         "wizard/wiz_event_confirm_assistant_view.xml",
         "wizard/wiz_change_session_hour_view.xml",
         "wizard/wiz_impute_in_presence_from_session_view.xml",
+        "wizard/wiz_registration_to_another_event_view.xml",
         "views/event_event_view.xml",
         "views/event_registration_view.xml",
         "views/event_track_view.xml",

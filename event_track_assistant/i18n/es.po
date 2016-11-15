@@ -16,6 +16,39 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: event_track_assistant
+#: field:wiz.registration.to.another.event,event_registration_id:0
+msgid "Registration"
+msgstr "Registro"
+
+#. module: event_track_assistant
+#: view:wiz.registration.to.another.event:event_track_assistant.wiz_registration_to_another_event_form
+#: field:wiz.registration.to.another.event,event_id:0
+msgid "Actual event of registration"
+msgstr "Evento actual del registro"
+
+#. module: event_track_assistant
+#: view:wiz.registration.to.another.event:event_track_assistant.wiz_registration_to_another_event_form
+#: field:wiz.registration.to.another.event,new_event_id:0
+msgid "New event for the registration"
+msgstr "Nuevo evento para el registro"
+
+#. module: event_track_assistant
+#: view:wiz.registration.to.another.event:event_track_assistant.wiz_registration_to_another_event_form
+msgid "Change event to registration"
+msgstr "Cambiar evento al registro"
+
+#. module: event_track_assistant
+#: view:event.registration:event_track_assistant.event_registration_open_button_form_view
+msgid "Change registration to another event"
+msgstr "Cambiar registro a otro evento"
+
+#. module: event_track_assistant
+#: model:ir.actions.act_window,name:event_track_assistant.action_change_registration_new_event
+#: view:wiz.registration.to.another.event:event_track_assistant.wiz_registration_to_another_event_form
+msgid "Change registration to selected new event"
+msgstr "Cambiar registro al nuevo evento seleccionado"
+
+#. module: event_track_assistant
 #: code:addons/event_track_assistant/models/event.py:411
 #: model:ir.actions.act_window,name:event_track_assistant.action_create_assistant_from_event
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form

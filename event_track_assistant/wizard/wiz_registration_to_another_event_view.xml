@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_registration_to_another_event_form">
+            <field name="name">wiz.registration.to.another.event.form</field>
+            <field name="model">wiz.registration.to.another.event</field>
+            <field name="arch" type="xml">
+                <form string="Change event to registration" version="7.0">
+                    <group>
+                        <separator string="Actual event of registration" colspan="4" />
+                        <field name="event_id" nolabel="1" colspan="4" />
+                        <separator string="New event for the registration" colspan="4" />
+                        <field name="new_event_id" nolabel="1" colspan="4"
+                               domain="[('id','!=',event_id),('state','not in',('cancel','done'))]" />
+                    </group>
+                    <footer>
+                        <button name="button_change_registration_event" type="object"
+                            string="Change registration to selected new event" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window name="Change registration to selected new event"
+                    res_model="wiz.registration.to.another.event"
+                    view_mode="form"
+                    view_type="form"
+                    target="new"
+                    id="action_change_registration_new_event"/>
+    </data>
+</openerp>

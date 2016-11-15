@@ -401,7 +401,11 @@ class EventRegistration(models.Model):
                     _('You can not confirm this registration, because their'
                       ' dates overlap with another record of the same'
                       ' employee'))
-        wiz = wiz_obj.create(self._prepare_wizard_registration_open_vals())
+        wiz = wiz_obj.with_context(
+            {'active_id': self.event_id.id,
+             'active_ids': self.event_id.ids,
+             'active_model': 'event.event'}).create(
+            self._prepare_wizard_registration_open_vals())
         context = self.env.context.copy()
         context.update({
             'active_id': self.event_id.id,
