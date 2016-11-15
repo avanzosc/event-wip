@@ -31,6 +31,11 @@
                 <button name="button_reg_cancel" position="attributes">
                     <attribute name="name">new_button_reg_cancel</attribute>
                 </button>
+                <button name="button_reg_close" position="after">
+                    <button name="%(action_change_registration_new_event)d"
+                        string="Change registration to another event"
+                        states="draft,open" type="action" class="oe_highlight"/>
+                </button>
             </field>
         </record>
 

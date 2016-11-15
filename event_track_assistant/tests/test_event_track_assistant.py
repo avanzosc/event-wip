@@ -28,6 +28,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
         self.wiz_change_hour_model = self.env['wiz.change.session.hour']
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
+        self.wiz_another_model = self.env['wiz.registration.to.another.event']
         self.claim_model = self.env['crm.claim']
         self.partner_model = self.env['res.partner']
         self.datetime_now = str2datetime(fields.Datetime.now())
@@ -382,3 +383,36 @@ class TestEventTrackAssistant(common.TransactionCase):
         claim = self.claim_model.search(event_domain, limit=1)
         self.assertNotEqual(
             len(claim), 0, 'Created claim from presence, not found')
+
+    def test_event_change_registration_to_another_event(self):
+        registration_vals = ({'event_id': self.event.id,
+                              'partner_id': self.ref('base.res_partner_25'),
+                              'state': 'draft',
+                              'date_start': '2025-01-20 00:00:00',
+                              'date_end': '2025-01-31 00:00:00'})
+        registration = self.registration_model.create(registration_vals)
+        wiz_vals = {'name': 'confirm assistants'}
+        wiz = self.wiz_confirm_model.create(wiz_vals)
+        wiz.with_context(
+            {'active_ids': self.event.ids}).action_confirm_assistant()
+        cond = [('id', '!=', self.event.id)]
+        new_event = self.event_model.search(cond, limit=1)
+        wiz_another_vals = {
+            'event_registration_id': registration.id,
+            'event_id': self.event.id,
+            'new_event_id': new_event.id}
+        wiz = self.wiz_another_model.create(wiz_another_vals)
+        var_fields = ['new_event_id', 'event_id']
+        wiz.with_context(
+            {'active_id': registration.id}).default_get(var_fields)
+        wiz.with_context(
+            {'active_ids': self.event.ids}).button_change_registration_event()
+        presences = self.event.mapped('track_ids.presences').filtered(
+            lambda x: x.partner.id == self.ref('base.res_partner_25') and
+            x.state != 'canceled')
+        self.assertEqual(
+            len(presences), 0, 'Presences found in old event')
+        new_registration = new_event.mapped('registration_ids').filtered(
+            lambda x: x.partner_id.id == self.ref('base.res_partner_25'))
+        self.assertNotEqual(
+            len(new_registration), 0, 'Registration not found in new event')
