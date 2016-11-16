@@ -9,6 +9,7 @@
                 <xpath expr="//field[@name='registration_ids']//tree/field[@name='name']" position="after">
                     <field name="date_start" attrs="{'readonly': [('state','not in',('draft'))]}" />
                     <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                    <field name="removal_date" readonly="1" />
                 </xpath>
                 <notebook position="inside">
                      <page string="Claims">

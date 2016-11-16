@@ -19,6 +19,10 @@
                         <field name="later_sessions" invisible="1"/>
                         <field name="message"
                             attrs="{'invisible':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
+                        <field name="removal_date"
+                            attrs="{'required':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
+                        <field name="notes" 
+                            attrs="{'required':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
                     </group>
                     <footer>
                         <button name="action_delete" type="object"

@@ -289,9 +289,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertEquals(self.partner.session_count, 0)
         self.assertEquals(self.partner.presences_count, 0)
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({
-                'partner': self.partner.id,
-            })
+            active_ids=self.event.ids).create({'partner': self.partner.id})
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
         self.assertNotEquals(self.partner.session_count, 0)
@@ -318,23 +316,31 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertNotEquals(registration.state, 'cancel')
         del_wiz = self.wiz_del_model.with_context(
             active_ids=self.event.ids).browse(dict_del_wiz.get('res_id'))
+        del_wiz.write({'removal_date': '2025-12-01',
+                       'notes': 'Registration canceled by system'})
         del_wiz.action_delete()
         self.assertEquals(registration.state, 'cancel')
+        self.assertEquals(registration.removal_date, '2025-12-01')
+        self.assertEquals(registration.notes,
+                          'Registration canceled by system')
 
     def test_event_sessions_delete_past_and_later_date(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({
-                'partner': self.partner.id,
-            })
+            active_ids=self.event.ids).create({'partner': self.partner.id})
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
         del_wiz = self.wiz_del_model.with_context(
-            active_ids=self.event.ids).create({
-                'partner': self.partner.id,
-            })
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        del_wiz.write({'removal_date': '2025-12-01',
+                       'notes': 'Registration canceled by system'})
         del_wiz.action_delete_past_and_later()
         del_wiz.action_nodelete_past_and_later()
+        registration = self.event.registration_ids[0]
+        self.assertEquals(registration.state, 'cancel')
+        self.assertEquals(registration.removal_date, '2025-12-01')
+        self.assertEquals(registration.notes,
+                          'Registration canceled by system')
 
     def test_event_track_assistant_change_session_hour(self):
         track = self.event.track_ids[0]
@@ -342,9 +348,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         track_date = _convert_to_local_date(track.date, self.env.user.tz)
         new_date = _convert_to_utc_date(track_date, new_hour, self.env.user.tz)
         wiz = self.wiz_change_hour_model.with_context(
-            active_ids=track.ids).create({
-                'new_hour': new_hour,
-            })
+            active_ids=track.ids).create({'new_hour': new_hour})
         wiz.change_session_hour()
         self.assertEquals(track.date, datetime2str(new_date))
 
