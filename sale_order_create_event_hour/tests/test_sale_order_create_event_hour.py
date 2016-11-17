@@ -154,6 +154,8 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         wiz.write(wiz_vals)
         wiz.onchange_dates_and_partner()
         wiz._prepare_track_search_condition(event)
+        wiz_vals.update({'removal_date': '2025-12-01',
+                         'notes': 'Registration canceled by system'})
         wiz = self.wiz_del_model.create(wiz_vals)
         wiz.with_context(
             {'active_ids': [event.id]}).onchange_information()
@@ -197,6 +199,8 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
                     'max_to_date': '2016-02-28 00:00:00',
                     'from_date': '2016-01-15 00:00:00',
                     'to_date': '2016-02-28 00:00:00',
+                    'removal_date': '2025-12-01',
+                    'notes': 'Registration canceled by system',
                     'partner': self.env.ref('base.res_partner_26').id}
         wiz.write(wiz_vals)
         wiz.with_context(

@@ -9,7 +9,8 @@
             <field name="arch" type="xml">
                 <field name="event_id" position="after">
                     <field name="date_start" />
-                    <field name="date_end"  />
+                    <field name="date_end" />
+                    <field name="removal_date" />
                 </field>
                 <button name="registration_open" position="attributes">
                     <attribute name="name">button_registration_open</attribute>
@@ -36,6 +37,17 @@
                         string="Change registration to another event"
                         states="draft,open" type="action" class="oe_highlight"/>
                 </button>
+                <field name="date_closed" position="after">
+                    <field name="date_start" />
+                    <field name="date_end" />
+                    <field name="removal_date" />
+                </field>
+                <xpath expr="/form/sheet/group" position="after">
+                    <group name="notes">
+                        <separator string="Notes" colspan="4" />
+                        <field name="notes" nolabel="1" colspan="4" />
+                    </group>
+                </xpath>
             </field>
         </record>
 

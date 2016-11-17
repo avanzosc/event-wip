@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import fields, models, api, _
+from openerp import fields, models, api, exceptions, _
 from .._common import _convert_to_local_date, _convert_to_utc_date
 
 datetime2str = fields.Datetime.to_string
@@ -25,6 +25,8 @@ class WizEventDeleteAssistant(models.TransientModel):
     past_sessions = fields.Boolean(string='Past Sessions')
     later_sessions = fields.Boolean(string='Later Sessions')
     message = fields.Char(string='Message', readonly=True)
+    notes = fields.Text(string='Notes')
+    removal_date = fields.Date(string='Removal date')
 
     @api.model
     def default_get(self, var_fields):
@@ -34,6 +36,7 @@ class WizEventDeleteAssistant(models.TransientModel):
         to_date = False
         for event in self.env['event.event'].browse(
                 self.env.context.get('active_ids')):
+            res['removal_date'] = fields.Date.context_today(self)
             if not from_date or event.date_begin < from_date:
                 new_date = _convert_to_local_date(event.date_begin, tz).date()
                 res.update({'from_date': date2str(new_date),
@@ -146,6 +149,10 @@ class WizEventDeleteAssistant(models.TransientModel):
     @api.multi
     def action_delete_past_and_later(self):
         self.ensure_one()
+        if not self.removal_date:
+            raise exceptions.Warning(_('You must enter the removal date'))
+        if not self.notes:
+            raise exceptions.Warning(_('You must enter the notes'))
         self.action_delete()
 
     @api.multi
@@ -190,6 +197,9 @@ class WizEventDeleteAssistant(models.TransientModel):
                 ('state', '=', 'open')]
         registrations = self.env['event.registration'].search(cond)\
             if not self.registration else self.registration
+        if self.removal_date and self.notes:
+            registrations.write({'removal_date': self.removal_date,
+                                 'notes': self.notes})
         for registration in registrations:
             registration.button_reg_cancel()
         return registrations

@@ -16,6 +16,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: event_track_assistant
+#: field:event.registration,removal_date:0
+#: field:wiz.event.delete.assistant,removal_date:0
+msgid "Removal date"
+msgstr "Fecha baja"
+
+#. module: event_track_assistant
 #: field:wiz.registration.to.another.event,event_registration_id:0
 msgid "Registration"
 msgstr "Registro"

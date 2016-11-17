@@ -326,6 +326,8 @@ class EventTrackPresence(models.Model):
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
 
+    notes = fields.Text(string='Notes')
+    removal_date = fields.Date(string='Removal date')
     date_start = fields.Datetime(string='Date start')
     date_end = fields.Datetime(string='Date end')
     state = fields.Selection(
