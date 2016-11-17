@@ -14,6 +14,10 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         self.wiz_del_model = self.env['wiz.event.delete.canceled.registration']
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
         self.claim_model = self.env['crm.claim']
+        self.registration_model = self.env['event.registration']
+        self.account_model = self.env['account.analytic.account']
+        self.wiz_another_model = self.env['wiz.registration.to.another.event']
+        self.wiz_append_model = self.env['wiz.event.append.assistant']
 
     def test_sale_order_create_event(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
@@ -83,6 +87,9 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
     def test_sale_order_create_event_by_task(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
         self.sale_order.write({'project_by_task': 'yes'})
+        self.sale_order2 = self.sale_order.copy()
+        self.sale_order2.project_id = self.sale_order.project_id
+        self.sale_order2.action_button_confirm()
         self.sale_order.action_button_confirm()
         cond = [('sale_order', '=', self.sale_order.id)]
         events = self.event_model.search(cond)
@@ -100,3 +107,29 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             self.assertEquals(
                 event.count_registrations + event.count_teacher_registrations,
                 len(event.registration_ids))
+        vals = self.wiz_append_model._prepare_data_for_account_not_employee(
+            events[0], events[0].registration_ids[0])
+        analytic_account = self.account_model.create(vals)
+        registration = events[0].registration_ids[0]
+        registration.analytic_account = analytic_account
+        registration._prepare_wizard_registration_open_vals()
+        cond = [('id', '!=', events[0].id),
+                ('sale_order', '!=', False)]
+        events = self.event_model.search(cond, limit=1)
+        for new_event in events:
+            wiz_another_vals = {
+                'event_registration_id': registration.id,
+                'event_id': registration.event_id.id,
+                'new_event_id': new_event.id}
+            wiz = self.wiz_another_model.create(wiz_another_vals)
+            var_fields = ['new_event_id', 'event_id']
+            wiz.with_context(
+                {'active_id': registration.id}).default_get(var_fields)
+            wiz.with_context(
+                {'active_ids':
+                 registration.event_id.ids})._change_registration_event()
+            dat = self.wiz_append_model._prepare_data_for_account_not_employee(
+                new_event, registration)
+            self.assertEquals(
+                registration.analytic_account.name, dat.get('name', False),
+                'Analytic account without new description')
