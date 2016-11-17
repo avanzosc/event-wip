@@ -23,6 +23,7 @@
                                     <field name="analytic_account" invisible="1" />
                                     <field name="date_start" attrs="{'readonly': [('state','not in',('draft'))]}" />
                                     <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                                    <field name="removal_date" readonly="1"/>
                                     <field name="email" />
                                     <field name="phone"/>
                                     <field name="nb_register" />
@@ -80,6 +81,7 @@
                                  attrs="{'readonly': [('required_account','=',False)]}" />
                             <field name="date_start" attrs="{'readonly': [('state','not in',('draft'))]}" />
                             <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+                            <field name="removal_date" readonly="1"/>
                             <field name="email" />
                             <field name="phone"/>
                             <field name="nb_register" />
