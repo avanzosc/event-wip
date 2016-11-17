@@ -27,6 +27,7 @@
         "views/res_partner_calendar_day_view.xml",
         "views/hr_employee_view.xml",
         "views/hr_contract_view.xml",
+        "views/hr_holidays_view.xml",
     ],
     "installable": True,
 }

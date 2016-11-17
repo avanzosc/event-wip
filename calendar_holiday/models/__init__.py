@@ -4,3 +4,4 @@
 from . import calendar_holiday
 from . import res_partner
 from . import hr_contract
+from . import hr_holidays

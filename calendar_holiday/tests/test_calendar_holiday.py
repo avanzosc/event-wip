@@ -15,6 +15,7 @@ class TestCalendarHoliday(common.TransactionCase):
         self.contract_model = self.env['hr.contract']
         self.calendar_model = self.env['res.partner.calendar']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
+        self.holidays_model = self.env['hr.holidays']
         self.today = fields.Date.from_string(fields.Date.today())
         self.partner = self.env['res.partner'].create({
             'name': 'Partner',
@@ -69,8 +70,22 @@ class TestCalendarHoliday(common.TransactionCase):
         wiz_vals = self.wiz_model.with_context(
             active_id=self.contract.id).default_get([])
         self.assertFalse(wiz_vals.get('year'))
-        wiz2 = self.wiz_model.with_context(
-            active_id=self.contract.id).create({
-                'year': fields.Date.from_string(self.contract.date_end).year,
-            })
+        wiz2 = self.wiz_model.with_context(active_id=self.contract.id).create(
+            {'year': fields.Date.from_string(self.contract.date_end).year})
         wiz2.button_calculate_workables_and_festives()
+        date_to = str(fields.Datetime.from_string(
+            fields.Datetime.now()).replace(month=1, day=7))
+        date_from = str(fields.Datetime.from_string(
+            fields.Datetime.now()).replace(month=1, day=1))
+        vals = self.holidays_model.onchange_date_from(
+            date_to, date_from, self.employee.id)
+        days = int(vals['value'].get('number_of_days_temp'))
+        self.assertEqual(days, 6, 'Absent days(1) badly calculated')
+        vals = self.holidays_model.onchange_date_to(
+            date_to, date_from, self.employee.id)
+        days = int(vals['value'].get('number_of_days_temp'))
+        self.assertEqual(days, 6, 'Absent days(2) badly calculated')
+        vals = self.holidays_model.onchange_employee(
+            self.employee.id, date_to, date_from)
+        days = int(vals['value'].get('number_of_days_temp'))
+        self.assertEqual(days, 6, 'Absent days(3) badly calculated')
