@@ -119,6 +119,13 @@
                <field name="count_registrations" position="attributes">
                     <attribute name="string">Students</attribute>
                </field>
+               <button help="Register with this event" position="before">
+                    <button name="show_all_registrations" type="object"
+                            class="oe_stat_button oe_inline"
+                            icon="fa-github" >
+                           <field name="count_all_registrations" string="Registrations" widget="statinfo" />
+                    </button>
+               </button>
                <button help="Register with this event" position="after">
                     <button name="show_teacher_registrations" type="object"
                             class="oe_stat_button oe_inline"

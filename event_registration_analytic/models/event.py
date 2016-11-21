@@ -17,6 +17,9 @@ class EventEvent(models.Model):
         string='Registered teachers', readonly=False,
         states={'done': [('readonly', True)]},
         domain=[('employee', '!=', False)])
+    count_all_registrations = fields.Integer(
+        string='All assistants',
+        compute='_count_all_registrations')
     count_teacher_registrations = fields.Integer(
         string='Teacher assistants',
         compute='_count_teacher_registrations')
@@ -30,34 +33,45 @@ class EventEvent(models.Model):
         string='Canceled registrations', store=True, readonly=True,
         compute='_compute_seats')
 
-    @api.one
+    @api.multi
+    @api.depends('registration_ids')
+    def _count_all_registrations(self):
+        for event in self:
+            event.count_all_registrations = len(event.registration_ids)
+
+    @api.multi
     @api.depends('registration_ids')
     def _count_registrations(self):
+        self.ensure_one()
         super(EventEvent, self)._count_registrations()
         self.count_registrations = len(self.no_employee_registration_ids)
 
-    @api.one
+    @api.multi
     @api.depends('registration_ids')
     def _count_teacher_registrations(self):
-        self.count_teacher_registrations = len(self.employee_registration_ids)
+        for event in self:
+            event.count_teacher_registrations = len(
+                event.employee_registration_ids)
 
-    @api.one
+    @api.multi
     def _count_teacher_pickings(self):
         picking_obj = self.env['stock.picking']
-        partners = self.env['res.partner']
-        partners |= self.employee_registration_ids.mapped('partner_id')
-        cond = [('partner_id', 'in', partners.ids)]
-        pickings = picking_obj.search(cond)
-        self.count_pickings = len(pickings)
+        for event in self:
+            partners = self.env['res.partner']
+            partners |= event.employee_registration_ids.mapped('partner_id')
+            cond = [('partner_id', 'in', partners.ids)]
+            pickings = picking_obj.search(cond)
+            event.count_pickings = len(pickings)
 
-    @api.one
+    @api.multi
     def _count_teacher_moves(self):
         move_obj = self.env['stock.move']
-        partners = self.env['res.partner']
-        partners |= self.employee_registration_ids.mapped('partner_id')
-        cond = [('partner_id', 'in', partners.ids)]
-        moves = move_obj.search(cond)
-        self.count_moves = len(moves)
+        for event in self:
+            partners = self.env['res.partner']
+            partners |= event.employee_registration_ids.mapped('partner_id')
+            cond = [('partner_id', 'in', partners.ids)]
+            moves = move_obj.search(cond)
+            event.count_moves = len(moves)
 
     @api.multi
     @api.depends('seats_max', 'registration_ids', 'registration_ids.state',
@@ -120,6 +134,16 @@ class EventEvent(models.Model):
             else:
                 vals.pop('employee_registration_ids')
         return super(EventEvent, self).write(vals)
+
+    @api.multi
+    def show_all_registrations(self):
+        self.ensure_one()
+        return {'name': _('Teacher assistants'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree,form,calendar,graph',
+                'view_type': 'form',
+                'res_model': 'event.registration',
+                'domain': [('id', 'in', self.registration_ids.ids)]}
 
     @api.multi
     def show_teacher_registrations(self):
