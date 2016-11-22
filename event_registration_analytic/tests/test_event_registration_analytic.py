@@ -33,9 +33,13 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         for event in events:
             event._count_teacher_pickings()
             event._count_teacher_moves()
+            event.show_all_registrations()
             event.show_teacher_registrations()
             event.show_teacher_pickings()
             event.show_teacher_moves()
+            self.assertEquals(event.count_all_registrations,
+                              len(event.no_employee_registration_ids) +
+                              len(event.employee_registration_ids))
             self.assertEquals(event.count_registrations,
                               len(event.no_employee_registration_ids))
             self.assertEquals(event.count_teacher_registrations,
