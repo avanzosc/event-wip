@@ -17,6 +17,57 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+#: view:res.partner:event_registration_analytic.students_search_view
+#: field:res.partner,num_bank_accounts:0
+#: field:res.partner,parent_num_bank_accounts:0
+msgid "# bank accounts"
+msgstr "Num Ctas. Bancarias"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+#: view:res.partner:event_registration_analytic.students_search_view
+#: field:res.partner,num_invoices:0 field:res.partner,parent_num_invoices:0
+msgid "# invoices"
+msgstr "Num. facturas"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+#: view:res.partner:event_registration_analytic.students_search_view
+#: field:res.partner,num_valid_mandates:0
+#: field:res.partner,parent_num_valid_mandates:0
+msgid "# valid mandates"
+msgstr "Num. Mandatos validos"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+msgid "Search Families"
+msgstr "Buscar familias"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.students_search_view
+msgid "Search students"
+msgstr "Buscar estudiantes"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+#: view:res.partner:event_registration_analytic.students_search_view
+msgid "Without bank account"
+msgstr "Sin cta. bancaria"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+#: view:res.partner:event_registration_analytic.students_search_view
+msgid "Without invoices"
+msgstr "Sin facturas"
+
+#. module: event_registration_analytic
+#: view:res.partner:event_registration_analytic.families_search_view
+#: view:res.partner:event_registration_analytic.students_search_view
+msgid "Without valid mandate"
+msgstr "Sin mandato válido"
+
+#. module: event_registration_analytic
 #: code:addons/event_registration_analytic/wizard/wiz_event_delete_canceled_registration.py:22
 #, python-format
 msgid "%s, has presences without canceling"

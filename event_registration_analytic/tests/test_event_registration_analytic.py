@@ -4,6 +4,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp.addons.sale_order_create_event.tests.\
     test_sale_order_create_event import TestSaleOrderCreateEvent
+from openerp import fields
 
 
 class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
@@ -18,6 +19,14 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         self.account_model = self.env['account.analytic.account']
         self.wiz_another_model = self.env['wiz.registration.to.another.event']
         self.wiz_append_model = self.env['wiz.event.append.assistant']
+        self.partner = self.env.ref('base.res_partner_address_23')
+        self.partner.parent_id.bank_ids = self.env['res.partner.bank'].create({
+            'acc_number': 'ES9121000418450200051332',
+            'partner_id': self.partner.id,
+            'state': 'iban',
+            'mandate_ids': [(0, 0, {'format': 'sepa',
+                                    'signature_date': fields.Date.today()})],
+        })
 
     def test_sale_order_create_event(self):
         self.assertEquals(self.sale_order.project_by_task, 'no')
@@ -48,8 +57,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
                 event.count_registrations + event.count_teacher_registrations,
                 len(event.registration_ids))
             registration_vals = ({'event_id': event.id,
-                                  'partner_id':
-                                  self.env.ref('base.res_partner_25').id,
+                                  'partner_id': self.partner.id,
                                   'state': 'draft',
                                   'date_start': '2025-01-15 08:00:00',
                                   'date_end': '2025-02-28 09:00:00'})
@@ -66,6 +74,19 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             registration._calculate_required_account()
             registration._onchange_partner()
             registration.registration_open()
+            self.env.ref('base.res_partner_address_23')
+            self.assertEqual(
+                self.partner.parent_num_bank_accounts,
+                self.partner.parent_id.num_bank_accounts,
+                'Student and family with different number of banks')
+            self.assertEqual(
+                self.partner.parent_num_valid_mandates,
+                self.partner.parent_id.num_valid_mandates,
+                'Student and family with different number of valid mandates')
+            self.assertEqual(
+                self.partner.parent_num_invoices,
+                self.partner.parent_id.num_invoices,
+                'Student and family with different number of invoices')
             self.wiz_impute_model.with_context(
                 {'active_ids':
                  [event.track_ids[0].id]}).default_get(['lines'])
@@ -99,7 +120,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         events = self.event_model.search(cond)
         self.assertNotEqual(
             len(events), 0, 'Sale order without event')
-        wiz_vals = {'partner': self.ref('base.res_partner_26')}
+        wiz_vals = {'partner': self.partner.id}
         wiz = self.wiz_add_model.with_context(
             active_ids=events.ids).create(wiz_vals)
         wiz.action_append()
