@@ -29,7 +29,8 @@ class EventRegistration(models.Model):
         if (config['test_enable'] and
                 not self.env.context.get('check_mandate_sepa')):
             return super(EventRegistration, self).registration_open()
-        if self.sepa_active == 0 and not self.partner_id.employee_id:
+        if (self.event_id.sale_order.payer == 'student' and
+                self.sepa_active == 0 and not self.partner_id.employee_id):
             raise exceptions.Warning(
                 _('%s needs a valid sepa mandate for confirm the assistant!')
                 % self.partner_id.name)
