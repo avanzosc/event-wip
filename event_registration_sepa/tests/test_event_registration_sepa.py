@@ -10,6 +10,7 @@ class TestEventRegistrationSepa(common.TransactionCase):
 
     def setUp(self):
         super(TestEventRegistrationSepa, self).setUp()
+        self.sale_order_model = self.env['sale.order']
         self.event = self.env.ref('event.event_1')
         self.partner = self.env.ref('base.res_partner_address_23')
         self.partner.parent_id.bank_ids = self.env['res.partner.bank'].create({
@@ -22,7 +23,9 @@ class TestEventRegistrationSepa(common.TransactionCase):
             })],
         })
 
-    def test_mandate_sepa(self):
+    def test_mandate_sepa_payer_student_registration_student(self):
+        cond = [('payer', '=', 'student')]
+        self.event.sale_order = self.sale_order_model.search(cond, limit=1)
         registration = self.event.registration_ids[0].with_context(
             check_mandate_sepa=True)
         registration.partner_id = self.partner
@@ -34,5 +37,36 @@ class TestEventRegistrationSepa(common.TransactionCase):
         self.assertEqual(registration.sepa_draft, 0)
         self.assertEqual(registration.sepa_active, 1)
         self.assertEqual(registration.state, 'draft')
+        registration.registration_open()
+        self.assertEqual(registration.state, 'open')
+
+    def test_mandate_sepa_payer_student_registration_teacher(self):
+        cond = [('payer', '=', 'student')]
+        self.event.sale_order = self.sale_order_model.search(cond, limit=1)
+        registration = self.event.registration_ids[0].with_context(
+            check_mandate_sepa=True)
+        registration.partner_id = self.partner
+        registration.partner_id.employee_id = self.env.ref('hr.employee_al')
+        registration.registration_open()
+        self.assertEqual(registration.state, 'open')
+
+    def test_mandate_sepa_payer_school_registration_student(self):
+        cond = [('payer', '=', 'school')]
+        self.event.sale_order = self.sale_order_model.search(cond, limit=1)
+        registration = self.event.registration_ids[0].with_context(
+            check_mandate_sepa=True)
+        registration.partner_id = self.partner
+        self.assertEqual(registration.sepa_draft, 1)
+        self.assertEqual(registration.sepa_active, 0)
+        registration.registration_open()
+        self.assertEqual(registration.state, 'open')
+
+    def test_mandate_sepa_payer_school_registration_teacher(self):
+        cond = [('payer', '=', 'school')]
+        self.event.sale_order = self.sale_order_model.search(cond, limit=1)
+        registration = self.event.registration_ids[0].with_context(
+            check_mandate_sepa=True)
+        registration.partner_id = self.partner
+        registration.partner_id.employee_id = self.env.ref('hr.employee_al')
         registration.registration_open()
         self.assertEqual(registration.state, 'open')
