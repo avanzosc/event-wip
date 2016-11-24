@@ -13,8 +13,9 @@
                   <page string="Student presences">
                       <field name="no_employee_presences" nolabel="1" context="{'default_session': active_id}">
                           <tree string="Student presences" editable="bottom">
+                              <field name="allowed_partner_ids" invisible="1" />
                               <field name="partner" 
-                                     domain="[('id','in',allowed_partners[0][2])]"/>
+                                     domain="[('id','in',allowed_partner_ids[0][2])]"/>
                               <field name="session" invisible="1"/>
                               <field name="session_date" invisible="1"/>
                               <field name="session_duration" invisible="1"/>
@@ -31,8 +32,9 @@
                   <page string="Teacher presences">
                       <field name="employee_presences" nolabel="1" context="{'default_session': active_id}">
                           <tree string="Teacher presences" editable="bottom">
+                              <field name="allowed_partner_ids" invisible="1" />
                               <field name="partner" 
-                                     domain="[('id','in',allowed_partners[0][2])]"/>
+                                     domain="[('id','in',allowed_partner_ids[0][2])]"/>
                               <field name="session" invisible="1"/>
                               <field name="session_date" invisible="1"/>
                               <field name="session_duration" invisible="1"/>

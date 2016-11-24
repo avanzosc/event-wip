@@ -15,8 +15,10 @@
     "depends": [
         "stock",
         "partner_group",
+        "partner_prospect",
         "analytic",
         "account_analytic_analysis_recurring_day",
+        "account_banking_mandate",
         "event_sale",
         "sale_order_create_event",
         "event_registration_hr_contract",
@@ -34,6 +36,7 @@
         "views/event_track_assistant_view.xml",
         "views/account_analytic_account_view.xml",
         "views/account_invoice_view.xml",
+        "views/res_partner_view.xml",
     ],
     "installable": True,
     "uninstall_hook": "uninstall_hook",

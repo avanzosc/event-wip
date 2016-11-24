@@ -40,6 +40,8 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
                 'price_unit': self.service_product.lst_price,
             })],
         })
+        self.partner.parent_id = (
+            self.env.ref('base.res_partner_address_23').parent_id.id)
 
     def test_event_planned_by_sale_line(self):
         account = self.sale_order.project_id
@@ -119,9 +121,11 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         }
         wiz = self.wiz_add_model.with_context(
             active_ids=events.ids).create(wiz_vals)
+        self.partner.parent_id = False
         with self.assertRaises(exceptions.Warning):
             wiz.action_append()
-        self.partner.parent_id = self.parent
+        self.partner.parent_id = (
+            self.env.ref('base.res_partner_address_23').parent_id.id)
         wiz.action_append()
         accounts = self.account_model.search(
             [('student', '=', self.partner.id)])
@@ -156,9 +160,11 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         }
         wiz = self.wiz_add_model.with_context(
             active_ids=events.ids).create(wiz_vals)
+        self.partner.parent_id = False
         with self.assertRaises(exceptions.Warning):
             wiz.action_append()
-        self.partner.parent_id = self.parent
+        self.partner.parent_id = (
+            self.env.ref('base.res_partner_address_23').parent_id.id)
         wiz.action_append()
         accounts = self.account_model.search(
             [('student', '=', self.partner.id)])
