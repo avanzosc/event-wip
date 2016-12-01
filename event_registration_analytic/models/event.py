@@ -217,6 +217,12 @@ class EventRegistration(models.Model):
         wiz_vals.update({'create_account': self.required_account})
         return wiz_vals
 
+    @api.one
+    def button_reg_cancel(self):
+        if self.analytic_account:
+            self.analytic_account.set_cancel()
+        super(EventRegistration, self).button_reg_cancel()
+
 
 class EventEventTicket(models.Model):
     _inherit = 'event.event.ticket'
