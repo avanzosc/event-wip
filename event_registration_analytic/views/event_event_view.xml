@@ -10,7 +10,7 @@
                     <page string="Teachers">
                         <group colspan="4">
                             <separator string="Registered teachers" colspan="4" />
-                            <field name="employee_registration_ids" colspan="4" nolabel="1" groups="event.group_event_manager,event.group_event_user"
+                            <field name="employee_registration_ids" colspan="4" nolabel="1"
                                     context="{'default_event_id':active_id}">
                                 <tree string="Registered teachers" editable="top">
                                     <field name="event_id" invisible="1" />
@@ -67,7 +67,7 @@
                 </field>
                 <field name="registration_ids" position="after">
                     <separator string="Registered students" colspan="4" />
-                    <field name="no_employee_registration_ids" colspan="4" nolabel="1" groups="event.group_event_manager,event.group_event_user"
+                    <field name="no_employee_registration_ids" colspan="4" nolabel="1"
                             context="{'default_event_id':active_id}">
                         <tree string="Registered students" editable="top">
                             <field name="event_id" invisible="1"/>

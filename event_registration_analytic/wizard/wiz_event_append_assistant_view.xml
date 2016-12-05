@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="event_track_assistant.wiz_event_append_assistant_form" />
             <field name="arch" type="xml">
                 <field name="partner" position="after">
-                    <field name="create_account" />
+                    <field name="create_account" invisible="1"/>
                 </field>
             </field>
         </record>

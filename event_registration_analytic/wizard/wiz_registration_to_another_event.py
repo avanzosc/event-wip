@@ -8,11 +8,6 @@ class WizRegistrationToAnotherEvent(models.TransientModel):
     _inherit = 'wiz.registration.to.another.event'
 
     def _change_registration_event(self):
-        wiz_append_obj = self.env['wiz.event.append.assistant']
         super(WizRegistrationToAnotherEvent, self)._change_registration_event()
         if self.event_registration_id.analytic_account:
-            vals = wiz_append_obj._prepare_data_for_account_not_employee(
-                self.new_event_id, self.event_registration_id)
-            if vals.get('code', False):
-                vals.pop('code')
-            self.event_registration_id.analytic_account.write(vals)
+            self.event_registration_id.analytic_account.unlink()
