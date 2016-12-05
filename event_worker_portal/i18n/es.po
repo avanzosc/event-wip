@@ -1,0 +1,114 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_worker_portal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-05 11:10+0000\n"
+"PO-Revision-Date: 2016-12-05 12:11+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_absences_group_view
+msgid "Absences"
+msgstr "Ausencias"
+
+#. module: event_worker_portal
+#: view:hr.employee:event_worker_portal.view_employee_form_inh_workerportal
+msgid "Academic Experiences"
+msgstr "Experiencia académica"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_messaging_archives_option_view
+msgid "Archives"
+msgstr "Archivados"
+
+#. module: event_worker_portal
+#: view:hr.employee:event_worker_portal.view_employee_form_inh_workerportal
+msgid "Certifications"
+msgstr "Certificaciones"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_main_claim_option_view
+msgid "Claims"
+msgstr "Reclamaciones"
+
+#. module: event_worker_portal
+#: code:addons/event_worker_portal/__init__.py:14
+#, python-format
+msgid "Event restricted worker"
+msgstr "Eventos trabajador restringido"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_main_event_option_view
+msgid "Events"
+msgstr "Eventos"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_messaging_inbox_option_view
+msgid "Inbox"
+msgstr "Bandeja de entrada"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_main_leave_request_option_view
+msgid "Leave Request"
+msgstr "Petición de ausencia"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_main_group_view
+msgid "Main"
+msgstr "Principal"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_messaging_group_view
+msgid "Messaging"
+msgstr "Mensajería"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_main_note_option_view
+msgid "Notes"
+msgstr "Notas"
+
+#. module: event_worker_portal
+#: view:hr.employee:event_worker_portal.view_employee_form_inh_workerportal
+msgid "Professional Experiences"
+msgstr "Experiencias profesionales"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_main_track_option_view
+msgid "Sessions - assists"
+msgstr "Sesiones - asistencias"
+
+#. module: event_worker_portal
+#: view:hr.employee:event_worker_portal.view_employee_skill_form_inh_workerportal
+msgid "Skills"
+msgstr "Habilidades"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_messaging_todo_option_view
+msgid "To-do"
+msgstr "Por realizar"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_messaging_tome_option_view
+msgid "To: me"
+msgstr "Para: mí"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_menu
+msgid "Worker portal"
+msgstr "Portal trabajador"
+
+#. module: event_worker_portal
+#: view:hr.employee:event_worker_portal.view_employee_form_inh_workerportal
+#: view:hr.employee:event_worker_portal.view_employee_skill_form_inh_workerportal
+msgid "base.group_hr_user"
+msgstr "base.group_hr_user"

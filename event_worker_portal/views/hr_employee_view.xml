@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_employee_form_inh_workerportal">
+            <field name="name">view.employee.form.inh.workerportal</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_experience.view_employee_form_inherit" />
+            <field name="arch" type="xml">
+                <page string="Academic Experiences" position="attributes">
+                    <attribute name="groups">base.group_hr_user</attribute>
+                </page>
+                <page string="Professional Experiences" position="attributes">
+                    <attribute name="groups">base.group_hr_user</attribute>
+                </page>
+                <page string="Certifications" position="attributes">
+                    <attribute name="groups">base.group_hr_user</attribute>
+                </page>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_employee_skill_form_inh_workerportal">
+            <field name="name">view.employee.skill.form.inh.workerportal</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_skill.view_employee_skill_form" />
+            <field name="arch" type="xml">
+                <page string="Skills" position="attributes">
+                    <attribute name="groups">base.group_hr_user</attribute>
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>
