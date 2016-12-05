@@ -1,0 +1,13 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_product_event_track_template_worker","product_event_track_template","event_track_info.model_product_event_track_template","event.group_event_user",1,1,1,1
+"access_crm_claim_worker","crm_claim","crm_claim.model_crm_claim","event.group_event_user",1,1,1,0
+"access_hr_contract_worker","hr_contract","hr_contract.model_hr_contract","event.group_event_user",1,0,0,0
+"access_partner_student_course_worker","partner_student_courser","partner_student_course.model_partner_student_course","event.group_event_user",1,0,0,0
+"access_res_partner_calendar_day_worker","res_partner_calendar_day","calendar_holiday.model_res_partner_calendar_day","event.group_event_user",1,0,0,0
+"access_event_track_worker","event_track","website_event_track.model_event_track","event.group_event_user",1,1,1,0
+"access_project_task_work_worker","project_task_work","project.model_project_task_work","event.group_event_user",1,1,1,0
+"access_stock_picking_worker","stock_picking","stock.model_stock_picking","event.group_event_user",1,0,0,0
+"access_stock_move_worker","stock_move","stock.model_stock_move","event.group_event_user",1,0,0,0
+"access_sale_order_worker","sale_order","sale.model_sale_order","event.group_event_user",1,0,0,0
+"access_sale_order_line_worker","sale_order_line","sale.model_sale_order_line","event.group_event_user",1,0,0,0
+"access_crm_claim_stage_worker","crm_claim_stage","crm_claim.model_crm_claim_stage","event.group_event_user",1,0,0,0

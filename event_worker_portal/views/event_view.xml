@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem id="worker_portal_menu" name="Worker portal"
+                  groups="event.group_event_user"/>
+        <menuitem id="worker_portal_main_group_view" name="Main"
+                  parent="worker_portal_menu" groups="event.group_event_user"/>
+        <menuitem id="worker_portal_main_track_option_view" name="Sessions - assists"
+                  action="website_event_track.action_event_track" 
+                  parent="worker_portal_main_group_view"
+                  groups="event.group_event_user" />
+        <menuitem id="worker_portal_main_event_option_view" name="Events"
+                  action="event.action_event_view" 
+                  parent="worker_portal_main_group_view"
+                  groups="event.group_event_user" />
+        <menuitem id="worker_portal_main_claim_option_view" name="Claims"
+                  action="crm_claim.crm_case_categ_claim0" 
+                  parent="worker_portal_main_group_view"/>
+        <menuitem id="worker_portal_main_note_option_view" name="Notes"
+                  action="note.action_note_note" 
+                  parent="worker_portal_main_group_view"/>
+        <menuitem id="worker_portal_absences_group_view" name="Absences"
+                  parent="worker_portal_menu" groups="event.group_event_user"/>
+        <menuitem id="worker_portal_main_leave_request_option_view" name="Leave Request"
+                  action="hr_holidays.request_approve_holidays" 
+                  parent="worker_portal_absences_group_view"/>
+        <menuitem id="worker_portal_messaging_group_view" name="Messaging"
+                  parent="worker_portal_menu" groups="event.group_event_user"/>
+        <menuitem id="worker_portal_messaging_inbox_option_view" name="Inbox"
+                  action="portal.action_mail_inbox_feeds_portal" 
+                  parent="worker_portal_messaging_group_view"/>
+        <menuitem name="To: me" id="worker_portal_messaging_tome_option_view"
+                  action="mail.action_mail_to_me_feeds"
+                  parent="worker_portal_messaging_group_view"/>
+        <menuitem name="To-do" id="worker_portal_messaging_todo_option_view"
+                  action="portal.action_mail_star_feeds_portal"
+                  parent="worker_portal_messaging_group_view"/>
+        <menuitem id="worker_portal_messaging_archives_option_view" name="Archives"
+                  action="portal.action_mail_archives_feeds_portal" 
+                  parent="worker_portal_messaging_group_view"/>
+        <record model="ir.ui.view" id="view_event_form_inh_workerportal">
+            <field name="name">view.event.form.inh.workerportal</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form" />
+            <field name="arch" type="xml">
+                <field name="registration_ids" position="attributes">
+                    <attribute name="groups"></attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
