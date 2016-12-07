@@ -153,6 +153,12 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             wiz.with_context(
                 {'active_ids':
                  registration.event_id.ids})._change_registration_event()
+
+            wiz_vals = {'name': 'confirm assistants'}
+            wiz = self.wiz_confirm_model.create(wiz_vals)
+            wiz.with_context(
+                {'active_ids': [new_event.id]}).action_confirm_assistant()
+
             dat = self.wiz_append_model._prepare_data_for_account_not_employee(
                 new_event, registration)
             self.assertEquals(

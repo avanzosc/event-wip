@@ -2,7 +2,6 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, _
-from datetime import datetime
 import calendar
 
 
@@ -61,17 +60,21 @@ class WizEventAppendAssistant(models.TransientModel):
 
     def _prepare_data_for_account_not_employee(self, event, registration):
         event_obj = self.env['event.event']
-        today = datetime.strptime(
-            fields.Date.context_today(self), '%Y-%m-%d').date()
-        recurrring_next_date = "%s-%s-%s" % (
+        if self.from_date and self.to_date:
+            from_date = self.from_date
+            to_date = self.to_date
+            today = fields.Date.from_string(self.from_date)
+        else:
+            from_date = event_obj._convert_date_to_local_format_with_hour(
+                registration.date_start).date()
+            to_date = event_obj._convert_date_to_local_format_with_hour(
+                registration.date_end).date()
+            today = fields.Date.from_string(fields.Datetime.now())
+        recurring_next_date = "{}-{}-{}".format(
             today.year, today.month,
             calendar.monthrange(today.year, today.month)[1])
         code = self.env['ir.sequence'].get(
             'account.analytic.account')
-        from_date = event_obj._convert_date_to_local_format_with_hour(
-            registration.date_start).date()
-        to_date = event_obj._convert_date_to_local_format_with_hour(
-            registration.date_end).date()
         parent_id = event.project_id.analytic_account_id.id or False
         if len(event.my_task_ids) == 1:
             parent_id = event.my_task_ids[0].project_id.analytic_account_id.id
@@ -86,7 +89,7 @@ class WizEventAppendAssistant(models.TransientModel):
                 'partner_id': registration.partner_id.parent_id.id,
                 'student': registration.partner_id.id,
                 'recurring_invoices': True,
-                'recurring_next_date': recurrring_next_date}
+                'recurring_next_date': recurring_next_date}
         if registration.event_id.sale_order:
             vals['sale'] = registration.event_id.sale_order.id
         return vals
