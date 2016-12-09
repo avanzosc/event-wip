@@ -29,13 +29,11 @@ class TestEventRegistrationSepa(common.TransactionCase):
         registration = self.event.registration_ids[0].with_context(
             check_mandate_sepa=True)
         registration.partner_id = self.partner
-        self.assertEqual(registration.sepa_draft, 1)
-        self.assertEqual(registration.sepa_active, 0)
+        self.assertEqual(registration.parent_num_valid_mandates, 0)
         with self.assertRaises(exceptions.Warning):
             registration.registration_open()
         self.partner.parent_id.bank_ids[0].mandate_ids[0].validate()
-        self.assertEqual(registration.sepa_draft, 0)
-        self.assertEqual(registration.sepa_active, 1)
+        self.assertEqual(registration.parent_num_valid_mandates, 1)
         self.assertEqual(registration.state, 'draft')
         registration.registration_open()
         self.assertEqual(registration.state, 'open')
@@ -56,8 +54,7 @@ class TestEventRegistrationSepa(common.TransactionCase):
         registration = self.event.registration_ids[0].with_context(
             check_mandate_sepa=True)
         registration.partner_id = self.partner
-        self.assertEqual(registration.sepa_draft, 1)
-        self.assertEqual(registration.sepa_active, 0)
+        self.assertEqual(registration.parent_num_valid_mandates, 0)
         registration.registration_open()
         self.assertEqual(registration.state, 'open')
 

@@ -205,6 +205,12 @@ class EventRegistration(models.Model):
     employee = fields.Many2one(
         comodel_name='hr.employee', string='Employee',
         related='partner_id.employee_id', store=True)
+    parent_num_bank_accounts = fields.Integer(
+        string='# bank accounts', store=True,
+        related='partner_id.parent_num_bank_accounts')
+    parent_num_valid_mandates = fields.Integer(
+        string='# valid mandates', store=True,
+        related='partner_id.parent_num_valid_mandates')
 
     @api.onchange('partner_id', 'partner_id.employee_id')
     def _onchange_partner(self):

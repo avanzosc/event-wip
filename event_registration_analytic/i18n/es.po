@@ -50,6 +50,21 @@ msgid "Search students"
 msgstr "Buscar estudiantes"
 
 #. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+msgid "With Sepa active"
+msgstr "Con SEPA activo"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+msgid "With bank account"
+msgstr "Con cta. bancaria"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+msgid "Without Sepa active"
+msgstr "Sin SEPA activo"
+
+#. module: event_registration_analytic
 #: view:res.partner:event_registration_analytic.families_search_view
 #: view:res.partner:event_registration_analytic.students_search_view
 msgid "Without bank account"

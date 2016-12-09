@@ -100,6 +100,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             wiz_impute = self.wiz_impute_model.create(
                 {'lines': [(0, 0, impute_line_vals)]})
             wiz_impute.button_impute_hours()
+            event.track_ids._calc_real_duration()
             event.registration_ids.write({'state': 'cancel'})
             presences = event.track_ids.mapped('presences')
             presences.write({'state': 'canceled'})
