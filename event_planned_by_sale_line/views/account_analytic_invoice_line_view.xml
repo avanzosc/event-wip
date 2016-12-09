@@ -1,0 +1,37 @@
+<openerp>
+    <data>
+        <record id="account_analytic_invoice_line_search_view_inh_planned_line" model="ir.ui.view" >
+            <field name="name">account.analytic.invoice.line.search.view.inh.planned.line</field>
+            <field name="model">account.analytic.invoice.line</field>
+            <field name="inherit_id" ref="account_analytic_invoice_line_menu.account_analytic_invoice_line_search_view"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="event_id" />
+                </field>
+                <filter string="Product" position="after">
+                    <filter string="Event" icon="terp-partner" domain="[]" context="{'group_by':'event_id'}"/>
+                </filter>
+            </field>
+        </record>
+        <record id="account_analytic_invoice_line_tree_view_inh_planned_line" model="ir.ui.view" >
+            <field name="name">account.analytic.invoice.line.tree.view.inh.planned.line</field>
+            <field name="model">account.analytic.invoice.line</field>
+            <field name="inherit_id" ref="account_analytic_invoice_line_menu.account_analytic_invoice_line_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="event_id" />
+                </field>
+            </field>
+        </record>
+        <record id="account_analytic_invoice_line_form_view_inh_planned_line" model="ir.ui.view" >
+            <field name="name">account.analytic.invoice.line.form.view.inh.planned.line</field>
+            <field name="model">account.analytic.invoice.line</field>
+            <field name="inherit_id" ref="account_analytic_invoice_line_menu.account_analytic_invoice_line_form_view"/>
+            <field name="arch" type="xml">
+                <field name="analytic_account_id" position="before">
+                    <field name="event_id" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
