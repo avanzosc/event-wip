@@ -22,6 +22,12 @@ msgid "Duration"
 msgstr "Duración"
 
 #. module: event_planned_by_sale_line
+#: view:account.analytic.invoice.line:event_planned_by_sale_line.account_analytic_invoice_line_search_view_inh_planned_line
+#: field:account.analytic.invoice.line,event_id:0
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_planned_by_sale_line
 #: view:sale.order:event_planned_by_sale_line.view_order_form2_inh_planned_line
 msgid "End date"
 msgstr "Fecha fin"

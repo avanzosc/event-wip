@@ -21,11 +21,13 @@
         "website_quote",
         "sale_product_variants",
         "account_analytic_analysis_recurring_day",
+        "account_analytic_invoice_line_menu"
     ],
     "data": [
         "views/product_template_view.xml",
         "views/sale_order_view.xml",
         "views/product_category_view.xml",
+        "views/account_analytic_invoice_line_view.xml",
     ],
     "installable": True,
     "post_init_hook": "fill_charge_information_is_sales",
