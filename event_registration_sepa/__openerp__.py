@@ -20,7 +20,6 @@
         "event_registration_analytic"
     ],
     "data": [
-        "views/event_registration_view.xml",
     ],
     "installable": True,
 }
