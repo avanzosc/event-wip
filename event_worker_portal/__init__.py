@@ -13,6 +13,8 @@ def create_user_restricted_group(cr, registry):
     group_obj.write(cr, SUPERUSER_ID, new_group_id, {
         'name': _('Event restricted worker'),
         'implied_ids': [(6, 0, [])]})
+    group_obj.write(cr, SUPERUSER_ID, group_id, {
+        'implied_ids': [(4, new_group_id)]})
     cond = [('model', 'in',
              ('event.event', 'event.registration', 'event.track'))]
     model_ids = registry['ir.model'].search(cr, SUPERUSER_ID, cond)
