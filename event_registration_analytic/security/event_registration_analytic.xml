@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="event_track_assistant.event_rule_personal_session" model="ir.rule">
+            <field name="domain_force">[('session_teacher_ids','in',user.partner_id.id)]</field>
+        </record>
+    </data>
+</openerp>
