@@ -33,6 +33,7 @@
         "views/event_registration_view.xml",
         "views/sale_order_view.xml",
         "views/event_track_view.xml",
+        "views/event_track_presence_view.xml",
         "views/event_track_assistant_view.xml",
         "views/account_analytic_account_view.xml",
         "views/account_invoice_view.xml",

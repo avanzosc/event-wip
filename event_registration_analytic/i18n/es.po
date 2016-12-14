@@ -17,6 +17,12 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_registration_analytic
+#: code:addons/event_registration_analytic/models/event.py:172
+#, python-format
+msgid "Event presences"
+msgstr "Presencias del evento"
+
+#. module: event_registration_analytic
 #: view:res.partner:event_registration_analytic.families_search_view
 #: view:res.partner:event_registration_analytic.students_search_view
 #: field:res.partner,num_bank_accounts:0
@@ -343,6 +349,10 @@ msgstr "Estudiante: %s - Pagador: %s"
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+#: view:event.track.presence:event_registration_analytic.event_track_presence_search_view_inh_analytic
+#: model:ir.actions.act_window,name:event_registration_analytic.action_partner_student_form
+#: model:ir.ui.menu,name:event_registration_analytic.student_option_view
+#: view:res.partner:event_registration_analytic.students_tree_view
 msgid "Students"
 msgstr "Estudiantes"
 
@@ -377,6 +387,7 @@ msgstr "Profesores asistentes"
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+#: view:event.track.presence:event_registration_analytic.event_track_presence_search_view_inh_analytic
 msgid "Teachers"
 msgstr "Profesores"
 

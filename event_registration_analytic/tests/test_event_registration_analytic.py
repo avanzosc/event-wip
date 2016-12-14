@@ -42,10 +42,15 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         for event in events:
             event._count_teacher_pickings()
             event._count_teacher_moves()
+            event._count_presences()
             event.show_all_registrations()
             event.show_teacher_registrations()
             event.show_teacher_pickings()
             event.show_teacher_moves()
+            result = event.show_presences()
+            domain = [('id', 'in', event.mapped('track_ids.presences').ids)]
+            self.assertEqual(
+                result['domain'], domain, 'Error in show event presences')
             self.assertEquals(event.count_all_registrations,
                               len(event.no_employee_registration_ids) +
                               len(event.employee_registration_ids))
@@ -100,7 +105,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             wiz_impute = self.wiz_impute_model.create(
                 {'lines': [(0, 0, impute_line_vals)]})
             wiz_impute.button_impute_hours()
-            event.track_ids._calc_real_duration()
+            event.track_ids._compute_real_duration()
             event.registration_ids.write({'state': 'cancel'})
             presences = event.track_ids.mapped('presences')
             presences.write({'state': 'canceled'})
