@@ -85,8 +85,9 @@ class EventTrack(models.Model):
 
     @api.depends('presences', 'presences.real_duration')
     def _compute_real_duration(self):
-        for track in self:
-            track.real_duration = sum(track.mapped('presences.real_duration'))
+        for track in self.filtered(lambda x: x.presences):
+            presence = max(track.presences, key=lambda x: x.real_duration)
+            track.real_duration = presence.real_duration
 
     @api.depends('date', 'real_duration')
     def _compute_real_date_end(self):
@@ -127,8 +128,7 @@ class EventTrack(models.Model):
     real_duration = fields.Float(
         compute='_compute_real_duration', string='Real duration', store=True)
     real_date_end = fields.Datetime(
-        string='Real date end', compute='_compute_real_date_end',
-        store=True)
+        string='Real date end', compute='_compute_real_date_end', store=True)
     session_date = fields.Date(
         string='Session date', compute='_compute_session_date', store=True)
     session_end_date = fields.Date(
