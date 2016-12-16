@@ -132,6 +132,11 @@
                             icon="fa-github" >
                            <field name="count_teacher_registrations" string="Teachers" widget="statinfo" />
                     </button>
+                    <button name="show_presences" type="object"
+                            class="oe_stat_button oe_inline"
+                            icon="fa-github" >
+                           <field name="count_presences" string="Presences" widget="statinfo" />
+                    </button>
                     <button name="show_teacher_pickings" type="object"
                             class="oe_stat_button oe_inline"
                             icon="fa-github" >

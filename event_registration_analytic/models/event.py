@@ -32,6 +32,9 @@ class EventEvent(models.Model):
     seats_canceled = fields.Integer(
         string='Canceled registrations', store=True, readonly=True,
         compute='_compute_seats')
+    count_presences = fields.Integer(
+        string='Presences',
+        compute='_count_presences')
 
     @api.multi
     @api.depends('registration_ids')
@@ -72,6 +75,11 @@ class EventEvent(models.Model):
             cond = [('partner_id', 'in', partners.ids)]
             moves = move_obj.search(cond)
             event.count_moves = len(moves)
+
+    @api.multi
+    def _count_presences(self):
+        for event in self:
+            event.count_presences = len(event.mapped('track_ids.presences'))
 
     @api.multi
     @api.depends('seats_max', 'registration_ids', 'registration_ids.state',
@@ -154,6 +162,20 @@ class EventEvent(models.Model):
                 'view_type': 'form',
                 'res_model': 'event.registration',
                 'domain': [('id', 'in', self.employee_registration_ids.ids)]}
+
+    @api.multi
+    def show_presences(self):
+        self.ensure_one()
+        context = self.env.context.copy()
+        context.update({'search_default_students_filter': 1})
+        return {'name': _('Event presences'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree,form',
+                'view_type': 'form',
+                'res_model': 'event.track.presence',
+                'context': context,
+                'domain': [('id', 'in',
+                            self.mapped('track_ids.presences').ids)]}
 
     @api.multi
     def show_teacher_pickings(self):
@@ -249,13 +271,10 @@ class EventTrack(models.Model):
     _inherit = 'event.track'
 
     @api.depends('presences', 'presences.real_duration')
-    def _calc_real_duration(self):
+    def _compute_real_duration(self):
         for track in self:
-            track.real_duration = 0
-            if track.presences:
-                presence = max(track.presences, key=lambda x: x.real_duration)
-                if presence:
-                    track.real_duration = presence.real_duration
+            track.real_duration = (max(track.mapped('presences.real_duration'))
+                                   if track.presences else 0)
 
     no_employee_presences = fields.One2many(
         comodel_name='event.track.presence', inverse_name='session',
