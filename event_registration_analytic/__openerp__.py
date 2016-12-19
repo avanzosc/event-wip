@@ -22,7 +22,9 @@
         "event_sale",
         "sale_order_create_event",
         "event_registration_hr_contract",
-        "event_substitution"
+        "event_substitution",
+        "payment_line_menu",
+        "account_payment",
     ],
     "data": [
         "wizard/wiz_event_append_assistant_view.xml",
@@ -38,6 +40,8 @@
         "views/account_analytic_account_view.xml",
         "views/account_invoice_view.xml",
         "views/res_partner_view.xml",
+        "views/payment_order_view.xml",
+        "views/payment_line_view.xml",
     ],
     "installable": True,
     "uninstall_hook": "uninstall_hook",
