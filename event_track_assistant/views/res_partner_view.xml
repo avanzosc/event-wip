@@ -14,7 +14,7 @@
                     </button>
                     <button name="show_presences_from_partner" type="object"
                             class="oe_stat_button oe_inline" icon="fa-sign-in">
-                        <field name="presences_count" widget="statinfo"
+                        <field name="presence_count" widget="statinfo"
                                string="Sessions Presences"/>
                     </button>
                 </div>

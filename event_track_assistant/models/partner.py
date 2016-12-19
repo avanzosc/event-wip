@@ -8,26 +8,30 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     @api.multi
+    @api.depends('session_ids')
     def _compute_session_count(self):
         for partner in self:
             partner.session_count = len(partner.session_ids)
 
     @api.multi
+    @api.depends('presence_ids')
     def _compute_presences_count(self):
         for partner in self:
-            partner.presences_count = len(partner.presence_ids)
+            partner.presence_count = len(partner.presence_ids)
 
     session_ids = fields.Many2many(
         comodel_name="event.track", relation="rel_partner_event_track",
         column1="partner_id", column2="event_track_id", string="Sessions",
         copy=False)
     session_count = fields.Integer(
-        string='Sessions counter', compute='_compute_session_count')
+        string='# Sessions', compute='_compute_session_count',
+        store=True)
     presence_ids = fields.One2many(
         comodel_name='event.track.presence', inverse_name='partner',
         string='Presences')
-    presences_count = fields.Integer(
-        string='Presences counter', compute='_compute_presences_count')
+    presence_count = fields.Integer(
+        string='# Presences', compute='_compute_presences_count',
+        store=True)
 
     @api.multi
     def show_sessions_from_partner(self):
