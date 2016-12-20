@@ -34,9 +34,14 @@ class WizEventAppendAssistant(models.TransientModel):
                 if registration:
                     self._create_account_for_not_employee_from_wizard(
                         event, registration)
-        if self.create_account and self.registration:
+        elif self.create_account and self.registration:
             self._create_account_for_not_employee_from_wizard(
                 self.registration.event_id, self.registration)
+        elif (not self.create_account and self.registration and
+                self.registration.analytic_account):
+            self.registration.analytic_account.write(
+                self._prepare_data_for_account_not_employee(
+                    self.registration.event_id, self.registration))
         return result
 
     def _create_account_for_not_employee_from_wizard(

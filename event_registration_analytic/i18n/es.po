@@ -17,6 +17,21 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_event_registration_form_inh_analytic
+msgid "# Bank accounts"
+msgstr "Num. ctas. bancarias"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_event_registration_form_inh_analytic
+msgid "# Valid mandates"
+msgstr "Num. mandatos validos"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_event_registration_form_inh_analytic
+msgid "Other Information"
+msgstr "Otra información"
+
+#. module: event_registration_analytic
 #: code:addons/event_registration_analytic/models/event.py:172
 #, python-format
 msgid "Event presences"
@@ -31,13 +46,16 @@ msgid "# bank accounts"
 msgstr "Num Ctas. Bancarias"
 
 #. module: event_registration_analytic
+#: field:event.registration,parent_num_bank_accounts:0
 #: view:res.partner:event_registration_analytic.families_search_view
 #: view:res.partner:event_registration_analytic.students_search_view
-#: field:res.partner,num_invoices:0 field:res.partner,parent_num_invoices:0
+#: field:res.partner,num_bank_accounts:0
+#: field:res.partner,parent_num_bank_accounts:0
 msgid "# invoices"
 msgstr "Num. facturas"
 
 #. module: event_registration_analytic
+#: field:event.registration,parent_num_valid_mandates:0
 #: view:res.partner:event_registration_analytic.families_search_view
 #: view:res.partner:event_registration_analytic.students_search_view
 #: field:res.partner,num_valid_mandates:0
@@ -100,6 +118,7 @@ msgid "Analytic Account"
 msgstr "Cuenta analítica"
 
 #. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_event_registration_form_inh_analytic
 #: field:event.registration,analytic_account:0
 msgid "Analytic account"
 msgstr "Cuenta analítica"
@@ -184,6 +203,7 @@ msgstr "Empleado"
 #. module: event_registration_analytic
 #: field:account.invoice,event_id:0
 #: model:ir.model,name:event_registration_analytic.model_event_event
+#: field:payment.line,event_id:0
 msgid "Event"
 msgstr "Evento"
 
@@ -199,6 +219,8 @@ msgstr "Sesiones del evento"
 
 #. module: event_registration_analytic
 #: field:account.invoice,event_address_id:0
+#: view:payment.line:event_registration_analytic.payment_line_search_view_inh_event_analytic
+#: field:payment.line,event_address_id:0
 msgid "Event address"
 msgstr "Dirección evento"
 
@@ -304,6 +326,7 @@ msgstr "Línea pedido venta"
 
 #. module: event_registration_analytic
 #: field:account.invoice,sale_order_id:0
+#: field:payment.line,sale_order_id:0
 msgid "Sale order"
 msgstr "Pedido venta"
 
@@ -323,9 +346,11 @@ msgid "Show create account"
 msgstr "Mostrar crear cuenta"
 
 #. module: event_registration_analytic
-#: field:account.analytic.account,student:0 field:account.invoice,student:0
+#: field:account.analytic.account,student:0
+#: field:account.invoice,student:0
 #: model:crm.case.categ,name:event_registration_analytic.crm_case_categ_student
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+#: field:payment.line,student:0
 msgid "Student"
 msgstr "Estudiante"
 

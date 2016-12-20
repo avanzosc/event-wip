@@ -4,3 +4,4 @@
 from . import account
 from . import res_partner
 from . import event
+from . import payment_line
