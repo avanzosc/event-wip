@@ -19,8 +19,8 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="project_id" position="after">
-                    <field name="product_category" />
-                    <field name="payer" required="1"/>
+                    <field name="product_category" attrs="{'readonly':[('state','not in',('draft','send'))]}" />
+                    <field name="payer" required="1" attrs="{'readonly':[('state','not in',('draft','send'))]}" />
                 </field>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
                     <field name="project_by_task" invisible="1"/>

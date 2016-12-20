@@ -10,7 +10,7 @@
                     <attribute name="context">{'default_project_by_task': project_by_task, 'default_start_date': project_start_date, 'default_end_date': project_end_date}</attribute>
                 </field>
                 <field name="project_id" position="after">
-                    <field name="project_by_task" required="1" />
+                    <field name="project_by_task" required="1" attrs="{'readonly':[('state','not in',('draft','send'))]}" />
                     <field name="project_start_date" invisible="1"/>
                     <field name="project_end_date" invisible="1"/>
                 </field>
