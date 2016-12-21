@@ -120,11 +120,12 @@ class WizEventDeleteAssistant(models.TransientModel):
         return res
 
     def _prepare_dates_for_search_registrations(self):
-        event_obj = self.env['event.event']
-        from_date = event_obj._put_utc_format_date(
-            self.from_date, self.start_time).strftime('%Y-%m-%d %H:%M:%S')
-        to_date = event_obj._put_utc_format_date(
-            self.to_date, self.end_time).strftime('%Y-%m-%d %H:%M:%S')
+        super(WizEventDeleteAssistant,
+              self)._prepare_dates_for_search_registrations()
+        from_date = self._prepare_date_for_control(
+            self.from_date, self.start_time)
+        to_date = self._prepare_date_for_control(
+            self.to_date, self.end_time)
         return from_date, to_date
 
     def _put_old_dates(self):
@@ -135,33 +136,3 @@ class WizEventDeleteAssistant(models.TransientModel):
         self.to_date = event_obj._convert_date_to_local_format_with_hour(
             self.max_to_date).date()
         self.end_time = event_obj._convert_times_to_float(self.max_to_date)
-
-    def _prepare_track_condition_from_date(self, sessions):
-        event_obj = self.env['event.event']
-        from_date = event_obj._put_utc_format_date(
-            self.from_date, self.start_time).strftime('%Y-%m-%d %H:%M:%S')
-        cond = [('id', 'in', sessions.ids),
-                ('date', '!=', False),
-                ('date', '<', from_date)]
-        return cond
-
-    def _prepare_track_condition_to_date(self, sessions):
-        event_obj = self.env['event.event']
-        to_date = event_obj._put_utc_format_date(
-            self.to_date, self.end_time).strftime('%Y-%m-%d %H:%M:%S')
-        cond = [('id', 'in', sessions.ids),
-                ('date', '!=', False),
-                ('date', '>', to_date)]
-        return cond
-
-    def _prepare_track_search_condition_for_delete(self, sessions):
-        event_obj = self.env['event.event']
-        from_date = event_obj._put_utc_format_date(
-            self.from_date, self.start_time).strftime('%Y-%m-%d %H:%M:%S')
-        to_date = event_obj._put_utc_format_date(
-            self.to_date, self.end_time).strftime('%Y-%m-%d %H:%M:%S')
-        cond = [('id', 'in', sessions.ids),
-                ('date', '!=', False),
-                ('date', '>=', from_date),
-                ('date', '<=', to_date)]
-        return cond

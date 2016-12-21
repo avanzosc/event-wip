@@ -2,6 +2,8 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api
+from openerp.addons.event_track_assistant._common import\
+    _convert_time_to_float, _convert_to_local_date
 
 
 class EventEvent(models.Model):
@@ -19,9 +21,8 @@ class EventTrack(models.Model):
 
     @api.model
     def create(self, vals):
-        session_date = self.env['event.event'].\
-            _convert_date_to_local_format_with_hour(
-                fields.Datetime.to_string(vals.get('date')))
+        session_date = _convert_to_local_date(
+            vals.get('date'), tz=self.env.user.tz)
         if session_date.weekday() == 6:
             vals['type_hour'] = self.env.ref(
                 'sale_order_create_event_hour.type_hour_sunday').id
@@ -52,14 +53,13 @@ class EventRegistration(models.Model):
         return wiz_vals
 
     def _update_wizard_vals(self, wiz_vals):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         date_start = self.date_start or self.event_id.date_begin
         date_end = self.date_end or self.event_id.date_end
-        from_date = event_obj._convert_date_to_local_format_with_hour(
-            date_start)
-        start_time = event_obj._convert_times_to_float(date_start)
-        to_date = event_obj._convert_date_to_local_format_with_hour(date_end)
-        end_time = event_obj._convert_times_to_float(date_end)
+        from_date = _convert_to_local_date(date_start, tz=tz)
+        start_time = _convert_time_to_float(date_start, tz=tz)
+        to_date = _convert_to_local_date(date_end, tz=tz)
+        end_time = _convert_time_to_float(date_end, tz=tz)
         wiz_vals.update({
             'from_date': from_date.date(),
             'min_from_date': date_start,
