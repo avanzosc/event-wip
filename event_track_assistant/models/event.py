@@ -2,8 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
-from .._common import _convert_to_local_date, _convert_time_to_float,\
-    _convert_to_utc_date
+from .._common import _convert_to_local_date, _convert_time_to_float
 from dateutil.relativedelta import relativedelta
 
 str2datetime = fields.Datetime.from_string
@@ -63,12 +62,6 @@ class EventEvent(models.Model):
         new_date = str2datetime(date) if isinstance(date, str) else date
         return _convert_to_local_date(
             new_date.replace(hour=0, minute=0, second=0), tz=self.env.user.tz)
-
-    def _convert_date_to_local_format_with_hour(self, date):
-        return _convert_to_local_date(date, tz=self.env.user.tz)
-
-    def _put_utc_format_date(self, date, time=0.0):
-        return _convert_to_utc_date(date, time=time, tz=self.env.user.tz)
 
 
 class EventTrack(models.Model):
