@@ -120,9 +120,9 @@ class WizEventDeleteAssistant(models.TransientModel):
                          self.max_event.name)}}
         return res
 
-    def _prepare_date_for_control(self, date):
+    def _prepare_date_for_control(self, date, time=0.0):
         new_date = datetime2str(
-            _convert_to_utc_date(date, tz=self.env.user.tz))
+            _convert_to_utc_date(date, time=time, tz=self.env.user.tz))
         return new_date
 
     def _prepare_track_condition_from_date(self, sessions):
