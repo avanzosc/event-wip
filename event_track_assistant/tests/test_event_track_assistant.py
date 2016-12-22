@@ -125,9 +125,11 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertNotEquals(registration.state, 'cancel')
         del_wiz = self.wiz_del_model.with_context(
             active_ids=self.event.ids).browse(dict_del_wiz.get('res_id'))
+        with self.assertRaises(exceptions.Warning):
+            del_wiz.action_delete_past_and_later()
         del_wiz.write({'removal_date': '2025-12-01',
                        'notes': 'Registration canceled by system'})
-        del_wiz.action_delete()
+        del_wiz.action_delete_past_and_later()
         self.assertEquals(registration.state, 'cancel')
         self.assertEquals(registration.removal_date, '2025-12-01')
         self.assertEquals(registration.notes,

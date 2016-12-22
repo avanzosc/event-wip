@@ -32,23 +32,25 @@ class WizEventDeleteAssistant(models.TransientModel):
     def default_get(self, var_fields):
         tz = self.env.user.tz
         res = super(WizEventDeleteAssistant, self).default_get(var_fields)
-        from_date = False
-        to_date = False
-        for event in self.env['event.event'].browse(
-                self.env.context.get('active_ids')):
-            res['removal_date'] = fields.Date.context_today(self)
-            if not from_date or event.date_begin < from_date:
-                new_date = _convert_to_local_date(event.date_begin, tz).date()
-                res.update({'from_date': date2str(new_date),
-                            'min_from_date': date2str(new_date),
-                            'min_event': event.id})
-                from_date = self._prepare_date_for_control(new_date)
-            if not to_date or event.date_end > to_date:
-                new_date = _convert_to_local_date(event.date_end, tz).date()
-                res.update({'to_date': date2str(new_date),
-                            'max_to_date': date2str(new_date),
-                            'max_event': event.id})
-                to_date = self._prepare_date_for_control(new_date)
+        res['removal_date'] = fields.Date.context_today(self)
+        events = self.env['event.event'].browse(
+            self.env.context.get('active_ids'))
+        if events:
+            from_date = _convert_to_local_date(
+                min(events.mapped('date_begin')), tz)
+            to_date = _convert_to_local_date(
+                max(events.mapped('date_end')), tz)
+            min_event = events.sorted(key=lambda e: e.date_begin)[:1]
+            max_event = events.sorted(key=lambda e: e.date_end,
+                                      reverse=True)[:1]
+            res.update({
+                'from_date': from_date.date(),
+                'to_date': to_date.date(),
+                'min_from_date': from_date,
+                'max_to_date': to_date,
+                'min_event': min_event.id,
+                'max_event': max_event.id,
+            })
         return res
 
     @api.onchange('from_date', 'to_date', 'partner')
@@ -166,12 +168,10 @@ class WizEventDeleteAssistant(models.TransientModel):
             sessions = self.partner.session_ids.filtered(
                 lambda x: x.event_id == event)
             self._delete_registrations_between_dates(sessions)
-            if self.registration:
-                registrations = [self.registration]
-            else:
-                registrations = event.registration_ids.filtered(
-                    lambda x: x.partner_id == self.partner and
-                    x.state == 'open')
+            registrations = event.registration_ids.filtered(
+                lambda x: x.partner_id == self.partner and
+                x.state == 'open') if not self.registration else\
+                self.registration
             from_date, to_date = self._prepare_dates_for_search_registrations()
             for registration in registrations:
                 cond = [('event', '=', event.id),
