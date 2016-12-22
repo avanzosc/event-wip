@@ -40,9 +40,21 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             active_ids=events.ids).create(wiz_vals)
         wiz.action_append()
         for event in events:
-            event._count_teacher_pickings()
-            event._count_teacher_moves()
-            event._count_presences()
+            self.assertEquals(
+                event.count_all_registrations,
+                event.count_registrations + event.count_teacher_registrations)
+            teachers = event.mapped('employee_registration_ids.partner_id')
+            self.assertEquals(
+                event.count_pickings,
+                len(self.env['stock.picking'].search(
+                    [('partner_id', 'in', teachers.ids)])))
+            self.assertEquals(
+                event.count_moves,
+                len(self.env['stock.move'].search(
+                    [('partner_id', 'in', teachers.ids)])))
+            self.assertEquals(
+                event.count_presences,
+                len(event.mapped('track_ids.presences')))
             event.show_all_registrations()
             event.show_teacher_registrations()
             event.show_teacher_pickings()
