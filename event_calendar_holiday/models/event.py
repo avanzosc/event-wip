@@ -7,21 +7,17 @@ from openerp import models, fields, api
 class EventEvent(models.Model):
     _inherit = 'event.event'
 
+    @api.multi
     def _put_festives_in_sesions_from_sale_contract(self, calendars):
-        for track in self.track_ids:
+        for track in self.mapped('track_ids'):
+            track_date = fields.Date.from_string(track.session_date)
             for day in calendars.mapped('lines'):
-                track_month = fields.Datetime.from_string(
-                    track.session_date).date().month
-                day_month = fields.Datetime.from_string(
-                    day.date).date().month
-                track_day = fields.Datetime.from_string(
-                    track.session_date).date().day
-                day_day = fields.Datetime.from_string(
-                    day.date).date().day
-                if track_month == day_month and track_day == day_day:
-                    track.write({'absence_type': day.absence_type.id,
-                                 'sale_contract_absence_type':
-                                 day.absence_type.id})
+                day_date = fields.Date.from_string(day.date)
+                if track_date.month == day_date.month and\
+                        track_date.day == day_date.day:
+                    track.write({
+                        'absence_type': day.absence_type.id,
+                        'sale_contract_absence_type': day.absence_type.id})
 
 
 class EventTrack(models.Model):
