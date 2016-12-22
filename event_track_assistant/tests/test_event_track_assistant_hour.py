@@ -5,7 +5,8 @@
 
 import openerp.tests.common as common
 from openerp import exceptions, fields
-from .._common import _convert_to_local_date, _convert_to_utc_date
+from .._common import\
+    _convert_to_local_date, _convert_to_utc_date, _convert_time_to_float
 from dateutil.relativedelta import relativedelta
 
 datetime2str = fields.Datetime.to_string
@@ -44,9 +45,16 @@ class TestEventTrackAssistantDaynight(common.TransactionCase):
         }
         self.event = self.event_model.create(event_vals)
 
-    def test_date_convert_method(self):
+    def test_date_convert_local_method(self):
         local_date = _convert_to_local_date(self.datetime_now, tz=u'UTC')
         self.assertEquals(self.datetime_now, local_date)
+
+    def test_date_convert_utc_method(self):
+        now = self.datetime_now.replace(minute=0, second=0)
+        utc_time = _convert_time_to_float(now, tz=u'UTC')
+        self.assertEquals(now.hour, int(utc_time))
+        utc_date = _convert_to_utc_date(now.date(), time=utc_time, tz=u'UTC')
+        self.assertEquals(datetime2str(now), datetime2str(utc_date))
 
     def test_company_daytime_nighttime_hours(self):
         self.assertEquals(self.company.daytime_start_hour, 6.0)

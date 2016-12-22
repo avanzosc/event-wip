@@ -26,13 +26,14 @@ class WizEventDeleteAssistant(models.TransientModel):
     later_sessions = fields.Boolean(string='Later Sessions')
     message = fields.Char(string='Message', readonly=True)
     notes = fields.Text(string='Notes')
-    removal_date = fields.Date(string='Removal date')
+    removal_date = fields.Date(
+        string='Removal date',
+        default=lambda self: fields.Date.context_today(self))
 
     @api.model
     def default_get(self, var_fields):
         tz = self.env.user.tz
         res = super(WizEventDeleteAssistant, self).default_get(var_fields)
-        res['removal_date'] = fields.Date.context_today(self)
         events = self.env['event.event'].browse(
             self.env.context.get('active_ids'))
         if events:
@@ -65,10 +66,8 @@ class WizEventDeleteAssistant(models.TransientModel):
                     lambda x: x.event_id.id == self.registration.event_id.id)
                 from_date, to_date =\
                     self._prepare_dates_for_search_registrations()
-                if self.registration.date_start != from_date:
-                    self.past_sessions = True
-                if self.registration.date_end != to_date:
-                    self.later_sessions = True
+                self.past_sessions = self.registration.date_start != from_date
+                self.later_sessions = self.registration.date_end != to_date
             else:
                 sessions = self.partner.session_ids.filtered(
                     lambda x: x.event_id.id in
@@ -94,32 +93,28 @@ class WizEventDeleteAssistant(models.TransientModel):
     def _dates_control(self):
         self.ensure_one()
         res = {}
-        if self.from_date and self.to_date:
-            if self.from_date > self.to_date:
-                self.from_date = self.min_from_date
-                self.to_date = self.max_to_date
-                return {'warning': {
-                        'title': _('Error in from date'),
-                        'message':
-                        (_('From date greater than date to'))}}
-        if self.from_date:
-            if self.from_date < self.min_from_date:
-                self.from_date = self.min_from_date
-                self.to_date = self.max_to_date
-                return {'warning': {
-                        'title': _('Error in from date'),
-                        'message':
-                        (_('From date less than start date of the event %s') %
-                         self.min_event.name)}}
-        if self.to_date:
-            if self.to_date > self.max_to_date:
-                self.from_date = self.min_from_date
-                self.to_date = self.max_to_date
-                return {'warning': {
-                        'title': _('Error in to date'),
-                        'message':
-                        (_('From date greater than end date of the event %s') %
-                         self.max_event.name)}}
+        from_date, to_date =\
+            self._prepare_dates_for_search_registrations()
+        if from_date and to_date and from_date > to_date:
+            self._put_old_dates()
+            return {'warning': {
+                    'title': _('Error in from date'),
+                    'message':
+                    (_('From date greater than date to'))}}
+        if from_date and from_date < self.min_from_date:
+            self._put_old_dates()
+            return {'warning': {
+                    'title': _('Error in from date'),
+                    'message':
+                    (_('From date less than start date of the event %s') %
+                     self.min_event.name)}}
+        if to_date and to_date > self.max_to_date:
+            self._put_old_dates()
+            return {'warning': {
+                    'title': _('Error in to date'),
+                    'message':
+                    (_('From date greater than end date of the event %s') %
+                     self.max_event.name)}}
         return res
 
     def _prepare_date_for_control(self, date, time=0.0):
@@ -191,6 +186,12 @@ class WizEventDeleteAssistant(models.TransientModel):
         to_date = self._prepare_date_for_control(self.to_date)
         return from_date, to_date
 
+    def _put_old_dates(self):
+        tz = self.env.user.tz
+        self.from_date = _convert_to_local_date(
+            self.min_from_date, tz=tz).date()
+        self.to_date = _convert_to_local_date(self.max_to_date, tz=tz).date()
+
     def _cancel_registration(self):
         cond = [('event_id', 'in', self.env.context.get('active_ids')),
                 ('partner_id', '=', self.partner.id),
@@ -213,18 +214,16 @@ class WizEventDeleteAssistant(models.TransientModel):
             cond = [('event', 'in', self.env.context.get('active_ids'))]
         cond.append(('partner', '=', self.partner.id))
         presences = self.env['event.track.presence'].search(cond)
-        presences.write({'state': 'canceled'})
+        presences.button_canceled()
         return presences
 
     def _delete_registrations_between_dates(self, sessions):
         event_track_obj = self.env['event.track']
         cond = self._prepare_track_search_condition_for_delete(sessions)
         tracks = event_track_obj.search(cond)
-        for track in tracks:
-            presence = track.presences.filtered(
-                lambda x: x.partner == self.partner)
-            if presence:
-                presence.state = 'canceled'
+        presences = tracks.mapped('presences').filtered(
+            lambda x: x.partner == self.partner)
+        presences.button_canceled()
 
     def _prepare_track_search_condition_for_delete(self, sessions):
         from_date, to_date = self._prepare_dates_for_search_registrations()
