@@ -19,16 +19,16 @@ class EventEvent(models.Model):
         domain=[('employee', '!=', False)])
     count_all_registrations = fields.Integer(
         string='All assistants',
-        compute='_count_all_registrations')
+        compute='_count_registrations')
     count_teacher_registrations = fields.Integer(
         string='Teacher assistants',
-        compute='_count_teacher_registrations')
+        compute='_count_registrations')
     count_pickings = fields.Integer(
         string='Pickings',
-        compute='_count_teacher_pickings')
+        compute='_count_teacher_pickings_moves')
     count_moves = fields.Integer(
         string='Moves',
-        compute='_count_teacher_moves')
+        compute='_count_teacher_pickings_moves')
     seats_canceled = fields.Integer(
         string='Canceled registrations', store=True, readonly=True,
         compute='_compute_seats')
@@ -38,41 +38,25 @@ class EventEvent(models.Model):
 
     @api.multi
     @api.depends('registration_ids')
-    def _count_all_registrations(self):
-        for event in self:
-            event.count_all_registrations = len(event.registration_ids)
-
-    @api.multi
-    @api.depends('registration_ids')
     def _count_registrations(self):
-        self.ensure_one()
-        super(EventEvent, self)._count_registrations()
-        self.count_registrations = len(self.no_employee_registration_ids)
+        for record in self:
+            super(EventEvent, record)._count_registrations()
+            record.count_registrations =\
+                len(record.no_employee_registration_ids)
+            record.count_all_registrations = len(record.registration_ids)
+            record.count_teacher_registrations =\
+                len(record.employee_registration_ids)
 
     @api.multi
-    @api.depends('registration_ids')
-    def _count_teacher_registrations(self):
-        for event in self:
-            event.count_teacher_registrations = len(
-                event.employee_registration_ids)
-
-    @api.multi
-    def _count_teacher_pickings(self):
+    def _count_teacher_pickings_moves(self):
         picking_obj = self.env['stock.picking']
-        for event in self:
-            partners = self.env['res.partner']
-            partners |= event.employee_registration_ids.mapped('partner_id')
-            cond = [('partner_id', 'in', partners.ids)]
-            pickings = picking_obj.search(cond)
-            event.count_pickings = len(pickings)
-
-    @api.multi
-    def _count_teacher_moves(self):
         move_obj = self.env['stock.move']
         for event in self:
             partners = self.env['res.partner']
-            partners |= event.employee_registration_ids.mapped('partner_id')
+            partners |= event.mapped('employee_registration_ids.partner_id')
             cond = [('partner_id', 'in', partners.ids)]
+            pickings = picking_obj.search(cond)
+            event.count_pickings = len(pickings)
             moves = move_obj.search(cond)
             event.count_moves = len(moves)
 
