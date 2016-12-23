@@ -28,7 +28,7 @@ def _convert_to_utc_date(date, time=0.0, tz=u'UTC'):
     date += relativedelta(hours=float(time))
     local = timezone(tz)
     local_date = local.localize(date, is_dst=None)
-    utc_date = local_date.astimezone(utc)
+    utc_date = local_date.astimezone(utc).replace(tzinfo=None)
     return utc_date
 
 

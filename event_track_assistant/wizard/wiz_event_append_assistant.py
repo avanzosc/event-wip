@@ -98,9 +98,9 @@ class WizEventAppendAssistant(models.TransientModel):
                                ' the same employee'))}}
         return res
 
-    def _prepare_date_for_control(self, date):
+    def _prepare_date_for_control(self, date, time=0.0):
         new_date = datetime2str(
-            _convert_to_utc_date(date, tz=self.env.user.tz))
+            _convert_to_utc_date(date, time=time, tz=self.env.user.tz))
         return new_date
 
     @api.multi

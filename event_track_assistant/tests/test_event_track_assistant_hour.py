@@ -54,7 +54,7 @@ class TestEventTrackAssistantDaynight(common.TransactionCase):
         utc_time = _convert_time_to_float(now, tz=u'UTC')
         self.assertEquals(now.hour, int(utc_time))
         utc_date = _convert_to_utc_date(now.date(), time=utc_time, tz=u'UTC')
-        self.assertEquals(datetime2str(now), datetime2str(utc_date))
+        self.assertEquals(now, utc_date)
 
     def test_company_daytime_nighttime_hours(self):
         self.assertEquals(self.company.daytime_start_hour, 6.0)
