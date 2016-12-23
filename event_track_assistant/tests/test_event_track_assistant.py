@@ -162,6 +162,31 @@ class TestEventTrackAssistant(common.TransactionCase):
                 'removal_date': '2025-12-01',
                 'notes': 'Registration canceled by system',
             })
+        from_date = del_wiz.from_date
+        to_date = del_wiz.to_date
+        self.assertFalse(del_wiz.message)
+        self.assertFalse(del_wiz.past_sessions)
+        self.assertFalse(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': '2025-01-25',
+            'to_date': to_date,
+        })
+        del_wiz.onchange_information()
+        self.assertTrue(del_wiz.message)
+        self.assertTrue(del_wiz.past_sessions)
+        self.assertFalse(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': from_date,
+            'to_date': '2025-01-25',
+        })
+        del_wiz.onchange_information()
+        self.assertTrue(del_wiz.message)
+        self.assertFalse(del_wiz.past_sessions)
+        self.assertTrue(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': from_date,
+            'to_date': to_date,
+        })
         del_wiz.action_delete_past_and_later()
         del_wiz.action_nodelete_past_and_later()
         registration = self.event.registration_ids[:1]
@@ -171,29 +196,21 @@ class TestEventTrackAssistant(common.TransactionCase):
                           'Registration canceled by system')
 
     def test_event_assistant_track_assistant_confirm_assistant(self):
-        event_domain = [('event_id', '=', self.event.id)]
-        claim = self.claim_model.search(event_domain, limit=1)
-        self.assertEquals(
-            len(claim), 0, 'There are not claims for the event.')
-        track = self.event.track_ids[0]
-        registration_vals = ({'event_id': self.event.id,
-                              'partner_id': self.ref('base.res_partner_25'),
-                              'state': 'draft',
-                              'date_start': '2025-01-20 00:00:00',
-                              'date_end': '2025-01-31 00:00:00'})
-        registration = self.registration_model.create(registration_vals)
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        add_wiz.action_append()
+        registration = self.event.registration_ids[:1]
         wiz_vals = {'name': 'confirm assistants'}
         wiz = self.wiz_confirm_model.create(wiz_vals)
         wiz.with_context(
-            {'active_ids': self.event.ids}).action_confirm_assistant()
+            active_ids=self.event.ids).action_confirm_assistant()
         self.assertNotEqual(
             registration.state, 'draft',
             'Registration should have been confirmed.')
         wiz_impute = self.wiz_impute_model.with_context(
-            {'active_ids': track.ids}).create({})
+            active_ids=self.event.track_ids.ids).create({})
         self.assertNotEquals(len(wiz_impute.lines), 0)
         wiz_impute.lines.write({
-            'notes': False,
             'create_claim': True,
         })
         with self.assertRaises(exceptions.Warning):
@@ -201,10 +218,9 @@ class TestEventTrackAssistant(common.TransactionCase):
         wiz_impute.lines.write({
             'notes': 'Created claim from event.track.presence',
         })
+        self.assertEquals(len(self.event.claim_ids), 0)
         wiz_impute.button_impute_hours()
-        claim = self.claim_model.search(event_domain, limit=1)
-        self.assertNotEqual(
-            len(claim), 0, 'Created claim from presence, not found')
+        self.assertNotEqual(len(self.event.claim_ids), 0)
 
     def test_event_change_registration_to_another_event(self):
         registration_vals = ({'event_id': self.event.id,
