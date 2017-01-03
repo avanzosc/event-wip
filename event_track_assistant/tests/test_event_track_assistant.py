@@ -50,11 +50,13 @@ class TestEventTrackAssistant(common.TransactionCase):
 
     def test_event_track_registration_open_button(self):
         self.assertEquals(len(self.event.mapped('track_ids.presences')), 0)
+        self.assertFalse(self.partner.registered_partner)
         registration_vals = {
             'event_id': self.event.id,
             'partner_id': self.partner.id,
         }
         registration = self.registration_model.create(registration_vals)
+        self.assertTrue(self.partner.registered_partner)
         dict_add_wiz = registration.with_context().button_registration_open()
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).browse(dict_add_wiz.get('res_id'))

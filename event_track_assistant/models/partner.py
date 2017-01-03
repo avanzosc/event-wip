@@ -28,6 +28,14 @@ class ResPartner(models.Model):
         string='Presences')
     presences_count = fields.Integer(
         string='Presences counter', compute='_compute_presences_count')
+    registered_partner = fields.Boolean(
+        string='Registered Partner', compute='_compute_registered_partner',
+        default=False, store=True)
+
+    @api.depends('registrations')
+    def _compute_registered_partner(self):
+        for partner in self:
+            partner.registered_partner = (len(partner.registrations) != 0)
 
     @api.multi
     def show_sessions_from_partner(self):

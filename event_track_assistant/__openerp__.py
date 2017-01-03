@@ -14,6 +14,7 @@
     "category": "Event Management",
     "depends": [
         "website_event_track",
+        "partner_event",
         "crm_claim",
     ],
     "data": [
