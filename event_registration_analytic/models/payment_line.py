@@ -8,14 +8,14 @@ class PaymentLine(models.Model):
     _inherit = 'payment.line'
 
     student = fields.Many2one(
-        comodel_name='res.partner', related='ml_inv_ref.student', store=True,
-        string='Student')
+        comodel_name='res.partner', string='Student',
+        related='move_line_id.invoice.student', store=True)
     event_address_id = fields.Many2one(
-        comodel_name='res.partner', related='ml_inv_ref.event_address_id',
-        store=True, string='Event address')
+        comodel_name='res.partner', string='Event address',
+        related='move_line_id.invoice.event_address_id', store=True)
     event_id = fields.Many2one(
-        comodel_name='event.event', related='ml_inv_ref.event_id', store=True,
-        string='Event')
+        comodel_name='event.event', string='Event',
+        related='move_line_id.invoice.event_id', store=True)
     sale_order_id = fields.Many2one(
-        comodel_name='sale.order', related='ml_inv_ref.sale_order_id',
-        store=True, string='Sale order')
+        comodel_name='sale.order', string='Sale order',
+        related='move_line_id.invoice.sale_order_id', store=True)
