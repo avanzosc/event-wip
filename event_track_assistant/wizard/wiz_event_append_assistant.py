@@ -221,9 +221,9 @@ class WizEventAppendAssistant(models.TransientModel):
         date_stop = registration.date_end
         date_end = registration.event_id.date_end
         to_date = datetime2str(self._local_date(self.to_date, end_time))
-        if date_stop and to_date < date_stop and to_date >= date_end:
+        if date_stop and to_date > date_stop and to_date <= date_end:
             registration.date_end = to_date
-        elif to_date < date_end and (to_date < date_stop or
+        elif to_date > date_end and (to_date > date_stop or
                                      not date_stop):
             registration.date_end = date_end
 
