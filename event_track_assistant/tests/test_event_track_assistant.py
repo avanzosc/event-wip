@@ -221,8 +221,10 @@ class TestEventTrackAssistant(common.TransactionCase):
             'notes': 'Created claim from event.track.presence',
         })
         self.assertEquals(len(self.event.claim_ids), 0)
+        self.assertEquals(self.event.claim_count, 0)
         wiz_impute.button_impute_hours()
         self.assertNotEqual(len(self.event.claim_ids), 0)
+        self.assertNotEqual(self.event.claim_count, 0)
 
     def test_event_change_registration_to_another_event(self):
         registration_vals = ({'event_id': self.event.id,
