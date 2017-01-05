@@ -17,6 +17,13 @@ class EventEvent(models.Model):
 
     claim_ids = fields.One2many(
         comodel_name='crm.claim', inverse_name='event_id', string='Claims')
+    claim_count = fields.Integer(
+        string='# Claims', compute='_compute_claim_count')
+
+    @api.depends('claim_ids')
+    def _compute_claim_count(self):
+        for event in self:
+            event.claim_count = len(event.claim_ids)
 
     @api.onchange('date_begin')
     def onchange_date_begin(self):
@@ -139,6 +146,13 @@ class EventTrack(models.Model):
         store=True)
     claim_ids = fields.One2many(
         comodel_name='crm.claim', inverse_name='session_id', string='Claims')
+    claim_count = fields.Integer(
+        string='# Claims', compute='_compute_claim_count')
+
+    @api.depends('claim_ids')
+    def _compute_claim_count(self):
+        for track in self:
+            track.claim_count = len(track.claim_ids)
 
     @api.constrains('date')
     def _check_session_date(self):

@@ -99,10 +99,18 @@
         </record>
 
         <record model="ir.ui.view" id="view_event_track_for_inh_assistant">
-            <field name="name">view.event.track.for.inh.assistant</field>
+            <field name="name">event.track.assistant.form</field>
             <field name="model">event.track</field>
             <field name="inherit_id" ref="website_event_track.view_event_track_form" />
             <field name="arch" type="xml">
+                <div class="oe_right oe_button_box" position="inside">
+                    <button name="%(crm_claim.crm_case_categ_claim0)d"
+                            type="action" class="oe_stat_button oe_inline"
+                            icon="fa-comments" help="Access to track related claims"
+                            context="{'search_default_session_id': active_id, 'default_session_id': active_id, 'default_event_id': event_id}">
+                        <field name="claim_count" widget="statinfo" string="Claims"/>
+                    </button>
+                </div>
                 <field name="stage_id" position="attributes">
                     <attribute name="clickable">True</attribute>
                 </field>
