@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import fields, models, api, exceptions, _
+from openerp import fields, models, api, _
 from .._common import _convert_to_local_date, _convert_to_utc_date
 
 datetime2str = fields.Datetime.to_string
@@ -11,20 +11,25 @@ date2str = fields.Date.to_string
 class WizEventDeleteAssistant(models.TransientModel):
     _name = 'wiz.event.delete.assistant'
 
-    from_date = fields.Date(string='From date')
-    to_date = fields.Date(string='To date')
+    from_date = fields.Date(string='From date', required=True)
+    to_date = fields.Date(string='To date', required=True)
     registration = fields.Many2one(
         comodel_name='event.registration', string='Partner registration')
-    partner = fields.Many2one(comodel_name='res.partner', string='Partner')
+    partner = fields.Many2one(
+        comodel_name='res.partner', string='Partner', required=True)
     min_event = fields.Many2one(
         comodel_name='event.event', string='Min. event')
     min_from_date = fields.Date(string='Min. from date')
     max_event = fields.Many2one(
         comodel_name='event.event', string='Max. event')
     max_to_date = fields.Date(string='Max. to date')
-    past_sessions = fields.Boolean(string='Past Sessions')
-    later_sessions = fields.Boolean(string='Later Sessions')
-    message = fields.Char(string='Message', readonly=True)
+    past_sessions = fields.Boolean(
+        string='Past Sessions', compute='_compute_past_later_sessions')
+    later_sessions = fields.Boolean(
+        string='Later Sessions', compute='_compute_past_later_sessions')
+    message = fields.Char(
+        string='Message', readonly=True,
+        compute='_compute_past_later_sessions')
     notes = fields.Text(string='Notes')
     removal_date = fields.Date(
         string='Removal date',
@@ -45,21 +50,18 @@ class WizEventDeleteAssistant(models.TransientModel):
             max_event = events.sorted(key=lambda e: e.date_end,
                                       reverse=True)[:1]
             res.update({
-                'from_date': from_date.date(),
-                'to_date': to_date.date(),
-                'min_from_date': from_date,
-                'max_to_date': to_date,
+                'from_date': date2str(from_date.date()),
+                'to_date': date2str(to_date.date()),
+                'min_from_date': datetime2str(from_date),
+                'max_to_date': datetime2str(to_date),
                 'min_event': min_event.id,
                 'max_event': max_event.id,
             })
         return res
 
-    @api.onchange('from_date', 'to_date', 'partner')
-    def onchange_information(self):
+    @api.depends('from_date', 'to_date', 'partner')
+    def _compute_past_later_sessions(self):
         event_track_obj = self.env['event.track']
-        self.past_sessions = False
-        self.later_sessions = False
-        self.message = ''
         if self.from_date and self.to_date and self.partner:
             if self.registration:
                 sessions = self.partner.session_ids.filtered(
@@ -95,20 +97,22 @@ class WizEventDeleteAssistant(models.TransientModel):
         res = {}
         from_date, to_date =\
             self._prepare_dates_for_search_registrations()
+        min_from_date = self._prepare_date_for_control(self.min_from_date)
+        max_to_date = self._prepare_date_for_control(self.max_to_date)
         if from_date and to_date and from_date > to_date:
             self._put_old_dates()
             return {'warning': {
                     'title': _('Error in from date'),
                     'message':
                     (_('From date greater than date to'))}}
-        if from_date and from_date < self.min_from_date:
+        if from_date and from_date < min_from_date:
             self._put_old_dates()
             return {'warning': {
                     'title': _('Error in from date'),
                     'message':
                     (_('From date less than start date of the event %s') %
                      self.min_event.name)}}
-        if to_date and to_date > self.max_to_date:
+        if to_date and to_date > max_to_date:
             self._put_old_dates()
             return {'warning': {
                     'title': _('Error in to date'),
@@ -143,44 +147,6 @@ class WizEventDeleteAssistant(models.TransientModel):
         self._cancel_presences()
         return self._open_event_tree_form()
 
-    @api.multi
-    def action_delete_past_and_later(self):
-        self.ensure_one()
-        if not self.removal_date:
-            raise exceptions.Warning(_('You must enter the removal date'))
-        if not self.notes:
-            raise exceptions.Warning(_('You must enter the notes'))
-        self.action_delete()
-
-    @api.multi
-    def action_nodelete_past_and_later(self):
-        self.ensure_one()
-        event_obj = self.env['event.event']
-        presence_obj = self.env['event.track.presence']
-        event_ids = self.registration.event_id.ids if self.registration else\
-            self.env.context.get('active_ids', [])
-        for event in event_obj.browse(event_ids):
-            sessions = self.partner.session_ids.filtered(
-                lambda x: x.event_id == event)
-            self._delete_registrations_between_dates(sessions)
-            registrations = event.registration_ids.filtered(
-                lambda x: x.partner_id == self.partner and
-                x.state == 'open') if not self.registration else\
-                self.registration
-            from_date, to_date = self._prepare_dates_for_search_registrations()
-            for registration in registrations:
-                cond = [('event', '=', event.id),
-                        ('partner', '=', self.partner.id),
-                        ('state', '!=', 'cancel'),
-                        ('session_date', '>=', registration.date_start),
-                        ('session_date', '<=', registration.date_end), '|',
-                        ('session_date', '<', from_date),
-                        ('session_date', '>', to_date)]
-                presences = presence_obj.search(cond, limit=1)
-                if not presences:
-                    registration.button_reg_cancel()
-        return self._open_event_tree_form()
-
     def _prepare_dates_for_search_registrations(self):
         from_date = self._prepare_date_for_control(self.from_date)
         to_date = self._prepare_date_for_control(self.to_date)
@@ -206,32 +172,15 @@ class WizEventDeleteAssistant(models.TransientModel):
         return registrations
 
     def _cancel_presences(self):
-        if self.registration:
-            cond = [('event', '=', self.registration.event_id.id),
-                    ('session_date', '>=', self.registration.date_start),
-                    ('session_date', '<=', self.registration.date_end)]
-        else:
-            cond = [('event', 'in', self.env.context.get('active_ids'))]
-        cond.append(('partner', '=', self.partner.id))
+        from_date, to_date = self._prepare_dates_for_search_registrations()
+        cond = [('event', 'in', self.env.context.get('active_ids')),
+                ('state', '=', 'pending'),
+                ('partner', '=', self.partner.id),
+                ('session_date', '>=', from_date),
+                ('session_date', '<=', to_date)]
         presences = self.env['event.track.presence'].search(cond)
         presences.button_canceled()
         return presences
-
-    def _delete_registrations_between_dates(self, sessions):
-        event_track_obj = self.env['event.track']
-        cond = self._prepare_track_search_condition_for_delete(sessions)
-        tracks = event_track_obj.search(cond)
-        presences = tracks.mapped('presences').filtered(
-            lambda x: x.partner == self.partner)
-        presences.button_canceled()
-
-    def _prepare_track_search_condition_for_delete(self, sessions):
-        from_date, to_date = self._prepare_dates_for_search_registrations()
-        cond = [('id', 'in', sessions.ids),
-                ('date', '!=', False),
-                ('date', '>=', from_date),
-                ('date', '<=', to_date)]
-        return cond
 
     def _open_event_tree_form(self):
         active_ids = self.env.context.get('active_ids', [])

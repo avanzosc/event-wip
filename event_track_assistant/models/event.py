@@ -458,16 +458,21 @@ class EventRegistration(models.Model):
         return wiz_vals
 
     @api.multi
+    def button_reg_cancel(self):
+        if any(self.filtered(lambda r: not r.notes)):
+            raise exceptions.Warning(
+                _('Notes are mandatory to cancel a registration.'))
+        self.filtered(lambda r: not r.removal_date).write({
+            'removal_date': fields.Date.context_today(self),
+        })
+        super(EventRegistration, self).button_reg_cancel()
+
+    @api.multi
     def new_button_reg_cancel(self):
         self.ensure_one()
         wiz_obj = self.env['wiz.event.delete.assistant']
-        wiz = wiz_obj.create(self._prepare_wizard_reg_cancel_vals())
-        if wiz.from_date and wiz.to_date and wiz.partner:
-            wiz.write({
-                'past_sessions': False,
-                'later_sessions': False,
-                'message': '',
-            })
+        wiz = wiz_obj.with_context(active_ids=self.event_id.id).create(
+            self._prepare_wizard_reg_cancel_vals())
         context = self.env.context.copy()
         context.update({
             'active_id': self.event_id.id,
@@ -488,23 +493,11 @@ class EventRegistration(models.Model):
     def _prepare_wizard_reg_cancel_vals(self):
         tz = self.env.user.tz
         min_from_date = _convert_to_local_date(self.event_id.date_begin, tz)
-        max_to_date = _convert_to_local_date(self.event_id.date_end, tz)
         from_date = _convert_to_local_date(self.date_start, tz)\
             if self.date_start else min_from_date
-        to_date = _convert_to_local_date(self.date_end, tz)\
-            if self.date_end else max_to_date
         wiz_vals = {
             'registration': self.id,
             'partner': self.partner_id.id,
-            'min_event': self.event_id.id,
-            'max_event': self.event_id.id,
-            'from_date': from_date.date(),
-            'min_from_date': min_from_date.date(),
-            'to_date': to_date.date(),
-            'max_to_date': max_to_date.date(),
-            'past_sessions': False,
-            'later_sessions': False,
-            'message': ''
         }
         if str(from_date) < fields.Date.context_today(self):
             wiz_vals['from_date'] = fields.Date.context_today(self)
@@ -514,5 +507,5 @@ class EventRegistration(models.Model):
     def unlink(self):
         if any(self.filtered(lambda r: r.state != 'draft')):
             raise exceptions.Warning(
-                _('You can only delete registration in draft status'))
+                _('You can only delete registration in draft status.'))
         return super(EventRegistration, self).unlink()
