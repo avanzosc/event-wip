@@ -84,16 +84,6 @@ class TestEventRegistrationHrContract(common.TransactionCase):
              self.contract.id}).button_calculate_workables_and_festives()
 
     def test_event_registration_hr_contract(self):
-        self.sale_order.action_button_confirm()
-        cond = [('project_id', '=', self.project.id)]
-        event = self.event_model.search(cond, limit=1)
-        registration_vals = {'event_id': event.id,
-                             'partner_id': self.ref('base.public_partner'),
-                             'contract': self.contract.id}
-        registration = self.registration_model.create(registration_vals)
-        registration.with_context(
-            {'event_id': event.id}).button_registration_open()
-        registration.button_reg_cancel()
         holiday_vals = {
             'name': 'Administrator',
             'holiday_type': 'employee',

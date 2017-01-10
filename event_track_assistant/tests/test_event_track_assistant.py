@@ -127,75 +127,13 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertNotEquals(registration.state, 'cancel')
         del_wiz = self.wiz_del_model.with_context(
             active_ids=self.event.ids).browse(dict_del_wiz.get('res_id'))
-        self.assertFalse(del_wiz.notes)
         with self.assertRaises(exceptions.Warning):
-            del_wiz.action_delete_past_and_later()
-        del_wiz.onchange_information()
+            del_wiz.action_delete()
         del_wiz.write({
-            'removal_date': '2025-01-25',
-            'notes': 'Registration canceled by system',
+            'notes': 'Registration canceled by test',
         })
-        self.assertFalse(del_wiz.message)
-        self.assertFalse(del_wiz.past_sessions)
-        self.assertFalse(del_wiz.later_sessions)
-        del_wiz.write({
-            'from_date': '2025-01-25',
-            'to_date': '2025-01-25',
-        })
-        del_wiz.onchange_information()
-        self.assertTrue(del_wiz.message)
-        self.assertTrue(del_wiz.past_sessions)
-        self.assertTrue(del_wiz.later_sessions)
-        del_wiz.action_delete_past_and_later()
+        del_wiz.action_delete()
         self.assertEquals(registration.state, 'cancel')
-        self.assertEquals(registration.removal_date, '2025-01-25')
-        self.assertEquals(registration.notes,
-                          'Registration canceled by system')
-
-    def test_event_sessions_delete_past_and_later_date(self):
-        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
-        add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
-        add_wiz.action_append()
-        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
-        del_wiz = self.wiz_del_model.with_context(
-            active_ids=self.event.ids).create({
-                'partner': self.partner.id,
-                'removal_date': '2025-12-01',
-                'notes': 'Registration canceled by system',
-            })
-        from_date = del_wiz.from_date
-        to_date = del_wiz.to_date
-        self.assertFalse(del_wiz.message)
-        self.assertFalse(del_wiz.past_sessions)
-        self.assertFalse(del_wiz.later_sessions)
-        del_wiz.write({
-            'from_date': '2025-01-25',
-            'to_date': to_date,
-        })
-        del_wiz.onchange_information()
-        self.assertTrue(del_wiz.message)
-        self.assertTrue(del_wiz.past_sessions)
-        self.assertFalse(del_wiz.later_sessions)
-        del_wiz.write({
-            'from_date': from_date,
-            'to_date': '2025-01-25',
-        })
-        del_wiz.onchange_information()
-        self.assertTrue(del_wiz.message)
-        self.assertFalse(del_wiz.past_sessions)
-        self.assertTrue(del_wiz.later_sessions)
-        del_wiz.write({
-            'from_date': from_date,
-            'to_date': to_date,
-        })
-        del_wiz.action_delete_past_and_later()
-        del_wiz.action_nodelete_past_and_later()
-        registration = self.event.registration_ids[:1]
-        self.assertEquals(registration.state, 'cancel')
-        self.assertEquals(registration.removal_date, '2025-12-01')
-        self.assertEquals(registration.notes,
-                          'Registration canceled by system')
 
     def test_event_assistant_track_assistant_confirm_assistant(self):
         add_wiz = self.wiz_add_model.with_context(

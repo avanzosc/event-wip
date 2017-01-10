@@ -182,6 +182,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             self.assertEquals(
                 registration.analytic_account.name, dat.get('name', False),
                 'Analytic account without new description')
+            registration.write({'notes': 'Registration cancel by test'})
             registration.button_reg_cancel()
             self.assertEqual(
                 registration.analytic_account.state, 'cancelled',

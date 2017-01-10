@@ -204,13 +204,7 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
                     'partner': self.env.ref('base.res_partner_26').id}
         wiz.write(wiz_vals)
         wiz.with_context(
-            {'active_ids': [event.id]}).action_nodelete_past_and_later()
-        wiz.with_context(
-            {'active_ids':
-             [event.id]})._delete_registrations_between_dates(
-            self.project.tasks[0].sessions)
-        wiz.with_context(
-            {'active_ids': [event.id]}).action_delete_past_and_later()
+            {'active_ids': [event.id]}).action_delete()
         event.registration_ids[0].with_context(
             {'event_id': event.id}).button_registration_open()
         event.registration_ids[0].button_reg_cancel()

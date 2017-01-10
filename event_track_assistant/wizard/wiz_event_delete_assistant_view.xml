@@ -5,35 +5,27 @@
             <field name="name">wiz.event.delete.assistant.form</field>
             <field name="model">wiz.event.delete.assistant</field>
             <field name="arch" type="xml">
-                <form string="Delete Person From Event-Session" version="7.0">
+                <form string="Delete Person From Event-Session">
                     <group string="Select Dates and Partner">
                         <field name="registration" invisible="1"/>
                         <field name="min_event" invisible="1"/>
                         <field name="min_from_date" invisible="1"/>
-                        <field name="from_date" required="1"/>
+                        <field name="from_date" />
                         <field name="max_event" invisible="1"/>
                         <field name="max_to_date" invisible="1"/>
-                        <field name="to_date" required="1" />
-                        <field name="partner" required="1"/>
+                        <field name="to_date" />
+                        <field name="partner" />
                         <field name="past_sessions" invisible="1"/>
                         <field name="later_sessions" invisible="1"/>
                         <field name="message"
-                            attrs="{'invisible':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
-                        <field name="removal_date"
-                            attrs="{'required':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
-                        <field name="notes" 
-                            attrs="{'required':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
+                               attrs="{'invisible':[('past_sessions','=',False),('later_sessions','=',False)]}"/>
+                        <field name="removal_date" required="1" />
+                        <field name="notes" required="1" />
                     </group>
                     <footer>
                         <button name="action_delete" type="object"
-                            string="Cancel Person" class="oe_highlight"
-                            attrs="{'invisible':['|',('past_sessions','=',True),('later_sessions','=',True)]}" />
-                        <button name="action_delete_past_and_later" type="object"
-                            string="Cancel person CANCELING past and later dates" class="oe_highlight"
-                            attrs="{'invisible':[('past_sessions','=',False),('later_sessions','=',False)]}" />
-                        <button name="action_nodelete_past_and_later" type="object"
-                            string="Cancel person NO CANCELING past and later dates" class="oe_highlight"
-                            attrs="{'invisible':[('past_sessions','=',False),('later_sessions','=',False)]}" />
+                                string="Cancel Person" class="oe_highlight"
+                                confirm="This will cancel all the presences between the dates selected, are you sure?"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
