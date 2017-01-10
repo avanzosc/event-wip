@@ -15,7 +15,7 @@ class WizEventConfirmAssistant(models.TransientModel):
         for event in event_obj.browse(self.env.context.get('active_ids')):
             registrations = event.registration_ids.filtered(
                 lambda x: x.state not in ('cancel', 'done') and
-                not x.analytic_account and not x.partner_id.employee and not
+                not x.analytic_account and not x.partner_id.employee_id and not
                 x.event_id.sale_order.project_id.recurring_invoices)
             for registration in registrations:
                 append_obj._create_account_for_not_employee_from_wizard(
@@ -27,7 +27,7 @@ class WizEventConfirmAssistant(models.TransientModel):
                             self)._prepare_data_confirm_assistant(reg)
         append_vals['create_account'] = True
         sale_order = reg.event_id.sale_order
-        if (reg.partner_id.employee or reg.analytic_account or
+        if (reg.partner_id.employee_id or reg.analytic_account or
                 sale_order.project_id.recurring_invoices):
             append_vals['create_account'] = False
         return append_vals
