@@ -6,10 +6,10 @@
 Event registration analytic
 ===========================
 
-* Creating an analytical account in "Even Registration", where registration is
-  confirmed, or when a person is added to an event/session, and analytical
-  account of the event associated with the project, has not activated the
-  "Generate recurring invoices automatically" field.
+When a registration is confirmed or when a partner is added to an event/session
+this module will create an analytic account
+
+* It won't have "Generate recurring invoices automatically" checked
 
 Credits
 =======
