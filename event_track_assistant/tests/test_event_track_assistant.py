@@ -56,11 +56,48 @@ class TestEventTrackAssistant(common.TransactionCase):
             'partner_id': self.partner.id,
         }
         registration = self.registration_model.create(registration_vals)
+        registration._onchange_partner()
         self.assertTrue(self.partner.registered_partner)
         dict_add_wiz = registration.with_context().button_registration_open()
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).browse(dict_add_wiz.get('res_id'))
+        from_date = add_wiz.from_date
+        to_date = add_wiz.to_date
+        not_warn = add_wiz.onchange_dates_and_partner()
+        self.assertNotIn('warning', not_warn)
+        add_wiz.write({
+            'from_date': '2025-01-30',
+            'to_date': '2025-01-20',
+        })
+        warn1 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn1)
+        self.assertEquals(add_wiz.from_date, add_wiz.min_from_date)
+        self.assertEquals(add_wiz.to_date, add_wiz.max_to_date)
+        add_wiz.write({
+            'from_date': '2025-01-19',
+            'to_date': '2025-01-30',
+        })
+        warn2 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn2)
+        self.assertEquals(add_wiz.from_date, add_wiz.min_from_date)
+        self.assertEquals(add_wiz.to_date, add_wiz.max_to_date)
+        add_wiz.write({
+            'from_date': '2025-01-20',
+            'to_date': '2025-01-31',
+        })
+        warn3 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn3)
+        self.assertEquals(add_wiz.from_date, add_wiz.min_from_date)
+        self.assertEquals(add_wiz.to_date, add_wiz.max_to_date)
+        add_wiz.write({
+            'from_date': from_date,
+            'to_date': to_date,
+        })
         add_wiz.action_append()
+        warn4 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn4)
+        self.assertEquals(add_wiz.from_date, add_wiz.min_from_date)
+        self.assertEquals(add_wiz.to_date, add_wiz.max_to_date)
         self.assertNotEquals(len(self.event.mapped('track_ids.presences')), 0)
         registration.date_start = str2datetime(self.event.date_begin) -\
             relativedelta(days=1)
@@ -127,6 +164,36 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertNotEquals(registration.state, 'cancel')
         del_wiz = self.wiz_del_model.with_context(
             active_ids=self.event.ids).browse(dict_del_wiz.get('res_id'))
+        from_date = del_wiz.from_date
+        to_date = del_wiz.to_date
+        self.assertFalse(del_wiz.message)
+        self.assertFalse(del_wiz.past_sessions)
+        self.assertFalse(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': '2025-01-25',
+            'to_date': to_date,
+        })
+        self.assertTrue(del_wiz.message)
+        self.assertTrue(del_wiz.past_sessions)
+        self.assertFalse(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': from_date,
+            'to_date': '2025-01-25',
+        })
+        self.assertTrue(del_wiz.message)
+        self.assertFalse(del_wiz.past_sessions)
+        self.assertTrue(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': '2025-01-25',
+            'to_date': '2025-01-25',
+        })
+        self.assertTrue(del_wiz.message)
+        self.assertTrue(del_wiz.past_sessions)
+        self.assertTrue(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': from_date,
+            'to_date': to_date,
+        })
         with self.assertRaises(exceptions.Warning):
             del_wiz.action_delete()
         del_wiz.write({
@@ -134,6 +201,96 @@ class TestEventTrackAssistant(common.TransactionCase):
         })
         del_wiz.action_delete()
         self.assertEquals(registration.state, 'cancel')
+
+    def test_event_track_assistant_delete_from_event(self):
+        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        add_wiz.action_append()
+        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        del_wiz = self.wiz_del_model.with_context(
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        self.assertFalse(del_wiz.registration)
+        from_date = del_wiz.from_date
+        to_date = del_wiz.to_date
+        self.assertFalse(del_wiz.message)
+        self.assertFalse(del_wiz.past_sessions)
+        self.assertFalse(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': '2025-01-25',
+            'to_date': to_date,
+        })
+        self.assertTrue(del_wiz.message)
+        self.assertTrue(del_wiz.past_sessions)
+        self.assertFalse(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': from_date,
+            'to_date': '2025-01-25',
+        })
+        self.assertTrue(del_wiz.message)
+        self.assertFalse(del_wiz.past_sessions)
+        self.assertTrue(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': '2025-01-25',
+            'to_date': '2025-01-25',
+        })
+        self.assertTrue(del_wiz.message)
+        self.assertTrue(del_wiz.past_sessions)
+        self.assertTrue(del_wiz.later_sessions)
+        del_wiz.write({
+            'from_date': from_date,
+            'to_date': to_date,
+        })
+        with self.assertRaises(exceptions.Warning):
+            del_wiz.action_delete()
+        del_wiz.write({
+            'notes': 'Registration canceled by test',
+        })
+        del_wiz.action_delete()
+        registration = self.event.registration_ids.filtered(
+            lambda r: r.partner_id == self.partner)
+        self.assertEquals(registration.state, 'cancel')
+
+    def test_event_assistant_delete_wizard(self):
+        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        add_wiz.action_append()
+        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        del_wiz = self.wiz_del_model.with_context(
+            active_ids=self.event.ids).create({
+                'partner': self.partner.id,
+                'from_date': '2025-01-22',
+                'to_date': '2025-01-28',
+            })
+        not_warn = del_wiz._dates_control()
+        self.assertNotIn('warning', not_warn)
+        self.assertNotEquals(del_wiz.from_date, del_wiz.min_from_date)
+        self.assertNotEquals(del_wiz.to_date, del_wiz.max_to_date)
+        del_wiz.write({
+            'from_date': '2025-01-30',
+            'to_date': '2025-01-20',
+        })
+        warn1 = del_wiz._dates_control()
+        self.assertIn('warning', warn1)
+        self.assertEquals(del_wiz.from_date, del_wiz.min_from_date)
+        self.assertEquals(del_wiz.to_date, del_wiz.max_to_date)
+        del_wiz.write({
+            'from_date': '2025-01-19',
+            'to_date': '2025-01-30',
+        })
+        warn2 = del_wiz._dates_control()
+        self.assertIn('warning', warn2)
+        self.assertEquals(del_wiz.from_date, del_wiz.min_from_date)
+        self.assertEquals(del_wiz.to_date, del_wiz.max_to_date)
+        del_wiz.write({
+            'from_date': '2025-01-20',
+            'to_date': '2025-01-31',
+        })
+        warn3 = del_wiz._dates_control()
+        self.assertIn('warning', warn3)
+        self.assertEquals(del_wiz.from_date, del_wiz.min_from_date)
+        self.assertEquals(del_wiz.to_date, del_wiz.max_to_date)
 
     def test_event_assistant_track_assistant_confirm_assistant(self):
         add_wiz = self.wiz_add_model.with_context(
@@ -163,36 +320,53 @@ class TestEventTrackAssistant(common.TransactionCase):
         wiz_impute.button_impute_hours()
         self.assertNotEqual(len(self.event.claim_ids), 0)
         self.assertNotEqual(self.event.claim_count, 0)
+        for track in self.event.track_ids:
+            self.assertNotEqual(len(track.claim_ids), 0)
+            self.assertNotEqual(track.claim_count, 0)
 
     def test_event_change_registration_to_another_event(self):
-        registration_vals = ({'event_id': self.event.id,
-                              'partner_id': self.ref('base.res_partner_25'),
-                              'state': 'draft',
-                              'date_start': '2025-01-20 00:00:00',
-                              'date_end': '2025-01-31 00:00:00'})
-        registration = self.registration_model.create(registration_vals)
-        wiz_vals = {'name': 'confirm assistants'}
-        wiz = self.wiz_confirm_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': self.event.ids}).action_confirm_assistant()
-        cond = [('id', '!=', self.event.id)]
-        new_event = self.event_model.search(cond, limit=1)
-        wiz_another_vals = {
-            'event_registration_id': registration.id,
+        self.assertFalse(
+            self.event.mapped('track_ids.presences').filtered(
+                lambda x: x.partner == self.partner))
+        registration_vals = {
             'event_id': self.event.id,
-            'new_event_id': new_event.id}
-        wiz = self.wiz_change_event_model.create(wiz_another_vals)
-        var_fields = ['new_event_id', 'event_id']
-        wiz.with_context(
-            {'active_id': registration.id}).default_get(var_fields)
-        wiz.with_context(
-            {'active_ids': self.event.ids}).button_change_registration_event()
-        presences = self.event.mapped('track_ids.presences').filtered(
-            lambda x: x.partner.id == self.ref('base.res_partner_25') and
-            x.state != 'canceled')
-        self.assertEqual(
-            len(presences), 0, 'Presences found in old event')
+            'partner_id': self.partner.id,
+            'state': 'draft',
+            'date_start': '2025-01-20 00:00:00',
+            'date_end': '2025-01-31 00:00:00',
+        }
+        registration = self.registration_model.create(registration_vals)
+        self.assertEquals(registration.state, 'draft')
+        wiz_vals = {'name': 'confirm assistants'}
+        wiz = self.wiz_confirm_model.with_context(
+            active_ids=self.event.ids).create(wiz_vals)
+        wiz.action_confirm_assistant()
+        self.assertEquals(registration.state, 'open')
+        partner_presences = self.event.mapped('track_ids.presences').filtered(
+            lambda x: x.partner == self.partner)
+        self.assertTrue(
+            partner_presences.filtered(lambda p: p.state != 'canceled'))
+        self.assertFalse(
+            partner_presences.filtered(lambda p: p.state == 'canceled'))
+        new_event = self.event.copy()
+        wiz_another_vals = {
+            'new_event_id': new_event.id,
+        }
+        change_wiz = self.wiz_change_event_model.with_context(
+            active_id=registration.id).create(wiz_another_vals)
+        self.assertEquals(change_wiz.event_id, registration.event_id)
+        self.assertEquals(change_wiz.event_registration_id, registration)
+        change_wiz.button_change_registration_event()
+        self.assertNotEquals(self.event, registration.event_id)
+        self.assertEquals(new_event, registration.event_id)
+        self.assertEquals(registration.state, 'draft')
+        partner_presences = self.event.mapped('track_ids.presences').filtered(
+            lambda x: x.partner == self.partner)
+        self.assertFalse(
+            partner_presences.filtered(lambda p: p.state != 'canceled'))
+        self.assertTrue(
+            partner_presences.filtered(lambda p: p.state == 'canceled'))
         new_registration = new_event.mapped('registration_ids').filtered(
-            lambda x: x.partner_id.id == self.ref('base.res_partner_25'))
+            lambda x: x.partner_id == self.partner)
         self.assertNotEqual(
             len(new_registration), 0, 'Registration not found in new event')
