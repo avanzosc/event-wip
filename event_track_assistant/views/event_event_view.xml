@@ -39,9 +39,14 @@
                          </group>
                     </page>
                 </notebook>
+                <xpath expr="//tree[@string='Registration']//button[@string='Confirm Registration']" position="attributes">
+                    <attribute name="name">button_registration_open</attribute>
+                </xpath>
+                <xpath expr="//form[@string='Registration']//button[@string='Confirm Registration']" position="attributes">
+                    <attribute name="name">button_registration_open</attribute>
+                </xpath>
             </field>
         </record>
-
         <record model="ir.ui.view" id="view_event_search_inh_assistant">
             <field name="name">event.event.track.assistant.search</field>
             <field name="model">event.event</field>
