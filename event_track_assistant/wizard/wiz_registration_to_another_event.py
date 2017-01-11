@@ -22,8 +22,10 @@ class WizRegistrationToAnotherEvent(models.TransientModel):
             WizRegistrationToAnotherEvent, self).default_get(var_fields)
         registration = self.env['event.registration'].browse(
             self.env.context['active_id'])
-        res.update({'event_registration_id': registration.id,
-                    'event_id': registration.event_id.id})
+        res.update({
+            'event_registration_id': registration.id,
+            'event_id': registration.event_id.id,
+        })
         return res
 
     @api.multi
@@ -37,7 +39,8 @@ class WizRegistrationToAnotherEvent(models.TransientModel):
             return self.event_registration_id.button_registration_open()
 
     def _change_registration_event(self):
-        self.event_registration_id.write(
-            {'event_id': self.new_event_id.id,
-             'date_start': self.new_event_id.date_begin,
-             'date_end': self.new_event_id.date_end})
+        self.event_registration_id.write({
+            'event_id': self.new_event_id.id,
+            'date_start': self.new_event_id.date_begin,
+            'date_end': self.new_event_id.date_end,
+        })
