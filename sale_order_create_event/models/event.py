@@ -2,6 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
 from dateutil.relativedelta import relativedelta
 
 str2datetime = fields.Datetime.from_string
@@ -103,7 +104,7 @@ class EventEvent(models.Model):
     def _update_event_dates(
             self, old_date, new_days, new_date, begin=False, end=False):
         project_obj = self.env['project.project']
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         vals = {}
         if begin:
             vals['date_begin'] =\
@@ -125,8 +126,7 @@ class EventEvent(models.Model):
                         year=new_date.year, month=new_date.month,
                         day=new_date.day)
             self.my_task_ids.write({'date_start': self.date_begin})
-            new_date = event_obj._convert_date_to_local_format_with_hour(
-                self.date_begin).date()
+            new_date = _convert_to_local_date(self.date_begin, tz=tz).date()
             projects = self.mapped('my_task_ids.project_id')
             projects.write({'date_start': new_date})
             accounts = projects.mapped('analytic_account_id')
@@ -141,8 +141,7 @@ class EventEvent(models.Model):
                         year=new_date.year, month=new_date.month,
                         day=new_date.day)
             self.my_task_ids.write({'date_end': self.date_end})
-            new_date = event_obj._convert_date_to_local_format_with_hour(
-                self.date_end).date()
+            new_date = _convert_to_local_date(self.date_end, tz=tz).date()
             projects = self.mapped('my_task_ids.project_id')
             projects.write({'date': new_date})
             accounts = projects.mapped('analytic_account_id')
@@ -186,21 +185,3 @@ class EventTrack(models.Model):
                 'session_date': new_date,
                 'estimated_date_end': estimated_date_end}
         self.write(vals)
-
-
-class EventRegistration(models.Model):
-    _inherit = 'event.registration'
-
-    def _prepare_wizard_registration_open_vals(self):
-        wiz_vals = super(EventRegistration,
-                         self)._prepare_wizard_registration_open_vals()
-        date_from = self.date_start or self.event_id.date_begin
-        date_to = self.date_end or self.event_id.date_end
-        sessions = self.event_id.track_ids.filtered(
-            lambda x: x.date >= date_from and x.date <= date_to and x.date)
-        tasks = sessions.mapped('tasks')
-        wiz_vals.update({
-            'permitted_tasks': [(6, 0, tasks.ids)],
-            'tasks': [(6, 0, tasks.ids)],
-        })
-        return wiz_vals
