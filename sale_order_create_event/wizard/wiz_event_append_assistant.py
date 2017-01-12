@@ -9,9 +9,11 @@ class WizEventAppendAssistant(models.TransientModel):
     _inherit = 'wiz.event.append.assistant'
 
     permitted_tasks = fields.Many2many(
-        comodel_name='project.task', string='Permitted tasks')
+        comodel_name='project.task', relation='rel_append_permitted_tasks',
+        string='Permitted tasks')
     tasks = fields.Many2many(
-        comodel_name='project.task', string='Add partner to the tasks')
+        comodel_name='project.task', relation='rel_append_selected_tasks',
+        string='Add partner to the tasks')
 
     @api.model
     def default_get(self, var_fields):
@@ -26,7 +28,10 @@ class WizEventAppendAssistant(models.TransientModel):
         res = super(WizEventAppendAssistant, self).onchange_dates_and_partner()
         if not res:
             res = self._find_task_for_append_assistant(res)
-        if not res.get('tasks') and not self.tasks:
+        events = self.env['event.event'].browse(
+            self.env.context.get('active_ids'))
+        if any(events.mapped('project_id')) and\
+                not res.get('tasks') and not self.tasks:
             return {'warning': {
                 'title': _('Error in dates'),
                 'message': _('No tasks found for selected dates.')}}
