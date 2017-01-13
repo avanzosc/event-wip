@@ -12,7 +12,8 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
     def setUp(self):
         super(TestEventRegistrationAnalytic, self).setUp()
         self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
-        self.wiz_del_model = self.env['wiz.event.delete.canceled.registration']
+        self.wiz_cancel_model =\
+            self.env['wiz.event.delete.canceled.registration']
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
         self.claim_model = self.env['crm.claim']
         self.registration_model = self.env['event.registration']
@@ -121,7 +122,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             event.registration_ids.write({'state': 'cancel'})
             presences = event.track_ids.mapped('presences')
             presences.write({'state': 'canceled'})
-            wiz_del = self.wiz_del_model.create({})
+            wiz_del = self.wiz_cancel_model.create({})
             wiz_del.with_context(
                 {'active_ids': [event.id]}).delete_canceled_registration()
             self.assertEqual(len(event.registration_ids), 0,
