@@ -14,7 +14,7 @@ class EventRegistration(models.Model):
             partner = partner_obj.browse(vals.get('partner_id'))
             if not partner.employee_id and not partner.birthdate_date:
                 raise exceptions.Warning(
-                    _('Yoy must define the birthdate for the student %s')
+                    _('You must define the birthdate for the student %s')
                     % (partner.name))
         registration = super(EventRegistration, self).create(vals)
         return registration

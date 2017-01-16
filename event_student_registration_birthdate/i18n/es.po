@@ -24,5 +24,5 @@ msgstr "Registro evento"
 #. module: event_student_registration_birthdate
 #: code:addons/event_student_registration_birthdate/models/event_registration.py:18
 #, python-format
-msgid "Yoy must define the birthdate for the student %s"
+msgid "You must define the birthdate for the student %s"
 msgstr "Debe de definir la fecha de nacimiento para el estudiante %s"
