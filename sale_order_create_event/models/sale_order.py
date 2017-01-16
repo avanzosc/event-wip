@@ -241,3 +241,13 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         if self.start_hour and self.end_hour:
             self.performance = self.end_hour - self.start_hour
+
+    @api.multi
+    def copy_data(self, default=None):
+        self.ensure_one()
+        if not default:
+            default = {}
+        if self.product_id and self.product_id.recurring_service:
+            default.update({'event_id': False})
+        res = super(SaleOrderLine, self).copy_data(default=default)
+        return res[0] if res else {}

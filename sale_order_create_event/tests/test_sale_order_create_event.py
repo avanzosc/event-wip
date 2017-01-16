@@ -201,3 +201,11 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             {'active_ids': [event.id]}).action_confirm_assistant()
         self.assertNotEqual(
             registration.state, 'draft', 'Registration not confirmed')
+
+    def test_duplicate_sale_order(self):
+        self.sale_order.project_by_task = 'yes'
+        self.sale_order.action_button_confirm()
+        self.assertTrue(self.sale_order.mapped('order_line.event_id'))
+        copy_sale_order = self.sale_order.copy()
+        self.assertEquals(copy_sale_order.state, 'draft')
+        self.assertFalse(copy_sale_order.mapped('order_line.event_id'))
