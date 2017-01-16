@@ -155,8 +155,6 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         wiz_vals.update({'removal_date': '2025-12-01',
                          'notes': 'Registration canceled by system'})
         wiz = self.wiz_del_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': [event.id]}).onchange_information()
         vals = ['max_event', 'max_to_date', 'min_from_date', 'min_event',
                 'past_sessions', 'start_time', 'from_date', 'later_sessions',
                 'to_date', 'partner', 'message', 'end_time']
