@@ -39,11 +39,21 @@
                          </group>
                     </page>
                 </notebook>
-                <xpath expr="//tree[@string='Registration']//button[@string='Confirm Registration']" position="attributes">
+                <xpath expr="//field[@name='registration_ids']/tree//button[@name='registration_open']"
+                       position="attributes">
                     <attribute name="name">button_registration_open</attribute>
                 </xpath>
-                <xpath expr="//form[@string='Registration']//button[@string='Confirm Registration']" position="attributes">
+                <xpath expr="//field[@name='registration_ids']/form//button[@name='registration_open']"
+                       position="attributes">
                     <attribute name="name">button_registration_open</attribute>
+                </xpath>
+                <xpath expr="//field[@name='registration_ids']/tree//button[@name='button_reg_cancel']"
+                       position="attributes">
+                    <attribute name="name">new_button_reg_cancel</attribute>
+                </xpath>
+                <xpath expr="//field[@name='registration_ids']/form//button[@name='button_reg_cancel']"
+                       position="attributes">
+                    <attribute name="name">new_button_reg_cancel</attribute>
                 </xpath>
             </field>
         </record>
