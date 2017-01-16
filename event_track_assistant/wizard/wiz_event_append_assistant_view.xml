@@ -10,11 +10,11 @@
                         <field name="registration" invisible="1"/>
                         <field name="min_event" invisible="1"/>
                         <field name="min_from_date" invisible="1"/>
-                        <field name="from_date" required="1"/>
+                        <field name="from_date" />
                         <field name="max_event" invisible="1"/>
                         <field name="max_to_date" invisible="1"/>
-                        <field name="to_date" required="1"/>
-                        <field name="partner" required="1"/>
+                        <field name="to_date" />
+                        <field name="partner" />
                     </group>
                     <footer>
                         <button name="action_append" type="object"
