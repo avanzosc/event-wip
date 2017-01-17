@@ -140,6 +140,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertEquals(registration.date_start, self.event.date_begin)
 
     def test_event_track_assistant_delete(self):
+        self.partner.employee_id = 5
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         self.assertEquals(self.partner.session_count, 0)
         self.assertEquals(self.partner.presences_count, 0)
