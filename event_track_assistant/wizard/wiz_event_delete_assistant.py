@@ -103,8 +103,7 @@ class WizEventDeleteAssistant(models.TransientModel):
             self._put_old_dates()
             return {'warning': {
                     'title': _('Error in from date'),
-                    'message':
-                    (_('From date greater than date to'))}}
+                    'message': (_('From date greater than date to'))}}
         if from_date and from_date < min_from_date:
             self._put_old_dates()
             return {'warning': {
