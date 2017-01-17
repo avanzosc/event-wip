@@ -148,7 +148,9 @@ class TestEventTrackAssistant(common.TransactionCase):
         add_wiz.action_append()
         self.partner.invalidate_cache()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        self.partner._compute_session_count()
         self.assertNotEquals(self.partner.session_count, 0)
+        self.partner._compute_presences_count()
         self.assertNotEquals(self.partner.presences_count, 0)
         self.assertIn(
             self.partner.id,

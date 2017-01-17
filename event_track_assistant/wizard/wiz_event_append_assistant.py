@@ -264,6 +264,7 @@ class WizEventAppendAssistant(models.TransientModel):
                   'res_id': active_ids[0],
                   'target': 'current',
                   'context': self.env.context}
+        print '**** SALGO DEL WIZARD CON partner_count: ' + str(self.partner.)
         return result
 
     def _local_date(self, ldate, time):
