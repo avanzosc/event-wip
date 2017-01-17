@@ -52,38 +52,35 @@ class WizEventAppendAssistant(models.TransientModel):
     @api.onchange('from_date', 'to_date', 'partner')
     def onchange_dates_and_partner(self):
         self.ensure_one()
-        event_obj = self.env['event.event']
         res = {}
-        if self.from_date and self.to_date and self.from_date > self.to_date:
-            self.from_date = self.min_from_date
-            self.to_date = self.max_to_date
+        from_date, to_date =\
+            self._calc_dates_for_search_track(self.from_date, self.to_date)
+        min_from_date = self._prepare_date_for_control(
+            self.min_from_date, time=0.0)
+        max_to_date = self._prepare_date_for_control(
+            self.max_to_date, time=24.0)
+        if from_date and to_date and from_date > to_date:
+            self._put_old_dates()
             return {'warning': {
                     'title': _('Error in from date'),
                     'message': (_('From date greater than date to'))}}
-        if self.from_date and self.from_date < self.min_from_date:
-            self.from_date = self.min_from_date
-            self.to_date = self.max_to_date
+        if from_date and from_date < min_from_date:
+            self._put_old_dates()
             return {'warning': {
                     'title': _('Error in from date'),
                     'message':
                     (_('From date less than start date of the event %s') %
                      self.min_event.name)}}
-        if self.to_date and self.to_date > self.max_to_date:
-            self.from_date = self.min_from_date
-            self.to_date = self.max_to_date
+        if to_date and to_date > max_to_date:
+            self._put_old_dates()
             return {'warning': {
                     'title': _('Error in to date'),
                     'message':
                     (_('From date greater than end date of the event %s') %
                      self.max_event.name)}}
-        if self.from_date and self.to_date and self.partner:
+        if from_date and to_date and self.partner:
+            event_obj = self.env['event.event']
             for event in event_obj.browse(self.env.context.get('active_ids')):
-                from_date = self._local_date(self.from_date, 0.0)
-                from_date = event_obj._convert_date_to_local_format_with_hour(
-                    str(from_date)[0:19]).date().strftime('%Y-%m-%d %H:%M:%S')
-                to_date = self._local_date(self.to_date, 0.0)
-                to_date = event_obj._convert_date_to_local_format_with_hour(
-                    str(to_date)[0:19]).date().strftime('%Y-%m-%d %H:%M:%S')
                 registrations = event.registration_ids.filtered(
                     lambda x: x.partner_id.id == self.partner.id and
                     x.state in ('done', 'open') and x.date_start and
@@ -91,8 +88,7 @@ class WizEventAppendAssistant(models.TransientModel):
                     ((to_date >= x.date_start and to_date <= x.date_end) or
                      (from_date <= x.date_end and from_date >= x.date_start)))
                 if registrations:
-                    self.from_date = self.min_from_date
-                    self.to_date = self.max_to_date
+                    self._put_old_dates()
                     return {'warning': {
                             'title': _('Error in dates'),
                             'message':
@@ -100,6 +96,12 @@ class WizEventAppendAssistant(models.TransientModel):
                                ' their dates overlap with another record of'
                                ' the same employee'))}}
         return res
+
+    def _put_old_dates(self):
+        tz = self.env.user.tz
+        self.from_date = _convert_to_local_date(
+            self.min_from_date, tz=tz).date()
+        self.to_date = _convert_to_local_date(self.max_to_date, tz=tz).date()
 
     def _prepare_date_for_control(self, date, time=0.0):
         new_date = datetime2str(
@@ -246,10 +248,8 @@ class WizEventAppendAssistant(models.TransientModel):
         return vals
 
     def _calc_dates_for_search_track(self, from_date, to_date):
-        tz = self.env.user.tz
-        from_date = datetime2str(
-            _convert_to_utc_date(from_date, time=0.0, tz=tz))
-        to_date = datetime2str(_convert_to_utc_date(to_date, time=24.0, tz=tz))
+        from_date = self._prepare_date_for_control(from_date, time=0.0)
+        to_date = self._prepare_date_for_control(to_date, time=24.0)
         return from_date, to_date
 
     def _exit_from_append_wizard(self):
