@@ -8,23 +8,20 @@ class EventEvent(models.Model):
     _inherit = 'event.event'
 
     @api.multi
-    def _count_sale_lines(self):
+    def _compute_count_sale_lines(self):
         for event in self:
-            event.count_sale_lines = 0
-            if event.sale_order_line:
-                event.count_sale_lines = 1
+            event.count_sale_lines = len(event.sale_order_line)
 
     group_description = fields.Char(
         string='Group description',
         related='sale_order_line.group_description')
     count_sale_lines = fields.Integer(
-        string='Sale lines', compute='_count_sale_lines')
+        string='Sale lines', compute='_compute_count_sale_lines')
 
     @api.model
     def create(self, vals):
-        sale_line_obj = self.env['sale.order.line']
         if vals.get('sale_order_line', False):
-            line = sale_line_obj.browse(vals.get('sale_order_line'))
+            line = self.env['sale.order.line'].browse(vals['sale_order_line'])
             vals['name'] = line.group_description
         event = super(EventEvent, self).create(vals)
         return event

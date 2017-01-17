@@ -2,6 +2,8 @@
 # © 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, _
+from openerp.addons.event_track_assistant._common import\
+    _convert_to_utc_date, _convert_to_local_date
 
 
 class SaleOrder(models.Model):
@@ -68,7 +70,7 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def button_group_description(self):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         for line in self:
             description = u'{}-{}'.format(line.order_id.name, line.sequence)
             if line.courses:
@@ -88,14 +90,12 @@ class SaleOrderLine(models.Model):
             if line.sunday:
                 description += '-' + _('Sunday')
             if line.product_id.recurring_service:
-                utc_dt = event_obj._put_utc_format_date(line.start_date,
-                                                        line.start_hour)
-                local = event_obj._convert_date_to_local_format_with_hour(
-                    str(utc_dt)[0:19])
+                utc_dt = _convert_to_utc_date(
+                    line.start_date, line.start_hour, tz)
+                local = _convert_to_local_date(utc_dt, tz)
                 description += '-' + str(local)[11:16]
-                utc_dt = event_obj._put_utc_format_date(line.end_date,
-                                                        line.end_hour)
-                local = event_obj._convert_date_to_local_format_with_hour(
-                    str(utc_dt)[0:19])
+                utc_dt = _convert_to_utc_date(
+                    line.end_date, line.end_hour, tz)
+                local = _convert_to_local_date(utc_dt, tz)
                 description += '-' + str(local)[11:16]
             line.group_description = description
