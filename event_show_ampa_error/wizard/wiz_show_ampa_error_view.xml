@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_show_ampa_error_view">
+            <field name="name">wiz.show.ampa.error.view</field>
+            <field name="model">wiz.show.ampa.error</field>
+            <field name="arch" type="xml">
+                <form string="Show AMPA errors" version="7.0">
+                    <group colspan="4">
+                        <field name="lines" colspan="4">
+                            <tree string="Student with error price">
+                                <field name="event" readonly="1" />
+                                <field name="registration" readonly="1" />
+                                <field name="partner_id" readonly="1" />
+                                <field name="account" readonly="1" />
+                                <field name="bad_price" readonly="1" />
+                                <field name="ok_price" readonly="1" />
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_wiz_show_ampa_error_view" model="ir.actions.act_window">
+            <field name="name">Search students with AMPA ERROR</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wiz.show.ampa.error</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="wiz_show_ampa_error_view_options" name="Search students with AMPA ERROR"
+                  action="action_wiz_show_ampa_error_view" 
+                  parent="base.menu_sales"/>
+    </data>
+</openerp>
