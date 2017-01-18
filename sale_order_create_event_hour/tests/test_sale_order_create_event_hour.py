@@ -105,7 +105,6 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         })
         self.sale_order.order_line.write({'sunday': True})
         self.sale_order.action_button_confirm()
-        self.project.tasks[0]._calc_num_sessions()
         self.project.tasks[0].show_sessions_from_task()
         self.project.tasks[0].button_recalculate_sessions()
         cond = [('project_id', '=', self.project.id)]
