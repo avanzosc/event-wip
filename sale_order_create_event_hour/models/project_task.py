@@ -36,10 +36,12 @@ class ProjectTask(models.Model):
         return vals
 
     def _prepare_session_data_from_task(self, event, num_session, date):
+        tz = self.env.user.tz
         vals = super(ProjectTask, self)._prepare_session_data_from_task(
             event, num_session, date)
         account = self.service_project_sale_line.order_id.project_id
-        vals.update({'date': event._put_utc_format_date(date,
-                                                        account.start_time),
-                     'type_hour': account.type_hour.id})
+        vals.update({
+            'date': _convert_to_utc_date(date, account.start_time, tz=tz),
+            'type_hour': account.type_hour.id,
+        })
         return vals
