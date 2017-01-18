@@ -24,9 +24,9 @@ class EventEvent(models.Model):
         comodel_name='project.task', compute='_compute_event_tasks',
         string='Tasks', oldname='tasks')
     sale_order = fields.Many2one(
-        'sale.order', string='Sale Order')
+        comodel_name='sale.order', string='Sale Order')
     sale_order_line = fields.Many2one(
-        'sale.order.line', string='Sale order line')
+        comodel_name='sale.order.line', string='Sale Order Line')
 
     @api.multi
     def unlink(self):
@@ -97,8 +97,8 @@ class EventEvent(models.Model):
                 project.unlink()
                 account.unlink()
 
-    def _update_event_dates(self, old_date, new_days, new_date, begin=False,
-                            end=False):
+    def _update_event_dates(
+            self, old_date, new_days, new_date, begin=False, end=False):
         project_obj = self.env['project.project']
         event_obj = self.env['event.event']
         vals = {}

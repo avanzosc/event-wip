@@ -9,8 +9,8 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     project_by_task = fields.Selection(
-        [('yes', 'Yes'),
-         ('no', 'No')], string='Create project by task')
+        selection=[('yes', 'Yes'), ('no', 'No')],
+        string='Create project by task')
     project_start_date = fields.Date(
         string='Project start date', related='project_id.date_start')
     project_end_date = fields.Date(
@@ -28,11 +28,11 @@ class SaleOrder(models.Model):
             raise exceptions.Warning(_('You must enter the project/contract'))
         if self.project_id:
             if not self.project_id.date_start:
-                raise exceptions.Warning(_('You must enter the start date of'
-                                           ' the project/contract'))
+                raise exceptions.Warning(
+                    _('You must enter the start date of the project/contract'))
             if not self.project_id.date:
-                raise exceptions.Warning(_('You must enter the end date of the'
-                                           ' project/contract'))
+                raise exceptions.Warning(
+                    _('You must enter the end date of the project/contract'))
             self.project_id.sale = self.id
             cond = [('analytic_account_id', '=', self.project_id.id)]
             project = project_obj.search(cond, limit=1)
@@ -191,8 +191,7 @@ class SaleOrderLine(models.Model):
     event = fields.Many2one(
         comodel_name='event.event', string='Event')
     project_by_task = fields.Selection(
-        [('yes', 'Yes'),
-         ('no', 'No')],
+        selection=[('yes', 'Yes'), ('no', 'No')],
         related='order_id.project_by_task', string='Create project by task')
     start_date = fields.Date(string='Start date')
     start_hour = fields.Float(string='Start hour', default=0.0)

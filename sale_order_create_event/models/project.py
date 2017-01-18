@@ -22,7 +22,7 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     @api.multi
-    def _calc_num_sessions(self):
+    def _compute_num_sessions(self):
         for task in self:
             task.num_sessions = len(task.sessions)
 
@@ -34,60 +34,60 @@ class ProjectTask(models.Model):
         comodel_name="event.track", relation="task_session_project_relation",
         column1="task_id", column2="track_id", copy=False, string="Sessions")
     num_sessions = fields.Integer(
-        string='# Session', compute='_calc_num_sessions')
+        string='# Session', compute='_compute_num_sessions')
     recurring_service = fields.Boolean(
-        'Recurring Service',
+        string='Recurring Service',
         related='service_project_sale_line.recurring_service')
     january = fields.Boolean(
-        'January', related='service_project_sale_line.january')
+        string='January', related='service_project_sale_line.january')
     february = fields.Boolean(
-        'February', related='service_project_sale_line.february')
+        string='February', related='service_project_sale_line.february')
     march = fields.Boolean(
-        'March', related='service_project_sale_line.march')
+        string='March', related='service_project_sale_line.march')
     april = fields.Boolean(
-        'April', related='service_project_sale_line.april')
+        string='April', related='service_project_sale_line.april')
     may = fields.Boolean(
-        'May', related='service_project_sale_line.may')
+        string='May', related='service_project_sale_line.may')
     june = fields.Boolean(
-        'June', related='service_project_sale_line.june')
+        string='June', related='service_project_sale_line.june')
     july = fields.Boolean(
-        'July', related='service_project_sale_line.july')
+        string='July', related='service_project_sale_line.july')
     august = fields.Boolean(
-        'August', related='service_project_sale_line.august')
+        string='August', related='service_project_sale_line.august')
     september = fields.Boolean(
-        'September', related='service_project_sale_line.september')
+        string='September', related='service_project_sale_line.september')
     october = fields.Boolean(
-        'October', related='service_project_sale_line.october')
+        string='October', related='service_project_sale_line.october')
     november = fields.Boolean(
-        'November', related='service_project_sale_line.november')
+        string='November', related='service_project_sale_line.november')
     december = fields.Boolean(
-        'December', related='service_project_sale_line.december')
+        string='December', related='service_project_sale_line.december')
     week1 = fields.Boolean(
-        'Week 1', related='service_project_sale_line.week1')
+        string='Week 1', related='service_project_sale_line.week1')
     week2 = fields.Boolean(
-        'Week 2', related='service_project_sale_line.week2')
+        string='Week 2', related='service_project_sale_line.week2')
     week3 = fields.Boolean(
-        'Week 3', related='service_project_sale_line.week3')
+        string='Week 3', related='service_project_sale_line.week3')
     week4 = fields.Boolean(
-        'Week 4', related='service_project_sale_line.week4')
+        string='Week 4', related='service_project_sale_line.week4')
     week5 = fields.Boolean(
-        'Week 5', related='service_project_sale_line.week5')
+        string='Week 5', related='service_project_sale_line.week5')
     week6 = fields.Boolean(
-        'Week 6', related='service_project_sale_line.week6')
+        string='Week 6', related='service_project_sale_line.week6')
     monday = fields.Boolean(
-        'Monday', related='service_project_sale_line.monday')
+        string='Monday', related='service_project_sale_line.monday')
     tuesday = fields.Boolean(
-        'Tuesday', related='service_project_sale_line.tuesday')
+        string='Tuesday', related='service_project_sale_line.tuesday')
     wednesday = fields.Boolean(
-        'Wednesday', related='service_project_sale_line.wednesday')
+        string='Wednesday', related='service_project_sale_line.wednesday')
     thursday = fields.Boolean(
-        'Thursday', related='service_project_sale_line.thursday')
+        string='Thursday', related='service_project_sale_line.thursday')
     friday = fields.Boolean(
-        'Friday', related='service_project_sale_line.friday')
+        string='Friday', related='service_project_sale_line.friday')
     saturday = fields.Boolean(
-        'Saturday', related='service_project_sale_line.saturday')
+        string='Saturday', related='service_project_sale_line.saturday')
     sunday = fields.Boolean(
-        'Sunday', related='service_project_sale_line.sunday')
+        string='Sunday', related='service_project_sale_line.sunday')
 
     def _create_task_from_procurement_service_project(self, procurement):
         task = super(

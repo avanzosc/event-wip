@@ -7,7 +7,7 @@ from openerp import models, fields, api
 class AccountAnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'
 
-    sale = fields.Many2one('sale.order', string='Sale order')
+    sale = fields.Many2one(comodel_name='sale.order', string='Sale Order')
 
     @api.multi
     def write(self, vals):

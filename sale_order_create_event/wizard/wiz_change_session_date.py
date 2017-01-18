@@ -8,8 +8,8 @@ class WizChangeSessionDate(models.TransientModel):
     _name = 'wiz.change.session.date'
 
     days = fields.Integer(
-        string='Days', required=True, help=_('Positive sum days, negative'
-                                             ' subtraction days'))
+        string='Days', required=True,
+        help='Positive sum days, negative subtraction days')
 
     @api.multi
     def change_session_date(self):
