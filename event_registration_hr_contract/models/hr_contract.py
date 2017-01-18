@@ -8,19 +8,14 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
 
     @api.multi
-    def _calculate_counts(self):
-        events = self.env['event.event']
-        sessions = self.env['event.track']
+    def _compute_counts(self):
         for contract in self:
             contract.calendar_day_count = len(contract.calendar_days)
             contract.registration_count = len(contract.registrations)
-            for registration in contract.registrations:
-                events += registration.event_id
-            contract.event_count = len(events)
+            contract.event_count = len(
+                contract.mapped('registrations.event_id'))
             contract.presence_count = len(contract.presences)
-            for presence in contract.presences:
-                sessions += presence.session
-            contract.session_count = len(sessions)
+            contract.session_count = len(contract.mapped('presences.session'))
 
     registrations = fields.One2many(
         comodel_name='event.registration', inverse_name='contract',
@@ -29,15 +24,15 @@ class HrContract(models.Model):
         comodel_name='event.track.presence', inverse_name='contract',
         string='Presences to sessions')
     calendar_day_count = fields.Integer(
-        string='Employee calendar days', compute='_calculate_counts')
+        string='Employee calendar days', compute='_compute_counts')
     event_count = fields.Integer(
-        string='Events counter', compute='_calculate_counts')
+        string='Events counter', compute='_compute_counts')
     registration_count = fields.Integer(
-        string='Registrations counter', compute='_calculate_counts')
+        string='Registrations counter', compute='_compute_counts')
     session_count = fields.Integer(
-        string='Sessions counter', compute='_calculate_counts')
+        string='Sessions counter', compute='_compute_counts')
     presence_count = fields.Integer(
-        string='Presences counter', compute='_calculate_counts')
+        string='Presences counter', compute='_compute_counts')
 
     def _search_contracts_without_date_end(self, partner, to_date):
         cond = [('partner', '=', partner.id),
