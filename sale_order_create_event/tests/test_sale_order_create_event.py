@@ -2,26 +2,23 @@
 # © 2016 Alfredo de la Fuente - AvanzOSC
 # © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-import openerp.tests.common as common
+from openerp.addons.event_track_assistant.tests.\
+    test_event_track_assistant import TestEventTrackAssistant
 from openerp import exceptions
 
 
-class TestSaleOrderCreateEvent(common.TransactionCase):
+class TestSaleOrderCreateEvent(TestEventTrackAssistant):
 
     def setUp(self):
         super(TestSaleOrderCreateEvent, self).setUp()
         self.task_model = self.env['project.task']
         self.sale_model = self.env['sale.order']
         self.account_model = self.env['account.analytic.account']
-        self.event_model = self.env['event.event']
         self.procurement_model = self.env['procurement.order']
-        self.wiz_add_model = self.env['wiz.event.append.assistant']
-        self.registration_model = self.env['event.registration']
         self.impute_model = self.env['wiz.impute.in.presence.from.session']
         self.line_model = self.env['wiz.impute.in.presence.from.session.line']
         self.contract_model = self.env['hr.contract']
         self.wiz_workable_model = self.env['wiz.calculate.workable.festive']
-        self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
         self.change_date_model = self.env['wiz.change.session.date']
         account_vals = {'name': 'account procurement service project',
                         'date_start': '2025-01-15',
@@ -119,10 +116,9 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             'project_by_task': 'yes',
         })
         self.sale_order.action_button_confirm()
-        cond = [('project_id', '=', self.project.id)]
+        cond = [('sale_order', '=', self.sale_order.id)]
         event = self.event_model.search(cond, limit=1)[:1]
-        self.assertNotEqual(
-            len([event]), 0, 'Sale order without event')
+        self.assertTrue(event, 'Sale order without event')
         self.assertTrue(event.event_ticket_ids)
         wiz_vals = {'partner': partner.id}
         wiz = self.wiz_add_model.with_context(
@@ -167,7 +163,7 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
 
     def test_change_session_date(self):
         self.sale_order.action_button_confirm()
-        cond = [('project_id', '=', self.project.id)]
+        cond = [('sale_order', '=', self.sale_order.id)]
         event = self.event_model.search(cond, limit=1)[:1]
         wiz_vals = {'days': 35}
         wiz = self.change_date_model.create(wiz_vals)
@@ -182,25 +178,26 @@ class TestSaleOrderCreateEvent(common.TransactionCase):
             event.track_ids[0].date, event.date_begin,
             'Session and event with different start date')
 
-    def test_event_confirm_assistant(self):
+    def test_event_track_registration_open_button(self):
         self.sale_order.action_button_confirm()
-        cond = [('project_id', '=', self.project.id)]
-        event = self.event_model.search(cond, limit=1)[:1]
-        self.assertNotEqual(
-            len([event]), 0, 'Sale order without event')
-        registration_vals = ({'event_id': event.id,
-                              'partner_id':
-                              self.env.ref('base.res_partner_25').id,
-                              'state': 'draft',
-                              'date_start': '2025-01-15 08:00:00',
-                              'date_end': '2025-02-28 09:00:00'})
-        registration = self.registration_model.create(registration_vals)
-        wiz_vals = {'name': 'confirm assistants'}
-        wiz = self.wiz_confirm_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': [event.id]}).action_confirm_assistant()
-        self.assertNotEqual(
-            registration.state, 'draft', 'Registration not confirmed')
+        cond = [('sale_order', '=', self.sale_order.id)]
+        self.event = self.event_model.search(cond, limit=1)[:1]
+        super(TestSaleOrderCreateEvent,
+              self).test_event_track_registration_open_button()
+
+    def test_event_track_assistant_delete_from_event(self):
+        self.sale_order.action_button_confirm()
+        cond = [('sale_order', '=', self.sale_order.id)]
+        self.event = self.event_model.search(cond, limit=1)[:1]
+        super(TestSaleOrderCreateEvent,
+              self).test_event_track_assistant_delete_from_event()
+
+    def test_event_assistant_track_assistant_confirm_assistant(self):
+        self.sale_order.action_button_confirm()
+        cond = [('sale_order', '=', self.sale_order.id)]
+        self.event = self.event_model.search(cond, limit=1)[:1]
+        super(TestSaleOrderCreateEvent,
+              self).test_event_assistant_track_assistant_confirm_assistant()
 
     def test_duplicate_sale_order(self):
         self.sale_order.project_by_task = 'yes'
