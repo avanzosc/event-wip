@@ -7,18 +7,19 @@
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
                 <field name="order_line" position="attributes">
-                    <attribute name="context">{'default_project_by_task': project_by_task, 'default_start_date': project_start_date, 'default_end_date': project_end_date}</attribute>
+                    <attribute name="context_event">{'default_project_by_task': project_by_task, 'default_start_date': project_start_date, 'default_end_date': project_end_date}</attribute>
                 </field>
                 <field name="project_id" position="after">
-                    <field name="project_by_task" required="1" attrs="{'readonly':[('state','not in',('draft','send'))]}" />
+                    <field name="project_by_task"
+                           attrs="{'readonly':[('state','not in',('draft','sent'))]}" />
                     <field name="project_start_date" invisible="1"/>
                     <field name="project_end_date" invisible="1"/>
                 </field>
                 <field name="project_id" position="attributes">
-                    <attribute name="context">{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}</attribute>
+                    <attribute name="context_project">{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}</attribute>
                     <attribute name="domain">[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',active_id)]</attribute>
                 </field>
-                <xpath expr="//form[@string='Sales Order Lines']/group" position="after">
+                <xpath expr="//field[@name='order_line']//form//group" position="after">
                     <group >
                         <field name="project_by_task" invisible="1" colspan="4"/>
                         <group>
