@@ -4,6 +4,9 @@
 from openerp import models, fields, api, exceptions, _
 from dateutil.relativedelta import relativedelta
 
+str2datetime = fields.Datetime.from_string
+str2date = fields.Date.from_string
+
 
 class EventEvent(models.Model):
     _inherit = 'event.event'
@@ -103,29 +106,24 @@ class EventEvent(models.Model):
         event_obj = self.env['event.event']
         vals = {}
         if begin:
-            vals['date_begin'] = (
-                fields.Datetime.from_string(
-                    self.date_begin).replace(year=new_date.year,
-                                             month=new_date.month,
-                                             day=new_date.day))
+            vals['date_begin'] =\
+                str2datetime(self.date_begin).replace(
+                    year=new_date.year, month=new_date.month, day=new_date.day)
         elif end:
-            vals['date_end'] = (
-                fields.Datetime.from_string(
-                    self.date_end).replace(year=new_date.year,
-                                           month=new_date.month,
-                                           day=new_date.day))
+            vals['date_end'] =\
+                str2datetime(self.date_end).replace(
+                    year=new_date.year, month=new_date.month, day=new_date.day)
         self.with_context(
             sale_order_create_event=True, no_recalculate=True).write(vals)
         if begin:
             registrations = self.registration_ids.filtered(
-                lambda x: fields.Datetime.from_string(x.date_start).date() ==
+                lambda x: str2datetime(x.date_start).date() ==
                 old_date)
             for registration in registrations:
-                registration.date_start = (
-                    fields.Datetime.from_string(
-                        registration.date_start).replace(year=new_date.year,
-                                                         month=new_date.month,
-                                                         day=new_date.day))
+                registration.date_start =\
+                    str2datetime(registration.date_start).replace(
+                        year=new_date.year, month=new_date.month,
+                        day=new_date.day)
             self.my_task_ids.write({'date_start': self.date_begin})
             new_date = event_obj._convert_date_to_local_format_with_hour(
                 self.date_begin).date()
@@ -135,14 +133,13 @@ class EventEvent(models.Model):
             accounts.write({'date_start': new_date})
         if end:
             registrations = self.registration_ids.filtered(
-                lambda x: fields.Datetime.from_string(x.date_end).date() ==
+                lambda x: str2datetime(x.date_end).date() ==
                 old_date)
             for registration in registrations:
-                registration.date_end = (
-                    fields.Datetime.from_string(
-                        registration.date_end).replace(year=new_date.year,
-                                                       month=new_date.month,
-                                                       day=new_date.day))
+                registration.date_end =\
+                    str2datetime(registration.date_end).replace(
+                        year=new_date.year, month=new_date.month,
+                        day=new_date.day)
             self.my_task_ids.write({'date_end': self.date_end})
             new_date = event_obj._convert_date_to_local_format_with_hour(
                 self.date_end).date()
@@ -172,20 +169,19 @@ class EventTrack(models.Model):
         column1="track_id", column2="task_id", copy=True, string="Tasks")
 
     def _change_session_date(self, new_days):
-        event_begin = fields.Date.from_string(self.event_id.date_begin)
-        event_end = fields.Date.from_string(self.event_id.date_end)
-        new_date = (fields.Date.from_string(self.date) +
-                    relativedelta(days=new_days))
-        new_date_with_hour = (fields.Datetime.from_string(self.date) +
-                              relativedelta(days=new_days))
+        event_begin = str2date(self.event_id.date_begin)
+        event_end = str2date(self.event_id.date_end)
+        new_date = str2date(self.date) + relativedelta(days=new_days)
+        new_date_with_hour =\
+            str2datetime(self.date) + relativedelta(days=new_days)
         if new_date < event_begin:
-            self.event_id._update_event_dates(event_begin, new_days,
-                                              new_date, begin=True)
+            self.event_id._update_event_dates(
+                event_begin, new_days, new_date, begin=True)
         if new_date > event_end:
-            self.event_id._update_event_dates(event_end, new_days,
-                                              new_date, end=True)
-        estimated_date_end = (new_date_with_hour +
-                              relativedelta(hours=self.duration))
+            self.event_id._update_event_dates(
+                event_end, new_days, new_date, end=True)
+        estimated_date_end =\
+            new_date_with_hour + relativedelta(hours=self.duration)
         vals = {'date': new_date_with_hour,
                 'session_date': new_date,
                 'estimated_date_end': estimated_date_end}
