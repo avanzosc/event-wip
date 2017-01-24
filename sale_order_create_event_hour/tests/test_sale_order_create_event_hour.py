@@ -152,7 +152,6 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
                     'partner': self.env.ref('base.res_partner_26').id}
         wiz.write(wiz_vals)
         wiz.onchange_dates_and_partner()
-        wiz._prepare_track_search_condition(event)
         wiz_vals.update({'removal_date': '2025-12-01',
                          'notes': 'Registration canceled by system'})
         wiz = self.wiz_del_model.create(wiz_vals)
@@ -220,7 +219,6 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
                     'to_date': '2016-02-28 00:00:00',
                     'partner': self.env.ref('base.res_partner_26').id}
         wiz.write(wiz_vals)
-        wiz.onchange_information()
         event.registration_ids[0].with_context(
             {'event_id': event.id}).button_registration_open()
         event.registration_ids[0].button_reg_cancel()

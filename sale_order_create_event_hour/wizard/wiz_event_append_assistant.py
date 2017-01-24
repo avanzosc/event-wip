@@ -189,6 +189,8 @@ class WizEventAppendAssistant(models.TransientModel):
         return vals
 
     def _calc_dates_for_search_track(self, from_date, to_date):
+        super(WizEventAppendAssistant,
+              self)._calc_dates_for_search_track(from_date, to_date)
         from_date = datetime2string(_convert_to_utc_date(
             from_date, time=self.start_time, tz=self.env.user.tz))
         to_date = datetime2string(_convert_to_utc_date(
