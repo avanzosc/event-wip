@@ -2,6 +2,7 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, api, fields, exceptions, _
+from openerp.addons.event_track_assistant._common import _convert_to_utc_date
 from dateutil.relativedelta import relativedelta
 
 
@@ -24,8 +25,10 @@ class SaleOrder(models.Model):
         if not self.env.user.tz:
             raise exceptions.Warning(_('User without time zone'))
         if any(self.mapped('order_line.product_id.recurring_service')) and\
-                not self.project_id:
-            raise exceptions.Warning(_('You must enter the project/contract'))
+                (not self.project_id or not self.project_by_task):
+            raise exceptions.Warning(
+                _('You must enter the Project / Contract and/or select a '
+                  'value for \'Create project by task\''))
         if self.project_id:
             if not self.project_id.date_start:
                 raise exceptions.Warning(
@@ -64,41 +67,40 @@ class SaleOrder(models.Model):
                 sale.project_id.name = sale.name
 
     def _prepare_event_data(self, sale, line, name, project):
-        event_obj = self.env['event.event']
-        event_vals = ({'name': name,
-                       'timezone_of_event': self.env.user.tz,
-                       'date_tz': self.env.user.tz,
-                       'project_id': project.id,
-                       'sale_order': sale.id})
-        utc_dt = event_obj._put_utc_format_date(self.project_id.date_start,
-                                                0.0)
+        tz = self.env.user.tz
+        date_begin = _convert_to_utc_date(
+            self.project_id.date_start, 0.0, tz=tz)
+        date_end = _convert_to_utc_date(self.project_id.date, 0.0, tz=tz)
         if line and line.project_by_task == 'yes':
-            utc_dt = event_obj._put_utc_format_date(line.start_date,
-                                                    line.start_hour)
-        event_vals['date_begin'] = utc_dt
-        utc_dt = event_obj._put_utc_format_date(self.project_id.date, 0.0)
-        if line and line.project_by_task == 'yes':
-            utc_dt = event_obj._put_utc_format_date(line.end_date,
-                                                    line.end_hour)
-        event_vals['date_end'] = utc_dt
+            date_begin = _convert_to_utc_date(
+                line.start_date, line.start_hour, tz=tz)
+            date_end = _convert_to_utc_date(
+                line.end_date, line.end_hour, tz=tz)
+        event_vals = {
+            'name': name,
+            'timezone_of_event': self.env.user.tz,
+            'date_tz': self.env.user.tz,
+            'project_id': project.id,
+            'sale_order': sale.id,
+            'date_begin': date_begin,
+            'date_end': date_end,
+        }
         return event_vals
 
-    def _validate_create_session_from_sale_order(self, event, num_session,
-                                                 line):
+    def _validate_create_session_from_sale_order(
+            self, event, num_session, line):
         task_obj = self.env['project.task']
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         if line.project_by_task == 'yes':
-            utc_dt = event_obj._put_utc_format_date(line.start_date,
-                                                    line.start_hour)
-            fec_ini = utc_dt.date()
-            utc_dt = event_obj._put_utc_format_date(line.end_date,
-                                                    line.end_hour)
-            fec_limit = utc_dt.date()
+            fec_ini = _convert_to_utc_date(
+                line.start_date, line.start_hour, tz=tz)
+            fec_limit = _convert_to_utc_date(
+                line.end_date, line.end_hour, tz=tz)
         else:
             fec_ini = fields.Datetime.from_string(
-                self.project_id.date_start).date()
+                self.project_id.date_start)
             fec_limit = fields.Datetime.from_string(
-                self.project_id.date).date()
+                self.project_id.date)
         if fec_ini.day != 1:
             while fec_ini.day != 1:
                 fec_ini = fec_ini + relativedelta(days=-1)
@@ -107,7 +109,7 @@ class SaleOrder(models.Model):
         else:
             num_week = 1
         month = fec_ini.month
-        while fec_ini <= fec_limit:
+        while fec_ini.date() <= fec_limit.date():
             if month != fec_ini.month:
                 month = fec_ini.month
                 if fec_ini.weekday() == 0:
@@ -118,13 +120,12 @@ class SaleOrder(models.Model):
                 num_week += 1
             valid = False
             if line.project_by_task == 'yes':
-                utc_dt = event_obj._put_utc_format_date(line.start_date,
-                                                        line.start_hour)
-                line_fec_ini = utc_dt.date()
-                if fec_ini >= line_fec_ini:
+                line_fec_ini = _convert_to_utc_date(
+                    line.start_date, line.start_hour, tz=tz)
+                if fec_ini.date() >= line_fec_ini.date():
                     valid = True
             else:
-                if (fec_ini >= fields.Datetime.from_string(
+                if (fec_ini.date() >= fields.Datetime.from_string(
                         self.project_id.date_start).date()):
                     valid = True
             if valid:
@@ -156,7 +157,7 @@ class SaleOrder(models.Model):
 
     def _prepare_session_data_from_sale_line(
             self, event, num_session, line, date):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         if line.performance:
             if line.apply_performance_by_quantity:
                 duration = (line.performance * line.product_uom_qty)
@@ -165,9 +166,9 @@ class SaleOrder(models.Model):
         else:
             duration = line.product_uom_qty
         if line.project_by_task == 'yes':
-            utc_dt = event_obj._put_utc_format_date(date, line.start_hour)
+            utc_dt = _convert_to_utc_date(date, line.start_hour, tz=tz)
         else:
-            utc_dt = event_obj._put_utc_format_date(date, 0.0)
+            utc_dt = _convert_to_utc_date(date, 0.0, tz=tz)
         vals = {'name': (_('Session %s for %s') % (str(num_session),
                                                    line.product_id.name)),
                 'event_id': event.id,
@@ -188,8 +189,6 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    event = fields.Many2one(
-        comodel_name='event.event', string='Event')
     project_by_task = fields.Selection(
         selection=[('yes', 'Yes'), ('no', 'No')],
         related='order_id.project_by_task', string='Create project by task')

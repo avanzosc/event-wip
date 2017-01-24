@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-23 15:13+0000\n"
-"PO-Revision-Date: 2016-08-23 15:13+0000\n"
+"POT-Creation-Date: 2017-01-20 13:38+0000\n"
+"PO-Revision-Date: 2017-01-20 13:38+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,15 +48,20 @@ msgid "August"
 msgstr "Agosto"
 
 #. module: sale_order_create_event
+#: help:project.project,ca_theorical:0
+msgid "Based on the costs you had on the project, what would have been the revenue if all these costs have been invoiced at the normal sale price provided by the pricelist."
+msgstr "﻿Basado en los costes que tenía en el proyecto, lo que habría sido el ingreso si todos estos costes se hubieran facturado con el precio de venta normal proporcionado por la tarifa."
+
+#. module: sale_order_create_event
+#: view:wiz.change.session.date:sale_order_create_event.wiz_change_session_date_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: sale_order_create_event
 #: model:ir.actions.act_window,name:sale_order_create_event.action_change_session_date
 #: view:wiz.change.session.date:sale_order_create_event.wiz_change_session_date_form
 msgid "Change session date"
 msgstr "Cambiar fecha sesión"
-
-#. module: sale_order_create_event
-#: help:project.project,ca_theorical:0
-msgid "Based on the costs you had on the project, what would have been the revenue if all these costs have been invoiced at the normal sale price provided by the pricelist."
-msgstr "﻿Basado en los costes que tenía en el proyecto, lo que habría sido el ingreso si todos estos costes se hubieran facturado con el precio de venta normal proporcionado por la tarifa."
 
 #. module: sale_order_create_event
 #: help:project.project,use_timesheets:0
@@ -105,10 +110,14 @@ msgid "Create project by task"
 msgstr "Crear proyecto por tarea"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/wizard/wiz_change_session_date.py:11
-#, python-format
-msgid "Positive sum days, negative subtraction days"
-msgstr "En positivo suma días, en negativo resta días"
+#: field:wiz.change.session.date,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: sale_order_create_event
+#: field:wiz.change.session.date,create_date:0
+msgid "Created on"
+msgstr "Creado en"
 
 #. module: sale_order_create_event
 #: field:project.project,last_worked_date:0
@@ -131,10 +140,20 @@ msgid "Date of the latest work done on this account."
 msgstr "Fecha del último trabajo realizado en esta cuenta."
 
 #. module: sale_order_create_event
+#: field:wiz.change.session.date,days:0
+msgid "Days"
+msgstr "Días"
+
+#. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,december:0
 msgid "December"
 msgstr "Diciembre"
+
+#. module: sale_order_create_event
+#: field:wiz.change.session.date,display_name:0
+msgid "Display Name"
+msgstr "Nombre a mostrar"
 
 #. module: sale_order_create_event
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
@@ -149,16 +168,20 @@ msgid "End hour"
 msgstr "Hora fin"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:31
+#: view:wiz.change.session.date:sale_order_create_event.wiz_change_session_date_form
+msgid "Enter days to add or subtract"
+msgstr "Introducir días para sumar o restar"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:36
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:38
 #, python-format
 msgid "Error in dates"
 msgstr "Error en fechas"
 
 #. module: sale_order_create_event
 #: code:addons/sale_order_create_event/models/sale_order.py:222
-#: code:addons/sale_order_create_event/models/sale_order.py:223
 #: code:addons/sale_order_create_event/models/sale_order.py:231
-#: code:addons/sale_order_create_event/models/sale_order.py:232
 #, python-format
 msgid "Error in recurring service product"
 msgstr "Error en producto servicio recurrente"
@@ -170,7 +193,6 @@ msgstr "Estimación de horas a facturar"
 
 #. module: sale_order_create_event
 #: model:ir.model,name:sale_order_create_event.model_event_event
-#: field:sale.order.line,event:0
 msgid "Event"
 msgstr "Evento"
 
@@ -215,6 +237,26 @@ msgstr "Viernes"
 #: field:project.project,recurring_invoices:0
 msgid "Generate recurring invoices automatically"
 msgstr "Generar automáticamente facturas recurrentes"
+
+#. module: sale_order_create_event
+#: field:project.project,recurring_first_day:0
+msgid "Generate the first day of the month"
+msgstr "Generar el primer día del mes"
+
+#. module: sale_order_create_event
+#: field:project.project,recurring_last_day:0
+msgid "Generate the last day of the month"
+msgstr "Generar el último día del mes"
+
+#. module: sale_order_create_event
+#: field:project.project,recurring_the_day:0
+msgid "Generated in the day of the month"
+msgstr "Generar en el día del mes"
+
+#. module: sale_order_create_event
+#: field:wiz.change.session.date,id:0
+msgid "ID"
+msgstr "ID"
 
 #. module: sale_order_create_event
 #: help:project.project,ca_to_invoice:0
@@ -281,6 +323,21 @@ msgid "Last Invoice Date"
 msgstr "Fecha última factura"
 
 #. module: sale_order_create_event
+#: field:wiz.change.session.date,__last_update:0
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: sale_order_create_event
+#: field:wiz.change.session.date,write_uid:0
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: sale_order_create_event
+#: field:wiz.change.session.date,write_date:0
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,march:0
 msgid "March"
@@ -314,17 +371,8 @@ msgid "No"
 msgstr "No"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/wizard/wiz_change_session_date.py:27
-#, python-format
-msgid ""
-"You can not change the date of the session: %s, of event %s, because session "
-"has made assists"
-msgstr ""
-"No puede cambiar la fecha de la sesión: %s, del evento %s, porque la sessión "
-"tiene asistencias realizadas"
-
-#. module: sale_order_create_event
-#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:32
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:37
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:39
 #, python-format
 msgid "No tasks found for selected dates."
 msgstr "No se han encontrado tareas para las fechas seleccionadas."
@@ -383,14 +431,24 @@ msgid "Permitted tasks"
 msgstr "Tareas permitidas"
 
 #. module: sale_order_create_event
+#: help:wiz.change.session.date,days:0
+msgid "Positive sum days, negative subtraction days"
+msgstr "Positive sum days, negative subtraction days"
+
+#. module: sale_order_create_event
 #: field:project.project,pricelist_id:0
 msgid "Pricelist"
-msgstr "Pricelist"
+msgstr "Tarifa"
 
 #. module: sale_order_create_event
 #: model:ir.model,name:sale_order_create_event.model_product_template
 msgid "Product Template"
 msgstr "Plantilla de producto"
+
+#. module: sale_order_create_event
+#: view:product.template:sale_order_create_event.product_template_ticket_form_view
+msgid "Product Variants"
+msgstr "Variantes de Producto"
 
 #. module: sale_order_create_event
 #: model:ir.model,name:sale_order_create_event.model_project_project
@@ -408,7 +466,8 @@ msgid "Project start date"
 msgstr "Fecha inicio proyecto"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:38
+#: code:addons/sale_order_create_event/models/sale_order.py:40
+#: code:addons/sale_order_create_event/models/sale_order.py:43
 #, python-format
 msgid "Project/contract without project"
 msgstr "Proyecto/contrato sin proyecto"
@@ -472,20 +531,16 @@ msgid "Revenue per Time (real)"
 msgstr "Beneficio por tiempo (real)"
 
 #. module: sale_order_create_event
+#: field:account.analytic.account,sale:0
 #: field:event.event,sale_order:0
+#: field:project.project,sale:0
 msgid "Sale Order"
 msgstr "Pedido Venta"
 
 #. module: sale_order_create_event
-#: field:account.analytic.account,sale:0
-#: field:project.project,sale:0
-msgid "Sale order"
-msgstr "Pedido de venta"
-
-#. module: sale_order_create_event
 #: field:event.event,sale_order_line:0
-msgid "Sale order line"
-msgstr "Línea pedido venta"
+msgid "Sale Order Line"
+msgstr "Línea pedido de venta"
 
 #. module: sale_order_create_event
 #: model:ir.model,name:sale_order_create_event.model_sale_order
@@ -510,15 +565,15 @@ msgid "September"
 msgstr "Septiembre"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/project.py:226
-#: code:addons/sale_order_create_event/models/sale_order.py:166
-#: code:addons/sale_order_create_event/models/sale_order.py:167
+#: code:addons/sale_order_create_event/models/project.py:218
+#: code:addons/sale_order_create_event/models/sale_order.py:171
+#: code:addons/sale_order_create_event/models/sale_order.py:173
 #, python-format
 msgid "Session %s for %s"
 msgstr "Sesión %s para %s"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/project.py:127
+#: code:addons/sale_order_create_event/models/project.py:128
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,sessions:0
 #, python-format
@@ -587,9 +642,7 @@ msgstr "Ingresos teóricos"
 
 #. module: sale_order_create_event
 #: code:addons/sale_order_create_event/models/sale_order.py:223
-#: code:addons/sale_order_create_event/models/sale_order.py:224
 #: code:addons/sale_order_create_event/models/sale_order.py:234
-#: code:addons/sale_order_create_event/models/sale_order.py:235
 #, python-format
 msgid "This product is a recurring service, But it has NOT checked only the \"Generate procurement-task\" option in their routes defined, consequently, this product will not create task in the event."
 msgstr "Este producto es un servicio recurrente, pero NO ESTA chequeada solo la opción \"Generar abastecimientos-tareas\" en sus rutas definidas, por consiguiente, este producto no va a crear tarea en el evento."
@@ -682,7 +735,8 @@ msgid "User"
 msgstr "Usuario"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:23
+#: code:addons/sale_order_create_event/models/sale_order.py:25
+#: code:addons/sale_order_create_event/models/sale_order.py:26
 #, python-format
 msgid "User without time zone"
 msgstr "Usuario sin zona horaria definida"
@@ -740,26 +794,47 @@ msgid "Yes"
 msgstr "Si"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:179
-#: code:addons/sale_order_create_event/models/sale_order.py:180
+#: code:addons/sale_order_create_event/wizard/wiz_change_session_date.py:27
 #, python-format
-msgid "You can not cancel the sale order, because the event generated by the line with sequence %s, has people registered"
-msgstr "No puede cancelar el pedido de venta, porque el evento generado desde la línea con secuencia %s, tiene gente registrada"
+msgid "You can not change the date of the session: %s, of event %s, because session has made assists"
+msgstr "No puede cambiar la fecha de la sesión: %s, del evento %s, porque la sessión tiene asistencias realizadas"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:32
+#: code:addons/sale_order_create_event/models/event.py:41
+#: code:addons/sale_order_create_event/models/event.py:45
+#, python-format
+msgid "You can not delete the event '%s', because has people registered"
+msgstr "No puede borrar el evento '%s', porque tiene gente registrada"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/event.py:36
+#: code:addons/sale_order_create_event/models/event.py:40
+#, python-format
+msgid "You can not delete the event '%s', because the sale order '%s', is not in cancel status "
+msgstr "No puede borrar el evento '%s', porque el pedido de venta '%s', no esta cancelado "
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:30
+#, python-format
+msgid "You must enter the Project / Contract and/or select a value for 'Create project by task'"
+msgstr "Debe de introducir el Proyecto / Contracto y/o seleccionar un valor para 'Crear proyecto por tarea'"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:35
+#: code:addons/sale_order_create_event/models/sale_order.py:38
 #, python-format
 msgid "You must enter the end date of the project/contract"
 msgstr "Debe de introducir la fecha fin del proyecto/contracto"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:26
+#: code:addons/sale_order_create_event/models/sale_order.py:28
 #, python-format
 msgid "You must enter the project/contract"
 msgstr "Debe de introducir el proyecto/contracto"
 
 #. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:29
+#: code:addons/sale_order_create_event/models/sale_order.py:32
+#: code:addons/sale_order_create_event/models/sale_order.py:35
 #, python-format
 msgid "You must enter the start date of the project/contract"
 msgstr "Debe de introducir la fecha de inicio del proyecto/contrato"
@@ -773,6 +848,11 @@ msgstr "Normalmente se factura el 100% de los partes de horas. Pero si se combin
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
 msgid "[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',active_id)]"
 msgstr "[('type','in',['view','normal','contract']),('sale','!=',False),('sale','=',active_id)]"
+
+#. module: sale_order_create_event
+#: view:wiz.change.session.date:sale_order_create_event.wiz_change_session_date_form
+msgid "or"
+msgstr "o"
 
 #. module: sale_order_create_event
 #: field:sale.order.line,apply_performance_by_quantity:0
@@ -793,23 +873,4 @@ msgstr "{'default_project_by_task': project_by_task, 'default_start_date': proje
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
 msgid "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}"
 msgstr "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}"
-
-#. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/sale_order.py:179
-#, python-format
-msgid "You can not cancel the sale order, because the event generated by the line with sequence %s, has people registered"
-msgstr "No puede cancelar el pedido de venta, porque el evento generado desde la línea con secuencia %s, tiene gente registrada"
-
-#. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/event.py:40
-#, python-format
-msgid "You can not delete the event '%s', because has people registered"
-msgstr "No puede borrar el evento '%s', porque tiene gente registrada"
-
-#. module: sale_order_create_event
-#: code:addons/sale_order_create_event/models/event.py:35
-#, python-format
-msgid "You can not delete the event '%s', because the sale order '%s', is not in cancel status "
-msgstr "No puede borrar el evento '%s', porque el pedido de venta '%s', no esta cancelado "
-
 
