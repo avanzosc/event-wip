@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record model="ir.actions.act_window" id="website_event_track.action_event_track">
-            <field name="view_mode">tree,calendar,form</field>
-        </record>
-
         <record model="ir.ui.view" id="view_event_track_calendar_inh_assistant">
             <field name="name">view.event.track.calendar.inh.assistant</field>
             <field name="model">event.track</field>
