@@ -19,6 +19,7 @@
         "event_sale",
         "event_project",
         "event_track_assistant",
+        "calendar_holiday",
         "procurement_service_project",
         "project_task_generated_with_product_performance",
         "hr_employee_catch_partner",
