@@ -2,7 +2,6 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
-from openerp import exceptions
 
 
 class TestSaleOrderCreateEventHour(common.TransactionCase):
@@ -84,19 +83,6 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
             'thursday': True}
         sale_vals['order_line'] = [(0, 0, sale_line_vals)]
         self.sale_order = self.sale_model.create(sale_vals)
-
-    def test_disabled_editing_module_type_hour(self):
-        with self.assertRaises(exceptions.Warning):
-            self.sunday.name = 'SUNDAY'
-        with self.assertRaises(exceptions.Warning):
-            self.sunday.unlink()
-
-    def test_type_hour(self):
-        hour_type = self.type_hour_model.create({
-            'name': 'Test',
-        })
-        hour_type.name = 'New Name'
-        hour_type.unlink()
 
     def test_sale_order_create_event_hour(self):
         self.project.write({
