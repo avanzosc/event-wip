@@ -14,8 +14,6 @@ class TestEventGroupDescription(TestSaleOrderCreateEvent):
         for line in self.sale_order.mapped('order_line').filtered(
                 lambda l: l.product_id.recurring_service):
             line.courses = 'Courses test for description'
-
-    def test_event_group_description(self):
         self.sale_order.order_line.write({
             'monday': True,
             'wednesday': True,
@@ -23,21 +21,12 @@ class TestEventGroupDescription(TestSaleOrderCreateEvent):
             'saturday': True,
             'sunday': True,
         })
-        self.sale_order.action_button_confirm()
-        cond = [('sale_order', '=', self.sale_order.id)]
-        events = self.event_model.search(cond)
-        self.assertNotEquals(
-            len([events]), 0, 'Sale order without event')
-        self.assertEquals(
-            sum(events.mapped('count_sale_lines')), 0)
 
-    def test_event_group_description_by_task(self):
-        self.sale_order.project_by_task = 'yes'
-        self.sale_order.action_button_confirm()
+    def test_sale_order_create_event_by_task(self):
+        super(TestEventGroupDescription,
+              self).test_sale_order_create_event_by_task()
         cond = [('sale_order', '=', self.sale_order.id)]
         events = self.event_model.search(cond)
-        self.assertNotEquals(
-            len([events]), 0, 'Sale order without event')
         self.assertEquals(
             sum(events.mapped('count_sale_lines')),
             len(self.sale_order.order_line))
@@ -46,3 +35,35 @@ class TestEventGroupDescription(TestSaleOrderCreateEvent):
             domain = result.get('domain')
             self.assertIn(
                 domain[0][2], self.sale_order.mapped('order_line').ids)
+
+    def test_sale_order_confirm(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_onchange_line_times(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_change_session_date(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_registration_open_button(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_assistant_delete(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_assistant_delete_from_event(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_assistant_track_assistant_confirm_assistant(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_duplicate_sale_order(self):
+        """Don't repeat this test."""
+        pass
