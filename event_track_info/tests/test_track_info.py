@@ -36,11 +36,12 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
             })
             self.track_template = track_tmpl_model.create(vals)
 
-    def test_sale_order_confirm_track_info(self):
-        self.sale_order.write({
-            'project_by_task': 'yes',
-        })
-        self.sale_order.action_button_confirm()
+    def test_sale_order_create_event(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_sale_order_create_event_by_task(self):
+        super(TestTrackInfo, self).test_sale_order_create_event_by_task()
         cond = [('sale_order_line', '=', self.sale_order.order_line[0].id)]
         event = self.event_model.search(cond, limit=1)
         self.assertEquals(self.sale_order.order_line[0].event_id, event)
@@ -51,14 +52,6 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
             self.assertEquals(track.resolution, self.resolution)
             self.assertEquals(
                 track.description, u"<p>{}</p>".format(self.html_info))
-
-    def test_sale_order_create_event(self):
-        """Don't repeat this test."""
-        pass
-
-    def test_sale_order_create_event_by_task(self):
-        """Don't repeat this test."""
-        pass
 
     def test_sale_order_confirm(self):
         """Don't repeat this test."""
@@ -73,6 +66,10 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         pass
 
     def test_event_track_registration_open_button(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_assistant_delete(self):
         """Don't repeat this test."""
         pass
 
