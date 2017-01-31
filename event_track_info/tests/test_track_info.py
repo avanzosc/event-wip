@@ -51,3 +51,39 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
             self.assertEquals(track.resolution, self.resolution)
             self.assertEquals(
                 track.description, u"<p>{}</p>".format(self.html_info))
+
+    def test_sale_order_create_event(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_sale_order_create_event_by_task(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_sale_order_confirm(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_onchange_line_times(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_change_session_date(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_registration_open_button(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_assistant_delete_from_event(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_assistant_track_assistant_confirm_assistant(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_duplicate_sale_order(self):
+        """Don't repeat this test."""
+        pass
