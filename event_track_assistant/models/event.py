@@ -70,9 +70,6 @@ class EventEvent(models.Model):
     def _put_utc_format_date(self, date, time=0.0):
         return _convert_to_utc_date(date, time=time, tz=self.env.user.tz)
 
-    def _convert_times_to_float(self, date):
-        return _convert_time_to_float(date, tz=self.env.user.tz)
-
 
 class EventTrack(models.Model):
     _inherit = 'event.track'
