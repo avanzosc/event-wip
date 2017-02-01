@@ -20,10 +20,10 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         self.account_model = self.env['account.analytic.account']
         self.wiz_another_model = self.env['wiz.registration.to.another.event']
         self.wiz_append_model = self.env['wiz.event.append.assistant']
-        self.partner = self.env.ref('base.res_partner_address_23')
-        self.partner.parent_id.bank_ids = self.env['res.partner.bank'].create({
+        self.partner.parent_id = self.parent
+        self.env['res.partner.bank'].create({
             'acc_number': 'ES9121000418450200051332',
-            'partner_id': self.partner.id,
+            'partner_id': self.partner.parent_id.id,
             'state': 'iban',
             'mandate_ids': [(0, 0, {'format': 'sepa',
                                     'signature_date': fields.Date.today()})],

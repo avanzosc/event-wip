@@ -15,15 +15,6 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         super(TestEventPlannedBySaleLine, self).setUp()
         self.sale_line_model = self.env['sale.order.line']
         self.today = fields.Date.from_string(fields.Date.today())
-        partner_model = self.env['res.partner']
-        self.parent = partner_model.create({
-            'name': 'Parent',
-        })
-        self.partner = partner_model.create({
-            'name': 'Student',
-            'is_group': False,
-            'is_company': False,
-        })
         self.sale_order.write({
             'product_category': self.service_product.categ_id.id,
         })
@@ -40,8 +31,6 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
                 'price_unit': self.service_product.lst_price,
             })],
         })
-        self.partner.parent_id = (
-            self.env.ref('base.res_partner_address_23').parent_id.id)
 
     def test_event_planned_by_sale_line(self):
         account = self.sale_order.project_id
@@ -124,8 +113,7 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         self.partner.parent_id = False
         with self.assertRaises(exceptions.Warning):
             wiz.action_append()
-        self.partner.parent_id = (
-            self.env.ref('base.res_partner_address_23').parent_id.id)
+        self.partner.parent_id = self.parent
         wiz.action_append()
         accounts = self.account_model.search(
             [('student', '=', self.partner.id)])
@@ -163,8 +151,7 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         self.partner.parent_id = False
         with self.assertRaises(exceptions.Warning):
             wiz.action_append()
-        self.partner.parent_id = (
-            self.env.ref('base.res_partner_address_23').parent_id.id)
+        self.partner.parent_id = self.parent
         wiz.action_append()
         accounts = self.account_model.search(
             [('student', '=', self.partner.id)])
