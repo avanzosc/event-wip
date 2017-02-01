@@ -29,3 +29,35 @@ class TestEventCalendarHoliday(TestSaleOrderCreateEvent):
             lambda x: x.absence_type.id == self.absence_id)
         self.assertNotEqual(
             len(tracks), 0, 'Sessions no generated with absence type')
+
+    def test_sale_order_confirm(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_onchange_line_times(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_change_session_date(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_registration_open_button(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_assistant_delete(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_track_assistant_delete_from_event(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_assistant_track_assistant_confirm_assistant(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_duplicate_sale_order(self):
+        """Don't repeat this test."""
+        pass
