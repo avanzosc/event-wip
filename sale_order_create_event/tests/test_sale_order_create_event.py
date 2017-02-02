@@ -82,11 +82,11 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
                 len(task.sessions), 0, 'Sessions no generated')
             self.assertEquals(
                 len(task.sessions), task.num_sessions)
-        cond = [('project_id', '=', self.project.id)]
+        cond = [('sale_order', '=', self.sale_order.id)]
         event = self.event_model.search(cond, limit=1)[:1]
-        self.assertNotEqual(
-            len([event]), 0, 'Sale order without event')
+        self.assertTrue(event, 'Sale order without event')
         self.assertTrue(event.event_ticket_ids)
+        self.assertTrue(event.my_task_ids)
         self.assertEquals(
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
@@ -95,54 +95,19 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         self.assertEquals(self.sale_order.state, 'cancel')
 
     def test_sale_order_create_event_by_task(self):
-        partner = self.env.ref('base.res_partner_26')
-        partner.employee_id = self.ref('hr.employee_fp')
-        contract_vals = {'name': 'Contract 1',
-                         'employee_id': partner.employee_id.id,
-                         'partner': partner.id,
-                         'type_id':
-                         self.ref('hr_contract.hr_contract_type_emp'),
-                         'wage': 500,
-                         'date_start': '2025-02-01',
-                         'working_hours':
-                         self.ref('resource.timesheet_group1')}
-        self.contract = self.contract_model.create(contract_vals)
-        wiz_vals = {'year': 2025}
-        wiz = self.wiz_workable_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_id':
-             self.contract.id}).button_calculate_workables_and_festives()
         self.sale_order.write({
             'project_by_task': 'yes',
         })
         self.sale_order.action_button_confirm()
+        self.assertEquals(len(self.project.tasks), 0)
         cond = [('sale_order', '=', self.sale_order.id)]
         event = self.event_model.search(cond, limit=1)[:1]
         self.assertTrue(event, 'Sale order without event')
         self.assertTrue(event.event_ticket_ids)
-        wiz_vals = {'partner': partner.id}
-        wiz = self.wiz_add_model.with_context(
-            active_ids=event.ids).create(wiz_vals)
-        wiz.action_append()
         self.assertEquals(
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
         self.assertEquals(len(event.my_task_ids), event.count_tasks)
-        event.track_ids.write({'duration': 1})
-        wiz_impute = self.impute_model.create({})
-        wiz_impute_line = {'wiz_id': wiz_impute.id,
-                           'presence': event.track_ids[0].presences[0].id,
-                           'session': event.track_ids[0].id,
-                           'partner': partner.id,
-                           'hours': 10.0}
-        self.line_model.create(wiz_impute_line)
-        track = event.track_ids[0]
-        wiz_impute.with_context(
-            {'active_ids': [track.id]}).default_get(['lines'])
-        wiz_impute.button_impute_hours()
-        self.assertNotEqual(len(event.work_ids), 0)
-        with self.assertRaises(exceptions.Warning):
-            self.sale_order.action_cancel()
 
     def test_sale_order_confirm(self):
         self.assertEquals(self.sale_order.state, 'draft')
@@ -170,6 +135,10 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         wiz.with_context(
             {'active_ids': [event.track_ids[len(
                 event.track_ids)-1].id]}).change_session_date()
+        self.assertEqual(
+            event.track_ids[len(
+                event.track_ids)-1].date, event.date_end,
+            'Session and event with different end date')
         wiz_vals = {'days': -28}
         wiz = self.change_date_model.create(wiz_vals)
         wiz.with_context(
@@ -184,6 +153,15 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         self.event = self.event_model.search(cond, limit=1)[:1]
         super(TestSaleOrderCreateEvent,
               self).test_event_track_registration_open_button()
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_cancel()
+
+    def test_event_track_assistant_delete(self):
+        self.sale_order.action_button_confirm()
+        cond = [('sale_order', '=', self.sale_order.id)]
+        self.event = self.event_model.search(cond, limit=1)[:1]
+        super(TestSaleOrderCreateEvent,
+              self).test_event_track_assistant_delete()
 
     def test_event_track_assistant_delete_from_event(self):
         self.sale_order.action_button_confirm()
@@ -196,8 +174,21 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         self.sale_order.action_button_confirm()
         cond = [('sale_order', '=', self.sale_order.id)]
         self.event = self.event_model.search(cond, limit=1)[:1]
+        contract = self.contract_model.create({
+            'name': u'Contract {}'.format(self.partner.name),
+            'employee_id': self.ref('hr.employee_fp'),
+            'partner': self.partner.id,
+            'type_id': self.ref('hr_contract.hr_contract_type_emp'),
+            'wage': 500,
+            'date_start': self.event.date_begin,
+            'working_hours': self.ref('resource.timesheet_group1'),
+        })
+        workable_wiz = self.wiz_workable_model.with_context(
+            active_id=contract.id).create({})
+        workable_wiz.button_calculate_workables_and_festives()
         super(TestSaleOrderCreateEvent,
               self).test_event_assistant_track_assistant_confirm_assistant()
+        self.assertNotEqual(len(self.event.work_ids), 0)
 
     def test_duplicate_sale_order(self):
         self.sale_order.project_by_task = 'yes'
@@ -206,3 +197,11 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         copy_sale_order = self.sale_order.copy()
         self.assertEquals(copy_sale_order.state, 'draft')
         self.assertFalse(copy_sale_order.mapped('order_line.event_id'))
+
+    def test_event_assistant_delete_wizard(self):
+        """Don't repeat this test."""
+        pass
+
+    def test_event_change_registration_to_another_event(self):
+        """Don't repeat this test."""
+        pass
