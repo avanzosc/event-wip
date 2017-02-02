@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-# © 2016 Alfredo de la Fuente - AvanzOSC
-# © 2016 Oihane Crucelaegui - AvanzOSC
+# Copyright © 2016 Alfredo de la Fuente - AvanzOSC
+# Copyright © 2016-2017 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+
 from openerp.addons.event_track_assistant.tests.\
     test_event_track_assistant import TestEventTrackAssistant
-from openerp import exceptions
+from openerp import exceptions, fields
+
+str2date = fields.Date.from_string
 
 
 class TestSaleOrderCreateEvent(TestEventTrackAssistant):
@@ -136,15 +139,15 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
             {'active_ids': [event.track_ids[len(
                 event.track_ids)-1].id]}).change_session_date()
         self.assertEqual(
-            event.track_ids[len(
-                event.track_ids)-1].date, event.date_end,
+            str2date(event.track_ids[len(
+                event.track_ids)-1].date), str2date(event.date_end),
             'Session and event with different end date')
         wiz_vals = {'days': -28}
         wiz = self.change_date_model.create(wiz_vals)
         wiz.with_context(
             {'active_ids': [event.track_ids[0].id]}).change_session_date()
         self.assertEqual(
-            event.track_ids[0].date, event.date_begin,
+            str2date(event.track_ids[0].date), str2date(event.date_begin),
             'Session and event with different start date')
 
     def test_event_track_registration_open_button(self):
