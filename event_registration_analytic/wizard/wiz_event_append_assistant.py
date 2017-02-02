@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import fields, models, api, _
+from openerp import _, api, fields, models
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
 import calendar
+
+str2date = fields.Date.from_string
 
 
 class WizEventAppendAssistant(models.TransientModel):
@@ -13,13 +16,14 @@ class WizEventAppendAssistant(models.TransientModel):
 
     @api.onchange('partner')
     def onchange_partner(self):
-        self.create_account = False
+        create_account = False
         if self.registration and self.partner:
-            self.create_account = True
+            create_account = True
             sale_order = self.registration.event_id.sale_order
             if (self.partner.employee or self.registration.analytic_account or
                     sale_order.project_id.recurring_invoices):
-                self.create_account = False
+                create_account = False
+        self.create_account = create_account
 
     @api.multi
     def action_append(self):
@@ -64,17 +68,17 @@ class WizEventAppendAssistant(models.TransientModel):
             analytic_invoice_line_obj.create(line_vals)
 
     def _prepare_data_for_account_not_employee(self, event, registration):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         if self.from_date and self.to_date:
             from_date = self.from_date
             to_date = self.to_date
-            today = fields.Date.from_string(self.from_date)
+            today = str2date(self.from_date)
         else:
-            from_date = event_obj._convert_date_to_local_format_with_hour(
-                registration.date_start).date()
-            to_date = event_obj._convert_date_to_local_format_with_hour(
-                registration.date_end).date()
-            today = fields.Date.from_string(fields.Datetime.now())
+            from_date = _convert_to_local_date(registration.date_start,
+                                               tz=tz).date()
+            to_date = _convert_to_local_date(registration.date_end,
+                                             tz=tz).date()
+            today = str2date(fields.Datetime.now())
         recurring_next_date = "{}-{}-{}".format(
             today.year, today.month,
             calendar.monthrange(today.year, today.month)[1])

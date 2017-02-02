@@ -204,7 +204,3 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
     def test_event_assistant_delete_wizard(self):
         """Don't repeat this test."""
         pass
-
-    def test_event_change_registration_to_another_event(self):
-        """Don't repeat this test."""
-        pass
