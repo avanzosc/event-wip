@@ -5,3 +5,4 @@
 
 from . import test_event_track_assistant
 from . import test_event_track_assistant_hour
+from . import test_event_claim
