@@ -101,9 +101,7 @@ class SaleOrder(models.Model):
                 self.project_id.date_start)
             fec_limit = fields.Datetime.from_string(
                 self.project_id.date)
-        if fec_ini.day != 1:
-            while fec_ini.day != 1:
-                fec_ini = fec_ini + relativedelta(days=-1)
+        fec_ini = fec_ini.replace(day=1)
         if fec_ini.weekday() == 0:
             num_week = 0
         else:
