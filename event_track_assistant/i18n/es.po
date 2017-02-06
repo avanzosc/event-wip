@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-10 15:30+0000\n"
-"PO-Revision-Date: 2017-01-10 15:30+0000\n"
+"POT-Creation-Date: 2017-02-06 15:48+0000\n"
+"PO-Revision-Date: 2017-02-06 15:48+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgid "Actual event of registration"
 msgstr "Evento actual del registro"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:431
+#: code:addons/event_track_assistant/models/event.py:428
 #: model:ir.actions.act_window,name:event_track_assistant.action_create_assistant_from_event
 #: view:wiz.event.append.assistant:event_track_assistant.wiz_event_append_assistant_form
 #, python-format
@@ -161,6 +161,7 @@ msgid "Create claim"
 msgstr "Crear reclamación"
 
 #. module: event_track_assistant
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
 #: field:event.track.presence,create_uid:0
 #: field:wiz.change.session.hour,create_uid:0
 #: field:wiz.event.append.assistant,create_uid:0
@@ -200,13 +201,13 @@ msgid "Date end"
 msgstr "Fecha fin"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:390
+#: code:addons/event_track_assistant/models/event.py:387
 #, python-format
 msgid "Date end of registration greater than date end of event"
 msgstr "Fecha fin del registro mayor que fecha fin del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:398
+#: code:addons/event_track_assistant/models/event.py:395
 #, python-format
 msgid "Date end of registration less than date start of event"
 msgstr "Fecha fin del registro menor que la fecha inicio del evento"
@@ -217,19 +218,19 @@ msgid "Date start"
 msgstr "Fecha inicio"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:376
+#: code:addons/event_track_assistant/models/event.py:373
 #, python-format
 msgid "Date start of registration greater than date end of event"
 msgstr "Fecha inicio del registro mayor que fecha fin del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:368
+#: code:addons/event_track_assistant/models/event.py:365
 #, python-format
 msgid "Date start of registration less than date begin of event"
 msgstr "Fecha inicio del registro menor que fecha inicio del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:274
+#: code:addons/event_track_assistant/models/event.py:271
 #, python-format
 msgid "Dates are incorrectly selected."
 msgstr "Las fechas seleccionadas incorrectamente."
@@ -245,7 +246,6 @@ msgid "Daytime Start Hour"
 msgstr "Fin del horario nocturno"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:478
 #: code:addons/event_track_assistant/models/event.py:480
 #: model:ir.actions.act_window,name:event_track_assistant.action_delete_assistant_from_event_session
 #: view:wiz.event.delete.assistant:event_track_assistant.wiz_event_delete_assistant_form
@@ -369,40 +369,37 @@ msgstr "Error en fecha inicio"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/models/event.py:54
-#: code:addons/event_track_assistant/models/event.py:388
-#: code:addons/event_track_assistant/models/event.py:396
+#: code:addons/event_track_assistant/models/event.py:385
+#: code:addons/event_track_assistant/models/event.py:393
 #, python-format
 msgid "Error in date end"
 msgstr "Error en fecha fin"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:366
-#: code:addons/event_track_assistant/models/event.py:374
+#: code:addons/event_track_assistant/models/event.py:363
+#: code:addons/event_track_assistant/models/event.py:371
 #, python-format
 msgid "Error in date start"
 msgstr "Error en fecha inicio"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:94
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:93
 #, python-format
 msgid "Error in dates"
 msgstr "Error en fechas"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:58
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:64
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:101
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:65
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:70
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:105
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:107
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:111
+#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:110
 #, python-format
 msgid "Error in from date"
 msgstr "Error en fecha desde"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:72
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:114
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:118
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:77
+#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:117
 #, python-format
 msgid "Error in to date"
 msgstr "Error en fecha hasta"
@@ -465,10 +462,9 @@ msgid "Estimated nightlight hours"
 msgstr "Horas estimadas nocturnas"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:255
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:197
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:240
-#: view:crm.claim:event_track_assistant.view_crm_case_claims_filter_inh_assistant
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:259
+#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:188
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
 #: field:crm.claim,event_id:0
 #: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
@@ -499,6 +495,16 @@ msgid "Event and Session"
 msgstr "Evento y sesión"
 
 #. module: event_track_assistant
+#: field:res.partner,attended_registration_count:0
+msgid "Event attended registrations number"
+msgstr "Nº de registrados que han asistido al evento"
+
+#. module: event_track_assistant
+#: field:res.partner,registration_count:0
+msgid "Event registrations number"
+msgstr "Nº Registros a eventos"
+
+#. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_impute_in_presence_from_session.py:71
 #, python-format
 msgid "Event: {}, session:{}"
@@ -511,25 +517,22 @@ msgid "From date"
 msgstr "De fecha"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:59
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:103
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:107
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:66
+#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:106
 #, python-format
 msgid "From date greater than date to"
 msgstr "Fecha desde mayor que fecha hasta"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:74
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:116
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:120
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:79
+#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:119
 #, python-format
 msgid "From date greater than end date of the event %s"
 msgstr "Fecha desde mayor que fecha fin del evento %s"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:66
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:109
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:113
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:72
+#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:112
 #, python-format
 msgid "From date less than start date of the event %s"
 msgstr "Fecha desde menor que fecha inicio del evento %s"
@@ -569,7 +572,7 @@ msgid "Impute hours in presences"
 msgstr "Imputar horas en presencias"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:135
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:140
 #, python-format
 msgid "It has been found more than one registration in draft state for %s, in the event: %s"
 msgstr "Se ha encontrado más de un registro con estado borrador para %s, en el evento: %s"
@@ -701,6 +704,12 @@ msgid "Notes"
 msgstr "Notas"
 
 #. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:461
+#, python-format
+msgid "Notes are mandatory to cancel a registration."
+msgstr "Las notas son obligatorias para cancelar un registro."
+
+#. module: event_track_assistant
 #: field:event.track,lit_presences:0
 msgid "Num. presences"
 msgstr "Num. presencias"
@@ -763,7 +772,7 @@ msgid "Presences counter"
 msgstr "Contador presencias"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:121
+#: code:addons/event_track_assistant/models/event.py:118
 #, python-format
 msgid "Presences: "
 msgstr "Presencias:"
@@ -862,6 +871,11 @@ msgid "Removal date"
 msgstr "Fecha baja"
 
 #. module: event_track_assistant
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: event_track_assistant
 #: code:addons/event_track_assistant/wizard/wiz_impute_in_presence_from_session.py:73
 #, python-format
 msgid "SESSION DATE: {}, PERSON: {}, NOTES: {}"
@@ -879,7 +893,7 @@ msgid "Select Dates and Partner"
 msgstr "Seleccione fechas y empresa"
 
 #. module: event_track_assistant
-#: view:crm.claim:event_track_assistant.view_crm_case_claims_filter_inh_assistant
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
 #: field:crm.claim,session_id:0
 #: view:event.track.presence:event_track_assistant.event_track_presence_search_view
 #: field:event.track.presence,session:0
@@ -888,13 +902,13 @@ msgid "Session"
 msgstr "Sesión"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:170
+#: code:addons/event_track_assistant/models/event.py:167
 #, python-format
 msgid "Session %s with date greater than the event start date"
 msgstr "Sesión %s con fecha mayor que fecha inicio del evento"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:165
+#: code:addons/event_track_assistant/models/event.py:162
 #, python-format
 msgid "Session %s with date lower than the event start date"
 msgstr "Sesión %s con fecha menor que fecha inicio del evento"
@@ -1001,7 +1015,7 @@ msgid "Sessions without presences"
 msgstr "Sesiones sin presencias"
 
 #. module: event_track_assistant
-#: view:crm.claim:event_track_assistant.view_crm_case_claims_filter_inh_assistant
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
 msgid "Stage"
 msgstr "Etapa"
 
@@ -1080,21 +1094,18 @@ msgid "Suppliers"
 msgstr "Proveedores"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:89
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:91
 #, python-format
 msgid "This person has sessions with dates after"
 msgstr "Esta persona tiene sesiones con fecha posterior"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:87
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:89
 #, python-format
 msgid "This person has sessions with dates before"
 msgstr "Esta persona tiene sesiones con fecha anterior"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:84
 #: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:86
 #, python-format
 msgid "This person has sessions with dates before and after"
@@ -1187,38 +1198,31 @@ msgid "Year"
 msgstr "Año"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:173
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:178
 #, python-format
 msgid "You can not add employe to registration/event,because the dates overlap in the event: %s, the registration: %s"
 msgstr "No puede añadir una persona a registro/evento, porque se solapan las fechas en el evento: %s, del registro: %s"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/models/event.py:417
-#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:96
+#: code:addons/event_track_assistant/models/event.py:414
+#: code:addons/event_track_assistant/wizard/wiz_event_append_assistant.py:95
 #, python-format
 msgid "You can not confirm this registration, because their dates overlap with another record of the same employee"
 msgstr "No puede confirmar este registro, porque sus fechas se solapan con otro registro del mismo empleado"
 
 #. module: event_track_assistant
 #: code:addons/event_track_assistant/models/event.py:507
-#: code:addons/event_track_assistant/models/event.py:517
 #, python-format
-msgid "You can only delete registration in draft status"
-msgstr "Solo puede borrar registros en estado borrador"
+msgid "You can only delete registration in draft status."
+msgstr "You can only delete registration in draft status."
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:152
-#, python-format
-msgid "You must enter the notes"
-msgstr "Debe introducir las notas"
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
+msgid "['|',('user_id','=',self),('create_uid','=',self)]"
+msgstr "['|',('user_id','=',self),('create_uid','=',self)]"
 
 #. module: event_track_assistant
-#: code:addons/event_track_assistant/wizard/wiz_event_delete_assistant.py:150
-#, python-format
-msgid "You must enter the removal date"
-msgstr "Debe introducir la fecha baja"
-
-#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_form_inh_assistant
 #: view:event.registration:event_track_assistant.event_registration_open_button_form_view
 #: view:event.registration:event_track_assistant.view_event_registration_tree_inh_assistant
 msgid "button_registration_open"
@@ -1235,6 +1239,7 @@ msgid "hours"
 msgstr "horas"
 
 #. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_form_inh_assistant
 #: view:event.registration:event_track_assistant.event_registration_open_button_form_view
 #: view:event.registration:event_track_assistant.view_event_registration_tree_inh_assistant
 msgid "new_button_reg_cancel"
