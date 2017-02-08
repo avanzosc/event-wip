@@ -44,15 +44,6 @@ class WizEventAppendAssistant(models.TransientModel):
         self.start_time = _convert_time_to_float(self.min_from_date, tz=tz)
         self.end_time = _convert_time_to_float(self.max_to_date, tz=tz)
 
-    def _update_registration_start_date(self, registration):
-        super(WizEventAppendAssistant, self)._update_registration_start_date(
-            registration)
-        event_date_start = registration.event_id.date_begin
-        date_start = self._local_date(self.from_date, self.start_time)
-        from_date = datetime2string(date_start)
-        registration.date_start =\
-            event_date_start if from_date < event_date_start else date_start
-
     def _compute_update_registration_start_date(self, registration):
         from_date = datetime2string(self._local_date(
             self.from_date, self.start_time))
@@ -60,15 +51,6 @@ class WizEventAppendAssistant(models.TransientModel):
             registration.date_start = from_date
             if from_date < registration.event_id.date_begin:
                 registration.date_start = registration.event_id.date_begin
-
-    def _update_registration_date_end(self, registration):
-        super(WizEventAppendAssistant, self)._update_registration_date_end(
-            registration)
-        event_date_end = registration.event_id.date_end
-        date_end = self._local_date(self.to_date, self.end_time)
-        to_date = datetime2string(date_end)
-        registration.date_end =\
-            event_date_end if to_date > event_date_end else date_end
 
     def _compute_update_registration_end_date(self, registration):
         to_date = datetime2string(self._local_date(
