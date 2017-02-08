@@ -200,7 +200,3 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         copy_sale_order = self.sale_order.copy()
         self.assertEquals(copy_sale_order.state, 'draft')
         self.assertFalse(copy_sale_order.mapped('order_line.event_id'))
-
-    def test_event_assistant_delete_wizard(self):
-        """Don't repeat this test."""
-        pass
