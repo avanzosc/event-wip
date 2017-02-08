@@ -35,8 +35,8 @@ class WizEventDeleteAssistant(models.TransientModel):
             self.to_date, self.end_time)
         return from_date, to_date
 
-    def _put_old_dates(self):
+    def revert_dates(self):
         tz = self.env.user.tz
-        super(WizEventDeleteAssistant, self)._put_old_dates()
+        super(WizEventDeleteAssistant, self).revert_dates()
         self.start_time = _convert_time_to_float(self.min_from_date, tz=tz)
         self.end_time = _convert_time_to_float(self.max_to_date, tz=tz)
