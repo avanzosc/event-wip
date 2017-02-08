@@ -92,7 +92,7 @@ class WizEventDeleteAssistant(models.TransientModel):
 
     @api.multi
     @api.onchange('from_date', 'to_date')
-    def _dates_control(self):
+    def onchange_dates(self):
         self.ensure_one()
         res = {}
         from_date, to_date =\
@@ -100,19 +100,19 @@ class WizEventDeleteAssistant(models.TransientModel):
         min_from_date = self._prepare_date_for_control(self.min_from_date)
         max_to_date = self._prepare_date_for_control(self.max_to_date)
         if from_date and to_date and from_date > to_date:
-            self._put_old_dates()
+            self.revert_dates()
             return {'warning': {
                     'title': _('Error in from date'),
                     'message': (_('From date greater than date to'))}}
         if from_date and from_date < min_from_date:
-            self._put_old_dates()
+            self.revert_dates()
             return {'warning': {
                     'title': _('Error in from date'),
                     'message':
                     (_('From date less than start date of the event %s') %
                      self.min_event.name)}}
         if to_date and to_date > max_to_date:
-            self._put_old_dates()
+            self.revert_dates()
             return {'warning': {
                     'title': _('Error in to date'),
                     'message':
@@ -151,7 +151,7 @@ class WizEventDeleteAssistant(models.TransientModel):
         to_date = self._prepare_date_for_control(self.to_date)
         return from_date, to_date
 
-    def _put_old_dates(self):
+    def revert_dates(self):
         tz = self.env.user.tz
         self.from_date = _convert_to_local_date(
             self.min_from_date, tz=tz).date()

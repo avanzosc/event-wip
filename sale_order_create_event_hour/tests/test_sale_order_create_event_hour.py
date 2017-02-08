@@ -147,33 +147,33 @@ class TestSaleOrderCreateEventHour(common.TransactionCase):
         wiz.with_context(
             {'active_ids': [event.id]}).default_get(vals)
         wiz.from_date = '2016-05-01'
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz.write({'from_date': '2016-01-20',
                    'to_date': '2016-01-15'})
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz.write({'from_date': '2016-01-01',
                    'min_from_date': '2016-01-15'})
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz.write({'min_from_date': '2016-01-15 00:00:00',
                    'max_to_date': '2016-02-20 00:00:00',
                    'from_date': '2016-02-21 00:00:00',
                    'to_date': '2016-02-28 00:00:00'})
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz.write({'min_from_date': '2016-02-20 00:00:00',
                    'max_to_date': '2016-02-28 00:00:00',
                    'from_date': '2016-01-15 00:00:00',
                    'to_date': '2016-02-10 00:00:00'})
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz.write({'min_from_date': '2016-01-15 00:00:00',
                    'max_to_date': '2016-02-20 00:00:00',
                    'from_date': '2016-01-15 00:00:00',
                    'to_date': '2016-02-15 00:00:00'})
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz.write({'min_from_date': '2016-01-15 00:00:00',
                    'max_to_date': '2016-02-20 00:00:00',
                    'from_date': '2016-01-15 00:00:00',
                    'to_date': '2016-02-21 00:00:00'})
-        wiz._dates_control()
+        wiz.onchange_dates()
         wiz._prepare_dates_for_search_registrations()
         wiz_vals = {'min_event': event.id,
                     'max_event': event.id,
