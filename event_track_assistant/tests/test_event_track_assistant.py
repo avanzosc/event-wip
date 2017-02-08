@@ -62,49 +62,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         dict_add_wiz = registration.with_context().button_registration_open()
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).browse(dict_add_wiz.get('res_id'))
-        from_date = add_wiz.from_date
-        to_date = add_wiz.to_date
-        min_from_date = date2str(str2datetime(add_wiz.min_from_date).date())
-        max_to_date = date2str(str2datetime(add_wiz.max_to_date).date())
-        wrong_from_date = str2datetime(add_wiz.min_from_date) -\
-            relativedelta(days=1)
-        wrong_to_date = str2datetime(add_wiz.max_to_date) +\
-            relativedelta(days=1)
-        not_warn = add_wiz.onchange_dates_and_partner()
-        self.assertNotIn('warning', not_warn)
-        add_wiz.write({
-            'from_date': to_date,
-            'to_date': from_date,
-        })
-        warn1 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn1)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-        add_wiz.write({
-            'from_date': wrong_from_date,
-            'to_date': to_date,
-        })
-        warn2 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn2)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-        add_wiz.write({
-            'from_date': from_date,
-            'to_date': wrong_to_date,
-        })
-        warn3 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn3)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-        add_wiz.write({
-            'from_date': from_date,
-            'to_date': to_date,
-        })
         add_wiz.action_append()
-        warn4 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn4)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
         self.assertNotEquals(len(self.event.mapped('track_ids.presences')), 0)
         registration.date_start = str2datetime(self.event.date_begin) -\
             relativedelta(days=1)
@@ -259,45 +217,100 @@ class TestEventTrackAssistant(common.TransactionCase):
             lambda r: r.partner_id == self.partner)
         self.assertEquals(registration.state, 'cancel')
 
+    def test_event_assistant_add_wizard(self):
+        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        from_date = add_wiz.from_date
+        to_date = add_wiz.to_date
+        min_from_date = date2str(str2datetime(add_wiz.min_from_date).date())
+        max_to_date = date2str(str2datetime(add_wiz.max_to_date).date())
+        wrong_from_date = str2datetime(add_wiz.min_from_date) -\
+            relativedelta(days=1)
+        wrong_to_date = str2datetime(add_wiz.max_to_date) +\
+            relativedelta(days=1)
+        not_warn = add_wiz.onchange_dates_and_partner()
+        self.assertNotIn('warning', not_warn)
+        add_wiz.write({
+            'from_date': to_date,
+            'to_date': from_date,
+        })
+        warn1 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn1)
+        self.assertEquals(add_wiz.from_date, min_from_date)
+        self.assertEquals(add_wiz.to_date, max_to_date)
+        add_wiz.write({
+            'from_date': wrong_from_date,
+            'to_date': to_date,
+        })
+        warn2 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn2)
+        self.assertEquals(add_wiz.from_date, min_from_date)
+        self.assertEquals(add_wiz.to_date, max_to_date)
+        add_wiz.write({
+            'from_date': from_date,
+            'to_date': wrong_to_date,
+        })
+        warn3 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn3)
+        self.assertEquals(add_wiz.from_date, min_from_date)
+        self.assertEquals(add_wiz.to_date, max_to_date)
+        add_wiz.write({
+            'from_date': from_date,
+            'to_date': to_date,
+        })
+        add_wiz.action_append()
+        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        warn4 = add_wiz.onchange_dates_and_partner()
+        self.assertIn('warning', warn4)
+        self.assertEquals(add_wiz.from_date, min_from_date)
+        self.assertEquals(add_wiz.to_date, max_to_date)
+
     def test_event_assistant_delete_wizard(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).create({'partner': self.partner.id})
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
+        from_date = self.event.track_ids[:1].date
+        to_date = self.event.track_ids[-1:].date
         del_wiz = self.wiz_del_model.with_context(
             active_ids=self.event.ids).create({
                 'partner': self.partner.id,
-                'from_date': '2025-01-22',
-                'to_date': '2025-01-28',
+                'from_date': from_date,
+                'to_date': to_date,
             })
         min_from_date = date2str(str2datetime(del_wiz.min_from_date).date())
         max_to_date = date2str(str2datetime(del_wiz.max_to_date).date())
-        not_warn = del_wiz._dates_control()
+        wrong_from_date = str2datetime(del_wiz.min_from_date) -\
+            relativedelta(days=1)
+        wrong_to_date = str2datetime(del_wiz.max_to_date) +\
+            relativedelta(days=1)
+        not_warn = del_wiz.onchange_dates()
         self.assertNotIn('warning', not_warn)
         self.assertNotEquals(del_wiz.from_date, min_from_date)
         self.assertNotEquals(del_wiz.to_date, max_to_date)
         del_wiz.write({
-            'from_date': '2025-01-30',
-            'to_date': '2025-01-20',
+            'from_date': to_date,
+            'to_date': from_date,
         })
-        warn1 = del_wiz._dates_control()
+        warn1 = del_wiz.onchange_dates()
         self.assertIn('warning', warn1)
         self.assertEquals(del_wiz.from_date, min_from_date)
         self.assertEquals(del_wiz.to_date, max_to_date)
         del_wiz.write({
-            'from_date': '2025-01-19',
-            'to_date': '2025-01-30',
+            'from_date': wrong_from_date,
+            'to_date': to_date,
         })
-        warn2 = del_wiz._dates_control()
+        warn2 = del_wiz.onchange_dates()
         self.assertIn('warning', warn2)
         self.assertEquals(del_wiz.from_date, min_from_date)
         self.assertEquals(del_wiz.to_date, max_to_date)
         del_wiz.write({
-            'from_date': '2025-01-20',
-            'to_date': '2025-01-31',
+            'from_date': from_date,
+            'to_date': wrong_to_date,
         })
-        warn3 = del_wiz._dates_control()
+        warn3 = del_wiz.onchange_dates()
         self.assertIn('warning', warn3)
         self.assertEquals(del_wiz.from_date, min_from_date)
         self.assertEquals(del_wiz.to_date, max_to_date)

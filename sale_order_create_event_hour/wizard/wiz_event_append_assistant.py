@@ -38,9 +38,9 @@ class WizEventAppendAssistant(models.TransientModel):
         res = super(WizEventAppendAssistant, self).onchange_dates_and_partner()
         return res
 
-    def _put_old_dates(self):
+    def revert_dates(self):
         tz = self.env.user.tz
-        super(WizEventAppendAssistant, self)._put_old_dates()
+        super(WizEventAppendAssistant, self).revert_dates()
         self.start_time = _convert_time_to_float(self.min_from_date, tz=tz)
         self.end_time = _convert_time_to_float(self.max_to_date, tz=tz)
 
