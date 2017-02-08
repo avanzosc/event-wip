@@ -19,6 +19,7 @@
         "analytic",
         "account_analytic_analysis_recurring_day",
         "account_banking_mandate",
+        "account_banking_sepa_direct_debit",
         "event_sale",
         "sale_order_create_event",
         "event_registration_hr_contract",

@@ -13,7 +13,7 @@ class WizEventDeleteCanceledRegistration(models.TransientModel):
         for event in event_obj.browse(self.env.context.get('active_ids')):
             registrations = event.registration_ids.filtered(
                 lambda x: x.state == 'cancel')
-            presences = event.track_ids.mapped('presences')
+            presences = event.mapped('track_ids.presences')
             partners = registrations.mapped('partner_id')
             for partner in partners:
                 if presences.filtered(lambda x: x.partner.id == partner.id and

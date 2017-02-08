@@ -25,16 +25,16 @@ class EventEvent(models.Model):
         compute='_count_registrations')
     count_pickings = fields.Integer(
         string='Pickings',
-        compute='_count_teacher_pickings_moves')
+        compute='_compute_count_teacher_pickings_moves')
     count_moves = fields.Integer(
         string='Moves',
-        compute='_count_teacher_pickings_moves')
+        compute='_compute_count_teacher_pickings_moves')
     seats_canceled = fields.Integer(
         string='Canceled registrations', store=True, readonly=True,
         compute='_compute_seats')
     count_presences = fields.Integer(
         string='Presences',
-        compute='_count_presences')
+        compute='_compute_count_presences')
 
     @api.multi
     @api.depends('registration_ids')
@@ -48,20 +48,20 @@ class EventEvent(models.Model):
                 len(record.employee_registration_ids)
 
     @api.multi
-    def _count_teacher_pickings_moves(self):
+    def _compute_count_teacher_pickings_moves(self):
         picking_obj = self.env['stock.picking']
         move_obj = self.env['stock.move']
         for event in self:
-            partners = self.env['res.partner']
-            partners |= event.mapped('employee_registration_ids.partner_id')
+            partners = event.mapped('employee_registration_ids.partner_id')
             cond = [('partner_id', 'in', partners.ids)]
             pickings = picking_obj.search(cond)
             event.count_pickings = len(pickings)
+            cond = [('picking_id.partner_id', 'in', partners.ids)]
             moves = move_obj.search(cond)
             event.count_moves = len(moves)
 
     @api.multi
-    def _count_presences(self):
+    def _compute_count_presences(self):
         for event in self:
             event.count_presences = len(event.mapped('track_ids.presences'))
 
@@ -163,32 +163,23 @@ class EventEvent(models.Model):
 
     @api.multi
     def show_teacher_pickings(self):
-        self.ensure_one()
-        picking_obj = self.env['stock.picking']
-        partners = self.env['res.partner']
-        partners |= self.employee_registration_ids.mapped('partner_id')
-        cond = [('partner_id', 'in', partners.ids)]
-        pickings = picking_obj.search(cond)
+        partners = self.mapped('employee_registration_ids.partner_id')
         return {'name': _('Teachers pickings'),
                 'type': 'ir.actions.act_window',
                 'view_mode': 'tree,form,calendar',
                 'view_type': 'form',
                 'res_model': 'stock.picking',
-                'domain': [('partner_id', 'in', pickings.ids)]}
+                'domain': [('partner_id', 'in', partners.ids)]}
 
     @api.multi
     def show_teacher_moves(self):
-        move_obj = self.env['stock.move']
-        partners = self.env['res.partner']
-        partners |= self.employee_registration_ids.mapped('partner_id')
-        cond = [('partner_id', 'in', partners.ids)]
-        moves = move_obj.search(cond)
+        partners = self.mapped('employee_registration_ids.partner_id')
         return {'name': _('Teachers moves'),
                 'type': 'ir.actions.act_window',
                 'view_mode': 'tree,form',
                 'view_type': 'form',
                 'res_model': 'stock.move',
-                'domain': [('partner_id', 'in', moves.ids)]}
+                'domain': [('picking_id.partner_id', 'in', partners.ids)]}
 
 
 class EventRegistration(models.Model):
@@ -229,10 +220,9 @@ class EventRegistration(models.Model):
         wiz_vals.update({'create_account': self.required_account})
         return wiz_vals
 
-    @api.one
+    @api.multi
     def button_reg_cancel(self):
-        if self.analytic_account:
-            self.analytic_account.set_cancel()
+        self.mapped('analytic_account').set_cancel()
         super(EventRegistration, self).button_reg_cancel()
 
 
