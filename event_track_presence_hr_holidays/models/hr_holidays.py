@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, api
-from datetime import datetime
+from openerp import api, fields, models
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
+
+date2str = fields.Date.to_string
 
 
 class HrHolidays(models.Model):
@@ -22,13 +24,9 @@ class HrHolidays(models.Model):
 
     def _catch_employee_presences(self, holiday):
         presence_obj = self.env['event.track.presence']
-        event_obj = self.env['event.event']
-        date_from = event_obj._convert_date_to_local_format_with_hour(
-            holiday.date_from).strftime('%Y-%m-%d')
-        date_from = datetime.strptime(str(date_from), "%Y-%m-%d").date()
-        date_to = event_obj._convert_date_to_local_format_with_hour(
-            holiday.date_to).strftime('%Y-%m-%d')
-        date_to = datetime.strptime(str(date_to), "%Y-%m-%d").date()
+        tz = self.env.user.tz
+        date_from = date2str(_convert_to_local_date(holiday.date_from, tz=tz))
+        date_to = date2str(_convert_to_local_date(holiday.date_to, tz=tz))
         cond = [('partner', '=',
                  holiday.employee_id.address_home_id.id),
                 ('session_date_without_hour', '>=', date_from),
