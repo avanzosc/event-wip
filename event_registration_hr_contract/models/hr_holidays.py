@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, api, _
+from openerp import _, api, fields, models
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
+
+date2str = fields.Date.to_string
 
 
 class HrHolidays(models.Model):
@@ -39,12 +42,10 @@ class HrHolidays(models.Model):
     def _find_employee_calendar(self, holiday, validate_ausence):
         wiz_obj = self.env['wiz.calculate.employee.calendar']
         partner_calendar_obj = self.env['res.partner.calendar']
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         employee_with_calendar = True
-        from_year = int(event_obj._convert_date_to_local_format_with_hour(
-            holiday.date_from).strftime('%Y'))
-        to_year = int(event_obj._convert_date_to_local_format_with_hour(
-            holiday.date_to).strftime('%Y'))
+        from_year = _convert_to_local_date(holiday.date_from, tz=tz).year
+        to_year = _convert_to_local_date(holiday.date_to, tz=tz).year
         while from_year <= to_year:
             cond = [('partner', '=', holiday.employee_id.address_home_id.id),
                     ('year', '=', from_year)]
@@ -73,11 +74,9 @@ class HrHolidays(models.Model):
 
     def _update_partner_calendar_day(self, holiday, absence_type=False):
         calendar_day_obj = self.env['res.partner.calendar.day']
-        event_obj = self.env['event.event']
-        date_from = event_obj._convert_date_to_local_format_with_hour(
-            holiday.date_from).strftime('%Y-%m-%d')
-        date_to = event_obj._convert_date_to_local_format_with_hour(
-            holiday.date_to).strftime('%Y-%m-%d')
+        tz = self.env.user.tz
+        date_from = date2str(_convert_to_local_date(holiday.date_from, tz=tz))
+        date_to = date2str(_convert_to_local_date(holiday.date_to, tz=tz))
         cond = [('partner', '=', holiday.employee_id.address_home_id.id),
                 ('date', '>=', date_from),
                 ('date', '<=', date_to)]

@@ -3,6 +3,7 @@
 # For copyright and license notices, see __openerp__.py file in root directory
 ##############################################################################
 from openerp import models, fields, api
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
 
 
 class WizCalculateEmployeeCalendar(models.TransientModel):
@@ -17,11 +18,9 @@ class WizCalculateEmployeeCalendar(models.TransientModel):
     def button_calculate_employee_calendar(self):
         self.ensure_one()
         partner_calendar_obj = self.env['res.partner.calendar']
-        event_obj = self.env['event.event']
-        from_year = int(event_obj._convert_date_to_local_format_with_hour(
-            self.ausence.date_from).strftime('%Y'))
-        to_year = int(event_obj._convert_date_to_local_format_with_hour(
-            self.ausence.date_to).strftime('%Y'))
+        tz = self.env.user.tz
+        from_year = _convert_to_local_date(self.ausence.date_from, tz=tz).year
+        to_year = _convert_to_local_date(self.ausence.date_to, tz=tz).year
         while from_year <= to_year:
             partner = self.ausence.employee_id.address_home_id
             cond = [('partner', '=', partner.id),
@@ -42,10 +41,10 @@ class WizCalculateEmployeeCalendar(models.TransientModel):
 
     def _generate_calendar(self, partner, year):
         contract_obj = self.env['hr.contract']
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         partner._generate_calendar(year)
-        date_start = event_obj._convert_date_to_local_format_with_hour(
-            self.ausence.date_from).date().strftime('%Y-%m-%d')
+        date_start = _convert_to_local_date(self.ausence.date_from,
+                                            tz=tz).date()
         cond = [('employee_id', '=', self.ausence.employee_id.id), '|',
                 ('date_end', '=', False),
                 ('date_end', '>', date_start)]
