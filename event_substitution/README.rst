@@ -6,7 +6,8 @@
 Event substitution
 ==================
 
-* This module allows you to define holiday calendars and employee calendars.
+This module allows you to define holiday calendars and employee calendars.
+
 * The holiday calendar is in Human Resources > Configuration.
 * The employee calendar is in Human Resources > Human Resources.
 * The employee calendar is generated from his contract.
