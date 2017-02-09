@@ -2,19 +2,20 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
 
 
 class WizEventAppendAssistant(models.TransientModel):
     _inherit = 'wiz.event.append.assistant'
 
     def _put_init_dates_in_wizard(self):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         if not self.from_date:
-            self.from_date = event_obj._convert_date_to_local_format_with_hour(
-                self.min_from_date).date()
+            self.from_date = _convert_to_local_date(
+                self.min_from_date, tz=tz).date()
         if not self.to_date:
-            self.to_date = event_obj._convert_date_to_local_format_with_hour(
-                self.max_to_date).date()
+            self.to_date = _convert_to_local_date(
+                self.max_to_date, tz=tz).date()
 
     def _put_pending_presence_state(self, presence):
         res = super(WizEventAppendAssistant, self)._put_pending_presence_state(
