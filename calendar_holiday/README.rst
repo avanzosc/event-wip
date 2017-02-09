@@ -12,6 +12,7 @@ This module allows you to define holiday calendars and employee calendars.
 * Employee calendars are available in Human Resources > Human Resources.
 
 * The employee calendar is generated from his contract.
+* New scheduled action for generate calendar in contracts annually.
 
 Credits
 =======

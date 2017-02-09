@@ -20,6 +20,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "data/calendar_holiday_data.xml",
         "wizard/wiz_calculate_workable_festive_view.xml",
         "views/calendar_holiday_view.xml",
         "views/calendar_holiday_day_view.xml",

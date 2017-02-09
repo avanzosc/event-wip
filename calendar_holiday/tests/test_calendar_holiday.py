@@ -54,6 +54,16 @@ class TestCalendarHoliday(common.TransactionCase):
             'holiday_calendars': [(6, 0, [self.calendar_holiday.id])],
         }
         self.contract = self.contract_model.create(contract_vals)
+        contract_vals = {'name': 'Contract 1',
+                         'employee_id': self.ref('hr.employee_vad'),
+                         'partner': self.ref('base.public_partner'),
+                         'type_id':
+                         self.ref('hr_contract.hr_contract_type_emp'),
+                         'wage': 500,
+                         'date_start': '2010-02-01',
+                         'working_hours':
+                         self.ref('resource.timesheet_group1')}
+        self.contract_cron = self.contract_model.create(contract_vals)
 
     def test_calendar_holiday(self):
         cond = [('partner', '=', self.contract.partner.id),
@@ -89,3 +99,10 @@ class TestCalendarHoliday(common.TransactionCase):
             self.employee.id, date_to, date_from)
         days = int(vals['value'].get('number_of_days_temp'))
         self.assertEqual(days, 6, 'Absent days(3) badly calculated')
+
+    def test_calendar_holiday_calendar_Scheduler(self):
+        self.contract_cron.automatic_process_generate_calendar()
+        cond = [('partner', '=', self.ref('base.public_partner'))]
+        calendars = self.calendar_model.search(cond)
+        self.assertEquals(
+            len(calendars), 1, 'Calendar no generated for employee')

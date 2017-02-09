@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-01 13:54+0000\n"
-"PO-Revision-Date: 2016-08-01 15:59+0100\n"
+"POT-Creation-Date: 2017-02-09 10:05+0000\n"
+"PO-Revision-Date: 2017-02-09 11:06+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,12 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: calendar_holiday
-#: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
 #: field:calendar.holiday.day,absence_type:0
+msgid "Absence Type"
+msgstr "Tipo ausencia"
+
+#. module: calendar_holiday
+#: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
 #: view:res.partner.calendar.day:calendar_holiday.res_partner_calendar_day_search_view
 #: field:res.partner.calendar.day,absence_type:0
 #: field:res.partner.calendar.day,absence_type_from_employee_contract:0
@@ -36,15 +40,11 @@ msgid "Calculate workables and festives in the calendar of the employee"
 msgstr "Calcular laborables y festivos en el calendario del empleado"
 
 #. module: calendar_holiday
+#: field:calendar.holiday.day,calendar_holiday:0
 #: view:res.partner.calendar.day:calendar_holiday.res_partner_calendar_day_search_view
 #: field:res.partner.calendar.day,calendar:0
 msgid "Calendar"
 msgstr "Calendario"
-
-#. module: calendar_holiday
-#: field:calendar.holiday,lines:0
-msgid "Calendar Holiday lines"
-msgstr "Líneas calendario festivos"
 
 #. module: calendar_holiday
 #: field:res.partner.calendar,dates:0
@@ -55,7 +55,6 @@ msgstr "Fechas calendario"
 #: view:calendar.holiday:calendar_holiday.calendar_holiday_form_view
 #: view:calendar.holiday:calendar_holiday.calendar_holiday_tree_view
 #: view:calendar.holiday.day:calendar_holiday.calendar_holiday_day_search_view
-#: field:calendar.holiday.day,calendar_holiday:0
 #: model:ir.model,name:calendar_holiday.model_calendar_holiday
 msgid "Calendar holiday"
 msgstr "Calendario festivo"
@@ -148,7 +147,7 @@ msgstr "Descripción"
 #: field:res.partner.calendar.day,display_name:0
 #: field:wiz.calculate.workable.festive,display_name:0
 msgid "Display Name"
-msgstr "Display Name"
+msgstr "Mostrar descripción"
 
 #. module: calendar_holiday
 #: model:ir.actions.act_window,name:calendar_holiday.action_res_partner_calendar_view
@@ -225,6 +224,11 @@ msgstr ""
 "directly in html format in order to be inserted in kanban views."
 
 #. module: calendar_holiday
+#: field:calendar.holiday,lines:0
+msgid "Holiday Days"
+msgstr "Días vacaciones"
+
+#. module: calendar_holiday
 #: view:hr.contract:calendar_holiday.hr_contract_view_form_inh_calendarholiday
 #: field:hr.contract,holiday_calendars:0
 msgid "Holiday calendars"
@@ -279,6 +283,11 @@ msgstr "Última actualización por"
 #: field:wiz.calculate.workable.festive,write_date:0
 msgid "Last Updated on"
 msgstr "Última actualización el"
+
+#. module: calendar_holiday
+#: model:ir.model,name:calendar_holiday.model_hr_holidays
+msgid "Leave"
+msgstr "Ausencia"
 
 #. module: calendar_holiday
 #: view:hr.employee:calendar_holiday.view_employee_filter_inh_calendarholiday
@@ -375,13 +384,13 @@ msgid "Sunday"
 msgstr "Domingo"
 
 #. module: calendar_holiday
-#: code:addons/calendar_holiday/models/res_partner.py:47
+#: code:addons/calendar_holiday/models/res_partner.py:65
 #, python-format
 msgid "The calendar %s was not found, for employee %s"
 msgstr "El calendario %s no ha sido encontrado,para el empleado %s"
 
 #. module: calendar_holiday
-#: code:addons/calendar_holiday/models/res_partner.py:54
+#: code:addons/calendar_holiday/models/res_partner.py:72
 #, python-format
 msgid "The day %s was not found in the calendar %s, for employee %s"
 msgstr "El día %s no ha sido encontrado en el calendario %s, del empleado %s"
@@ -457,14 +466,12 @@ msgstr "Año"
 
 #. module: calendar_holiday
 #: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:41
-#: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:42
 #, python-format
 msgid "Year introduced less than year contract beginning"
 msgstr "El año introducido es menor que el año de inicio de contrato"
 
 #. module: calendar_holiday
 #: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:46
-#: code:addons/calendar_holiday/wizard/wiz_calculate_workable_festive.py:47
 #, python-format
 msgid "Year introduced more than year end contract"
 msgstr "El año introducido el mayor que el año fin del contrado"

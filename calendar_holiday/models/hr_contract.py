@@ -30,3 +30,30 @@ class HrContract(models.Model):
         for contract in self.filtered('partner'):
             contract.message_subscribe(contract.partner.ids)
         return result
+
+    @api.multi
+    def _generate_calendar_from_wizard(self, year):
+        for contract in self:
+            contract.partner._generate_calendar(year)
+            if (contract.working_hours and
+                    contract.working_hours.attendance_ids):
+                contract.partner._put_estimated_hours_in_calendar(year,
+                                                                  contract)
+            if contract.holiday_calendars:
+                for calendar in contract.holiday_calendars:
+                    contract.partner._generate_festives_in_calendar(year,
+                                                                    calendar)
+
+    @api.multi
+    def automatic_process_generate_calendar(self):
+        contract_obj = self.env['hr.contract']
+        date_begin = '{}-01-01'.format(fields.Date.from_string(
+            fields.Date.today()).year)
+        cond = [('type_id', '=',
+                 self.env.ref('hr_contract.hr_contract_type_emp').id),
+                '|', ('date_end', '=', False),
+                ('date_end', '>=', date_begin)]
+        contracts = contract_obj.search(cond)
+        for contract in contracts:
+            contract._generate_calendar_from_wizard(
+                fields.Date.from_string(fields.Date.today()).year)
