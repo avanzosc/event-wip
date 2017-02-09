@@ -275,11 +275,9 @@ class TestEventTrackAssistant(common.TransactionCase):
         from_date = self.event.track_ids[:1].date
         to_date = self.event.track_ids[-1:].date
         del_wiz = self.wiz_del_model.with_context(
-            active_ids=self.event.ids).create({
-                'partner': self.partner.id,
-                'from_date': from_date,
-                'to_date': to_date,
-            })
+            active_ids=self.event.ids).create({'partner': self.partner.id,
+                                               'from_date': from_date,
+                                               'to_date': to_date})
         min_from_date = date2str(str2datetime(del_wiz.min_from_date).date())
         max_to_date = date2str(str2datetime(del_wiz.max_to_date).date())
         wrong_from_date = str2datetime(del_wiz.min_from_date) -\
@@ -393,3 +391,20 @@ class TestEventTrackAssistant(common.TransactionCase):
             lambda x: x.partner_id == self.partner)
         self.assertNotEqual(
             len(new_registration), 0, 'Registration not found in new event')
+
+    def test_update_registration_dates_from_wizard(self):
+        registration_vals = {
+            'event_id': self.event.id,
+            'partner_id': self.partner.id,
+            'date_start': '2025-01-20',
+            'date_end': '2025-01-30'}
+        registration = self.registration_model.create(registration_vals)
+        wiz_vals = {'partner': self.partner.id,
+                    'from_date': '2025-01-22',
+                    'to_date': '2025-01-28'}
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create(wiz_vals)
+        add_wiz._update_registration_start_date(registration)
+        self.assertEquals(registration.date_start, '2025-01-22 00:00:00')
+        add_wiz._update_registration_date_end(registration)
+        self.assertEquals(registration.date_end, '2025-01-28 00:00:00')

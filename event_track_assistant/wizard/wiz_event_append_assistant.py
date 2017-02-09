@@ -203,34 +203,20 @@ class WizEventAppendAssistant(models.TransientModel):
         return cond
 
     def _update_registration_start_date(self, registration):
-        start_time = 0.0
-        try:
-            start_time = self.start_time
-        except:
-            pass
-        date_start = registration.date_start
-        date_begin = registration.event_id.date_begin
-        from_date = datetime2str(self._local_date(self.from_date, start_time))
-        if date_start and from_date < date_start and from_date >= date_begin:
-            registration.date_start = from_date
-        elif from_date < date_begin and (from_date < date_start or
-                                         not date_start):
-            registration.date_start = date_begin
+        reg_date_start = fields.Datetime.from_string(
+            registration.date_start)
+        wiz_from_date = fields.Date.from_string(self.from_date)
+        if wiz_from_date != reg_date_start.date():
+            registration.date_start = '{} {}'.format(
+                self.from_date, reg_date_start.time())
 
     def _update_registration_date_end(self, registration):
-        end_time = 0.0
-        try:
-            end_time = self.end_time
-        except:
-            pass
-        date_stop = registration.date_end
-        date_end = registration.event_id.date_end
-        to_date = datetime2str(self._local_date(self.to_date, end_time))
-        if date_stop and to_date > date_stop and to_date <= date_end:
-            registration.date_end = to_date
-        elif to_date > date_end and (to_date > date_stop or
-                                     not date_stop):
-            registration.date_end = date_end
+        reg_date_end = fields.Datetime.from_string(
+            registration.date_end)
+        wiz_to_date = fields.Date.from_string(self.to_date)
+        if wiz_to_date != reg_date_end.date():
+            registration.date_end = '{} {}'.format(
+                self.to_date, reg_date_end.time())
 
     def _prepare_registration_data(self, event):
         tz = self.env.user.tz
