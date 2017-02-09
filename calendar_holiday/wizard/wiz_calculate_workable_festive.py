@@ -44,11 +44,4 @@ class WizCalculateWorkableFestive(models.TransientModel):
             if self.year > date_end.year:
                 raise exceptions.Warning(
                     _('Year introduced more than year end contract'))
-        contract.partner._generate_calendar(self.year)
-        if contract.working_hours and contract.working_hours.attendance_ids:
-            contract.partner._put_estimated_hours_in_calendar(self.year,
-                                                              contract)
-        if contract.holiday_calendars:
-            for calendar in contract.holiday_calendars:
-                contract.partner._generate_festives_in_calendar(
-                    self.year, calendar)
+        contract._generate_calendar_from_wizard(self.year)
