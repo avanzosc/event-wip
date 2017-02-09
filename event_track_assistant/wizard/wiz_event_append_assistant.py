@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+import pytz
 from openerp import fields, models, api, exceptions, _
 from .._common import _convert_to_local_date, _convert_to_utc_date
-
 datetime2str = fields.Datetime.to_string
 date2str = fields.Date.to_string
 
@@ -203,34 +203,26 @@ class WizEventAppendAssistant(models.TransientModel):
         return cond
 
     def _update_registration_start_date(self, registration):
-        start_time = 0.0
-        try:
-            start_time = self.start_time
-        except:
-            pass
-        date_start = registration.date_start
-        date_begin = registration.event_id.date_begin
-        from_date = datetime2str(self._local_date(self.from_date, start_time))
-        if date_start and from_date < date_start and from_date >= date_begin:
-            registration.date_start = from_date
-        elif from_date < date_begin and (from_date < date_start or
-                                         not date_start):
-            registration.date_start = date_begin
+        event_obj = self.env['event.event']
+        registration_date = event_obj._convert_date_to_local_format_with_hour(
+            registration.date_start)
+        if self.from_date > datetime2str(registration_date.date()):
+            local = pytz.timezone(self.env.user.tz)
+            local_dt = local.localize(fields.Datetime.from_string(
+                '{} {}'.format(self.from_date,
+                               registration_date.time())), is_dst=None)
+            registration.date_start = local_dt.astimezone(pytz.utc)
 
     def _update_registration_date_end(self, registration):
-        end_time = 0.0
-        try:
-            end_time = self.end_time
-        except:
-            pass
-        date_stop = registration.date_end
-        date_end = registration.event_id.date_end
-        to_date = datetime2str(self._local_date(self.to_date, end_time))
-        if date_stop and to_date > date_stop and to_date <= date_end:
-            registration.date_end = to_date
-        elif to_date > date_end and (to_date > date_stop or
-                                     not date_stop):
-            registration.date_end = date_end
+        event_obj = self.env['event.event']
+        registration_date = event_obj._convert_date_to_local_format_with_hour(
+            registration.date_end)
+        if self.to_date < datetime2str(registration_date.date()):
+            local = pytz.timezone(self.env.user.tz)
+            local_dt = local.localize(fields.Datetime.from_string(
+                '{} {}'.format(self.to_date,
+                               registration_date.time())), is_dst=None)
+            registration.date_end = local_dt.astimezone(pytz.utc)
 
     def _prepare_registration_data(self, event):
         tz = self.env.user.tz
