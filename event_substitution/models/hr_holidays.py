@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, api, _
+from openerp import _, api, fields, models
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
+
+date2str = fields.Date.to_string
 
 
 class HrHolidays(models.Model):
@@ -43,20 +46,15 @@ class HrHolidays(models.Model):
 
     @api.multi
     def _find_events_for_substitution_employee(self):
-        event_obj = self.env['event.event']
+        tz = self.env.user.tz
         presence_obj = self.env['event.track.presence']
-        events = self.env['event.event']
         self.ensure_one()
-        date_from = event_obj._convert_date_to_local_format_with_hour(
-            self.date_from).strftime('%Y-%m-%d')
-        date_to = event_obj._convert_date_to_local_format_with_hour(
-            self.date_to).strftime('%Y-%m-%d')
+        date_from = date2str(_convert_to_local_date(self.date_from, tz=tz))
+        date_to = date2str(_convert_to_local_date(self.date_to, tz=tz))
         cond = [('partner', '=', self.employee_id.address_home_id.id),
                 ('session_date_without_hour', '>=', date_from),
                 ('session_date_without_hour', '<=', date_to),
                 ('state', 'not in', ('canceled', 'done'))]
         presences = presence_obj.search(cond)
-        for presence in presences:
-            if presence.event not in events:
-                events += presence.event
+        events = presences.mapped('event')
         return events
