@@ -28,6 +28,7 @@
         "account_payment",
     ],
     "data": [
+        "security/event_registration_analytic.xml",
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_impute_in_presence_from_session_view.xml",
         "wizard/wiz_event_delete_canceled_registration_view.xml",

@@ -250,6 +250,12 @@ class EventTrack(models.Model):
             track.real_duration = (max(track.mapped('presences.real_duration'))
                                    if track.presences else 0)
 
+    @api.depends('employee_presences')
+    def _compute_session_teacher_ids(self):
+        for session in self:
+            session.session_teacher_ids = (
+                [(6, 0, session.mapped('employee_presences.partner').ids)])
+
     no_employee_presences = fields.One2many(
         comodel_name='event.track.presence', inverse_name='session',
         string='Student presences', readonly=False,
@@ -258,6 +264,10 @@ class EventTrack(models.Model):
         comodel_name='event.track.presence', inverse_name='session',
         string='Teacher presences', readonly=False,
         domain=[('employee', '!=', False)])
+    session_teacher_ids = fields.Many2many(
+        comodel_name='res.partner', relation='rel_teacher_event_track',
+        column1='event_track_id', column2='partner_id', store=True,
+        compute='_compute_session_teacher_ids', string='Session teachers')
 
     @api.multi
     def write(self, vals):
