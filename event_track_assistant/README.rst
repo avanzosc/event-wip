@@ -6,6 +6,8 @@
 Event track assistant
 =====================
 
+Prueba alfredo
+
 * This module create the new object 'Session assistants', and show it in event
   sessions.
 
