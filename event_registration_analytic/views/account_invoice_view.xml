@@ -42,6 +42,9 @@
                     <field name="event_id" />
                     <field name="event_address_id" />
                 </field>
+                <filter name="group_by_partner_id" position="before">
+                    <filter string="Event address" context="{'group_by':'event_address_id'}"/>
+                </filter>
             </field>
         </record>
     </data>

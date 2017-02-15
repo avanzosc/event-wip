@@ -218,6 +218,7 @@ msgid "Event Tracks"
 msgstr "Sesiones del evento"
 
 #. module: event_registration_analytic
+#: view:account.invoice:event_registration_analytic.view_account_invoice_filter_inh_registration
 #: field:account.invoice,event_address_id:0
 #: view:payment.line:event_registration_analytic.payment_line_search_view_inh_event_analytic
 #: field:payment.line,event_address_id:0
@@ -451,7 +452,7 @@ msgid "or"
 msgstr "o"
 
 #. module: event_registration_analytic
-#: view:event.registration:event_registration_analytic.view_event_registration_tree_inh_assistant
-#: view:wiz.impute.in.presence.from.session:event_registration_analytic.wiz_impute_presence_from_session_form_inh_analytic
-msgid "red:employee!=False"
-msgstr "red:employee!=False"
+#: field:event.event,count_all_registrations:0
+msgid "All assistants"
+msgstr "Todos los asistentes"
+
