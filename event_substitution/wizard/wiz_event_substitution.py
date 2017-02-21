@@ -53,7 +53,7 @@ class WizEventSubstitution(models.TransientModel):
             registration = registration_obj.create(vals)
             if len(registration.contracts_permitted) == 1:
                 registration.contract = registration.contracts_permitted[0].id
-            m = ("<p> " + date2str(fields.Date.context_today(self)) + ': ' +
+            m = ("<p> " + fields.Date.context_today(self) + ': ' +
                  _('The employee: %s, replaces the employee: %s, from date %s,'
                    ' to date %s') %
                  (line.employee.address_home_id.name,
