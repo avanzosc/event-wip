@@ -57,13 +57,6 @@ class EventEvent(models.Model):
                 self.date_end = track.date
         return res
 
-    def _convert_date_to_local_format(self, date):
-        if not date:
-            return False
-        new_date = str2datetime(date) if isinstance(date, str) else date
-        return _convert_to_local_date(
-            new_date.replace(hour=0, minute=0, second=0), tz=self.env.user.tz)
-
 
 class EventTrack(models.Model):
     _inherit = 'event.track'
@@ -442,9 +435,9 @@ class EventRegistration(models.Model):
             'min_event': self.event_id.id,
             'max_event': self.event_id.id,
             'from_date': from_date.date(),
-            'min_from_date': min_from_date.date(),
+            'min_from_date': min_from_date,
             'to_date': to_date.date(),
-            'max_to_date': max_to_date.date(),
+            'max_to_date': max_to_date,
         }
         return wiz_vals
 
@@ -457,6 +450,7 @@ class EventRegistration(models.Model):
             'removal_date': fields.Date.context_today(self),
         })
         super(EventRegistration, self).button_reg_cancel()
+        self.message_post(body=_('Event Registration canceled.'))
 
     @api.multi
     def new_button_reg_cancel(self):
@@ -483,15 +477,22 @@ class EventRegistration(models.Model):
 
     def _prepare_wizard_reg_cancel_vals(self):
         tz = self.env.user.tz
-        min_from_date = _convert_to_local_date(self.event_id.date_begin, tz)
-        from_date = _convert_to_local_date(self.date_start, tz)\
+        min_from_date = _convert_to_local_date(self.event_id.date_begin, tz=tz)
+        max_to_date = _convert_to_local_date(self.event_id.date_end, tz=tz)
+        from_date = _convert_to_local_date(self.date_start, tz=tz)\
             if self.date_start else min_from_date
+        to_date = _convert_to_local_date(self.date_end, tz=tz)\
+            if self.date_end else max_to_date
+        today = fields.Date.context_today(self)
         wiz_vals = {
             'registration': self.id,
             'partner': self.partner_id.id,
+            'from_date': from_date.date() if date2str(from_date) >= today
+            else today,
+            'min_from_date': min_from_date,
+            'to_date': to_date.date(),
+            'max_to_date': max_to_date,
         }
-        if str(from_date) < fields.Date.context_today(self):
-            wiz_vals['from_date'] = fields.Date.context_today(self)
         return wiz_vals
 
     @api.multi

@@ -62,10 +62,8 @@ class EventRegistration(models.Model):
         end_time = _convert_time_to_float(date_end, tz=tz)
         wiz_vals.update({
             'from_date': from_date.date(),
-            'min_from_date': date_start,
             'start_time': start_time,
             'to_date': to_date.date(),
-            'max_to_date': date_end,
             'end_time': end_time,
         })
         return wiz_vals

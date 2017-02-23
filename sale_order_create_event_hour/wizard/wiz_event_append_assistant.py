@@ -7,6 +7,7 @@ from openerp.addons.event_track_assistant._common import\
 
 date2string = fields.Date.to_string
 datetime2string = fields.Datetime.to_string
+str2datetime = fields.Datetime.from_string
 
 
 class WizEventAppendAssistant(models.TransientModel):
@@ -14,8 +15,6 @@ class WizEventAppendAssistant(models.TransientModel):
 
     type_hour = fields.Many2one(
         comodel_name='hr.type.hour', string='Type hour')
-    min_from_date = fields.Datetime(string='Min. from date', required=True)
-    max_to_date = fields.Datetime(string='Max. to date', required=True)
     start_time = fields.Float(string='Start time', default=0.0)
     end_time = fields.Float(string='End time', default=0.0)
 
@@ -41,42 +40,28 @@ class WizEventAppendAssistant(models.TransientModel):
     def revert_dates(self):
         tz = self.env.user.tz
         super(WizEventAppendAssistant, self).revert_dates()
-        self.start_time = _convert_time_to_float(self.min_from_date, tz=tz)
-        self.end_time = _convert_time_to_float(self.max_to_date, tz=tz)
+        self.start_time = _convert_time_to_float(_convert_to_utc_date(
+            self.min_from_date, tz=tz), tz=tz)
+        self.end_time = _convert_time_to_float(_convert_to_utc_date(
+            self.max_to_date, tz=tz), tz=tz)
 
     def _update_registration_start_date(self, registration):
         super(WizEventAppendAssistant, self)._update_registration_start_date(
             registration)
-        event_date_start = registration.event_id.date_begin
-        date_start = self._local_date(self.from_date, self.start_time)
-        from_date = datetime2string(date_start)
-        registration.date_start =\
-            event_date_start if from_date < event_date_start else date_start
-
-    def _compute_update_registration_start_date(self, registration):
-        from_date = datetime2string(self._local_date(
-            self.from_date, self.start_time))
-        if from_date < registration.date_start:
-            registration.date_start = from_date
-            if from_date < registration.event_id.date_begin:
-                registration.date_start = registration.event_id.date_begin
+        reg_date_start = str2datetime(registration.date_start)
+        wiz_from_date = _convert_to_utc_date(
+            self.from_date, time=self.end_time, tz=self.env.user.tz)
+        if wiz_from_date != reg_date_start:
+            registration.date_start = wiz_from_date
 
     def _update_registration_date_end(self, registration):
         super(WizEventAppendAssistant, self)._update_registration_date_end(
             registration)
-        event_date_end = registration.event_id.date_end
-        date_end = self._local_date(self.to_date, self.end_time)
-        to_date = datetime2string(date_end)
-        registration.date_end =\
-            event_date_end if to_date > event_date_end else date_end
-
-    def _compute_update_registration_end_date(self, registration):
-        to_date = datetime2string(self._local_date(
-            self.to_date, self.end_time))
-        if to_date > registration.date_end:
-            registration.date_end = to_date
-            if to_date > registration.event_id.date_end:
-                registration.date_end = registration.event_id.date_end
+        reg_date_end = str2datetime(registration.date_end)
+        wiz_to_date = _convert_to_utc_date(
+            self.to_date, time=self.end_time, tz=self.env.user.tz)
+        if wiz_to_date != reg_date_end:
+            registration.date_end = wiz_to_date
 
     def _prepare_registration_data(self, event):
         vals = super(WizEventAppendAssistant,

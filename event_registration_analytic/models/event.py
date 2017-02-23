@@ -209,7 +209,7 @@ class EventRegistration(models.Model):
         string='# valid mandates', store=True,
         related='partner_id.parent_num_valid_mandates')
 
-    @api.onchange('partner_id', 'partner_id.employee_id')
+    @api.onchange('partner_id')
     def _onchange_partner(self):
         super(EventRegistration, self)._onchange_partner()
         self.employee = self.partner_id.employee_id

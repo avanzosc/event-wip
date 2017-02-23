@@ -68,8 +68,8 @@ class WizImputeInPresenceFromSessionLine(models.TransientModel):
     @api.multi
     def _get_values_for_create_claim(self):
         self.ensure_one()
-        name = _(u'Event: {}, session:{}').format(self.presence.event.name,
-                                                  self.presence.session.name)
+        name = _(u'Event: {}, session: {}').format(self.presence.event.name,
+                                                   self.presence.session.name)
         description = _(u'SESSION DATE: {}, PERSON: {}, NOTES: {}').format(
             self.presence.session.date, self.presence.partner.name,
             self.notes)

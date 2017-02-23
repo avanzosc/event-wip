@@ -1,20 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* sale_order_create_event_hour
+#	* sale_order_create_event_hour
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-21 09:32+0000\n"
-"PO-Revision-Date: 2016-04-21 11:33+0100\n"
+"POT-Creation-Date: 2017-02-23 17:35+0000\n"
+"PO-Revision-Date: 2017-02-23 17:35+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"X-Generator: Poedit 1.5.4\n"
 
 #. module: sale_order_create_event_hour
 #: model:ir.model,name:sale_order_create_event_hour.model_account_analytic_account
@@ -32,7 +31,6 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: sale_order_create_event_hour
-#: view:hr.type.hour:sale_order_create_event_hour.hr_type_hour_form_view
 #: field:hr.type.hour,name:0
 msgid "Description"
 msgstr "Descripción"
@@ -50,30 +48,7 @@ msgid "End time"
 msgstr "Hora fin"
 
 #. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:102
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:111
-#, python-format
-msgid "Error in dates"
-msgstr "Error en fechas"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:61
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:70
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:97
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:106
-#, python-format
-msgid "Error in from date"
-msgstr "Error en fecha desde"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:80
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:116
-#, python-format
-msgid "Error in to date"
-msgstr "Error en fecha hasta"
-
-#. module: sale_order_create_event_hour
-#: view:event.track:sale_order_create_event_hour.view_event_track_search_inh_hour
+#: view:event.track:sale_order_create_event_hour.event_track_type_hour_search_view
 #: model:ir.model,name:sale_order_create_event_hour.model_event_event
 msgid "Event"
 msgstr "Evento"
@@ -99,27 +74,6 @@ msgid "Festive workable"
 msgstr "Festivo a trabajar"
 
 #. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:63
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:99
-#, python-format
-msgid "From date greater than date to"
-msgstr "Fecha desde mayor que fecha hasta"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:82
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:118
-#, python-format
-msgid "From date greater than end date of the event %s"
-msgstr "Fecha desde mayor que fecha fin del evento %s"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:72
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:108
-#, python-format
-msgid "From date less than start date of the event %s"
-msgstr "Fecha desde menor que fecha inicio del evento %s"
-
-#. module: sale_order_create_event_hour
 #: field:hr.type.hour,id:0
 msgid "ID"
 msgstr "ID"
@@ -138,12 +92,6 @@ msgstr "Última actualización por"
 #: field:hr.type.hour,write_date:0
 msgid "Last Updated on"
 msgstr "Última actualización el"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:113
-#, python-format
-msgid "Not tasks found for introduced dates"
-msgstr "Tareas no encontradas para las fechas introducidas"
 
 #. module: sale_order_create_event_hour
 #: model:ir.model,name:sale_order_create_event_hour.model_sale_order
@@ -168,7 +116,7 @@ msgid "Start time"
 msgstr "Hora inicio"
 
 #. module: sale_order_create_event_hour
-#: view:event.track.presence:sale_order_create_event_hour.event_track_presence_search_view_inh_hour
+#: view:event.track.presence:sale_order_create_event_hour.event_track_presence_type_hour_search_view
 msgid "State"
 msgstr "Estado"
 
@@ -183,29 +131,12 @@ msgid "Task"
 msgstr "Tarea"
 
 #. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:81
-#, python-format
-msgid "This person has sessions with dates after"
-msgstr "Esta persona tiene sesiones con fecha posterior"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:79
-#, python-format
-msgid "This person has sessions with dates before"
-msgstr "Esta persona tiene sesiones con fecha anterior"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_delete_assistant.py:76
-#, python-format
-msgid "This person has sessions with dates before and after"
-msgstr "Esta persona tiene sesiones con fechas anteriores y posteriores"
-
-#. module: sale_order_create_event_hour
-#: view:account.analytic.account:sale_order_create_event_hour.account_analytic_account_form_inh_with_hour
-#: field:account.analytic.account,type_hour:0 field:event.event,type_hour:0
-#: view:event.track:sale_order_create_event_hour.view_event_track_search_inh_hour
+#: view:account.analytic.account:sale_order_create_event_hour.account_analytic_account_type_hour_form_view
+#: field:account.analytic.account,type_hour:0
+#: field:event.event,type_hour:0
+#: view:event.track:sale_order_create_event_hour.event_track_type_hour_search_view
 #: field:event.track,type_hour:0
-#: view:event.track.presence:sale_order_create_event_hour.event_track_presence_search_view_inh_hour
+#: view:event.track.presence:sale_order_create_event_hour.event_track_presence_type_hour_search_view
 #: field:event.track.presence,type_hour:0
 #: view:hr.type.hour:sale_order_create_event_hour.hr_type_hour_form_view
 #: field:wiz.event.append.assistant,type_hour:0
@@ -226,28 +157,19 @@ msgid "Workable"
 msgstr "Laborable"
 
 #. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/models/hr_type_hour.py:27
+#: code:addons/sale_order_create_event_hour/models/hr_type_hour.py:35
 #, python-format
 msgid "You can not change a type of time created by the system"
 msgstr "No puede modificar un tipo de hora creado por el sistema"
 
 #. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/wizard/wiz_event_append_assistant.py:104
-#, python-format
-msgid ""
-"You can not confirm this registration, because their dates overlap with "
-"another record of the same employee"
-msgstr ""
-"No puede confirmar este registro, porque sus fechas se solapan con algún "
-"otro registro del mismo empleado"
-
-#. module: sale_order_create_event_hour
-#: code:addons/sale_order_create_event_hour/models/hr_type_hour.py:45
+#: code:addons/sale_order_create_event_hour/models/hr_type_hour.py:43
 #, python-format
 msgid "You can not delete a type of time created by the system"
 msgstr "No puede borrar un tipo de hora creado por el sistema"
 
 #. module: sale_order_create_event_hour
-#: view:event.track:sale_order_create_event_hour.view_event_track_form_inh2_hour
+#: view:event.track:sale_order_create_event_hour.event_track_type_hour_form_view
 msgid "{'default_session':active_id,'default_type_hour':type_hour}"
 msgstr "{'default_session':active_id,'default_type_hour':type_hour}"
+
