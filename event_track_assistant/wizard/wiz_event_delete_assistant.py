@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# (c) 2016 Alfredo de la Fuente - AvanzOSC
+# Copyright © 2016 Alfredo de la Fuente - AvanzOSC
+# Copyright © 2017 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import fields, models, api, _
 from .._common import _convert_to_local_date, _convert_to_utc_date
