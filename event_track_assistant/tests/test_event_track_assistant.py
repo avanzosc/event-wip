@@ -281,9 +281,9 @@ class TestEventTrackAssistant(common.TransactionCase):
         min_from_date = date2str(str2datetime(del_wiz.min_from_date).date())
         max_to_date = date2str(str2datetime(del_wiz.max_to_date).date())
         wrong_from_date = str2datetime(del_wiz.min_from_date) -\
-            relativedelta(days=1)
+            relativedelta(days=2)
         wrong_to_date = str2datetime(del_wiz.max_to_date) +\
-            relativedelta(days=1)
+            relativedelta(days=2)
         not_warn = del_wiz.onchange_dates()
         self.assertNotIn('warning', not_warn)
         self.assertNotEquals(del_wiz.from_date, min_from_date)

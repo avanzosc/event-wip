@@ -100,6 +100,10 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         """Don't repeat this test."""
         pass
 
+    def test_event_assistant_delete_wizard(self):
+        """Don't repeat this test"""
+        pass
+
     def test_duplicate_sale_order(self):
         """Don't repeat this test."""
         pass
