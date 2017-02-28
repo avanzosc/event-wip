@@ -4,6 +4,14 @@
 from openerp import fields, models, _
 
 
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    event_track_template2_ids = fields.One2many(
+        comodel_name='product.event.track.template', copy=True,
+        inverse_name='product_tmpl_id', string='Event track templates')
+
+
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
@@ -16,8 +24,10 @@ class ProductEventTrackTemplate(models.Model):
     _name = 'product.event.track.template'
     _description = 'Templates for event track'
     _rec_name = 'product_id'
-    _order = 'product_id, sequence asc'
+    _order = 'product_tmpl_id, product_id, sequence asc'
 
+    product_tmpl_id = fields.Many2one(
+        comodel_name='product.template', string='Product template')
     product_id = fields.Many2one(
         comodel_name='product.product', string='Product')
     sequence = fields.Integer(string="Sequence")
@@ -28,7 +38,8 @@ class ProductEventTrackTemplate(models.Model):
     url = fields.Char(string='URL')
 
     _sql_constraints = [
-        ('track_template_product_unique', 'unique(product_id, sequence)',
+        ('track_template_product_unique', 'unique(product_tmpl_id, product_id,'
+         ' sequence)',
          _('You can not create two templates with same sequence for one'
-           ' product.'))
+           ' product template/product.'))
     ]

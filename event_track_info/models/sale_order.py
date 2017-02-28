@@ -9,12 +9,14 @@ class SaleOrder(models.Model):
 
     def _prepare_session_data_from_sale_line(
             self, event, num_session, line, date):
+        template_obj = self.env['product.event.track.template']
         res = super(SaleOrder, self)._prepare_session_data_from_sale_line(
             event, num_session, line, date)
-        template = self.env['product.event.track.template'].search([
-            ('product_id', '=', line.product_id.id),
-            ('sequence', '=', num_session)
-        ], limit=1)
+        product = line.product_id
+        template = template_obj.search([
+            '|', '&', ('product_tmpl_id', '=', product.product_tmpl_id.id),
+            ('product_id', '=', False), ('product_id', '=', product.id),
+            ('sequence', '=', num_session)], limit=1)
         if template:
             name = u'{} {}: {}'.format(
                 _('Session'), num_session, template.name)

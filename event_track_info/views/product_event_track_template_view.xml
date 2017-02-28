@@ -6,7 +6,8 @@
             <field name="model">product.event.track.template</field>
             <field name="arch" type="xml">
                 <tree string="Event track templates">
-                    <field name="product_id" invisible="1"/>
+                    <field name="product_tmpl_id" />
+                    <field name="product_id" />
                     <field name="sequence"/>
                     <field name="name" />
                 </tree>
@@ -18,10 +19,12 @@
             <field name="model">product.event.track.template</field>
             <field name="arch" type="xml">
                 <search string="Search event track template">
+                    <field name="product_tmpl_id" />
                     <field name="product_id" />
                     <field name="name" />
                     <separator/>
                     <group expand="0" string="Group By">
+                        <filter string="Product template" context="{'group_by':'product_tmpl_id'}"/>
                         <filter string="Product" context="{'group_by':'product_id'}"/>
                     </group>
                 </search>
@@ -35,8 +38,11 @@
                 <form string="Event track template">
                     <sheet>
                         <h1>
+                            <label string="Product template" />
+                            <field name="product_tmpl_id" class="oe_inline" required="True"/>
+                            <group colspan="2" />
                             <label string="Product" />
-                            <field name="product_id" class="oe_inline" required="True"/>
+                            <field name="product_id" class="oe_inline" domain="[('product_tmpl_id', '=',product_tmpl_id)]"/>
                         </h1>
                         <group name="body" colspan="4" col="8">
                             <field name="name" colspan="8" required="True"/>
