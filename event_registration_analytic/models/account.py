@@ -32,20 +32,21 @@ class AccountInvoice(models.Model):
                 vals.get('type', False) == 'out_invoice'):
             cond = [('code', '=', vals.get('origin'))]
             account = account_obj.search(cond, limit=1)
-            cond = [('analytic_account', '=', account.id)]
-            registration = registration_obj.search(cond, limit=1)
-            if registration.event_id.sale_order:
-                vals['sale_order_id'] = registration.event_id.sale_order.id
-            if registration.event_id.address_id:
-                vals['event_address_id'] = (
-                    registration.event_id.address_id.id)
             if account.sale.payer == 'school':
                 vals['journal_id'] = self.env.ref(
                     'event_registration_analytic.school_journal').id
+                vals['sale_order_id'] = account.sale.id or False
+                vals['event_address_id'] = (
+                    account.sale.partner_shipping_id.id or False)
             if account.sale.payer == 'student':
+                cond = [('analytic_account', '=', account.id)]
+                registration = registration_obj.search(cond, limit=1)
+                vals['sale_order_id'] = (
+                    registration.event_id.sale_order.id or False)
+                vals['event_address_id'] = (
+                    registration.event_id.address_id.id or False)
                 vals['journal_id'] = self.env.ref(
                     'event_registration_analytic.student_journal').id
                 vals['student'] = account.student.id
-                if registration.event_id:
-                    vals['event_id'] = registration.event_id.id
+                vals['event_id'] = registration.event_id.id or False
         return super(AccountInvoice, self).create(vals)
