@@ -49,7 +49,10 @@ msgstr "Plantilla de sesión"
 #. module: event_track_info
 #: view:product.event.track.template:event_track_info.product_event_track_template_tree_view
 #: view:product.product:event_track_info.product_product_track_info_form_view
+#: field:product.product,event_track_template2_ids:0
 #: field:product.product,event_track_template_ids:0
+#: view:product.template:event_track_info.product_template_only_form_view_inh_track_info
+#: field:product.template,event_track_template2_ids:0
 msgid "Event track templates"
 msgstr "Plantillas de sesiones"
 
@@ -150,9 +153,40 @@ msgid "URL"
 msgstr "URL"
 
 #. module: event_track_info
-#: code:addons/event_track_info/models/product.py:32
+#: code:addons/event_track_info/models/product.py:43
 #: sql_constraint:product.event.track.template:0
 #, python-format
-msgid "You can not create two templates with same sequence for one product."
-msgstr "No puedes crear dos plantillas con la misma secuencia para un solo producto."
+msgid ""
+"You can not create two templates with same sequence for one product template/"
+"product."
+msgstr ""
+"No puede crear dos plantillas con la misma secuencia para una plantilla de "
+"producto/producto."
+
+#. module: event_track_info
+#: model:ir.model,name:event_track_info.model_product_template
+msgid "Product Template"
+msgstr "Plantilla producto"
+
+#. module: event_track_info
+#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
+#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
+#: field:product.event.track.template,product_tmpl_id:0
+msgid "Product template"
+msgstr "Plantilla producto"
+
+#. module: event_track_info
+#: field:product.product,sale_line_warn:0
+msgid "Sales Order Line"
+msgstr "Línea venta"
+
+#. module: event_track_info
+#: field:product.product,purchase_line_warn_msg:0
+msgid "Message for Purchase Order Line"
+msgstr "Mensaje para línea de compra"
+
+#. module: event_track_info
+#: field:product.product,sale_line_warn_msg:0
+msgid "Message for Sales Order Line"
+msgstr "Mensaje para línea de venta"
 

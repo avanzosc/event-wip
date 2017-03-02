@@ -23,6 +23,7 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
             'url': self.url,
         }
         self.track_template = track_tmpl_model.search([
+            ('product_tmpl_id', '=', self.service_product.product_tmpl_id.id),
             ('product_id', '=', self.service_product.id),
             ('sequence', '=', 1),
         ], limit=1)
@@ -30,6 +31,7 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
             self.track_template.write(vals)
         else:
             vals.update({
+                'product_tmpl_id': self.service_product.product_tmpl_id.id,
                 'product_id': self.service_product.id,
                 'sequence': 1,
                 'name': 'Test Template',
