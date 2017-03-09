@@ -99,6 +99,12 @@ class WizEventAppendAssistant(models.TransientModel):
                 'student': registration.partner_id.id,
                 'recurring_invoices': True,
                 'recurring_next_date': recurring_next_date}
+        if (registration.analytic_account and
+                registration.analytic_account.recurring_next_date):
+            old = str2date(registration.analytic_account.recurring_next_date)
+            new = str2date(recurring_next_date)
+            if old > new:
+                vals['recurring_next_date'] = old
         if registration.event_id.sale_order:
             vals['sale'] = registration.event_id.sale_order.id
         return vals

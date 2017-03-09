@@ -152,6 +152,8 @@ class EventEvent(models.Model):
         self.ensure_one()
         context = self.env.context.copy()
         context.update({'search_default_students_filter': 1})
+        if context.get('group_by', False):
+            context.pop('group_by')
         return {'name': _('Event presences'),
                 'type': 'ir.actions.act_window',
                 'view_mode': 'tree,form',
