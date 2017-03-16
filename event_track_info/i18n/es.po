@@ -16,98 +16,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: event_track_info
-#: field:product.event.track.template,create_uid:0
-msgid "Created by"
-msgstr "Creado por"
-
-#. module: event_track_info
-#: field:product.event.track.template,create_date:0
-msgid "Created on"
-msgstr "Creado el"
-
-#. module: event_track_info
-#: field:product.event.track.template,html_info:0
-#: field:product.event.track.template,name:0
-msgid "Description"
-msgstr "Descripción"
-
-#. module: event_track_info
-#: field:product.event.track.template,display_name:0
-msgid "Display Name"
-msgstr "Mostrar nombre"
-
-#. module: event_track_info
 #: model:ir.model,name:event_track_info.model_event_track
 msgid "Event Tracks"
 msgstr "Sesiones del evento"
-
-#. module: event_track_info
-#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
-msgid "Event track template"
-msgstr "Plantilla de sesión"
-
-#. module: event_track_info
-#: view:product.event.track.template:event_track_info.product_event_track_template_tree_view
-#: view:product.product:event_track_info.product_product_track_info_form_view
-#: field:product.product,event_track_template2_ids:0
-#: field:product.product,event_track_template_ids:0
-#: view:product.template:event_track_info.product_template_only_form_view_inh_track_info
-#: field:product.template,event_track_template2_ids:0
-msgid "Event track templates"
-msgstr "Plantillas de sesiones"
-
-#. module: event_track_info
-#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
-msgid "Group By"
-msgstr "Agrupar por"
-
-#. module: event_track_info
-#: view:event.track:event_track_info.event_track_description_info_form_view
-#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
-msgid "HTML"
-msgstr "HTML"
-
-#. module: event_track_info
-#: field:product.event.track.template,id:0
-msgid "ID"
-msgstr "ID"
-
-#. module: event_track_info
-#: field:product.event.track.template,__last_update:0
-msgid "Last Modified on"
-msgstr "Última modificación el"
-
-#. module: event_track_info
-#: field:product.event.track.template,write_uid:0
-msgid "Last Updated by"
-msgstr "Última modificación por"
-
-#. module: event_track_info
-#: field:product.event.track.template,write_date:0
-msgid "Last Updated on"
-msgstr "Última modificación el"
-
-#. module: event_track_info
-#: field:event.track,planification:0
-#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
-#: field:product.event.track.template,planification:0
-msgid "Planification"
-msgstr "Planificación"
-
-#. module: event_track_info
-#: model:ir.model,name:event_track_info.model_product_product
-#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
-#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
-#: field:product.event.track.template,product_id:0
-msgid "Product"
-msgstr "Producto"
-
-#. module: event_track_info
-#: field:event.track,resolution:0
-#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
-#: field:product.event.track.template,resolution:0
-msgid "Resolution"
-msgstr "Resolución"
 
 #. module: event_track_info
 #: view:product.product:event_track_info.product_product_track_info_form_view
@@ -119,15 +30,6 @@ msgstr "Ventas"
 msgid "Sales Order"
 msgstr "Pedido de venta"
 
-#. module: event_track_info
-#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
-msgid "Search event track template"
-msgstr "Buscar plantilla sesiones"
-
-#. module: event_track_info
-#: field:product.event.track.template,sequence:0
-msgid "Sequence"
-msgstr "Secuencia"
 
 #. module: event_track_info
 #: code:addons/event_track_info/models/sale_order.py:20
@@ -136,43 +38,13 @@ msgid "Session"
 msgstr "Sesión"
 
 #. module: event_track_info
-#: model:ir.model,name:event_track_info.model_product_event_track_template
-msgid "Templates for event track"
-msgstr "Plantillas para sesiones"
-
-#. module: event_track_info
 #: view:event.track:event_track_info.event_track_info_form_view
 msgid "Track"
 msgstr "Sesión"
 
 #. module: event_track_info
-#: view:event.track:event_track_info.event_track_description_info_form_view
-#: field:event.track,url:0
-#: field:product.event.track.template,url:0
-msgid "URL"
-msgstr "URL"
-
-#. module: event_track_info
-#: code:addons/event_track_info/models/product.py:43
-#: sql_constraint:product.event.track.template:0
-#, python-format
-msgid ""
-"You can not create two templates with same sequence for one product template/"
-"product."
-msgstr ""
-"No puede crear dos plantillas con la misma secuencia para una plantilla de "
-"producto/producto."
-
-#. module: event_track_info
 #: model:ir.model,name:event_track_info.model_product_template
 msgid "Product Template"
-msgstr "Plantilla producto"
-
-#. module: event_track_info
-#: view:product.event.track.template:event_track_info.product_event_track_template_form_view
-#: view:product.event.track.template:event_track_info.product_event_track_template_search_view
-#: field:product.event.track.template,product_tmpl_id:0
-msgid "Product template"
 msgstr "Plantilla producto"
 
 #. module: event_track_info

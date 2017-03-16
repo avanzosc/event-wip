@@ -15,28 +15,32 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         self.planification = 'This is the planification'
         self.resolution = 'This is the resolution'
         self.html_info = 'This is the html_info'
-        track_tmpl_model = self.env['product.event.track.template']
+        self.training_plan_model = self.env['training.plan']
+        self.product_training_plan_model = self.env['product.training.plan']
         vals = {
             'planification': self.planification,
             'resolution': self.resolution,
             'html_info': self.html_info,
             'url': self.url,
         }
-        self.track_template = track_tmpl_model.search([
+        cond = [('planification', '=', self.planification)]
+        self.training_plan = self.training_plan_model.search(cond, limit=1)
+        if not self.training_plan:
+            self.training_plan = self.training_plan_model.create(vals)
+        self.product_training_plan = self.product_training_plan_model.search([
             ('product_tmpl_id', '=', self.service_product.product_tmpl_id.id),
             ('product_id', '=', self.service_product.id),
             ('sequence', '=', 1),
+            ('training_plan_id', '=', self.training_plan.id),
         ], limit=1)
-        if self.track_template:
-            self.track_template.write(vals)
-        else:
-            vals.update({
+        if not self.product_training_plan:
+            vals = {
                 'product_tmpl_id': self.service_product.product_tmpl_id.id,
                 'product_id': self.service_product.id,
                 'sequence': 1,
-                'name': 'Test Template',
-            })
-            self.track_template = track_tmpl_model.create(vals)
+                'training_plan_id': self.training_plan.id}
+            self.product_training_plan = (
+                self.product_training_plan_model.create(vals))
 
     def test_sale_order_create_event(self):
         """Don't repeat this test."""
@@ -48,7 +52,8 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         event = self.event_model.search(cond, limit=1)
         self.assertEquals(self.sale_order.order_line[0].event_id, event)
         for line in self.sale_order.order_line:
-            track = line.event_id.track_ids[self.track_template.sequence - 1]
+            track = line.event_id.track_ids[
+                self.product_training_plan.sequence - 1]
             self.assertEquals(track.url, self.url)
             self.assertEquals(track.planification, self.planification)
             self.assertEquals(track.resolution, self.resolution)

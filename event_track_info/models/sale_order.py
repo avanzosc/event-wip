@@ -9,22 +9,22 @@ class SaleOrder(models.Model):
 
     def _prepare_session_data_from_sale_line(
             self, event, num_session, line, date):
-        template_obj = self.env['product.event.track.template']
+        training_plan_obj = self.env['product.training.plan']
         res = super(SaleOrder, self)._prepare_session_data_from_sale_line(
             event, num_session, line, date)
         product = line.product_id
-        template = template_obj.search([
+        training = training_plan_obj.search([
             '|', '&', ('product_tmpl_id', '=', product.product_tmpl_id.id),
             ('product_id', '=', False), ('product_id', '=', product.id),
             ('sequence', '=', num_session)], limit=1)
-        if template:
+        if training:
             name = u'{} {}: {}'.format(
-                _('Session'), num_session, template.name)
+                _('Session'), num_session, training.training_plan_id.name)
             res.update({
                 'name': name,
-                'url': template.url,
-                'description': template.html_info,
-                'planification': template.planification,
-                'resolution': template.resolution
+                'url': training.training_plan_id.url,
+                'description': training.training_plan_id.html_info,
+                'planification': training.training_plan_id.planification,
+                'resolution': training.training_plan_id.resolution
             })
         return res
