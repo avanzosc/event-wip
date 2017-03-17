@@ -1,5 +1,6 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_product_event_track_template_worker","product_event_track_template","event_track_info.model_product_event_track_template","event.group_event_user",1,1,1,1
+"access_product_training_plan_worker","product_training_plan","product_training_plan.model_product_training_plan","event.group_event_user",1,1,1,1
+"access_training_plan_worker","training_plan","product_training_plan.model_training_plan","event.group_event_user",1,1,1,1
 "access_crm_claim_worker","crm_claim","crm_claim.model_crm_claim","event.group_event_user",1,1,1,0
 "access_hr_contract_worker","hr_contract","hr_contract.model_hr_contract","event.group_event_user",1,0,0,0
 "access_partner_student_course_worker","partner_student_courser","partner_student_course.model_partner_student_course","event.group_event_user",1,0,0,0

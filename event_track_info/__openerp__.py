@@ -4,7 +4,7 @@
 
 {
     "name": "Event Track Info",
-    "version": "8.0.1.2.0",
+    "version": "8.0.1.3.0",
     "license": "AGPL-3",
     "author": "AvanzOSC",
     "website": "http://www.avanzosc.es",
@@ -15,7 +15,7 @@
     ],
     "category": "Event Management",
     "depends": [
-        "product",
+        "product_training_plan",
         "event_sale",
         "event_report",
         "website_event_track",
@@ -23,10 +23,7 @@
         "sale_order_create_event"
     ],
     "data": [
-        "security/ir.model.access.csv",
         "views/event_track_view.xml",
-        "views/product_product_view.xml",
-        "views/product_event_track_template_view.xml",
     ],
     "installable": True,
 }
