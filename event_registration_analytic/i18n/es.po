@@ -201,8 +201,9 @@ msgid "Employee"
 msgstr "Empleado"
 
 #. module: event_registration_analytic
-#: field:account.invoice,event_id:0
+#: field:account.invoice,event_id:0 field:event.registration.report,event_id:0
 #: model:ir.model,name:event_registration_analytic.model_event_event
+#: view:payment.line:event_registration_analytic.payment_line_search_view_inh_event_analytic
 #: field:payment.line,event_id:0
 msgid "Event"
 msgstr "Evento"
@@ -455,4 +456,89 @@ msgstr "o"
 #: field:event.event,count_all_registrations:0
 msgid "All assistants"
 msgstr "Todos los asistentes"
+
+#. module: event_registration_analytic
+#: field:event.registration.report,address_id:0
+msgid "Center"
+msgstr "Centro"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "event"
+msgstr "Evento"
+
+#. module: event_registration_analytic
+#: field:event.registration.report,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: event_registration_analytic
+#: field:event.registration.report,high_counter:0
+msgid "Highs"
+msgstr "Altas"
+
+#. module: event_registration_analytic
+#: field:event.registration.report,down_counter:0
+msgid "Downs"
+msgstr "Bajas"
+
+#. module: event_registration_analytic
+#: field:event.registration.report,number_records_total:0
+msgid "Number records total"
+msgstr "Num. total registros"
+
+#. module: event_registration_analytic
+#: field:event.registration.report,unsubscribe_requests_counter:0
+msgid "Unsubscribe requests"
+msgstr "Solicitudes baja"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_tree_view
+msgid "Registrations counters"
+msgstr "Contadores registros"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "Search registration counters"
+msgstr "Buscar contadores registros"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "Search registration counters"
+msgstr "Buscar contadores registros"
+
+#. module: event_registration_analytic
+#: model:ir.ui.menu,name:event_registration_analytic.menu_action_event_registration_report
+msgid "Report registration counters"
+msgstr "Informe contadores registros"
+
+#. module: event_registration_analytic
+#: model:ir.actions.act_window,name:event_registration_analytic.action_event_registration_report_view
+msgid "Report registrations counters"
+msgstr "Informe contadores registros"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "year"
+msgstr "Año"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "Month"
+msgstr "Mes"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "Week"
+msgstr "Semana"
+
+#. module: event_registration_analytic
+#: view:event.registration.report:event_registration_analytic.event_registration_report_search_view
+msgid "Center"
+msgstr "Centro"
+
+#. module: event_registration_analytic
+#: view:payment.line:event_registration_analytic.view_payment_line_form_inh_event_analytic
+msgid "event Information"
+msgstr "Información evento"
 
