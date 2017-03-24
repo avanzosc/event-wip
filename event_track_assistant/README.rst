@@ -6,6 +6,8 @@
 Event Track Attendances
 =======================
 
+Probe.
+
 This module you can register session attendances, and show it in the session.
 
 There are also some wizards in order to help adding / removing people to sessions.
