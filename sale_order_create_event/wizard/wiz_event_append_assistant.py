@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import fields, models, api, _
+from openerp import fields, models, api, exceptions, _
 
 datetime2str = fields.Datetime.to_string
 str2datetime = fields.Datetime.from_string
@@ -16,6 +16,13 @@ class WizEventAppendAssistant(models.TransientModel):
     tasks = fields.Many2many(
         comodel_name='project.task', relation='rel_append_selected_tasks',
         string='Add partner to the tasks')
+
+    @api.multi
+    def action_append(self):
+        self.ensure_one()
+        if not self.tasks:
+            raise exceptions.Warning(_("It was not found any task"))
+        return super(WizEventAppendAssistant, self).action_append()
 
     @api.model
     def default_get(self, var_fields):

@@ -874,3 +874,10 @@ msgstr "{'default_project_by_task': project_by_task, 'default_start_date': proje
 msgid "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}"
 msgstr "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}"
 
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/wizard/wiz_event_append_assistant.py:24
+#: code:addons/sale_order_create_event/wizard/wiz_event_confirm_assistant.py:31
+#, python-format
+msgid "It was not found any task"
+msgstr "No se ha encontrado ninguna tarea"
+
