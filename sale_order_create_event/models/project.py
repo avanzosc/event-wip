@@ -221,5 +221,6 @@ class ProjectTask(models.Model):
                 'event_id': event.id,
                 'date': utc_dt,
                 'duration': duration,
-                'tasks': [(4, self.id)]}
+                'tasks': [(4, self.id)],
+                'num_session': num_session}
         return vals
