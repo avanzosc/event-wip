@@ -171,8 +171,7 @@ class SaleOrder(models.Model):
                                                    line.product_id.name)),
                 'event_id': event.id,
                 'date': utc_dt,
-                'duration': duration,
-                'num_session': num_session}
+                'duration': duration}
         return vals
 
     @api.multi
