@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_form_inh_track_info">
+            <field name="name">view.event.form.inh.track.info</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form" />
+            <field name="arch" type="xml">
+                <button name="button_cancel" position="after">
+                    <button string="Load training plan in sessions" states="draft,confirm"
+                            name="%(action_product_training_plan_wizard)d" type="action"/>
+                </button>
+            </field>
+        </record>
+    </data>
+</openerp>

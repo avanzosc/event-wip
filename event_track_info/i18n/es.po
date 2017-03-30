@@ -33,6 +33,8 @@ msgstr "Pedido de venta"
 
 #. module: event_track_info
 #: code:addons/event_track_info/models/sale_order.py:20
+#: code:addons/event_track_info/models/sale_order.py:22
+#: code:addons/event_track_info/wizard/product_training_plan_wizard.py:24
 #, python-format
 msgid "Session"
 msgstr "Sesión"
@@ -61,4 +63,26 @@ msgstr "Mensaje para línea de compra"
 #: field:product.product,sale_line_warn_msg:0
 msgid "Message for Sales Order Line"
 msgstr "Mensaje para línea de venta"
+
+#. module: event_track_info
+#: view:event.event:event_track_info.view_event_form_inh_track_info
+#: view:product.training.plan.wizard:event_track_info.view_product_training_plan_wizard
+msgid "Load training plan in sessions"
+msgstr "Cargar plan de formación en sesiones"
+
+#. module: event_track_info
+#: model:ir.model,name:event_track_info.model_product_product
+#: field:product.training.plan.wizard,product_id:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: event_track_info
+#: view:product.training.plan.wizard:event_track_info.view_product_training_plan_wizard
+msgid "Assign training plan to sessions"
+msgstr "Asignar plan de formación a sesiones"
+
+#. module: event_track_info
+#: model:ir.actions.act_window,name:event_track_info.action_product_training_plan_wizard
+msgid "Product training plan wizard"
+msgstr "Asistente producto plan de formación"
 

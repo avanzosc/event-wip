@@ -13,12 +13,10 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self)._prepare_session_data_from_sale_line(
             event, num_session, line, date)
         product = line.product_id
-        training = training_plan_obj.search([
-            '|', '&', ('product_tmpl_id', '=', product.product_tmpl_id.id),
-            ('product_id', '=', False), ('product_id', '=', product.id),
-            ('sequence', '=', num_session)], limit=1)
+        training = training_plan_obj._search_product_training_plan(
+            product, num_session)
         if training:
-            name = u'{} {}: {}'.format(
+            name = u'{} {} - {}'.format(
                 _('Session'), num_session, training.training_plan_id.name)
             res.update({
                 'name': name,

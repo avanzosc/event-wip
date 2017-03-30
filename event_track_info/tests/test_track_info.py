@@ -17,7 +17,9 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         self.html_info = 'This is the html_info'
         self.training_plan_model = self.env['training.plan']
         self.product_training_plan_model = self.env['product.training.plan']
+        self.wizard_model = self.env['product.training.plan.wizard']
         vals = {
+            'name': 'Test event track info',
             'planification': self.planification,
             'resolution': self.resolution,
             'html_info': self.html_info,
@@ -91,3 +93,25 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
     def test_duplicate_sale_order(self):
         """Don't repeat this test."""
         pass
+
+    def test_product_training_plan_wizard(self):
+        super(TestTrackInfo, self).test_sale_order_create_event_by_task()
+        cond = [('sale_order_line', '=', self.sale_order.order_line[0].id)]
+        event = self.event_model.search(cond, limit=1)
+        event.track_ids.write({'url': '',
+                               'planification': '',
+                               'resolution': '',
+                               'description': ''})
+        wiz = self.wizard_model.create({'product_id': self.service_product.id})
+        wiz.with_context(active_id=event.id).put_training_plan_in_sessions()
+        self.assertIn(
+            'www.example.com', event.track_ids[0].url, 'Bad event track URL')
+        self.assertIn(
+            'This is the planification', event.track_ids[0].planification,
+            'Bad event track planification')
+        self.assertIn(
+            'This is the resolution', event.track_ids[0].resolution,
+            'Bad event track resolution')
+        self.assertIn(
+            '<p>This is the html_info</p>', event.track_ids[0].description,
+            'Bad event track description')
