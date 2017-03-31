@@ -30,6 +30,7 @@ class TestEventTrackAssistant(common.TransactionCase):
             self.env['wiz.registration.to.another.event']
         self.claim_model = self.env['crm.claim']
         self.partner_model = self.env['res.partner']
+        self.config_model = self.env['marketing.config.settings']
         self.parent = self.partner_model.create({
             'name': 'Parent Partner',
         })
@@ -64,6 +65,11 @@ class TestEventTrackAssistant(common.TransactionCase):
             active_ids=self.event.ids).browse(dict_add_wiz.get('res_id'))
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('track_ids.presences')), 0)
+        configs = self.config_model.search([])
+        configs.write({'show_all_customers_in_presences': True})
+        presence = self.event.track_ids[0].presences[0]
+        presence._compute_allowed_partner_ids()
+        configs.write({'show_all_customers_in_presences': False})
         registration.date_start = str2datetime(self.event.date_begin) -\
             relativedelta(days=1)
         self.assertNotEquals(registration.date_start, self.event.date_begin)

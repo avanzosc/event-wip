@@ -6,12 +6,14 @@
 Event Track Attendances
 =======================
 
-This module you can register session attendances, and show it in the session.
+* This module you can register session attendances, and show it in the session.
+* There are also some wizards in order to help adding / removing people to
+  sessions.
+* In partners there is also a computed check in order to classify those partner
+  that have ever been registered.
+* In config - marketing we can indicate if we want to appear all customers in
+  presences.
 
-There are also some wizards in order to help adding / removing people to sessions.
-
-In partners there is also a computed check in order to classify those partner that
-have ever been registered.
 
 Credits
 =======

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_marketing_configuration_inh_assistant">
+            <field name="name">view.marketing.configuration.inh.assistant</field>
+            <field name="model">marketing.config.settings</field>
+            <field name="inherit_id" ref="marketing.view_marketing_configuration" />
+            <field name="arch" type="xml">
+                <header position="after">
+                    <separator string="Event presences"/>
+                    <group>
+                        <field name="show_all_customers_in_presences" />
+                    </group>
+                </header>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -164,6 +164,12 @@ class EventTrackPresence(models.Model):
         for presence in self:
             presence.allowed_partner_ids = (
                 [(6, 0, presence.session.allowed_partner_ids.ids)])
+            if self.env['marketing.config.settings']._get_parameter(
+               'show.all.customers.in.presences'):
+                cond = [('customer', '=', True)]
+                customers = self.env['res.partner'].search(cond)
+                for customer in customers:
+                    presence.allowed_partner_ids = [(4, customer.id)]
 
     @api.depends('session_date', 'real_duration')
     def _compute_real_date_end(self):
