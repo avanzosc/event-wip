@@ -1305,3 +1305,14 @@ msgstr "o"
 msgid "real_duration"
 msgstr "real_duration"
 
+#. module: event_track_assistant
+#: field:marketing.config.settings,show_all_customers_in_presences:0
+msgid "Show all customers in presences"
+msgstr "Mostrar todos los clientes en presencias"
+
+#. module: event_track_assistant
+#: view:marketing.config.settings:event_track_assistant.view_marketing_configuration_inh_assistant
+msgid "Event presences"
+msgstr "Presencias en eventos"
+
+

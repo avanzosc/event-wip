@@ -34,6 +34,7 @@
         "views/res_partner_view.xml",
         "views/crm_claim_view.xml",
         "views/res_company_view.xml",
+        "views/marketing_config_settings_view.xml",
     ],
     "installable": True,
 }
