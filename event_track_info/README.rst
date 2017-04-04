@@ -12,6 +12,8 @@ Event Track Info
 * New planification and resource text fields in event track to
   add extra info.
 
+* New button in events for load training plans.
+
 * Disable 'stage_id' group by when opening tracks from event.
 
 Credits

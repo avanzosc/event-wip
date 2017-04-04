@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <record id="view_product_training_plan_wizard" model="ir.ui.view">
+        <field name="name">view.product.training.plan.wizard</field>
+        <field name="model">product.training.plan.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign training plan to sessions">
+                <group>
+                    <field name="product_id" colspan="4" />
+                </group>
+                <footer>
+                    <button string="Load training plan in sessions"
+                            name="put_training_plan_in_sessions"
+                            type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_product_training_plan_wizard" model="ir.actions.act_window">
+        <field name="name">Product training plan wizard</field>
+        <field name="res_model">product.training.plan.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_product_training_plan_wizard"/>
+        <field name="target">new</field>
+    </record>
+</data>
+</openerp>

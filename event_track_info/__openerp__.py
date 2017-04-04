@@ -16,14 +16,13 @@
     "category": "Event Management",
     "depends": [
         "product_training_plan",
-        "event_sale",
         "event_report",
-        "website_event_track",
-        "event_track_assistant",
         "sale_order_create_event"
     ],
     "data": [
+        "wizard/product_training_plan_wizard.xml",
         "views/event_track_view.xml",
+        "views/event_event_view.xml",
     ],
     "installable": True,
 }
