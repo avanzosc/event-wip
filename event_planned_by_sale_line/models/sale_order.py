@@ -14,6 +14,9 @@ class SaleOrder(models.Model):
     payer = fields.Selection(
         selection=[('school', 'School'), ('student', 'Student')],
         string='Payer', default='student')
+    only_products_category = fields.Boolean(
+        string='Select in sale order lines ONLY products from this category',
+        related='product_category.only_products_category')
 
     @api.onchange('product_category')
     def onchange_product_category(self):
@@ -138,6 +141,16 @@ class SaleOrderLine(models.Model):
 
     product_category = fields.Many2one(
         comodel_name='product.category', string='Product category')
+    only_products_category = fields.Boolean(
+        string='Select in sale order lines ONLY products from this category')
+
+    @api.multi
+    @api.onchange('only_products_category')
+    def onchange_only_products_category(self):
+        cond = []
+        if self.only_products_category:
+            cond = [('categ_id', '=', self.product_category.id)]
+        return {'domain': {'product_tmpl_id': cond}}
 
     @api.multi
     def product_id_change(

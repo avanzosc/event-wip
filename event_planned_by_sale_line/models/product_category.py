@@ -9,3 +9,6 @@ class ProductCategory(models.Model):
 
     punctual_service = fields.Boolean(
         string='Punctual service', default=False)
+    only_products_category = fields.Boolean(
+        string='Select in sale order lines ONLY products from this category',
+        default=False)

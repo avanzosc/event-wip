@@ -129,3 +129,11 @@ msgstr "Debe de intorudicr la categoría del producto"
 msgid "You must define the company for the student %s"
 msgstr "Debe de definir la compañia para el alumno %s"
 
+#. module: event_planned_by_sale_line
+#: field:product.category,only_products_category:0
+#: field:sale.order,only_products_category:0
+#: field:sale.order.line,only_products_category:0
+msgid "Select in sale order lines ONLY products from this category"
+msgstr "Seleccionar en líneas de venta SOLO productos de esta categoría"
+
+
