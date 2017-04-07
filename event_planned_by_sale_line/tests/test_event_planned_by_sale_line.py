@@ -17,10 +17,12 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         self.today = fields.Date.from_string(fields.Date.today())
         self.sale_order.write({
             'product_category': self.service_product.categ_id.id,
+            'only_products_category': True
         })
         self.sale_order.order_line.write({
             'start_date': self.today - relativedelta(years=1),
             'end_date': self.today + relativedelta(months=2),
+            'only_products_category': True
         })
         self.quote_template = self.env['sale.quote.template'].create({
             'name': 'Quote Template',
@@ -219,3 +221,13 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
             order.template_id.id, partner=order.partner_id.id,
             product_category=order.product_category.id)
         self.assertFalse('warning' in result)
+
+    def test_only_products_category(self):
+        res = self.sale_order.order_line[0].onchange_only_products_category()
+        self.assertEqual(
+            res.get('domain').get('product_tmpl_id'),
+            [('categ_id', '=', False)], 'Bad domain 1')
+        self.sale_order.order_line[0].only_products_category = False
+        res = self.sale_order.order_line[0].onchange_only_products_category()
+        self.assertEqual(
+            res.get('domain').get('product_tmpl_id'), [], 'Bad domain 2')

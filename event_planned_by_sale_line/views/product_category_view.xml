@@ -30,6 +30,7 @@
             <field name="arch" type="xml">
                 <field name="type" position="after">
                     <field name="punctual_service" />
+                    <field name="only_products_category" />
                 </field>
             </field>
         </record>

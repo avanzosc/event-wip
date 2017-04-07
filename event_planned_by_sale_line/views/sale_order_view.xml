@@ -20,6 +20,7 @@
             <field name="arch" type="xml">
                 <field name="project_id" position="after">
                     <field name="product_category" attrs="{'readonly':[('state','not in',('draft','send'))]}" />
+                    <field name="only_products_category" invisible="1"/>
                     <field name="payer" required="1" attrs="{'readonly':[('state','not in',('draft','send'))]}" />
                 </field>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
@@ -41,7 +42,7 @@
             <field name="inherit_id" ref="sale_order_create_event.view_order_form_inh_sale_create_event"/>
             <field name="arch" type="xml">
                 <field name="order_line" position="attributes">
-                    <attribute name="context">{'default_product_category': product_category,'default_project_by_task': project_by_task, 'default_start_date': project_start_date, 'default_end_date': project_end_date}</attribute>
+                    <attribute name="context">{'default_only_products_category': only_products_category,'default_product_category': product_category,'default_project_by_task': project_by_task, 'default_start_date': project_start_date, 'default_end_date': project_end_date}</attribute>
                 </field>
             </field>
         </record>
@@ -106,15 +107,11 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="before">
                     <field name="product_category" invisible="1"/>
+                    <field name="only_products_category" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
                     <field name="product_category" invisible="1"/>
-                </xpath>
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="attributes">
-                    <attribute name="domain">[('categ_id','=',product_category)]</attribute>
-                </xpath>
-                <xpath expr="//field[@name='order_line']/tree//field[@name='product_tmpl_id']" position="attributes">
-                    <attribute name="domain">[('categ_id','=',product_category)]</attribute>
+                    <field name="only_products_category" invisible="1"/>
                 </xpath>
             </field>
         </record>
