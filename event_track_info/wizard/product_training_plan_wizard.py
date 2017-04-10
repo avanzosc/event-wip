@@ -22,25 +22,22 @@ class ProductTrainingPlanWizard(models.TransientModel):
             num_session += 1
             tracks = event.track_ids.filtered(lambda x: x.session_date == date)
             for track in tracks:
-                training = plan_obj._search_product_training_plan(
+                data = plan_obj._search_product_training_plan(
                     self.product_id, num_session)
-                if training:
+                if data:
                     vals = {'name':  u'{} {} - {}'.format(
-                        _('Session'), num_session,
-                        training.training_plan_id.name)}
-                    if training.training_plan_id.url:
+                        _('Session'), num_session, data.get('name'))}
+                    if data.get('url', False):
                         vals['url'] = u'{}\n{}'.format(
-                            track.url, training.training_plan_id.url)
-                    if training.training_plan_id.planification:
+                            track.url or '', data.get('url'))
+                    if data.get('planification', False):
                         vals['planification'] = u'{}\n{}'.format(
-                            track.planification,
-                            training.training_plan_id.planification)
-                    if training.training_plan_id.resolution:
+                            track.planification or '',
+                            data.get('planification'))
+                    if data.get('resolution', False):
                         vals['resolution'] = u'{}\n{}'.format(
-                            track.resolution,
-                            training.training_plan_id.resolution)
-                    if training.training_plan_id.html_info:
+                            track.resolution or '', data.get('resolution'))
+                    if data.get('html_info', False):
                         vals['description'] = u'{}\n{}'.format(
-                            track.description,
-                            training.training_plan_id.html_info)
+                            track.description or '', data.get('html_info'))
                     track.write(vals)

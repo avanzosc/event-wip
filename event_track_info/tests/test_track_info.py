@@ -43,6 +43,19 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
                 'training_plan_id': self.training_plan.id}
             self.product_training_plan = (
                 self.product_training_plan_model.create(vals))
+        self.product_training_plan = self.product_training_plan_model.search([
+            ('product_tmpl_id', '=', self.service_product.product_tmpl_id.id),
+            ('product_id', '=', False),
+            ('sequence', '=', 1),
+            ('training_plan_id', '=', self.training_plan.id),
+        ], limit=1)
+        if not self.product_training_plan:
+            vals = {
+                'product_tmpl_id': self.service_product.product_tmpl_id.id,
+                'sequence': 1,
+                'training_plan_id': self.training_plan.id}
+            self.product_training_plan = (
+                self.product_training_plan_model.create(vals))
 
     def test_sale_order_create_event(self):
         """Don't repeat this test."""
@@ -56,11 +69,11 @@ class TestTrackInfo(TestSaleOrderCreateEvent):
         for line in self.sale_order.order_line:
             track = line.event_id.track_ids[
                 self.product_training_plan.sequence - 1]
-            self.assertEquals(track.url, self.url)
-            self.assertEquals(track.planification, self.planification)
-            self.assertEquals(track.resolution, self.resolution)
-            self.assertEquals(
-                track.description, u"<p>{}</p>".format(self.html_info))
+            self.assertIn(self.url, track.url)
+            self.assertIn(self.planification, track.planification)
+            self.assertIn(self.resolution, track.resolution)
+            self.assertIn(
+                u"<p>{}".format(self.html_info), track.description)
 
     def test_sale_order_confirm(self):
         """Don't repeat this test."""
