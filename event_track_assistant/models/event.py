@@ -239,6 +239,9 @@ class EventTrackPresence(models.Model):
         selection=[('pending', 'Pending'), ('completed', 'Completed'),
                    ('canceled', 'Canceled')], string="State",
         default='pending', required=True)
+    company_id = fields.Many2one(
+        comodel_name='res.company', string='Company', store=True,
+        related='event.company_id')
 
     @api.multi
     def button_completed(self):
