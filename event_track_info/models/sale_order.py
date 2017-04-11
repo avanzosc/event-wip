@@ -13,16 +13,19 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self)._prepare_session_data_from_sale_line(
             event, num_session, line, date)
         product = line.product_id
-        training = training_plan_obj._search_product_training_plan(
+        data = training_plan_obj._search_product_training_plan(
             product, num_session)
-        if training:
-            name = u'{} {} - {}'.format(
-                _('Session'), num_session, training.training_plan_id.name)
-            res.update({
-                'name': name,
-                'url': training.training_plan_id.url,
-                'description': training.training_plan_id.html_info,
-                'planification': training.training_plan_id.planification,
-                'resolution': training.training_plan_id.resolution
-            })
+        if data:
+            if data.get('name', False):
+                name = u'{} {} - {}'.format(
+                    _('Session'), num_session, data.get('name'))
+                res['name'] = name
+            if data.get('url', False):
+                res['url'] = data.get('url')
+            if data.get('html_info', False):
+                res['description'] = data.get('html_info')
+            if data.get('planification', False):
+                res['planification'] = data.get('planification')
+            if data.get('resolution', False):
+                res['resolution'] = data.get('resolution')
         return res
