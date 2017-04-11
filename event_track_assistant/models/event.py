@@ -241,7 +241,7 @@ class EventTrackPresence(models.Model):
         default='pending', required=True)
     company_id = fields.Many2one(
         comodel_name='res.company', string='Company', store=True,
-        related='event.company_id')
+        related='session.event_id.company_id')
 
     @api.multi
     def button_completed(self):
