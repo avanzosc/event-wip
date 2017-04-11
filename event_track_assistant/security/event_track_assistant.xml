@@ -32,8 +32,8 @@
             <field name="model_id" ref="model_event_track_presence"/>
             <field name="global" eval="True"/>
             <field name="domain_force">['|',
-                                            ('event.company_id', '=', False),
-                                            ('event.company_id', 'child_of', [user.company_id.id]),
+                                            ('company_id', '=', False),
+                                            ('company_id', 'child_of', [user.company_id.id]),
                                         ]
             </field>
         </record>
