@@ -29,5 +29,16 @@
                 </filter>
             </field>
         </record>
+        <record model="ir.ui.view" id="event_track_presence_form_view_inh_substitution">
+            <field name="name">event.track.presence.form.view.inh.substitution</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_presence_hr_holidays.event_track_presence_form_view_inh_presence" />
+            <field name="arch" type="xml">
+                <field name="hr_holiday" position="after">
+                    <field name="replaced_by" />
+                    <field name="replaces_to" />
+                </field>
+            </field>
+        </record>
     </data>
 </openerp>
