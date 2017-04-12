@@ -108,6 +108,8 @@
                                 string="Completed" type="object"/>
                         <button name="button_canceled" states="pending"
                                 string="Canceled" type="object"/>
+                        <button name="button_pending" states="completed,canceled"
+                                string="Pending" type="object"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="pending,completed,canceled"/>
                     </header>
@@ -142,7 +144,6 @@
                 </form>
             </field>
         </record>
-
         <record id="action_event_track_presence_view" model="ir.actions.act_window">
             <field name="name">Session presences</field>
             <field name="type">ir.actions.act_window</field>
@@ -150,7 +151,6 @@
             <field name="view_type">form</field>
             <field name="view_mode">calendar,tree,form</field>
         </record>
-
         <menuitem id="event_track_presence_option_view" name="Session presences"
                   action="action_event_track_presence_view" 
                   parent="event.event_main_menu" sequence="15"

@@ -15,6 +15,7 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
     def setUp(self):
         super(TestSaleOrderCreateEvent, self).setUp()
         self.task_model = self.env['project.task']
+        self.work_model = self.env['project.task.work']
         self.sale_model = self.env['sale.order']
         self.account_model = self.env['account.analytic.account']
         self.procurement_model = self.env['procurement.order']
@@ -192,6 +193,27 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
         super(TestSaleOrderCreateEvent,
               self).test_event_assistant_track_assistant_confirm_assistant()
         self.assertNotEqual(len(self.event.work_ids), 0)
+        presence = self.event.track_ids[0].presences[0]
+        presence.button_canceled()
+        cond = [('event_id', '=', presence.event.id),
+                ('date', '=', presence.session.real_date_end),
+                ('task_id', '=', presence.session.tasks[:1].id),
+                ('user_id', '=', presence.partner.employee_id.user_id.id)]
+        self.work_model.search(cond, limit=1)
+        self.assertEqual(len(self.work_model.search(cond, limit=1)), 0,
+                         'Found project task work after cancel presence')
+        presence.button_completed()
+        self.assertNotEqual(
+            len(self.work_model.search(cond, limit=1)), 0,
+            'Not project task work found after completed presence')
+        presence.button_pending()
+        cond = [('event_id', '=', presence.event.id),
+                ('date', '=', presence.session.real_date_end),
+                ('task_id', '=', presence.session.tasks[:1].id),
+                ('user_id', '=', presence.partner.employee_id.user_id.id)]
+        self.work_model.search(cond, limit=1)
+        self.assertEqual(len(self.work_model.search(cond, limit=1)), 0,
+                         'Found project task work after pending presence')
 
     def test_duplicate_sale_order(self):
         self.sale_order.project_by_task = 'yes'

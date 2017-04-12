@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_complete_presence_view">
+            <field name="name">wiz.complete.presence.view</field>
+            <field name="model">wiz.complete.presence</field>
+            <field name="arch" type="xml">
+                <form string="Complete presences" version="7.0">
+                    <group colspan="4">
+                        <p>You are going to complete selected presences</p>
+                    </group>
+                    <footer>
+                        <button name="buttom_complete_presences" type="object"
+                            string="Put presences as completed" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_wiz_complete_presence" model="ir.actions.act_window">
+            <field name="name">Complete presences</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wiz.complete.presence</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wiz_complete_presence_view"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+        <record model="ir.values" id="event_track_presence_completed">
+            <field name="model_id" ref="event_track_assistant.model_event_track_presence" />
+            <field name="name">Put presences as completed</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_wiz_complete_presence'))" />
+            <field name="key">action</field>
+            <field name="model">event.track.presence</field>
+        </record>
+    </data>
+</openerp>

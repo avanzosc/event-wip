@@ -28,6 +28,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
         self.wiz_change_event_model =\
             self.env['wiz.registration.to.another.event']
+        self.wiz_presence_model = self.env['wiz.complete.presence']
         self.claim_model = self.env['crm.claim']
         self.partner_model = self.env['res.partner']
         self.config_model = self.env['marketing.config.settings']
@@ -65,6 +66,15 @@ class TestEventTrackAssistant(common.TransactionCase):
             active_ids=self.event.ids).browse(dict_add_wiz.get('res_id'))
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('track_ids.presences')), 0)
+        presence = self.event.track_ids[0].presences[0]
+        wiz_complete_presence = self.wiz_presence_model.create({})
+        wiz_complete_presence.with_context(
+            active_ids=[presence.id]).buttom_complete_presences()
+        self.assertEquals(presence.session_duration, presence.real_duration)
+        self.assertEquals(presence.state, 'completed')
+        presence.button_pending()
+        self.assertEquals(presence.real_duration, 0)
+        self.assertEquals(presence.state, 'pending')
         configs = self.config_model.search([])
         configs.write({'show_all_customers_in_presences': True})
         presence = self.event.track_ids[0].presences[0]

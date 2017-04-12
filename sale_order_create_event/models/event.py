@@ -185,3 +185,51 @@ class EventTrack(models.Model):
                 'session_date': new_date,
                 'estimated_date_end': estimated_date_end}
         self.write(vals)
+
+
+class EventTrackPresence(models.Model):
+    _inherit = 'event.track.presence'
+
+    @api.multi
+    def button_canceled(self):
+        self._delete_hours_in_project_task()
+        return super(EventTrackPresence, self).button_canceled()
+
+    @api.multi
+    def button_pending(self):
+        self._delete_hours_in_project_task()
+        return super(EventTrackPresence, self).button_pending()
+
+    @api.multi
+    def button_completed(self):
+        res = super(EventTrackPresence, self).button_completed()
+        self._impute_hours_in_project_task()
+        return res
+
+    @api.multi
+    def _impute_hours_in_project_task(self):
+        for presence in self.filtered(
+                lambda x: x.partner.employee_id and x.real_duration):
+            work_vals = {'event_id': presence.event.id,
+                         'date': presence.session.real_date_end,
+                         'task_id': presence.session.tasks[:1].id,
+                         'name': presence.session.name,
+                         'hours': presence.real_duration,
+                         'user_id': presence.partner.employee_id.user_id.id}
+            self.env['project.task.work'].create(work_vals)
+            try:
+                presence.session.stage_id = self.env.ref(
+                    'website_event_track.event_track_stage5')
+            except:
+                continue
+
+    @api.multi
+    def _delete_hours_in_project_task(self):
+        work_obj = self.env['project.task.work']
+        for presence in self.filtered(
+                lambda x: x.partner.employee_id and x.real_duration):
+            cond = [('event_id', '=', presence.event.id),
+                    ('date', '=', presence.session.real_date_end),
+                    ('task_id', '=', presence.session.tasks[:1].id),
+                    ('user_id', '=', presence.partner.employee_id.user_id.id)]
+            work_obj.search(cond, limit=1).unlink()

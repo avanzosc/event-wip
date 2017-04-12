@@ -245,11 +245,19 @@ class EventTrackPresence(models.Model):
 
     @api.multi
     def button_completed(self):
+        presences = self.filtered(lambda x: not x.real_duration)
+        for presence in presences:
+            presence.real_duration = presence.session_duration
         self.write({'state': 'completed'})
 
     @api.multi
     def button_canceled(self):
         self.write({'state': 'canceled'})
+
+    @api.multi
+    def button_pending(self):
+        self.write({'real_duration': 0,
+                    'state': 'pending'})
 
     def _get_nightlight_hours(self, start_date, end_date):
         company_obj = self.env['res.company']
