@@ -25,5 +25,19 @@
                 </filter>
             </field>
         </record>
+        <record id="event_track_presence_form_view_inh_presence" model="ir.ui.view">
+            <field name="name">event.track.presence.form.view.inh.presence</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_calendar_holiday.event_track_presence_form_view_inh_calendar" />
+            <field name="arch" type="xml">
+                <field name="sale_contract_absence_type" position="after">
+                    <field name="hr_holiday" />
+                </field>
+                <field name="calendar_holiday_absence_type" position="after">
+                    <group colspan="2" />
+                    <field name="hr_holiday_absence_type" />
+                </field>
+            </field>
+        </record>
     </data>
 </openerp>

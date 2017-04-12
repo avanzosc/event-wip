@@ -15,7 +15,6 @@
                     <button name="button_mark_presence_as_worked" type="object" 
                             string="Mark presence as worked" icon="gtk-apply" 
                             attrs="{'invisible':[('state','!=','pending')]}"/>
-
                 </field>
             </field>
         </record>
@@ -37,6 +36,25 @@
                     <filter string="Absence type from employee contract" 
                             domain="[]" context="{'group_by':'sale_contract_absence_type'}"/>
                 </filter>
+            </field>
+        </record>
+        <record id="event_track_presence_form_view_inh_calendar" model="ir.ui.view">
+            <field name="name">event.track.presence.form.view.inh.calendar</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='real_date_end']/.." position="after">
+                    <group name="body" colspan="4">
+                        <separator string = "Absence information" colspan="4" />
+                        <group>
+                            <field name ="absence_type" />
+                            <field name="sale_contract_absence_type" />
+                        </group>
+                        <group>
+                            <field name="calendar_holiday_absence_type" />
+                        </group>
+                    </group>
+                </xpath>
             </field>
         </record>
         <record id="action_event_track_presence2_view" model="ir.actions.act_window">
