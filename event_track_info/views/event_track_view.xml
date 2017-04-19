@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <record model="ir.ui.view" id="event_track_info_form_view">
-            <field name="name">event.track.info.form</field>
+        <record model="ir.ui.view" id="event_track_description_info_form_view">
+            <field name="name">event.track.description.info.form</field>
             <field name="model">event.track</field>
-            <field name="inherit_id" ref="event_track_assistant.view_event_track_for_inh_assistant" />
+            <field name="inherit_id" ref="event_report.event_track_description_view_form" />
             <field name="arch" type="xml">
-                <notebook position="after">
+                <field name="description" position="before">
                     <group>
                         <group>
                             <label for="planification" colspan="4"/>
@@ -17,20 +17,21 @@
                             <field name="resolution" nolabel="1"/>
                         </group>
                     </group>
-                </notebook>
+                </field>
+                <field name="description" position="replace" />
             </field>
         </record>
-
-        <record model="ir.ui.view" id="event_track_description_info_form_view">
-            <field name="name">event.track.description.info.form</field>
+        <record model="ir.ui.view" id="event_track_info_form_view">
+            <field name="name">event.track.info.form</field>
             <field name="model">event.track</field>
-            <field name="inherit_id" ref="event_report.event_track_description_view_form" />
+            <field name="inherit_id" ref="event_track_assistant.view_event_track_for_inh_assistant" />
             <field name="arch" type="xml">
-                <field name="description" position="before">
+                <notebook position="after">
                     <separator string="URL" />
                     <field name="url" />
                     <separator string="HTML" />
-                </field>
+                    <field name="description" />
+                </notebook>
             </field>
         </record>
 
