@@ -148,7 +148,16 @@
                                         <field name="real_nightlight_hours" widget="float_time"
                                                sum='Tot. nightlight hours'/>
                                         <field name="notes" />
-                                        <field name="state" />
+                                        <field name="state" readonly="1"/>
+                                        <button name="button_completed" icon="gtk-apply" 
+                                                string="Completed" type="object"
+                                                attrs="{'invisible': [('state', '!=', 'pending')]}" />
+                                        <button name="button_canceled" icon="gtk-cancel" 
+                                                string="Canceled" type="object"
+                                                attrs="{'invisible': [('state', '!=', 'pending')]}" />
+                                        <button name="button_pending" icon="gtk-undo" 
+                                                string="Pending" type="object"
+                                                attrs="{'invisible': [('state', '=', 'pending')]}"/>
                                     </tree>
                                 </field>
                             </group>
