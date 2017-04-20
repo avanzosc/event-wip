@@ -13,15 +13,10 @@
         "Alfredo de la Fuente <alfredodelafuente@avanzosc.es",
     ],
     "depends": [
-        "sale_stock",
-        "sale_stock_product_variants",
+        "event_registration_analytic",
+        "account_analytic_invoice_line_menu",
         "sale_service_recurrence_configurator",
         "sale_order_line_performance",
-        "event_registration_analytic",
-        "website_quote",
-        "sale_product_variants",
-        "account_analytic_analysis_recurring_day",
-        "account_analytic_invoice_line_menu"
     ],
     "data": [
         "views/product_template_view.xml",

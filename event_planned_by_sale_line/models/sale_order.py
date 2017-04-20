@@ -150,7 +150,8 @@ class SaleOrderLine(models.Model):
         cond = []
         if self.only_products_category:
             cond = [('categ_id', '=', self.product_category.id)]
-        return {'domain': {'product_tmpl_id': cond}}
+        return {'domain': {'product_tmpl_id': cond,
+                           'product_id': cond}}
 
     @api.multi
     def product_id_change(
@@ -172,19 +173,6 @@ class SaleOrderLine(models.Model):
             cond.append(('categ_id', '=',
                          self.env.context.get('default_product_category')))
             res['domain']['product_id'] = cond
-        return res
-
-    @api.multi
-    @api.onchange('product_tmpl_id')
-    def onchange_product_tmpl_id(self):
-        res = super(SaleOrderLine, self).onchange_product_tmpl_id()
-        if 'domain' not in res:
-            res['domain'] = {}
-        if 'product_id' not in res['domain']:
-            res['domain']['product_id'] = []
-        cond = res['domain']['product_id']
-        cond.append(('categ_id', '=', self.product_category.id))
-        res['domain']['product_id'] = cond
         return res
 
     @api.onchange('start_date', 'end_date')
