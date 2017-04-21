@@ -193,7 +193,7 @@ class EventRegistration(models.Model):
     def _calculate_required_account(self):
         for reg in self:
             reg.required_account = True
-            if (reg.employee or reg.analytic_account or
+            if (reg.employee_id or reg.analytic_account or
                     reg.event_id.sale_order.project_id.recurring_invoices):
                 reg.required_account = False
 
