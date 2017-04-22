@@ -246,6 +246,7 @@ class SaleOrderLine(models.Model):
         if not default:
             default = {}
         if self.product_id and self.product_id.recurring_service:
-            default.update({'event_id': False})
+            default.update({'event_id': False,
+                            'service_project_task': False})
         res = super(SaleOrderLine, self).copy_data(default=default)
         return res[0] if res else {}
