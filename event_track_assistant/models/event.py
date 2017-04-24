@@ -166,8 +166,7 @@ class EventTrackPresence(models.Model):
                 [(6, 0, presence.session.allowed_partner_ids.ids)])
             if self.env['marketing.config.settings']._get_parameter(
                'show.all.customers.in.presences'):
-                cond = [('customer', '=', True)]
-                customers = self.env['res.partner'].search(cond)
+                customers = self.env['res.partner'].search([])
                 for customer in customers:
                     presence.allowed_partner_ids = [(4, customer.id)]
 
