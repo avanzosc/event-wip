@@ -14,6 +14,7 @@ class TestCalendarHoliday(common.TransactionCase):
         self.holiday_model = self.env['calendar.holiday']
         self.contract_model = self.env['hr.contract']
         self.calendar_model = self.env['res.partner.calendar']
+        self.calendar_day_model = self.env['res.partner.calendar.day']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
         self.holidays_model = self.env['hr.holidays']
         self.today = fields.Date.from_string(fields.Date.today())
@@ -64,6 +65,17 @@ class TestCalendarHoliday(common.TransactionCase):
                          'working_hours':
                          self.ref('resource.timesheet_group1')}
         self.contract_cron = self.contract_model.create(contract_vals)
+        date_from = '{}-02-02 08:00:00'.format(self.today.year)
+        date_to = '{}-02-05 18:00:00'.format(self.today.year)
+        hr_holidays_vals = {'name': 'Employee holidays',
+                            'holiday_type': 'employee',
+                            'holiday_status_id':
+                            self.ref('hr_holidays.holiday_status_comp'),
+                            'employee_id': self.employee.id,
+                            'date_from': date_from,
+                            'date_to': date_to,
+                            'number_of_days_temp': 4}
+        self.hr_holidays = self.holidays_model.create(hr_holidays_vals)
 
     def test_calendar_holiday(self):
         cond = [('partner', '=', self.contract.partner.id),
@@ -80,6 +92,25 @@ class TestCalendarHoliday(common.TransactionCase):
         wiz_vals = self.wiz_model.with_context(
             active_id=self.contract.id).default_get([])
         self.assertFalse(wiz_vals.get('year'))
+        self.hr_holidays.signal_workflow('validate')
+        date_from = '{}-01-01'.format(self.today.year)
+        date_to = '{}-12-31'.format(self.today.year)
+        cond = [('date', '>=', date_from),
+                ('date', '<=', date_to),
+                ('absence_type', '=',
+                 self.ref('hr_holidays.holiday_status_comp')),
+                ('partner', '=', self.employee.address_home_id.id)]
+        days = self.calendar_day_model.search(cond)
+        self.assertEquals(
+            len(days), 5, 'Employee calendar holiday days not found(1)')
+        wiz.button_calculate_workables_and_festives()
+        days = self.calendar_day_model.search(cond)
+        self.assertEquals(
+            len(days), 5, 'Employee calendar holiday days not found(2)')
+        self.hr_holidays.signal_workflow('refuse')
+        days = self.calendar_day_model.search(cond)
+        self.assertEquals(
+            len(days), 1, 'Employee with holiday days')
         wiz2 = self.wiz_model.with_context(active_id=self.contract.id).create(
             {'year': fields.Date.from_string(self.contract.date_end).year})
         wiz2.button_calculate_workables_and_festives()
