@@ -37,6 +37,22 @@
             <field name="inherit_id" ref="partner_event.view_partner_form_registrations"/>
             <field name="arch" type="xml">
                 <div class="oe_right oe_button_box" position="inside">
+                    <button name="show_event_locations_from_partner" type="object"
+                            class="oe_stat_button oe_inline" icon="fa-sign-in">
+                        <field name="event_locations_count" widget="statinfo"
+                               string="Events locations"/>
+                    </button>
+                    <button name="show_event_organizer_from_partner" type="object"
+                            class="oe_stat_button oe_inline" icon="fa-sign-in">
+                        <field name="event_organizer_count" widget="statinfo"
+                               string="Events organizer"/>
+                    </button>
+                    <button name="show_registrations_location_organizer_from_partner" type="object"
+                            class="oe_stat_button oe_inline" icon="fa-sign-in"
+                            help="Registrations with event location/organizer">
+                        <field name="registrations_location_organizer_count" widget="statinfo"
+                               string="Registrations with event location/organizer"/>
+                    </button>
                     <button name="show_sessions_from_partner" type="object"
                             class="oe_stat_button oe_inline" icon="fa-sign-in">
                         <field name="session_count" widget="statinfo"
