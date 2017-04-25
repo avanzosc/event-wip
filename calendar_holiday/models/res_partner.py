@@ -22,7 +22,7 @@ class ResPartner(models.Model):
         calendar = calendar_obj.search(cond, limit=1)
         if calendar:
             calendar.dates.unlink()
-            calendar.dates.write({'dates': day_vals})
+            calendar.write({'dates': day_vals})
         else:
             calendar_vals = {
                 'partner': self.id,
@@ -71,7 +71,8 @@ class ResPartner(models.Model):
                 raise exceptions.Warning(
                     _('The day %s was not found in the calendar %s, for'
                       ' employee %s') % (new_date, str(year), self.name))
-            calendar_day.write({'festive': True,
+            calendar_day.write({'estimated_hours': 0,
+                                'festive': True,
                                 'absence_type': line.absence_type.id,
                                 'calendar_holiday_day': line.id,
                                 'absence_type_from_employee_contract':

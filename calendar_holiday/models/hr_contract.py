@@ -33,6 +33,7 @@ class HrContract(models.Model):
 
     @api.multi
     def _generate_calendar_from_wizard(self, year):
+        holidays_obj = self.env['hr.holidays']
         for contract in self:
             contract.partner._generate_calendar(year)
             if (contract.working_hours and
@@ -43,6 +44,15 @@ class HrContract(models.Model):
                 for calendar in contract.holiday_calendars:
                     contract.partner._generate_festives_in_calendar(year,
                                                                     calendar)
+            date_from = '{}-01-01'.format(year)
+            date_to = '{}-12-31'.format(year)
+            cond = [('employee_id', '=', contract.employee_id.id),
+                    ('date_from', '>=', date_from),
+                    ('date_from', '<=', date_to),
+                    ('state', '=', 'validate')]
+            for holiday in holidays_obj.search(cond):
+                days = holiday._find_calendar_days_from_holidays()
+                days.write({'absence_type': holiday.holiday_status_id.id})
 
     @api.multi
     def automatic_process_generate_calendar(self):
