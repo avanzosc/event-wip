@@ -1326,3 +1326,22 @@ msgstr "Completar presencias"
 msgid "Put presences as completed"
 msgstr "Poner presencias como completadas"
 
+#. module: event_track_assistant
+#: view:res.partner:event_track_assistant.view_partner_track_assistant
+#: field:res.partner,event_locations_count:0
+msgid "Events locations"
+msgstr "Eventos ubicación"
+
+#. module: event_track_assistant
+#: view:res.partner:event_track_assistant.view_partner_track_assistant
+#: field:res.partner,event_organizer_count:0
+msgid "Events organizer"
+msgstr "Eventos organizador"
+
+#. module: event_track_assistant
+#: view:res.partner:event_track_assistant.view_partner_track_assistant
+#: field:res.partner,registrations_location_organizer_count:0
+msgid "Registrations with event location/organizer"
+msgstr "Registros con eventos ubicación/organizador"
+
+

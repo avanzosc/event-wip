@@ -131,6 +131,28 @@ class TestEventTrackAssistant(common.TransactionCase):
         show_sessions = self.partner.show_sessions_from_partner()
         self.assertEquals(
             show_sessions.get('res_model'), 'event.track')
+        self.partner._compute_event_locations_count()
+        self.assertEquals(
+            self.partner.event_locations_count, 0,
+            'BAD partner event locations count')
+        show_events = self.partner.show_event_locations_from_partner()
+        self.assertEquals(
+            show_events.get('res_model'), 'event.event')
+        self.partner._compute_event_organizer_count()
+        self.assertEquals(
+            self.partner.event_organizer_count, 0,
+            'BAD partner event organizer count')
+        show_events = self.partner.show_event_organizer_from_partner()
+        self.assertEquals(
+            show_events.get('res_model'), 'event.event')
+        self.partner._compute_registrations_locations_organizer_count()
+        self.assertEquals(
+            self.partner.registrations_location_organizer_count, 0,
+            'BAD partner registraions locattion organizer count')
+        show_registrations = (
+            self.partner.show_registrations_location_organizer_from_partner())
+        self.assertEquals(
+            show_registrations.get('res_model'), 'event.registration')
         show_presences = self.partner.show_presences_from_partner()
         self.assertEquals(
             show_presences.get('res_model'), 'event.track.presence')

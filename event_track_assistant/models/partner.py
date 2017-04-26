@@ -17,6 +17,29 @@ class ResPartner(models.Model):
         for partner in self:
             partner.presences_count = len(partner.presence_ids)
 
+    @api.multi
+    def _compute_event_locations_count(self):
+        event_obj = self.env['event.event']
+        for partner in self:
+            cond = [('address_id', '=', partner.id)]
+            partner.event_locations_count = len(event_obj.search(cond))
+
+    @api.multi
+    def _compute_event_organizer_count(self):
+        event_obj = self.env['event.event']
+        for partner in self:
+            cond = [('organizer_id', '=', partner.id)]
+            partner.event_organizer_count = len(event_obj.search(cond))
+
+    @api.multi
+    def _compute_registrations_locations_organizer_count(self):
+        registration_obj = self.env['event.registration']
+        for partner in self:
+            cond = ['|', ('event_id.address_id', '=', partner.id),
+                    ('event_id.organizer_id', '=', partner.id)]
+            partner.registrations_location_organizer_count = len(
+                registration_obj.search(cond))
+
     session_ids = fields.Many2many(
         comodel_name="event.track", relation="rel_partner_event_track",
         column1="partner_id", column2="event_track_id", string="Sessions",
@@ -31,6 +54,13 @@ class ResPartner(models.Model):
     registered_partner = fields.Boolean(
         string='Registered Partner', compute='_compute_registered_partner',
         default=False, store=True)
+    event_locations_count = fields.Integer(
+        string='Events locations', compute='_compute_event_locations_count')
+    event_organizer_count = fields.Integer(
+        string='Events organizer', compute='_compute_event_organizer_count')
+    registrations_location_organizer_count = fields.Integer(
+        string='Registrations with event location/organizer',
+        compute='_compute_registrations_locations_organizer_count')
 
     @api.depends('registrations')
     def _compute_registered_partner(self):
@@ -55,4 +85,38 @@ class ResPartner(models.Model):
                'type': 'ir.actions.act_window',
                'view_type': 'form',
                'domain': [('partner', '=', self.id)]}
+        return res
+
+    @api.multi
+    def show_event_locations_from_partner(self):
+        res = {'view_mode': 'tree,form',
+               'res_model': 'event.event',
+               'view_id': False,
+               'type': 'ir.actions.act_window',
+               'view_type': 'form',
+               'domain': [('address_id', '=', self.id)]}
+        return res
+
+    @api.multi
+    def show_event_organizer_from_partner(self):
+        res = {'view_mode': 'tree,form',
+               'res_model': 'event.event',
+               'view_id': False,
+               'type': 'ir.actions.act_window',
+               'view_type': 'form',
+               'domain': [('organizer_id', '=', self.id)]}
+        return res
+
+    @api.multi
+    def show_registrations_location_organizer_from_partner(self):
+        registration_obj = self.env['event.registration']
+        cond = ['|', ('event_id.address_id', '=', self.id),
+                ('event_id.organizer_id', '=', self.id)]
+        registrations = registration_obj.search(cond)
+        res = {'view_mode': 'tree,form',
+               'res_model': 'event.registration',
+               'view_id': False,
+               'type': 'ir.actions.act_window',
+               'view_type': 'form',
+               'domain': [('id', 'in', registrations.ids)]}
         return res
