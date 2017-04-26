@@ -62,7 +62,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">event.track.presence</field>
             <field name="view_type">form</field>
-            <field name="view_mode">calendar,tree,form</field>
+            <field name="view_mode">tree,form, calendar</field>
         </record>
         <menuitem id="event_track_presence2_option_view" name="Sessions presences"
                   action="action_event_track_presence2_view" 
