@@ -56,7 +56,7 @@ class HrHolidays(models.Model):
     @api.multi
     def holidays_validate(self):
         res = super(HrHolidays, self).holidays_validate()
-        for holiday in self:
+        for holiday in self.filtered(lambda x: x.type == 'remove'):
             days = holiday._find_calendar_days_from_holidays()
             days.write({'absence_type': holiday.holiday_status_id.id})
         return res
@@ -64,7 +64,7 @@ class HrHolidays(models.Model):
     @api.multi
     def holidays_refuse(self):
         res = super(HrHolidays, self).holidays_refuse()
-        for holiday in self:
+        for holiday in self.filtered(lambda x: x.type == 'remove'):
             days = holiday._find_calendar_days_from_holidays()
             days.write({'absence_type': False})
         return res
