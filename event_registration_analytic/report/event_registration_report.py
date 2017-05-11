@@ -70,8 +70,9 @@ class EventRegistrationReport(models.Model):
                      employee is null and
                      to_char(removal_date,'YYYY-MM') = to_char(evday.edate,
                      'YYYY-MM')) as unsubscribe_requests_counter
-        from event_event ev,
-             (select generate_series(e.date_begin::date,e.date_end::date,
-             '1 month'::interval) from event_event e) as evday(edate)
+        from event_event ev left join
+        (select generate_series(e.date_begin::date,e.date_end::date,
+        '1 month'::interval), e.id from event_event e) as evday(edate, e)
+        on e=ev.id
        group by 1, 2, 3, 4, 5, 6, 7, 8
        order by 2, 3, 4)""")

@@ -5,10 +5,10 @@
             <field name="name">wiz.event.delete.canceled.registration.form</field>
             <field name="model">wiz.event.delete.canceled.registration</field>
             <field name="arch" type="xml">
-                <form string="Delete canceled registrations" version="7.0">
+                <form string="Delete canceled presences/registrations" version="7.0">
                     <footer>
                         <button name="delete_canceled_registration" type="object"
-                            string="Delete canceled registration" class="oe_highlight" />
+                            string="Delete" class="oe_highlight" />
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -16,7 +16,7 @@
             </field>
         </record>
         <act_window id="action_delete_canceled_registration"
-            key2="client_action_multi" name="Delete canceled registrations"
+            key2="client_action_multi" name="Delete canceled presences/registrations"
             res_model="wiz.event.delete.canceled.registration" src_model="event.event"
             view_mode="form" target="new" />
     </data>

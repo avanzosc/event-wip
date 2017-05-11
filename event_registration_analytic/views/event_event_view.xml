@@ -12,7 +12,7 @@
                             <separator string="Registered teachers" colspan="4" />
                             <field name="employee_registration_ids" colspan="4" nolabel="1"
                                     context="{'default_event_id':active_id}">
-                                <tree string="Registered teachers" editable="top">
+                                <tree string="Registered teachers" editable="bottom">
                                     <field name="event_id" invisible="1" />
                                     <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
                                         domain="[('employee_id','!=',False)]" string="Teacher"/>
@@ -69,7 +69,7 @@
                     <separator string="Registered students" colspan="4" />
                     <field name="no_employee_registration_ids" colspan="4" nolabel="1"
                             context="{'default_event_id':active_id}">
-                        <tree string="Registered students" editable="top">
+                        <tree string="Registered students" editable="bottom">
                             <field name="event_id" invisible="1"/>
                             <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
                                 domain="[('employee','=',False),('is_company','=',False),('is_group','=',False)]" string="Student"/>
