@@ -26,53 +26,52 @@ class EventRegistrationReport(models.Model):
         tools.drop_view_if_exists(cr, 'event_registration_report')
         cr.execute("""
         CREATE OR REPLACE VIEW event_registration_report AS (
-       select cast(cast(t.event_id as varchar) || t.date as integer) as id,
-       t.address_id, t.event_id, to_date(to_char(to_date(t.date,'YYYYMM'),
-       'YYYY-MM-') || extract (day from
-       (select date_trunc('month',to_date(t.date,'YYYYMM')) +
-       '1month' ::interval -'1sec' ::interval)),'YYYY-MM-DD') as date,
-       sum(t.high_counter) as high_counter, sum(t.down_counter) as
-       down_counter, sum(t.unsubscribe_requests_counter) as
-       unsubscribe_requests_counter, sum(t.high_counter) - sum(t.down_counter)
-       + (select count(x.date_start) from event_registration x where
-       x.event_id = t.event_id and x.state != 'draft' and
-       to_char(x.date_start,'YYYYMM') < t.date) -
-       (select count(u.date_end) from event_registration u where u.event_id =
-       t.event_id and u.state != 'draft' and
-       to_char(u.date_end,'YYYYMM') < t.date) as number_records_total
-       from
-       ((select ev.address_id as address_id, ev.id as event_id,
-       to_char(re.date_start,'YYYYMM') as date, count(re.date_start) as
-       high_counter, 0 as down_counter, 0 as unsubscribe_requests_counter
-       from   event_event ev,
-             event_registration re
-       where  re.state != 'draft'
-         and  re.date_start is not null
-         and  ev.id     = re.event_id
-       group by ev.address_id, ev.id, to_char(re.date_start,'YYYYMM')
-       order by ev.address_id, ev.id, to_char(re.date_start,'YYYYMM'))
-       UNION ALL
-       (select ev.address_id as address_id, ev.id as event_id,
-       to_char(re.date_end,'YYYYMM') as date, 0 as high_counter,
-       count(re.date_end) as down_counter, 0 as unsubscribe_requests_counter
-       from event_event ev,
-            event_registration re
-       where  re.state != 'draft'
-         and  re.date_end is not null
-         and  ev.id     = re.event_id
-       group by ev.address_id, ev.id, to_char(re.date_end,'YYYYMM')
-       order by ev.address_id, ev.id, to_char(re.date_end,'YYYYMM'))
-       UNION ALL
-       (select ev.address_id as address_id, ev.id as event_id,
-              to_char(re.removal_date,'YYYYMM') as date, 0 as high_counter,
-              0 as down_counter, count(re.removal_date) as
-              unsubscribe_requests_counter
-       from   event_event ev,
-              event_registration re
-       where  re.state != 'draft'
-         and  re.removal_date is not null
-         and  ev.id     = re.event_id
-       group by ev.address_id, ev.id, to_char(re.removal_date,'YYYYMM')
-       order by ev.address_id, ev.id, to_char(re.removal_date,'YYYYMM'))) as t
-       group by t.address_id, t.event_id, t.date
-       order by t.address_id, t.event_id, t.date)""")
+       select cast(cast(ev.id as varchar) ||
+              to_char(evday.edate,'YYMM') as integer) as id,
+              ev.address_id as address_id, ev.id as event_id,
+              to_date(to_char(evday.edate,'YYYY-MM-') || extract (day from (
+                     select date_trunc('month',
+                     to_date(to_char(evday.edate,'YYYYMM'), 'YYYYMM')) +
+                     '1month' ::interval -'1sec' ::interval)),
+                     'YYYY-MM-DD') as date,
+              (select count(*)
+               from event_registration
+               where event_id = ev.id and
+                     state != 'draft' and
+                     employee is null and
+                     to_char(date_start,'YYYY-MM') =
+                     to_char(evday.edate,'YYYY-MM')) as high_counter,
+              (select count(*)
+               from event_registration
+               where event_id = ev.id and
+                     state != 'draft' and
+                     employee is null and
+                     to_char(date_end,'YYYY-MM') =
+                     to_char(evday.edate,'YYYY-MM')) as down_counter,
+              (select count(*)
+               from event_registration
+               where event_id = ev.id and
+                     state != 'draft' and
+                     employee is null and
+                     to_char(date_start,'YYYY-MM') <=
+                     to_char(evday.edate,'YYYY-MM'))
+                     -
+              (select count(*)
+               from event_registration
+               where event_id = ev.id and
+                     state != 'draft' and
+                     employee is null and
+                     to_char(date_end,'YYYY-MM') <=
+                     to_char(evday.edate,'YYYY-MM')) as number_records_total,
+              (select count(*)
+               from event_registration
+               where event_id = ev.id and
+                     state != 'draft' and
+                     employee is null and
+                     to_char(removal_date,'YYYY-MM') = to_char(evday.edate,
+                     'YYYY-MM')) as unsubscribe_requests_counter
+        from event_event ev,
+             (select generate_series(e.date_begin::date,e.date_end::date,
+             '1 month'::interval) from event_event e) as evday(edate)
+       group by 1, 2, 3, 4, 5, 6, 7, 8
+       order by 2, 3, 4)""")
