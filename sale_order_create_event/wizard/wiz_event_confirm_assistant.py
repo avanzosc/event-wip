@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import fields, models
+from openerp import fields, models, exceptions, _
 from openerp.addons.event_track_assistant._common import\
     _convert_to_local_date, _convert_to_utc_date
 
@@ -27,6 +27,8 @@ class WizEventConfirmAssistant(models.TransientModel):
                 ('date', '!=', False)]
         sessions = session_obj.search(cond)
         tasks = sessions.mapped('tasks')
+        if not tasks:
+            raise exceptions.Warning(_("It was not found any task"))
         append_vals.update({'permitted_tasks': [(6, 0, tasks.ids)],
                             'tasks': [(6, 0, tasks.ids)]})
         return append_vals
