@@ -68,10 +68,21 @@ class EventTrack(models.Model):
                 relativedelta(hours=track.duration)
             track.estimated_date_end = new_date
 
-    @api.depends('event_id', 'event_id.registration_ids')
+    @api.depends('event_id', 'event_id.registration_ids', 'session_date')
     def _compute_allowed_partner_ids(self):
-        for track in self:
-            partners = track.mapped('event_id.registration_ids.partner_id')
+        for track in self.filtered(lambda x: x.session_date):
+            registrations = self.env['event.registration']
+            for registration in track.mapped(
+                'event_id.registration_ids').filtered(
+                    lambda x: x.date_start and x.date_end):
+                date_start = date2str(_convert_to_local_date(
+                    registration.date_start, self.env.user.tz).date())
+                date_end = date2str(_convert_to_local_date(
+                    registration.date_end, self.env.user.tz).date())
+                if (track.session_date >= date_start and
+                        track.session_date <= date_end):
+                    registrations += registration
+            partners = registrations.mapped('partner_id')
             track.allowed_partner_ids = [(6, 0, partners.ids)]
 
     @api.depends('presences', 'presences.real_duration')
