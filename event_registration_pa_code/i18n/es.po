@@ -46,3 +46,10 @@ msgstr "Empresa"
 #, python-format
 msgid "Ticket not found for %s"
 msgstr "Ticket no encontrado para %s"
+
+#. module: event_registration_pa_code
+#: code:addons/event_registration_pa_code/wizard/wiz_event_append_assistant.py:20
+#, python-format
+msgid "Event without ticket"
+msgstr "Evento sin ticket"
+

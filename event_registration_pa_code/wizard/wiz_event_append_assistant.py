@@ -16,6 +16,8 @@ class WizEventAppendAssistant(models.TransientModel):
                   self)._create_account_for_not_employee_from_wizard(
                 event, registration)
         else:
+            if len(event.event_ticket_ids) == 0:
+                raise exceptions.Warning(_('Event without ticket'))
             vals = self._prepare_data_for_account_not_employee(event,
                                                                registration)
             new_account = account_obj.create(vals)
@@ -24,9 +26,7 @@ class WizEventAppendAssistant(models.TransientModel):
                 lambda x: x.is_pa_partner ==
                 registration.partner_id.commercial_partner_id.is_pa_partner)
             if not lines:
-                raise exceptions.Warning(
-                    _('Ticket not found for %s') %
-                    (registration.partner_id.name))
+                lines = event.event_ticket_ids
             line_vals = {'analytic_account_id': new_account.id,
                          'name': (lines[0].sale_line.name or
                                   lines[0].product_id.name),
