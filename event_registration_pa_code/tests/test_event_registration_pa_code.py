@@ -74,7 +74,8 @@ class TestEventRegistrationPaCode(common.TransactionCase):
                     'max_to_date': "{} {}".format(self.fec_end, '00:00:00'),
                     'from_date': "{} {}".format(self.fec_ini, '00:00:00'),
                     'to_date': "{} {}".format(self.fec_end, '00:00:00'),
-                    'partner': self.partner.id}
+                    'partner': self.partner.id,
+                    'create_account': True}
         wiz = self.wiz_add_model.with_context(
             {'active_ids': [event.id]}).create(wiz_vals)
         wiz.with_context({'active_ids': [event.id]}).action_append()
