@@ -247,8 +247,8 @@ class EventTrackPresence(models.Model):
     notes = fields.Text(string='Notes')
     state = fields.Selection(
         selection=[('pending', 'Pending'), ('completed', 'Completed'),
-                   ('canceled', 'Canceled')], string="State",
-        default='pending', required=True)
+                   ('absent', 'Absent'), ('canceled', 'Canceled')],
+        string="State", default='pending', required=True)
     company_id = fields.Many2one(
         comodel_name='res.company', string='Company', store=True,
         related='session.event_id.company_id')
@@ -268,6 +268,12 @@ class EventTrackPresence(models.Model):
     def button_pending(self):
         self.write({'real_duration': 0,
                     'state': 'pending'})
+
+    @api.multi
+    def button_absent(self):
+        self.write({'real_duration': 0,
+                    'state': 'absent'})
+        self.count_absences_create_claim()
 
     def _get_nightlight_hours(self, start_date, end_date):
         company_obj = self.env['res.company']
@@ -346,6 +352,34 @@ class EventTrackPresence(models.Model):
         if notes:
             vals['notes'] = notes
         self.write(vals)
+
+    def count_absences_create_claim(self):
+        claim_obj = self.env['crm.claim']
+        for presence in self:
+            presences = presence.event.mapped(
+                'track_ids.presences').filtered(
+                lambda x: x.partner == presence.partner and
+                x.session_date_without_hour <
+                presence.session_date_without_hour)
+            if (len(presences) >= 2 and not presences[-2:].filtered(
+                    lambda x: x.state != 'absent')):
+                name = _(u'Event: {}, session: {}').format(
+                    presence.event.name, presence.session.name)
+                description = _(u'SESSION DATE: {}, PERSON: {}, with 3 '
+                                'consecutive leaves.').format(
+                    presence.session.date, presence.partner.name)
+                claim_vals = {
+                    'name': name,
+                    'user_id': presence.event.user_id.id,
+                    'partner_id': self.env.user.partner_id.id,
+                    'email_from': self.env.user.partner_id.email,
+                    'description': description,
+                    'event_id': presence.event.id,
+                    'session_id': presence.session.id,
+                    'ref': '{},{}'.format(presence._name, presence.id),
+                    'categ_id': self.env.ref('event_track_assistant.crm_case_'
+                                             'categ_possible_low').id}
+                claim_obj.create(claim_vals)
 
 
 class EventRegistration(models.Model):

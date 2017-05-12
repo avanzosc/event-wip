@@ -5,5 +5,8 @@
             <field name="name">Session presence</field>
             <field name="object">event.track.presence</field>
         </record>
+        <record id="crm_case_categ_possible_low" model="crm.case.categ">
+            <field name="name">Possible leave</field>
+        </record>
     </data>
 </openerp>

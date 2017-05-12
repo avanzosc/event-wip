@@ -104,14 +104,16 @@
             <field name="arch" type="xml">
                 <form string="Session presence">
                     <header>
+                        <button name="button_absent" states="pending"
+                                string="Absent" type="object"/>
                         <button name="button_completed" states="pending"
                                 string="Completed" type="object"/>
                         <button name="button_canceled" states="pending"
                                 string="Canceled" type="object"/>
-                        <button name="button_pending" states="completed,canceled"
+                        <button name="button_pending" states="completed,canceled,absent"
                                 string="Pending" type="object"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="pending,completed,canceled"/>
+                               statusbar_visible="absent,pending,completed,canceled"/>
                     </header>
                     <sheet>
                         <label string="Event and Session" />

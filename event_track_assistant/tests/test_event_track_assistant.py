@@ -75,6 +75,8 @@ class TestEventTrackAssistant(common.TransactionCase):
         presence.button_pending()
         self.assertEquals(presence.real_duration, 0)
         self.assertEquals(presence.state, 'pending')
+        presence.button_absent()
+        self.assertEquals(presence.state, 'absent')
         configs = self.config_model.search([])
         configs.write({'show_all_customers_in_presences': True})
         presence = self.event.track_ids[0].presences[0]
@@ -446,3 +448,20 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertEquals(registration.date_start, '2025-01-22 00:00:00')
         add_wiz._update_registration_date_end(registration)
         self.assertEquals(registration.date_end, '2025-01-28 00:00:00')
+
+    def test_count_absences_create_claim(self):
+        add_wiz = self.wiz_add_model.with_context(
+            active_ids=self.event.ids).create({'partner': self.partner.id})
+        add_wiz.action_append()
+        presences = self.event.mapped('track_ids.presences')
+        presences.write({'state': 'absent'})
+        max_presence = max(presences, key=lambda x: x.id)
+        max_presence.count_absences_create_claim()
+        categ_id = self.ref('event_track_assistant.crm_case_categ_possible_'
+                            'low')
+        cond = [('event_id', '=', max_presence.event.id),
+                ('session_id', '=', max_presence.session.id),
+                ('categ_id', '=', categ_id)]
+        self.assertEqual(
+            len(self.claim_model.search(cond, limit=1)), 1,
+            'Claim not found for 3 absences.')

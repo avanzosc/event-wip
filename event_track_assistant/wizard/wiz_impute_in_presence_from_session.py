@@ -45,8 +45,10 @@ class WizImputeInPresenceFromSession(models.TransientModel):
                 claim_obj.create(line._get_values_for_create_claim())
             hours = line.hours if not line.unassisted else 0.0
             line.presence._update_presence_duration(
-                hours, state='completed' if not line.unassisted else 'pending',
+                hours, state='completed' if not line.unassisted else 'absent',
                 notes=line.notes)
+        lines = self.mapped('lines').filtered(lambda x: x.unassisted)
+        lines.mapped('presence').count_absences_create_claim()
 
 
 class WizImputeInPresenceFromSessionLine(models.TransientModel):

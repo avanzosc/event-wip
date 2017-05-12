@@ -1344,4 +1344,20 @@ msgstr "Eventos organizador"
 msgid "Registrations with event location/organizer"
 msgstr "Registros con eventos ubicación/organizador"
 
+#. module: event_track_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_form_view
+#: selection:event.track.presence,state:0
+msgid "Absent"
+msgstr "Ausente"
+
+#. module: event_track_assistant
+#: model:crm.case.categ,name:event_track_assistant.crm_case_categ_possible_low
+msgid "Possible leave"
+msgstr "Posible baja"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:368
+#, python-format
+msgid "SESSION DATE: {}, PERSON: {}, with 3 consecutive leaves."
+msgstr "FECHA SESIÓN: {}, PERSONA: {}, con 3 bajas consecutivas."
 
