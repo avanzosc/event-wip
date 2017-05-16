@@ -183,6 +183,22 @@ class EventEvent(models.Model):
                 'res_model': 'stock.move',
                 'domain': [('picking_id.partner_id', 'in', partners.ids)]}
 
+    def _delete_canceled_presences_registrations(self):
+        for event in self:
+            presences = event.mapped('track_ids.presences').filtered(
+                lambda x: x.state == 'canceled')
+            presences.unlink()
+            registrations = event.registration_ids.filtered(
+                lambda x: x.state == 'cancel')
+            for registration in registrations:
+                presences = event.mapped('track_ids.presences').filtered(
+                    lambda x: x.state != 'canceled' and
+                    x.partner.id == registration.partner_id.id)
+                if not presences:
+                    registration.analytic_account.unlink()
+                    registration.write({'state': 'draft'})
+                    registration.unlink()
+
 
 class EventRegistration(models.Model):
     _inherit = 'event.registration'

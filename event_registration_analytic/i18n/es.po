@@ -542,3 +542,10 @@ msgstr "Centro"
 msgid "event Information"
 msgstr "Información evento"
 
+#. module: event_registration_analytic
+#: model:ir.actions.act_window,name:event_registration_analytic.action_delete_canceled_registration
+#: view:wiz.event.delete.canceled.registration:event_registration_analytic.wiz_event_delete_canceled_registration_form
+msgid "Delete canceled presences/registrations"
+msgstr "Borrar presencias/registros cancelados"
+
+
