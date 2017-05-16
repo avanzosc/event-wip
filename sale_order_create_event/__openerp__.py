@@ -25,6 +25,7 @@
         "hr_employee_catch_partner",
         "web_sheet_full_width",
         "web_context_tunnel",
+        "sale_service_recurrence_configurator"
     ],
     "data": [
         "wizard/wiz_event_append_assistant_view.xml",
