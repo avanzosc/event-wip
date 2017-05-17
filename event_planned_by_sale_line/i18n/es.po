@@ -136,4 +136,24 @@ msgstr "Debe de definir la compañia para el alumno %s"
 msgid "Select in sale order lines ONLY products from this category"
 msgstr "Seleccionar en líneas de venta SOLO productos de esta categoría"
 
+#. module: event_planned_by_sale_line
+#: code:addons/event_planned_by_sale_line/models/sale_order.py:28
+#, python-format
+msgid "You can not change category if there are lines created."
+msgstr "No puede cambiar de categoría si hay líneas creadas"
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.report,num_center_invoices:0
+msgid "# Invoices center"
+msgstr "Num. Fact. Centro"
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.report,num_student_invoices:0
+msgid "# Invoices student"
+msgstr "Num. Fact. Estudiante"
+
+#. module: event_planned_by_sale_line
+#: view:event.registration.report:event_planned_by_sale_line.event_registration_report_search_view_inh_planned_line
+msgid "Without invoices"
+msgstr "Sin facturas"
 

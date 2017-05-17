@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="event_registration_report_tree_view_inh_planned_line" model="ir.ui.view">
+            <field name="name">event.registration.report.tree.view.inh.planned.line</field>
+            <field name="model">event.registration.report</field>
+            <field name="inherit_id" ref="event_registration_analytic.event_registration_report_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="unsubscribe_requests_counter" position="after">
+                    <field name="num_center_invoices" />
+                    <field name="num_student_invoices" />
+                </field>
+            </field>
+        </record>
+        <record id="event_registration_report_search_view_inh_planned_line" model="ir.ui.view">
+            <field name="name">event.registration.report.search.view-inh.planned.line</field>
+            <field name="model">event.registration.report</field>
+            <field name="inherit_id" ref="event_registration_analytic.event_registration_report_search_view"/>
+            <field name="arch" type="xml">
+                <field name="date" position="after">
+                    <separator/>
+                    <filter string="Without invoices" domain="[('num_center_invoices','=',0), ('num_student_invoices','=',0)]"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
