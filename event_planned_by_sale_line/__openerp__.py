@@ -19,7 +19,8 @@
         "sale_order_line_performance",
     ],
     "data": [
-        "report/event_registration_report_view.xml",
+        "security/ir.model.access.csv",
+        "report/event_registration_invoice_report_view.xml",
         "views/product_template_view.xml",
         "views/sale_order_view.xml",
         "views/product_category_view.xml",

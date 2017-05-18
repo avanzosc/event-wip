@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="event_registration_invoice_report_tree_view" model="ir.ui.view">
+            <field name="name">event.registration.invoice.report.tree.view</field>
+            <field name="model">event.registration.invoice.report</field>
+            <field name="arch" type="xml">
+                <tree string="Registrations counters" create="false" edit="false" delete="false">
+                    <field name="address_id" />
+                    <field name="event_id" />
+                    <field name="date" />
+                    <field name="student_counter" />
+                    <field name="num_center_invoices" />
+                    <field name="num_student_invoices" />
+                </tree>
+            </field>
+        </record>
+        <record id="event_registration_invoice_report_search_view" model="ir.ui.view">
+            <field name="name">event.registration.invoice.report.search.view</field>
+            <field name="model">event.registration.invoice.report</field>
+            <field name="arch" type="xml">
+                <search string="Search registration counters">
+                    <field name="address_id" />
+                    <field name="event_id" />
+                    <field name="date" />
+                    <separator/>
+                    <filter string="Without invoices" domain="[('num_center_invoices','=',0), ('num_student_invoices','=',0)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Center" name="group_by_address" domain="[]" context="{'group_by':'address_id'}"/>
+                        <filter string="event" name="group_by_event" domain="[]" context="{'group_by':'event_id'}"/>
+                        <filter string="year" domain="[]" context="{'group_by': 'date:year'}"/>
+                        <filter string="Month" name="group_by_month" domain="[]" context="{'group_by': 'date:month'}"/>
+                        <filter string="Week" domain="[]" context="{'group_by': 'date:week'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_event_registration_invoice_report_view" model="ir.actions.act_window">
+            <field name="name">Report registrations with invoices counters</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">event.registration.invoice.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="limit">10000</field>
+            <field name="view_id" ref="event_planned_by_sale_line.event_registration_invoice_report_tree_view"/>
+            <field name="search_view_id" ref="event_planned_by_sale_line.event_registration_invoice_report_search_view"/>
+        </record>
+        <menuitem name="Report registrations with invoices counters"
+            id="menu_action_event_registration_invoice_report" parent="event.event_main_menu"
+            action="action_event_registration_invoice_report_view" groups="event.group_event_manager,event.group_event_user"/>
+    </data>
+</openerp>

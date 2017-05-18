@@ -21,6 +21,7 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_button_confirm(self):
+        event_obj = self.env['event.event']
         project_obj = self.env['project.project']
         if not self.env.user.tz:
             raise exceptions.Warning(_('User without time zone'))
@@ -41,6 +42,13 @@ class SaleOrder(models.Model):
             project = project_obj.search(cond, limit=1)
             if not project:
                 raise exceptions.Warning(_('Project/contract without project'))
+            cond = [('project_id', '=', project.id)]
+            event = event_obj.search(cond)
+            if event:
+                raise exceptions.Warning(
+                    _("The project:  '%s', of sale order,already exist in "
+                      "other event. You must create a new project for sale"
+                      "order.") % project.name)
         res = super(SaleOrder, self).action_button_confirm()
         self._create_event_and_sessions_from_sale_order()
         return res

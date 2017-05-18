@@ -103,6 +103,8 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
             'project_by_task': 'yes',
         })
         self.sale_order.action_button_confirm()
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_button_confirm()
         self.assertEquals(len(self.project.tasks), 0)
         cond = [('sale_order', '=', self.sale_order.id)]
         event = self.event_model.search(cond, limit=1)[:1]
