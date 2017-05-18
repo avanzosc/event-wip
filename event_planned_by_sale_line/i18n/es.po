@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-18 11:52+0000\n"
-"PO-Revision-Date: 2016-07-18 13:53+0100\n"
+"POT-Creation-Date: 2017-05-18 11:05+0000\n"
+"PO-Revision-Date: 2017-05-18 13:09+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,15 +17,63 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: event_planned_by_sale_line
+#: help:account.invoice.line,invoice_state:0
+msgid ""
+" * The 'Draft' status is used when a user is encoding a new and unconfirmed "
+"Invoice.\n"
+" * The 'Pro-forma' when invoice is in Pro-forma status,invoice does not have "
+"an invoice number.\n"
+" * The 'Open' status is used when user create invoice,a invoice number is "
+"generated.Its in open status till user does not pay invoice.\n"
+" * The 'Paid' status is set automatically when the invoice is paid. Its "
+"related journal entries may or may not be reconciled.\n"
+" * The 'Cancelled' status is used when user cancel invoice."
+msgstr ""
+" * The 'Draft' status is used when a user is encoding a new and unconfirmed "
+"Invoice.\n"
+" * The 'Pro-forma' when invoice is in Pro-forma status,invoice does not have "
+"an invoice number.\n"
+" * The 'Open' status is used when user create invoice,a invoice number is "
+"generated.Its in open status till user does not pay invoice.\n"
+" * The 'Paid' status is set automatically when the invoice is paid. Its "
+"related journal entries may or may not be reconciled.\n"
+" * The 'Cancelled' status is used when user cancel invoice."
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.invoice.report,num_center_invoices:0
+msgid "# Invoices center"
+msgstr "Num. Fact. Centro"
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.invoice.report,num_student_invoices:0
+msgid "# Invoices student"
+msgstr "Num. Fact. Estudiantes"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: event_planned_by_sale_line
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+#: field:event.registration.invoice.report,address_id:0
+msgid "Center"
+msgstr "Centro"
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.invoice.report,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.invoice.report,display_name:0
+msgid "Display Name"
+msgstr "Mostrar descripción"
+
+#. module: event_planned_by_sale_line
 #: view:sale.order:event_planned_by_sale_line.view_order_form_inh_planned_line
 msgid "Duration"
 msgstr "Duración"
-
-#. module: event_planned_by_sale_line
-#: view:account.analytic.invoice.line:event_planned_by_sale_line.account_analytic_invoice_line_search_view_inh_planned_line
-#: field:account.analytic.invoice.line,event_id:0
-msgid "Event"
-msgstr "Evento"
 
 #. module: event_planned_by_sale_line
 #: view:sale.order:event_planned_by_sale_line.view_order_form2_inh_planned_line
@@ -38,10 +86,17 @@ msgid "End hour"
 msgstr "Hora fin"
 
 #. module: event_planned_by_sale_line
-#: code:addons/event_planned_by_sale_line/models/sale_order.py:25
+#: code:addons/event_planned_by_sale_line/models/sale_order.py:38
 #, python-format
 msgid "Error in product category"
 msgstr "Error en categoría del producto"
+
+#. module: event_planned_by_sale_line
+#: view:account.analytic.invoice.line:event_planned_by_sale_line.account_analytic_invoice_line_search_view_inh_planned_line
+#: field:account.analytic.invoice.line,event_id:0
+#: field:event.registration.invoice.report,event_id:0
+msgid "Event"
+msgstr "Evento"
 
 #. module: event_planned_by_sale_line
 #: model:ir.model,name:event_planned_by_sale_line.model_event_registration
@@ -49,29 +104,82 @@ msgid "Event Registration"
 msgstr "Registro evento"
 
 #. module: event_planned_by_sale_line
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
 #: view:product.category:event_planned_by_sale_line.product_category_search_view_inh_planned_line
 msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: event_planned_by_sale_line
-#: view:sale.order:event_planned_by_sale_line.view_sales_order_filter_inh_planned_line
+#: field:event.registration.invoice.report,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Línea de factura"
+
+#. module: event_planned_by_sale_line
+#: field:account.invoice.line,invoice_date_invoice:0
+msgid "Invoice date"
+msgstr "Fecha factura"
+
+#. module: event_planned_by_sale_line
+#: field:account.invoice,sale_order_payer:0
+#: field:account.invoice.line,invoice_payer:0
+msgid "Invoice payer"
+msgstr "Pagador factura"
+
+#. module: event_planned_by_sale_line
+#: field:account.invoice.line,invoice_state:0
+msgid "Invoice state"
+msgstr "Estado factura"
+
+#. module: event_planned_by_sale_line
+#: field:event.registration.invoice.report,__last_update:0
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: event_planned_by_sale_line
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+msgid "Month"
+msgstr "Mes"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.sale_order_planned_line_search_view
 msgid "Order Month"
 msgstr "Mes del pedido"
 
 #. module: event_planned_by_sale_line
-#: view:sale.order:event_planned_by_sale_line.view_sales_order_filter_inh_planned_line
+#: view:sale.order:event_planned_by_sale_line.sale_order_planned_line_search_view
 #: field:sale.order,payer:0
 msgid "Payer"
 msgstr "Pagador"
 
 #. module: event_planned_by_sale_line
+#: view:account.analytic.invoice.line:event_planned_by_sale_line.account_analytic_invoice_line_search_view_inh_planned_line
+msgid "Product"
+msgstr "Producto"
+
+#. module: event_planned_by_sale_line
 #: model:ir.model,name:event_planned_by_sale_line.model_product_category
+#: field:sale.order,product_category:0
 msgid "Product Category"
 msgstr "Categoría de producto"
 
 #. module: event_planned_by_sale_line
-#: view:sale.order:event_planned_by_sale_line.view_sales_order_filter_inh_planned_line
-#: field:sale.order,product_category:0
+#: code:addons/event_planned_by_sale_line/models/sale_order.py:27
+#, python-format
+msgid "Product Category Change"
+msgstr "Cambiar categoría producto"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.sale_order_planned_line_search_view
 #: field:sale.order.line,product_category:0
 msgid "Product category"
 msgstr "Categoría producto"
@@ -81,6 +189,27 @@ msgstr "Categoría producto"
 #: field:product.category,punctual_service:0
 msgid "Punctual service"
 msgstr "Servicio puntual"
+
+#. module: event_planned_by_sale_line
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_tree_view
+msgid "Registrations counters"
+msgstr "Contadores registros"
+
+#. module: event_planned_by_sale_line
+#: model:ir.actions.act_window,name:event_planned_by_sale_line.action_event_registration_invoice_report_view
+#: model:ir.ui.menu,name:event_planned_by_sale_line.menu_action_event_registration_invoice_report
+msgid "Report registrations with invoices counters"
+msgstr "Informe contador registros con facturas"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_event_registration_invoice_report
+msgid "Report with counters and invoices for event registrations"
+msgstr "Informe contador registros"
+
+#. module: event_planned_by_sale_line
+#: model:ir.model,name:event_planned_by_sale_line.model_event_registration_report
+msgid "Report with counters for event registrations"
+msgstr "Informe contadores registros"
 
 #. module: event_planned_by_sale_line
 #: model:ir.model,name:event_planned_by_sale_line.model_sale_order
@@ -98,6 +227,18 @@ msgid "School"
 msgstr "Colegio"
 
 #. module: event_planned_by_sale_line
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+msgid "Search registration counters"
+msgstr "Buscar contadores registros"
+
+#. module: event_planned_by_sale_line
+#: field:product.category,only_products_category:0
+#: field:sale.order,only_products_category:0
+#: field:sale.order.line,only_products_category:0
+msgid "Select in sale order lines ONLY products from this category"
+msgstr "Seleccionar en líneas de venta SOLO productos de esta categoría"
+
+#. module: event_planned_by_sale_line
 #: view:sale.order:event_planned_by_sale_line.view_order_form2_inh_planned_line
 msgid "Start date"
 msgstr "Fecha inicio"
@@ -113,28 +254,24 @@ msgid "Student"
 msgstr "Alumno"
 
 #. module: event_planned_by_sale_line
+#: field:event.registration.invoice.report,student_counter:0
+msgid "Students"
+msgstr "Estudiantes"
+
+#. module: event_planned_by_sale_line
 #: view:product.template:event_planned_by_sale_line.product_template_form_inh_planned_line
 msgid "Training activity"
 msgstr "Actividad de formación"
 
 #. module: event_planned_by_sale_line
-#: code:addons/event_planned_by_sale_line/models/sale_order.py:27
-#, python-format
-msgid "You must introduce the product category"
-msgstr "Debe de intorudicr la categoría del producto"
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+msgid "Week"
+msgstr "Semana"
 
 #. module: event_planned_by_sale_line
-#: code:addons/event_planned_by_sale_line/models/event_registration.py:23
-#, python-format
-msgid "You must define the company for the student %s"
-msgstr "Debe de definir la compañia para el alumno %s"
-
-#. module: event_planned_by_sale_line
-#: field:product.category,only_products_category:0
-#: field:sale.order,only_products_category:0
-#: field:sale.order.line,only_products_category:0
-msgid "Select in sale order lines ONLY products from this category"
-msgstr "Seleccionar en líneas de venta SOLO productos de esta categoría"
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+msgid "Without invoices"
+msgstr "Sin facturas"
 
 #. module: event_planned_by_sale_line
 #: code:addons/event_planned_by_sale_line/models/sale_order.py:28
@@ -143,17 +280,52 @@ msgid "You can not change category if there are lines created."
 msgstr "No puede cambiar de categoría si hay líneas creadas"
 
 #. module: event_planned_by_sale_line
-#: field:event.registration.report,num_center_invoices:0
-msgid "# Invoices center"
-msgstr "Num. Fact. Centro"
+#: code:addons/event_planned_by_sale_line/models/event_registration.py:23
+#, python-format
+msgid "You must define the company for the student %s"
+msgstr "Debe de definir la compañia para el alumno %s"
 
 #. module: event_planned_by_sale_line
-#: field:event.registration.report,num_student_invoices:0
-msgid "# Invoices student"
-msgstr "Num. Fact. Estudiante"
+#: code:addons/event_planned_by_sale_line/models/sale_order.py:40
+#, python-format
+msgid "You must introduce the product category"
+msgstr "Debe de intorudicr la categoría del producto"
 
 #. module: event_planned_by_sale_line
-#: view:event.registration.report:event_planned_by_sale_line.event_registration_report_search_view_inh_planned_line
-msgid "Without invoices"
-msgstr "Sin facturas"
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+msgid "event"
+msgstr "Evento"
 
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.sale_order_form_quote_inh_planned_line
+msgid ""
+"onchange_template_id(template_id, partner_id, fiscal_position, "
+"product_category, context)"
+msgstr ""
+"onchange_template_id(template_id, partner_id, fiscal_position, "
+"product_category, context)"
+
+#. module: event_planned_by_sale_line
+#: field:account.invoice.line,invoice_sale_order_id:0
+msgid "sale order"
+msgstr "Pedido venta"
+
+#. module: event_planned_by_sale_line
+#: view:event.registration.invoice.report:event_planned_by_sale_line.event_registration_invoice_report_search_view
+msgid "year"
+msgstr "Año"
+
+#. module: event_planned_by_sale_line
+#: view:sale.order:event_planned_by_sale_line.view_order_form3_inh_planned_line
+msgid ""
+"{'default_only_products_category': "
+"only_products_category,'default_product_category': "
+"product_category,'default_project_by_task': project_by_task, "
+"'default_start_date': project_start_date, 'default_end_date': "
+"project_end_date}"
+msgstr ""
+"{'default_only_products_category': "
+"only_products_category,'default_product_category': "
+"product_category,'default_project_by_task': project_by_task, "
+"'default_start_date': project_start_date, 'default_end_date': "
+"project_end_date}"
