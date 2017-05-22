@@ -205,7 +205,8 @@ class EventRegistration(models.Model):
 
     @api.depends('event_id', 'event_id.sale_order',
                  'event_id.sale_order.project_id',
-                 'event_id.sale_order.project_id.recurring_invoices')
+                 'event_id.sale_order.project_id.recurring_invoices',
+                 'employee', 'analytic_account')
     def _calculate_required_account(self):
         for reg in self:
             reg.required_account = True
@@ -214,7 +215,8 @@ class EventRegistration(models.Model):
                 reg.required_account = False
 
     required_account = fields.Boolean(
-        string='Required account', compute='_calculate_required_account')
+        string='Required account', compute='_calculate_required_account',
+        store=True)
     analytic_account = fields.Many2one(
         comodel_name='account.analytic.account', string='Analytic account')
     employee = fields.Many2one(
