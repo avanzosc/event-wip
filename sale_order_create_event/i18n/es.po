@@ -874,3 +874,9 @@ msgstr "{'default_project_by_task': project_by_task, 'default_start_date': proje
 msgid "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}"
 msgstr "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_tasks':True,'default_pricelist_id':pricelist_id, 'default_name':name, 'default_type': 'contract', 'default_sale': active_id}"
 
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:50
+#, python-format
+msgid "The project:  '%s', of sale order,already exist in other event. You must create a new project for saleorder."
+msgstr "El projecto:  '%s', del pedido de venta, ya existe en  otro evento. Debe de crear un nuevo proyecto para el presupuesto."
+
