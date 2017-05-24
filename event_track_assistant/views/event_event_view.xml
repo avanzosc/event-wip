@@ -55,6 +55,10 @@
                        position="attributes">
                     <attribute name="name">new_button_reg_cancel</attribute>
                 </xpath>
+                <button string="Cancel Event" position="after">
+                    <button name="button_mass_mailing_to_organizer" string="Send email to organizer" type="object" />
+                    <button name="button_mass_mailing_to_registrations" string="Send email to registrations" type="object" />
+                </button>
             </field>
         </record>
         <record model="ir.ui.view" id="view_event_search_inh_assistant">

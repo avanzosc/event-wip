@@ -16,6 +16,7 @@
         "website_event_track",
         "partner_event",
         "crm_claim",
+        "event_registration_mass_mailing",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -28,6 +29,7 @@
         "wizard/wiz_impute_in_presence_from_session_view.xml",
         "wizard/wiz_registration_to_another_event_view.xml",
         "wizard/wiz_complete_presence_view.xml",
+        "wizard/wiz_send_email_to_registrations_view.xml",
         "views/event_event_view.xml",
         "views/event_registration_view.xml",
         "views/event_track_view.xml",

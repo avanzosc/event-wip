@@ -8,5 +8,16 @@
         <record id="crm_case_categ_possible_low" model="crm.case.categ">
             <field name="name">Possible leave</field>
         </record>
+        <record id="email_to_event_organizer" model="email.template">
+            <field name="name">Email to event organizer</field>
+            <field name="model_id" ref="event.model_event_event"/>
+            <field name="email_from">${(object.company_id.email or 'noreply@localhost')|safe}</field>
+            <field name="reply_to">${(object.company_id.email or 'noreply@localhost')|safe}</field>
+            <field name="subject">Event - ${object.name}</field>
+            <field name="partner_to">${object.organizer_id.id}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.organizer_id.lang}</field>
+            <field name="body_html" />
+        </record>
     </data>
 </openerp>

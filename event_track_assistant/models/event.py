@@ -57,6 +57,101 @@ class EventEvent(models.Model):
                 self.date_end = track.date
         return res
 
+    @api.multi
+    def button_mass_mailing_to_organizer(self):
+        ir_model_data = self.env['ir.model.data']
+        self._validate_organizer_email()
+        template_id = self.env.ref(
+            'event_track_assistant.email_to_event_organizer', False)
+        if not template_id:
+            raise exceptions.Warning(
+                _("Email template not found for event organizer"))
+        compose_form_id = (ir_model_data.get_object_reference(
+            'mail', 'email_compose_message_wizard_form') and
+            ir_model_data.get_object_reference(
+                'mail', 'email_compose_message_wizard_form')[1] or False)
+        ctx = {
+            'default_model': 'event.event',
+            'default_res_id': self.id,
+            'default_use_template': bool(template_id),
+            'default_template_id': template_id.id,
+            'default_composition_mode': 'mass_mail'}
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form_id, 'form')],
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx}
+
+    def _validate_organizer_email(self):
+        if self.organizer_id.notify_email == 'none':
+            raise exceptions.Warning(
+                _("Organizer %s does not want to be sent email, if you want to"
+                  " send email, modify this information in the tab of the "
+                  "organizer.") % self.organizer_id.name)
+        if (self.organizer_id.notify_email == 'always' and not
+                self.organizer_id.email):
+            raise exceptions.Warning(
+                _("Organizer %s without email.") % self.organizer_id.name)
+
+    @api.multi
+    def button_mass_mailing_to_registrations(self):
+        wiz_obj = self.env['wiz.send.email.to.registrations']
+        self._validate_registrations_email()
+        wiz = wiz_obj.with_context(
+            {'active_id': self.id,
+             'active_ids': self.ids,
+             'active_model': 'event.event'}).create({})
+        context = self.env.context.copy()
+        context.update({
+            'active_id': self.id,
+            'active_ids': self.ids,
+            'active_model': 'event.event',
+        })
+        return {
+            'name': _('Send email to event registrations'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'wiz.send.email.to.registrations',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': wiz.id,
+            'target': 'new',
+            'context': context,
+        }
+
+    def _validate_registrations_email(self):
+        for event in self:
+            registrations = event.mapped('registration_ids').filtered(
+                lambda x: x.partner_id.notify_email == 'always' and not
+                x.partner_id.email)
+            for registration in registrations:
+                raise exceptions.Warning(_("Partner %s without email.") %
+                                         registration.partner_id.name)
+
+    def _send_email_to_registrations(self, body):
+        template = self.env.ref(
+            'event_registration_mass_mailing.email_template_event_'
+            'registration', False)
+        if not template:
+            raise exceptions.Warning(
+                _("Email template not found for event registration"))
+        for event in self:
+            for registration in event.registration_ids:
+                wizard = self.env['mail.compose.message'].with_context(
+                    default_composition_mode='mass_mail',
+                    default_template_id=template.id,
+                    default_use_template=True,
+                    active_id=registration.id,
+                    active_ids=registration.ids,
+                    active_model='event.registration',
+                    default_model='event.registration',
+                    default_res_id=registration.id,
+                ).create({'body': body})
+                wizard.send_mail()
+
 
 class EventTrack(models.Model):
     _inherit = 'event.track'
