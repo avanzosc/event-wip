@@ -1361,3 +1361,60 @@ msgstr "Posible baja"
 msgid "SESSION DATE: {}, PERSON: {}, with 3 consecutive leaves."
 msgstr "FECHA SESIÓN: {}, PERSONA: {}, con 3 bajas consecutivas."
 
+#. module: event_track_assistant
+#: model:email.template,subject:event_track_assistant.email_to_event_organizer
+msgid "Event - ${object.name}"
+msgstr "Evento: ${object.name}"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:65
+#, python-format
+msgid "Organizer %s without email."
+msgstr "Organizador %s sin email."
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_form_inh_assistant
+msgid "Send email to organizer"
+msgstr "Mandar email al organizador"
+
+#. module: event_track_assistant
+#: view:event.event:event_track_assistant.view_event_form_inh_assistant
+msgid "Send email to registrations"
+msgstr "Mandar email a los registros"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:109
+#: view:wiz.send.email.to.registrations:event_track_assistant.wiz_send_email_to_registrations_form
+#, python-format
+msgid "Send email to event registrations"
+msgstr "Mandar email a registros de evento"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:136
+#: code:addons/event_track_assistant/wizard/wiz_send_email_to_registrations.py:23
+#, python-format
+msgid "Email template not found for event registration"
+msgstr "Plantilla de email no encontrada para registro de eventos"
+
+#. module: event_track_assistant
+#: view:wiz.send.email.to.registrations:event_track_assistant.wiz_send_email_to_registrations_form
+#: field:wiz.send.email.to.registrations,body:0
+msgid "Email body"
+msgstr "Cuerpo del email"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:92
+#, python-format
+msgid ""
+"Organizer %s does not want to be sent email, if you want to send email, "
+"modify this information in the tab of the organizer."
+msgstr ""
+"El organizador %s no quiere que se le envíen emails, si quiere enviarle un "
+"email, modifique esta información en la ficha del organizador."
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:131
+#, python-format
+msgid "Partner %s without email."
+msgstr "Empresa %s sin email."
+
