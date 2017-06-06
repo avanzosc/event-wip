@@ -33,6 +33,8 @@
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_impute_in_presence_from_session_view.xml",
         "wizard/wiz_event_delete_canceled_registration_view.xml",
+        "wizard/wiz_send_email_registration_evaluation_view.xml",
+        "wizard/wiz_send_email_event_evaluation_view.xml",
         "data/event_registration_analytic_data.xml",
         "views/event_event_view.xml",
         "views/event_registration_view.xml",

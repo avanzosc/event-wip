@@ -548,4 +548,134 @@ msgstr "Información evento"
 msgid "Delete canceled presences/registrations"
 msgstr "Borrar presencias/registros cancelados"
 
+#. module: event_registration_analytic
+#: field:event.registration,submitted_evaluation:0
+msgid "Submitted evaluation"
+msgstr "Evaluación enviada"
+
+#. module: event_registration_analytic
+#: field:event.registration,submitted_evaluation_error:0
+msgid "Submitted evaluation error"
+msgstr "Error envío evaluación"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/models/event.py:268
+#, python-format
+msgid "Attachment not found"
+msgstr "Adjunto no encontrado"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/models/event.py:270
+#, python-format
+msgid "Found more than one attachment"
+msgstr "Encontrado mas de un adjunto"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/models/event.py:273
+#, python-format
+msgid "Student without parent"
+msgstr "Estudiante sin padres"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/models/event.py:276
+#, python-format
+msgid "Parent without email"
+msgstr "Padres sin email"
+
+#. module: event_registration_analytic
+#: view:wiz.send.email.event.evaluation:event_registration_analytic.wiz_send_email_event_evaluation_form
+#: view:wiz.send.email.registration.evaluation:event_registration_analytic.wiz_send_email_registration_evaluation_form
+msgid "Send email with evaluations to event registrations"
+msgstr "Enviar email con evaluaciones a registros de evento"
+
+#. module: event_registration_analytic
+#: view:wiz.send.email.event.evaluation:event_registration_analytic.wiz_send_email_event_evaluation_form
+#: field:wiz.send.email.event.evaluation,body:0
+#: view:wiz.send.email.registration.evaluation:event_registration_analytic.wiz_send_email_registration_evaluation_form
+#: field:wiz.send.email.registration.evaluation,body:0
+msgid "Email body"
+msgstr "Cuerpo email"
+
+#. module: event_registration_analytic
+#: view:wiz.send.email.event.evaluation:event_registration_analytic.wiz_send_email_event_evaluation_form
+#: view:wiz.send.email.registration.evaluation:event_registration_analytic.wiz_send_email_registration_evaluation_form
+msgid "Send email"
+msgstr "Mandar email"
+
+#. module: event_registration_analytic
+#: model:ir.actions.act_window,name:event_registration_analytic.action_event_registration_evaluation_mass_mail
+msgid "Send email with evaluations"
+msgstr "Envío email con evaluaciones"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/wizard/wiz_send_email_event_evaluation.py:22
+#: code:addons/event_registration_analytic/wizard/wiz_send_email_registration_evaluation.py:22
+#, python-format
+msgid "Email template not found for event registration evaluation"
+msgstr "Plantilla email no encontrada para evaluación de registro de eventos"
+
+#. module: event_registration_analytic
+#: code:addons/event_registration_analytic/models/event.py:260
+#, python-format
+msgid "Email template not found to send evaluations to event registration"
+msgstr ""
+"Plantilla email no encontrada para envío de evaluaciones de registro de "
+"eventos"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+msgid "Evaluation send"
+msgstr "Evaluación enviada"
+
+#. module: event_registration_analytic
+#: view:wiz.send.email.event.evaluation:event_registration_analytic.wiz_send_email_event_evaluation_form
+#: view:wiz.send.email.registration.evaluation:event_registration_analytic.wiz_send_email_registration_evaluation_form
+msgid "Registry attachments will be automatically send"
+msgstr "Los ficheros adjuntos de los registros se enviarán automáticamente"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+msgid "With evaluation sent"
+msgstr "Con evaluación enviada"
+
+#. module: event_registration_analytic
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+msgid "Without evaluation sent"
+msgstr "Sin evaluación enviada"
+
+#. module: event_registration_analytic
+#: model:ir.actions.act_window,name:event_registration_analytic.action_event_evaluation_mass_mail
+msgid "Send email to registrations with evaluations"
+msgstr "Enviar email a los registros con las evaluaciones"
+
+#. module: event_registration_analytic
+#: model:ir.model,name:event_registration_analytic.model_wiz_send_email_registration_evaluation
+msgid "Wizard for send email to registration evaluation"
+msgstr "Asistente para enviar email con la evaluación desde registro de evento"
+
+#. module: event_registration_analytic
+#: model:ir.model,name:event_registration_analytic.model_wiz_send_email_event_evaluation
+msgid "Wizard for send evaluation email from event"
+msgstr "Asistente para enviar email con la evaluación desde evento"
+
+#. module: event_registration_analytic
+#: model:email.template,body_html:event_registration_analytic.email_template_event_registration_evaluation
+msgid "\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"    <p>Dear Parents.</p>\n"
+"    <p>In order to better understand the evolution and situation of your children in the out-of-school activity of robotics, we enclose the corresponding evaluation report.</p>\n"
+"    <p>One of our main goals is to keep you informed and we believe this can be a good tool for this.</p>\n"
+"    <p>We remain at your disposal for any clarification you may need or suggestion that you want to contribute.</p>\n"
+"    <p>Attentively,</p>\n"
+"</div>\n"
+"            "
+msgstr "\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"    <p>Estimados padres y madres.</p>\n"
+"    <p>Con el fin de que conozcáis mejor la evolución y situación de vuestros hijos en la actividad extraescolar de robótica, os adjuntamos el informe de evaluación correspondiente..</p>\n"
+"    <p>Uno de nuestros principales objetivos es manteneros correctamente informados y creemos que ésta puede ser una buena herramienta para ello.</p>\n"
+"    <p>Quedamos a vuestra disposición para cualquier aclaración que podáis necesitar o sugerencia que nos queráis aportar.</p>\n"
+"    <p>Atentamente,</p>\n"
+"</div>\n"
+"            "
 
