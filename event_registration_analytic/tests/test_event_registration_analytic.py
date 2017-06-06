@@ -12,6 +12,9 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
     def setUp(self):
         super(TestEventRegistrationAnalytic, self).setUp()
         self.del_reg_model = self.env['wiz.event.delete.canceled.registration']
+        self.email_model = self.env['wiz.send.email.registration.evaluation']
+        self.email2_model = self.env['wiz.send.email.event.evaluation']
+        self.attachment_model = self.env['ir.attachment']
         self.partner.parent_id = self.parent
         self.env['res.partner.bank'].create({
             'state': 'iban',
@@ -76,6 +79,49 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
             add_wiz = self.wiz_add_model.browse(wiz_id)
             self.assertFalse(add_wiz.create_account)
             add_wiz.onchange_partner()
+        registration = self.event.no_employee_registration_ids[0]
+        wiz = self.email_model.create({})
+        wiz.default_get(['body'])
+        wiz.with_context(active_ids=registration.ids).button_send_email()
+        self.assertEqual(
+            registration.submitted_evaluation, 'no',
+            'Bad send evaluation 1')
+        self.attachment_model.create({
+            'name': 'attachment 1',
+            'res_model': 'event.registration',
+            'res_id': registration.id})
+        attachment2 = self.attachment_model.create({
+            'name': 'attachment 2',
+            'res_model': 'event.registration',
+            'res_id': registration.id})
+        wiz.with_context(active_ids=registration.ids).button_send_email()
+        self.assertEqual(
+            registration.submitted_evaluation, 'no',
+            'Bad send evaluation 2')
+        attachment2.unlink()
+        parent = registration.partner_id.parent_id
+        registration.partner_id.parent_id = False
+        wiz.with_context(active_ids=registration.ids).button_send_email()
+        self.assertEqual(
+            registration.submitted_evaluation, 'no',
+            'Bad send evaluation 3')
+        registration.partner_id.parent_id = parent
+        registration.partner_id.parent_id.email = ''
+        wiz.with_context(active_ids=registration.ids).button_send_email()
+        self.assertEqual(
+            registration.submitted_evaluation, 'no',
+            'Bad send evaluation 4')
+        registration.partner_id.parent_id.email = 'parent@email.com'
+        wiz.with_context(active_ids=registration.ids).button_send_email()
+        self.assertEqual(
+            registration.submitted_evaluation, 'yes',
+            'Bad send evaluation 5')
+        wiz = self.email2_model.create({})
+        wiz.default_get(['body'])
+        wiz.with_context(active_ids=self.event.ids).button_send_email()
+        self.assertEqual(
+            registration.submitted_evaluation, 'yes',
+            'Bad send evaluation 6')
 
     def test_event_track_assistant_delete_from_event(self):
         super(TestEventRegistrationAnalytic,
