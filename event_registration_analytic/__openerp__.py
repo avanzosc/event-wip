@@ -29,7 +29,6 @@
     ],
     "data": [
         "security/ir.model.access.csv",
-        "report/event_registration_report_view.xml",
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_impute_in_presence_from_session_view.xml",
         "wizard/wiz_event_delete_canceled_registration_view.xml",
