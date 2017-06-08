@@ -197,6 +197,7 @@ class EventTrack(models.Model):
         for track in self.filtered('date'):
             from_date = _convert_to_local_date(track.date, self.env.user.tz)
             track.session_date = from_date.date()
+            track.day = str(from_date.date().weekday())
 
     @api.depends('estimated_date_end')
     def _compute_session_end_date(self):
@@ -238,6 +239,15 @@ class EventTrack(models.Model):
         comodel_name='crm.claim', inverse_name='session_id', string='Claims')
     claim_count = fields.Integer(
         string='# Claims', compute='_compute_claim_count')
+    day = fields.Selection(
+        selection=[('0', 'Monday'),
+                   ('1', 'Tuesday'),
+                   ('2', 'Wednesday'),
+                   ('3', 'Thursday'),
+                   ('4', 'Friday'),
+                   ('5', 'Saturday'),
+                   ('6', 'Sunday')],
+        string='Day of the week', compute='_compute_session_date', store=True)
 
     @api.depends('claim_ids')
     def _compute_claim_count(self):
@@ -347,6 +357,8 @@ class EventTrackPresence(models.Model):
     company_id = fields.Many2one(
         comodel_name='res.company', string='Company', store=True,
         related='session.event_id.company_id')
+    session_day = fields.Selection(
+        string='Session day of the week', related='session.day', store=True)
 
     @api.multi
     def button_completed(self):

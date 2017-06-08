@@ -1418,3 +1418,80 @@ msgstr ""
 msgid "Partner %s without email."
 msgstr "Empresa %s sin email."
 
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+#: field:event.track.presence,session_day:0
+msgid "Session day of the week"
+msgstr "Día de la semana de la sesión"
+
+#. module: event_track_assistant
+#: field:event.track,day:0
+#: view:event.track.presence:event_track_assistant.event_track_presence_search_view
+msgid "Day of the week"
+msgstr "Día de la semana"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:243
+#: selection:event.track,day:0
+#, python-format
+msgid "Monday"
+msgstr "Lunes"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:244
+#: selection:event.track,day:0
+#, python-format
+msgid "Tuesday"
+msgstr "Martes"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:245
+#: selection:event.track,day:0
+#, python-format
+msgid "Wednesday"
+msgstr "Miércoles"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:246
+#: selection:event.track,day:0
+#, python-format
+msgid "Thursday"
+msgstr "Jueves"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:247
+#: selection:event.track,day:0
+#, python-format
+msgid "Friday"
+msgstr "Viernes"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:248
+#: selection:event.track,day:0
+#, python-format
+msgid "Saturday"
+msgstr "Sábado"
+
+#. module: event_track_assistant
+#: code:addons/event_track_assistant/models/event.py:249
+#: selection:event.track,day:0
+#, python-format
+msgid "Sunday"
+msgstr "Domingo"
+
+#. module: event_track_assistant
+#: view:wiz.change.session.duration:event_track_assistant.wiz_change_session_duration_form
+msgid "Enter the new duration"
+msgstr "Introduzca la nueva duración"
+
+#. module: event_track_assistant
+#: field:wiz.change.session.duration,new_duration:0
+msgid "New duration"
+msgstr "Nueva duración"
+
+#. module: event_track_assistant
+#: model:ir.actions.act_window,name:event_track_assistant.action_change_session_duration
+#: view:wiz.change.session.duration:event_track_assistant.wiz_change_session_duration_form
+msgid "Change session duration"
+msgstr "Cambiar duración sesión"
+

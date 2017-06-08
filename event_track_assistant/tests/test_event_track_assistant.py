@@ -29,6 +29,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.wiz_change_event_model =\
             self.env['wiz.registration.to.another.event']
         self.wiz_presence_model = self.env['wiz.complete.presence']
+        self.wiz_duration_model = self.env['wiz.change.session.duration']
         self.claim_model = self.env['crm.claim']
         self.partner_model = self.env['res.partner']
         self.config_model = self.env['marketing.config.settings']
@@ -513,3 +514,11 @@ class TestEventTrackAssistant(common.TransactionCase):
         self.assertEqual(
             res.get('res_model'), 'wiz.send.email.to.registrations',
             'Bad res_model to send email')
+
+    def test_change_session_duration(self):
+        wiz = self.wiz_duration_model.create({'new_duration': 5})
+        wiz.with_context(
+            active_ids=self.event.track_ids[0].ids).change_session_duration()
+        self.assertEqual(
+            self.event.track_ids[0].duration, 5,
+            'Bad change session duration')

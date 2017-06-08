@@ -40,6 +40,7 @@
                            sum='Tot. nightlight hours'/>
                     <field name="notes" />
                     <field name="state" />
+                    <field name="session_day" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -52,6 +53,7 @@
                     <field name="event" />
                     <field name="session" />
                     <field name="session_date" />
+                    <field name="session_day" />
                     <field name="partner" />
                     <field name="state" />
                     <separator/>
@@ -77,6 +79,8 @@
                         <filter string="Canceled" name="canceled" domain="[('state','=','canceled')]"/>
                     </group>
                     <group expand="1" string="Group By">
+                        <filter string="Day of the week" name="Day_of_week"
+                                domain="[]" context="{'group_by':'session_day'}"/>
                         <filter string="Day" name="daily_group"
                                 domain="[]" context="{'group_by':'session_date:day'}"/>
                         <filter string="Week" name="weekly_group"
