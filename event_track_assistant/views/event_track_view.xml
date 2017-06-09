@@ -20,6 +20,9 @@
             <field name="model">event.track</field>
             <field name="inherit_id" ref="website_event_track.view_event_track_search" />
             <field name="arch" type="xml">
+                <field name="event_id" position="after">
+                   <field name="day" />
+                </field>
                 <field name="speaker_ids" position="after">
                     <separator/>
                     <filter string="Sessions without presences" domain="[('presences','=',False)]" name="my_presences_filter"/>
@@ -70,6 +73,7 @@
                     <separator/>
                     <filter string="Session week" domain="[]" context="{'group_by': 'date:week'}"/>
                     <filter string="Session day" domain="[]" context="{'group_by': 'date:day'}"/>
+                    <filter string="Session day of the week" domain="[]" context="{'group_by': 'day'}"/>
                     <filter string="Estimated end week" domain="[]" context="{'group_by': 'estimated_date_end:week'}"/>
                     <filter string="Real end week" domain="[]" context="{'group_by': 'real_date_end:week'}"/>
                     <filter string="Estimated end day" domain="[]" context="{'group_by': 'estimated_date_end:day'}"/>
@@ -90,6 +94,7 @@
                     <field name="real_duration" widget="float_time" sum="real_duration"/>
                     <field name="real_date_end" />
                     <field name="presences" />
+                    <field name="day" invisible="1"/>
                 </field>
             </field>
         </record>
