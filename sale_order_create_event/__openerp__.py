@@ -14,15 +14,12 @@
     "category": "Event Management",
     "depends": [
         "account",
-        "analytic",
-        "partner_event",
         "event_sale",
         "event_project",
         "event_track_assistant",
         "calendar_holiday",
         "procurement_service_project",
         "project_task_generated_with_product_performance",
-        "hr_employee_catch_partner",
         "web_sheet_full_width",
         "web_context_tunnel",
         "sale_service_recurrence_configurator"

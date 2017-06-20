@@ -15,7 +15,6 @@
     "depends": [
         "account_analytic_analysis",
         "sale_order_create_event",
-        "calendar_holiday",
     ],
     "data": [
         "security/ir.model.access.csv",
