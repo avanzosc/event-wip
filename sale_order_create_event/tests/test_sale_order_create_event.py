@@ -3,71 +3,16 @@
 # Copyright © 2016-2017 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp.addons.event_track_assistant.tests.\
-    test_event_track_assistant import TestEventTrackAssistant
 from openerp import exceptions, fields
+from .common import SaleOrderCreateEventSetup
 
 str2date = fields.Date.from_string
 
 
-class TestSaleOrderCreateEvent(TestEventTrackAssistant):
+class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
 
     def setUp(self):
         super(TestSaleOrderCreateEvent, self).setUp()
-        self.task_model = self.env['project.task']
-        self.work_model = self.env['project.task.work']
-        self.sale_model = self.env['sale.order']
-        self.account_model = self.env['account.analytic.account']
-        self.procurement_model = self.env['procurement.order']
-        self.impute_model = self.env['wiz.impute.in.presence.from.session']
-        self.line_model = self.env['wiz.impute.in.presence.from.session.line']
-        self.contract_model = self.env['hr.contract']
-        self.wiz_workable_model = self.env['wiz.calculate.workable.festive']
-        self.change_date_model = self.env['wiz.change.session.date']
-        account_vals = {'name': 'account procurement service project',
-                        'date_start': '2025-01-15',
-                        'date': '2025-02-28',
-                        'use_tasks': True}
-        self.account = self.account_model.create(account_vals)
-        self.project = self.env['project.project'].search(
-            [('analytic_account_id', '=', self.account.id)], limit=1)[:1]
-        self.service_product = self.browse_ref(
-            'product.product_product_consultant')
-        self.service_product.write({
-            'performance': 5.0,
-            'recurring_service': True,
-            'route_ids':
-            [(6, 0,
-              [self.ref('procurement_service_project.route_serv_project')])],
-            'ticket_event_product_ids':
-            [(6, 0,
-              [self.ref('event_sale.product_product_event')])],
-        })
-        sale_vals = {
-            'name': 'sale order 1',
-            'partner_id': self.ref('base.res_partner_1'),
-            'project_id': self.account.id,
-            'project_by_task': 'no',
-        }
-        sale_line_vals = {
-            'product_id': self.service_product.id,
-            'name': self.service_product.name,
-            'product_uom_qty': 7,
-            'product_uom': self.service_product.uom_id.id,
-            'price_unit': self.service_product.list_price,
-            'performance': self.service_product.performance,
-            'january': True,
-            'february': True,
-            'week4': True,
-            'week5': True,
-            'tuesday': True,
-            'thursday': True,
-            'start_date': '2025-01-15',
-            'start_hour': 8.00,
-            'end_date': '2025-02-28',
-            'end_hour': 09.00}
-        sale_vals['order_line'] = [(0, 0, sale_line_vals)]
-        self.sale_order = self.sale_model.create(sale_vals)
 
     def test_sale_order_create_event(self):
         self.assertEquals(len(self.project.tasks), 0)
@@ -131,96 +76,3 @@ class TestSaleOrderCreateEvent(TestEventTrackAssistant):
             performance = line.end_hour - line.start_hour
             line.onchange_date_begin()
             self.assertEquals(line.performance, performance)
-
-    def test_change_session_date(self):
-        self.sale_order.action_button_confirm()
-        cond = [('sale_order', '=', self.sale_order.id)]
-        event = self.event_model.search(cond, limit=1)[:1]
-        wiz_vals = {'days': 35}
-        wiz = self.change_date_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': [event.track_ids[len(
-                event.track_ids)-1].id]}).change_session_date()
-        self.assertEqual(
-            str2date(event.track_ids[len(
-                event.track_ids)-1].date), str2date(event.date_end),
-            'Session and event with different end date')
-        wiz_vals = {'days': -28}
-        wiz = self.change_date_model.create(wiz_vals)
-        wiz.with_context(
-            {'active_ids': [event.track_ids[0].id]}).change_session_date()
-        self.assertEqual(
-            str2date(event.track_ids[0].date), str2date(event.date_begin),
-            'Session and event with different start date')
-
-    def test_event_track_registration_open_button(self):
-        self.sale_order.action_button_confirm()
-        cond = [('sale_order', '=', self.sale_order.id)]
-        self.event = self.event_model.search(cond, limit=1)[:1]
-        super(TestSaleOrderCreateEvent,
-              self).test_event_track_registration_open_button()
-        with self.assertRaises(exceptions.Warning):
-            self.sale_order.action_cancel()
-
-    def test_event_track_assistant_delete(self):
-        self.sale_order.action_button_confirm()
-        cond = [('sale_order', '=', self.sale_order.id)]
-        self.event = self.event_model.search(cond, limit=1)[:1]
-        super(TestSaleOrderCreateEvent,
-              self).test_event_track_assistant_delete()
-
-    def test_event_track_assistant_delete_from_event(self):
-        self.sale_order.action_button_confirm()
-        cond = [('sale_order', '=', self.sale_order.id)]
-        self.event = self.event_model.search(cond, limit=1)[:1]
-        super(TestSaleOrderCreateEvent,
-              self).test_event_track_assistant_delete_from_event()
-
-    def test_event_assistant_track_assistant_confirm_assistant(self):
-        self.sale_order.action_button_confirm()
-        cond = [('sale_order', '=', self.sale_order.id)]
-        self.event = self.event_model.search(cond, limit=1)[:1]
-        contract = self.contract_model.create({
-            'name': u'Contract {}'.format(self.partner.name),
-            'employee_id': self.ref('hr.employee_fp'),
-            'partner': self.partner.id,
-            'type_id': self.ref('hr_contract.hr_contract_type_emp'),
-            'wage': 500,
-            'date_start': self.event.date_begin,
-            'working_hours': self.ref('resource.timesheet_group1'),
-        })
-        workable_wiz = self.wiz_workable_model.with_context(
-            active_id=contract.id).create({})
-        workable_wiz.button_calculate_workables_and_festives()
-        super(TestSaleOrderCreateEvent,
-              self).test_event_assistant_track_assistant_confirm_assistant()
-        self.assertNotEqual(len(self.event.work_ids), 0)
-        presence = self.event.track_ids[0].presences[0]
-        presence.button_canceled()
-        cond = [('event_id', '=', presence.event.id),
-                ('date', '=', presence.session.real_date_end),
-                ('task_id', '=', presence.session.tasks[:1].id),
-                ('user_id', '=', presence.partner.employee_id.user_id.id)]
-        self.work_model.search(cond, limit=1)
-        self.assertEqual(len(self.work_model.search(cond, limit=1)), 0,
-                         'Found project task work after cancel presence')
-        presence.button_completed()
-        self.assertNotEqual(
-            len(self.work_model.search(cond, limit=1)), 0,
-            'Not project task work found after completed presence')
-        presence.button_pending()
-        cond = [('event_id', '=', presence.event.id),
-                ('date', '=', presence.session.real_date_end),
-                ('task_id', '=', presence.session.tasks[:1].id),
-                ('user_id', '=', presence.partner.employee_id.user_id.id)]
-        self.work_model.search(cond, limit=1)
-        self.assertEqual(len(self.work_model.search(cond, limit=1)), 0,
-                         'Found project task work after pending presence')
-
-    def test_duplicate_sale_order(self):
-        self.sale_order.project_by_task = 'yes'
-        self.sale_order.action_button_confirm()
-        self.assertTrue(self.sale_order.mapped('order_line.event_id'))
-        copy_sale_order = self.sale_order.copy()
-        self.assertEquals(copy_sale_order.state, 'draft')
-        self.assertFalse(copy_sale_order.mapped('order_line.event_id'))
