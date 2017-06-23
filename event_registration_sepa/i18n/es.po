@@ -60,9 +60,15 @@ msgstr "Sepa Borrador"
 #. module: event_registration_sepa
 #: field:event.registration,sepa_active:0
 msgid "Sepa active"
-msgstr "Sepa active"
+msgstr "Sepa activo"
 
 #. module: event_registration_sepa
 #: field:event.registration,sepa_draft:0
 msgid "Sepa draft"
-msgstr "Sepa draft"
+msgstr "Sepa borrador"
+
+#. module: event_registration_sepa
+#: field:payment.mode,validate_mandate:0
+msgid "Validate exists mandate"
+msgstr "Validar existe mandato"
+

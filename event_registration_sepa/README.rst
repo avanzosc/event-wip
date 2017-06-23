@@ -10,8 +10,8 @@ Event Registration Sepa
 
 * Two new fields to control if the students have a valid or draft sepa.
 
-* You can not confirm an assistant if the student or its parent has not a
-  valid sepa mandate.
+* You can confirm an attendance if the student or its parent has a valid sepa
+  mandate (direct debit mandate with 'valid' status).
 
 Credits
 =======
