@@ -3,11 +3,12 @@
 # © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp.addons.sale_order_create_event.tests.\
-    test_sale_order_create_event import TestSaleOrderCreateEvent
+    test_sale_order_create_event_assistant import\
+    TestSaleOrderCreateEventAssistant
 from openerp import fields
 
 
-class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
+class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
 
     def setUp(self):
         super(TestEventRegistrationAnalytic, self).setUp()
@@ -87,23 +88,3 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEvent):
         del_wiz.delete_canceled_registration()
         self.assertFalse(self.event.registration_ids.filtered(
             lambda x: x.state == 'cancel'))
-
-    def test_sale_order_confirm(self):
-        """Don't repeat this test."""
-        pass
-
-    def test_onchange_line_times(self):
-        """Don't repeat this test."""
-        pass
-
-    def test_event_track_assistant_delete(self):
-        """Don't repeat this test."""
-        pass
-
-    def test_event_assistant_delete_wizard(self):
-        """Don't repeat this test"""
-        pass
-
-    def test_duplicate_sale_order(self):
-        """Don't repeat this test."""
-        pass

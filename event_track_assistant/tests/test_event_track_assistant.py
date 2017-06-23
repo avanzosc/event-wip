@@ -1,57 +1,21 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 # Copyright © 2016 Alfredo de la Fuente - AvanzOSC
 # Copyright © 2016 Oihane Crucelaegui - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-import openerp.tests.common as common
 from openerp import exceptions, fields
 from dateutil.relativedelta import relativedelta
+from .common import EventTrackAssistantSetup
 
 datetime2str = fields.Datetime.to_string
 str2datetime = fields.Datetime.from_string
 date2str = fields.Date.to_string
 
 
-class TestEventTrackAssistant(common.TransactionCase):
+class TestEventTrackAssistant(EventTrackAssistantSetup):
 
     def setUp(self):
         super(TestEventTrackAssistant, self).setUp()
-        self.env.user.write({
-            'tz': u'UTC',
-        })
-        self.event_model = self.env['event.event']
-        self.presence_model = self.env['event.track.presence']
-        self.registration_model = self.env['event.registration']
-        self.wiz_add_model = self.env['wiz.event.append.assistant']
-        self.wiz_del_model = self.env['wiz.event.delete.assistant']
-        self.wiz_confirm_model = self.env['wiz.event.confirm.assistant']
-        self.wiz_impute_model = self.env['wiz.impute.in.presence.from.session']
-        self.wiz_change_event_model =\
-            self.env['wiz.registration.to.another.event']
-        self.wiz_presence_model = self.env['wiz.complete.presence']
-        self.wiz_duration_model = self.env['wiz.change.session.duration']
-        self.claim_model = self.env['crm.claim']
-        self.partner_model = self.env['res.partner']
-        self.config_model = self.env['marketing.config.settings']
-        self.wiz_email_model = self.env['wiz.send.email.to.registrations']
-        self.parent = self.partner_model.create({
-            'name': 'Parent Partner',
-        })
-        self.partner = self.partner_model.create({
-            'name': 'Test Partner',
-        })
-        event_vals = {
-            'name': 'Registration partner test',
-            'date_begin': '2025-01-20',
-            'date_end': '2025-01-30',
-            'track_ids': [(0, 0, {'name': 'Session 1',
-                                  'date': '2025-01-22 00:00:00'}),
-                          (0, 0, {'name': 'Session 2',
-                                  'date': '2025-01-25 00:00:00'}),
-                          (0, 0, {'name': 'Session 3',
-                                  'date': '2025-01-28 00:00:00'})]
-        }
-        self.event = self.event_model.create(event_vals)
 
     def test_event_track_registration_open_button(self):
         self.assertEquals(len(self.event.mapped('track_ids.presences')), 0)
@@ -82,7 +46,7 @@ class TestEventTrackAssistant(common.TransactionCase):
         configs = self.config_model.search([])
         configs.write({'show_all_customers_in_presences': True})
         presence = self.event.track_ids[0].presences[0]
-        presence._compute_allowed_partner_ids()
+        # presence._compute_allowed_partner_ids()
         configs.write({'show_all_customers_in_presences': False})
         registration.date_start = str2datetime(self.event.date_begin) -\
             relativedelta(days=1)
@@ -135,24 +99,21 @@ class TestEventTrackAssistant(common.TransactionCase):
         show_sessions = self.partner.show_sessions_from_partner()
         self.assertEquals(
             show_sessions.get('res_model'), 'event.track')
-        self.partner._compute_event_locations_count()
         self.assertEquals(
             self.partner.event_locations_count, 0,
             'BAD partner event locations count')
         show_events = self.partner.show_event_locations_from_partner()
         self.assertEquals(
             show_events.get('res_model'), 'event.event')
-        self.partner._compute_event_organizer_count()
         self.assertEquals(
             self.partner.event_organizer_count, 0,
             'BAD partner event organizer count')
         show_events = self.partner.show_event_organizer_from_partner()
         self.assertEquals(
             show_events.get('res_model'), 'event.event')
-        self.partner._compute_registrations_locations_organizer_count()
         self.assertEquals(
             self.partner.registrations_location_organizer_count, 0,
-            'BAD partner registraions locattion organizer count')
+            'BAD partner registrations location organizer count')
         show_registrations = (
             self.partner.show_registrations_location_organizer_from_partner())
         self.assertEquals(
@@ -259,102 +220,6 @@ class TestEventTrackAssistant(common.TransactionCase):
             lambda r: r.partner_id == self.partner)
         self.assertEquals(registration.state, 'cancel')
 
-    def test_event_assistant_add_wizard(self):
-        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
-        add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
-        from_date = add_wiz.from_date
-        to_date = add_wiz.to_date
-        min_from_date = date2str(str2datetime(add_wiz.min_from_date).date())
-        max_to_date = date2str(str2datetime(add_wiz.max_to_date).date())
-        wrong_from_date = str2datetime(add_wiz.min_from_date) -\
-            relativedelta(days=1)
-        wrong_to_date = str2datetime(add_wiz.max_to_date) +\
-            relativedelta(days=1)
-        not_warn = add_wiz.onchange_dates_and_partner()
-        self.assertNotIn('warning', not_warn)
-        add_wiz.write({
-            'from_date': to_date,
-            'to_date': from_date,
-        })
-        warn1 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn1)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-        add_wiz.write({
-            'from_date': wrong_from_date,
-            'to_date': to_date,
-        })
-        warn2 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn2)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-        add_wiz.write({
-            'from_date': from_date,
-            'to_date': wrong_to_date,
-        })
-        warn3 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn3)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-        add_wiz.write({
-            'from_date': from_date,
-            'to_date': to_date,
-        })
-        add_wiz.action_append()
-        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
-        warn4 = add_wiz.onchange_dates_and_partner()
-        self.assertIn('warning', warn4)
-        self.assertEquals(add_wiz.from_date, min_from_date)
-        self.assertEquals(add_wiz.to_date, max_to_date)
-
-    def test_event_assistant_delete_wizard(self):
-        self.assertEquals(len(self.event.mapped('registration_ids')), 0)
-        add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
-        add_wiz.action_append()
-        self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
-        from_date = self.event.track_ids[:1].date
-        to_date = self.event.track_ids[-1:].date
-        del_wiz = self.wiz_del_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id,
-                                               'from_date': from_date,
-                                               'to_date': to_date})
-        min_from_date = date2str(str2datetime(del_wiz.min_from_date).date())
-        max_to_date = date2str(str2datetime(del_wiz.max_to_date).date())
-        wrong_from_date = str2datetime(del_wiz.min_from_date) -\
-            relativedelta(days=2)
-        wrong_to_date = str2datetime(del_wiz.max_to_date) +\
-            relativedelta(days=2)
-        not_warn = del_wiz.onchange_dates()
-        self.assertNotIn('warning', not_warn)
-        self.assertNotEquals(del_wiz.from_date, min_from_date)
-        self.assertNotEquals(del_wiz.to_date, max_to_date)
-        del_wiz.write({
-            'from_date': to_date,
-            'to_date': from_date,
-        })
-        warn1 = del_wiz.onchange_dates()
-        self.assertIn('warning', warn1)
-        self.assertEquals(del_wiz.from_date, min_from_date)
-        self.assertEquals(del_wiz.to_date, max_to_date)
-        del_wiz.write({
-            'from_date': wrong_from_date,
-            'to_date': to_date,
-        })
-        warn2 = del_wiz.onchange_dates()
-        self.assertIn('warning', warn2)
-        self.assertEquals(del_wiz.from_date, min_from_date)
-        self.assertEquals(del_wiz.to_date, max_to_date)
-        del_wiz.write({
-            'from_date': from_date,
-            'to_date': wrong_to_date,
-        })
-        warn3 = del_wiz.onchange_dates()
-        self.assertIn('warning', warn3)
-        self.assertEquals(del_wiz.from_date, min_from_date)
-        self.assertEquals(del_wiz.to_date, max_to_date)
-
     def test_event_assistant_track_assistant_confirm_assistant(self):
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).create({'partner': self.partner.id})
@@ -386,139 +251,3 @@ class TestEventTrackAssistant(common.TransactionCase):
         for track in self.event.track_ids:
             self.assertNotEqual(len(track.claim_ids), 0)
             self.assertNotEqual(track.claim_count, 0)
-
-    def test_event_change_registration_to_another_event(self):
-        self.assertFalse(
-            self.event.mapped('track_ids.presences').filtered(
-                lambda x: x.partner == self.partner))
-        registration_vals = {
-            'event_id': self.event.id,
-            'partner_id': self.partner.id,
-            'state': 'draft',
-            'date_start': '2025-01-20 00:00:00',
-            'date_end': '2025-01-31 00:00:00',
-        }
-        registration = self.registration_model.create(registration_vals)
-        self.assertEquals(registration.state, 'draft')
-        wiz_vals = {'name': 'confirm assistants'}
-        wiz = self.wiz_confirm_model.with_context(
-            active_ids=self.event.ids).create(wiz_vals)
-        wiz.action_confirm_assistant()
-        self.assertEquals(registration.state, 'open')
-        partner_presences = self.event.mapped('track_ids.presences').filtered(
-            lambda x: x.partner == self.partner)
-        self.assertTrue(
-            partner_presences.filtered(lambda p: p.state != 'canceled'))
-        self.assertFalse(
-            partner_presences.filtered(lambda p: p.state == 'canceled'))
-        new_event = self.event.copy()
-        wiz_another_vals = {
-            'new_event_id': new_event.id,
-        }
-        change_wiz = self.wiz_change_event_model.with_context(
-            active_id=registration.id).create(wiz_another_vals)
-        self.assertEquals(change_wiz.event_id, registration.event_id)
-        self.assertEquals(change_wiz.event_registration_id, registration)
-        change_wiz.button_change_registration_event()
-        self.assertNotEquals(self.event, registration.event_id)
-        self.assertEquals(new_event, registration.event_id)
-        self.assertEquals(registration.state, 'draft')
-        partner_presences = self.event.mapped('track_ids.presences').filtered(
-            lambda x: x.partner == self.partner)
-        self.assertFalse(
-            partner_presences.filtered(lambda p: p.state != 'canceled'))
-        self.assertTrue(
-            partner_presences.filtered(lambda p: p.state == 'canceled'))
-        new_registration = new_event.mapped('registration_ids').filtered(
-            lambda x: x.partner_id == self.partner)
-        self.assertNotEqual(
-            len(new_registration), 0, 'Registration not found in new event')
-
-    def test_update_registration_dates_from_wizard(self):
-        registration_vals = {
-            'event_id': self.event.id,
-            'partner_id': self.partner.id,
-            'date_start': '2025-01-20',
-            'date_end': '2025-01-30'}
-        registration = self.registration_model.create(registration_vals)
-        wiz_vals = {'partner': self.partner.id,
-                    'from_date': '2025-01-22',
-                    'to_date': '2025-01-28'}
-        add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create(wiz_vals)
-        add_wiz._update_registration_start_date(registration)
-        self.assertEquals(registration.date_start, '2025-01-22 00:00:00')
-        add_wiz._update_registration_date_end(registration)
-        self.assertEquals(registration.date_end, '2025-01-28 00:00:00')
-
-    def test_count_absences_create_claim(self):
-        add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
-        add_wiz.action_append()
-        presences = self.event.mapped('track_ids.presences')
-        presences.write({'state': 'absent'})
-        max_presence = max(presences, key=lambda x: x.id)
-        max_presence.count_absences_create_claim()
-        categ_id = self.ref('event_track_assistant.crm_case_categ_possible_'
-                            'low')
-        cond = [('event_id', '=', max_presence.event.id),
-                ('session_id', '=', max_presence.session.id),
-                ('categ_id', '=', categ_id)]
-        self.assertEqual(
-            len(self.claim_model.search(cond, limit=1)), 1,
-            'Claim not found for 3 absences.')
-
-    def test_send_email_to_event_organizer(self):
-        self.event.organizer_id.write({'email': False,
-                                       'notify_email': 'none'})
-        with self.assertRaises(exceptions.Warning):
-            self.event.button_mass_mailing_to_organizer()
-        self.event.organizer_id.notify_email = 'always'
-        with self.assertRaises(exceptions.Warning):
-            self.event.button_mass_mailing_to_organizer()
-        self.event.organizer_id.email = 'test@tes.com'
-        res = self.event.button_mass_mailing_to_organizer()
-        context = res.get('context')
-        self.assertEqual(
-            context.get('default_composition_mode'), 'mass_mail',
-            'Bad composition mode to send email')
-        self.assertEqual(
-            context.get('default_model'), 'event.event',
-            'Bad model to send email')
-        self.assertEqual(
-            context.get('default_res_id'), self.event.id,
-            'Bad event to send email')
-
-    def test_send_email_to_event_registrations(self):
-        registration_vals = {
-            'event_id': self.event.id,
-            'partner_id': self.partner.id,
-        }
-        self.registration_model.create(registration_vals)
-        self.partner.write({'email': False,
-                            'notify_email': 'always'})
-        with self.assertRaises(exceptions.Warning):
-            self.event.button_mass_mailing_to_registrations()
-        self.partner.email = 'test@test.com'
-        wiz = self.wiz_email_model.create({})
-        wiz.default_get(['body'])
-        wiz.with_context(active_id=self.event.id).button_send_email()
-        res = self.event.button_mass_mailing_to_registrations()
-        context = res.get('context')
-        self.assertEqual(
-            context.get('active_model'), 'event.event',
-            'Bad model to send email')
-        self.assertEqual(
-            context.get('active_id'), self.event.id,
-            'Bad event to send email')
-        self.assertEqual(
-            res.get('res_model'), 'wiz.send.email.to.registrations',
-            'Bad res_model to send email')
-
-    def test_change_session_duration(self):
-        wiz = self.wiz_duration_model.create({'new_duration': 5})
-        wiz.with_context(
-            active_ids=self.event.track_ids[0].ids).change_session_duration()
-        self.assertEqual(
-            self.event.track_ids[0].duration, 5,
-            'Bad change session duration')
