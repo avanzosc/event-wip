@@ -15,6 +15,7 @@ project will be taken from the start and end dates defined in sale order lines.
 * In sales orders defined the "product category" field can only be selected
   products in this category.
 * In sales orders it defined a combo to indicate who is the payer.
+* New "payer" selection in partner which is loaded in sales orders.
 
 
 Credits

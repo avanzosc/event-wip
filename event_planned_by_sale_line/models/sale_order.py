@@ -135,6 +135,14 @@ class SaleOrder(models.Model):
                     'event_id': line.event_id.id}
             invoice_line_obj.create(vals)
 
+    @api.multi
+    def onchange_partner_id(self, part):
+        res = super(SaleOrder, self).onchange_partner_id(part)
+        partner = self.env['res.partner'].browse(part)
+        if partner and partner.payer:
+            res['value']['payer'] = partner.payer
+        return res
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'

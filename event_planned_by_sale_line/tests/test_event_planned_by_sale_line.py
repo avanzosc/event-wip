@@ -231,3 +231,14 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         res = self.sale_order.order_line[0].onchange_only_products_category()
         self.assertEqual(
             res.get('domain').get('product_tmpl_id'), [], 'Bad domain 2')
+
+    def test_payer_onchange(self):
+        self.sale_order.payer = False
+        self.partner.payer = False
+        res = self.sale_order.onchange_partner_id(False)
+        self.assertTrue('payer' not in res['value'])
+        res = self.sale_order.onchange_partner_id(self.partner.id)
+        self.assertTrue('payer' not in res['value'])
+        self.partner.payer = 'school'
+        res = self.sale_order.onchange_partner_id(self.partner.id)
+        self.assertEqual(res['value'].get('payer', False), 'school')
