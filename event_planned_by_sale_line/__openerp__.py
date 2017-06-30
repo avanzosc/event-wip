@@ -25,6 +25,7 @@
         "views/sale_order_view.xml",
         "views/product_category_view.xml",
         "views/account_analytic_invoice_line_view.xml",
+        "views/res_partner_view.xml"
     ],
     "installable": True,
     "post_init_hook": "fill_charge_information_is_sales",
