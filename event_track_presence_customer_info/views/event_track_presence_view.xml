@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="event_track_presence_tree_view_inh_custinfo">
+            <field name="name">event.track.presence.tree.view.inh.custinfo</field>
+            <field name="model">event.track.presence</field>
+            <field name="inherit_id" ref="event_track_assistant.event_track_presence_tree_view" />
+            <field name="arch" type="xml">
+                <field name="state" position="after" >
+                    <field name="customer_id" />
+                    <field name="customer_street" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
