@@ -16,10 +16,11 @@
     "depends": [
         "partner_event",
         "account_banking_sepa_direct_debit",
+        "account_payment_sale",
         "hr_employee_catch_partner",
-        "event_registration_analytic"
+        "event_registration_analytic",
     ],
-    "data": [
-    ],
+    'data': ['views/payment_mode_view.xml',
+             ],
     "installable": True,
 }
