@@ -5,3 +5,4 @@ from . import wiz_event_append_assistant
 from . import wiz_impute_in_presence_from_session
 from . import wiz_change_session_date
 from . import wiz_event_confirm_assistant
+from . import wiz_event_registration_confirm

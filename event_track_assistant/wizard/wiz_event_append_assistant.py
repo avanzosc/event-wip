@@ -31,8 +31,10 @@ class WizEventAppendAssistant(models.TransientModel):
     def default_get(self, var_fields):
         tz = self.env.user.tz
         res = super(WizEventAppendAssistant, self).default_get(var_fields)
-        events = self.env['event.event'].browse(
-            self.env.context.get('active_ids'))
+        events = False
+        if self.env.context.get('active_model') == 'event.event':
+            events = self.env['event.event'].browse(
+                self.env.context.get('active_ids'))
         if events:
             from_date = _convert_to_local_date(
                 min(events.mapped('date_begin')), tz)

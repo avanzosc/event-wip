@@ -31,6 +31,7 @@
         "wizard/wiz_complete_presence_view.xml",
         "wizard/wiz_send_email_to_registrations_view.xml",
         "wizard/wiz_change_session_duration_view.xml",
+        "wizard/wiz_event_registration_confirm_view.xml",
         "views/event_event_view.xml",
         "views/event_registration_view.xml",
         "views/event_track_view.xml",

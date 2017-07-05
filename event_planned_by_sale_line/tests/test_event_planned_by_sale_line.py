@@ -52,6 +52,10 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
             len(events), 0, 'Sale order without event')
         wiz_vals = {
             'partner': self.partner.id,
+            'from_date': events[0].date_begin,
+            'min_from_date': events[0].date_begin,
+            'max_to_date': events[0].date_end,
+            'to_date': events[0].date_end
         }
         wiz = self.wiz_add_model.with_context(
             active_ids=events.ids).create(wiz_vals)
@@ -80,6 +84,10 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
             len(events), 0, 'Sale order without event')
         wiz_vals = {
             'partner': self.partner.id,
+            'from_date': events[0].date_begin,
+            'min_from_date': events[0].date_begin,
+            'max_to_date': events[0].date_end,
+            'to_date': events[0].date_end
         }
         wiz = self.wiz_add_model.with_context(
             active_ids=events.ids).create(wiz_vals)
@@ -108,6 +116,10 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
             len(events), 0, 'Sale order without event')
         wiz_vals = {
             'partner': self.partner.id,
+            'from_date': events[0].date_begin,
+            'min_from_date': events[0].date_begin,
+            'max_to_date': events[0].date_end,
+            'to_date': events[0].date_end,
             'create_account': True,
         }
         wiz = self.wiz_add_model.with_context(
@@ -146,6 +158,10 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
             len(events), 0, 'Sale order without event')
         wiz_vals = {
             'partner': self.partner.id,
+            'from_date': events[0].date_begin,
+            'min_from_date': events[0].date_begin,
+            'max_to_date': events[0].date_end,
+            'to_date': events[0].date_end,
             'create_account': True,
         }
         wiz = self.wiz_add_model.with_context(

@@ -38,6 +38,8 @@ class AccountInvoice(models.Model):
                 vals['sale_order_id'] = account.sale.id or False
                 vals['event_address_id'] = (
                     account.sale.partner_shipping_id.id or False)
+                vals['payment_mode_id'] = (account.sale.payment_mode_id.id or
+                                           vals.get('payment_mode_id', False))
             if account.sale.payer == 'student':
                 cond = [('analytic_account', '=', account.id)]
                 registration = registration_obj.search(cond, limit=1)
@@ -49,4 +51,8 @@ class AccountInvoice(models.Model):
                     'event_registration_analytic.student_journal').id
                 vals['student'] = account.student.id
                 vals['event_id'] = registration.event_id.id or False
+                vals['payment_mode_id'] = (
+                    account.student.parent_id.customer_payment_mode.id or
+                    registration.event_id.sale_order.payment_mode_id.id or
+                    vals.get('payment_mode_id', False))
         return super(AccountInvoice, self).create(vals)

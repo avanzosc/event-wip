@@ -86,7 +86,7 @@ class WizEventAppendAssistant(models.TransientModel):
     def _prepare_track_condition_search(self, event):
         cond = super(WizEventAppendAssistant,
                      self)._prepare_track_condition_search(event)
-        if event.project_id:
+        if event.project_id and self.tasks:
             cond.append(('tasks', 'in', self.tasks.ids))
         return cond
 

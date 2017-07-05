@@ -20,7 +20,12 @@ class TestEventTrackAssistantOnly(EventTrackAssistantSetup):
     def test_event_assistant_add_wizard(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
+            active_ids=self.event.ids).create(
+            {'partner': self.partner.id,
+             'from_date': self.event.date_begin,
+             'min_from_date': self.event.date_begin,
+             'max_to_date': self.event.date_end,
+             'to_date': self.event.date_end})
         from_date = add_wiz.from_date
         to_date = add_wiz.to_date
         min_from_date = date2str(str2datetime(add_wiz.min_from_date).date())
@@ -69,7 +74,12 @@ class TestEventTrackAssistantOnly(EventTrackAssistantSetup):
     def test_event_assistant_delete_wizard(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
+            active_ids=self.event.ids).create(
+            {'partner': self.partner.id,
+             'from_date': self.event.date_begin,
+             'min_from_date': self.event.date_begin,
+             'max_to_date': self.event.date_end,
+             'to_date': self.event.date_end})
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
         from_date = self.event.track_ids[:1].date
@@ -169,7 +179,9 @@ class TestEventTrackAssistantOnly(EventTrackAssistantSetup):
         registration = self.registration_model.create(registration_vals)
         wiz_vals = {'partner': self.partner.id,
                     'from_date': '2025-01-22',
-                    'to_date': '2025-01-28'}
+                    'min_from_date': '2025-01-22',
+                    'to_date': '2025-01-28',
+                    'max_to_date': '2025-01-28'}
         add_wiz = self.wiz_add_model.with_context(
             active_ids=self.event.ids).create(wiz_vals)
         add_wiz._update_registration_start_date(registration)
@@ -179,7 +191,12 @@ class TestEventTrackAssistantOnly(EventTrackAssistantSetup):
 
     def test_count_absences_create_claim(self):
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
+            active_ids=self.event.ids).create(
+            {'partner': self.partner.id,
+             'from_date': self.event.date_begin,
+             'min_from_date': self.event.date_begin,
+             'max_to_date': self.event.date_end,
+             'to_date': self.event.date_end})
         add_wiz.action_append()
         presences = self.event.mapped('track_ids.presences')
         presences.write({'state': 'absent'})
