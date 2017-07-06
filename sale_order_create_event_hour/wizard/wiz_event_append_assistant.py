@@ -49,19 +49,21 @@ class WizEventAppendAssistant(models.TransientModel):
         super(WizEventAppendAssistant, self)._update_registration_start_date(
             registration)
         reg_date_start = str2datetime(registration.date_start)
-        wiz_from_date = _convert_to_utc_date(
-            self.from_date, time=self.end_time, tz=self.env.user.tz)
-        if wiz_from_date != reg_date_start:
-            registration.date_start = wiz_from_date
+        if self.start_time:
+            wiz_from_date = _convert_to_utc_date(
+                self.from_date, time=self.start_time, tz=self.env.user.tz)
+            if wiz_from_date != reg_date_start:
+                registration.date_start = wiz_from_date
 
     def _update_registration_date_end(self, registration):
         super(WizEventAppendAssistant, self)._update_registration_date_end(
             registration)
         reg_date_end = str2datetime(registration.date_end)
-        wiz_to_date = _convert_to_utc_date(
-            self.to_date, time=self.end_time, tz=self.env.user.tz)
-        if wiz_to_date != reg_date_end:
-            registration.date_end = wiz_to_date
+        if self.end_time:
+            wiz_to_date = _convert_to_utc_date(
+                self.to_date, time=self.end_time, tz=self.env.user.tz)
+            if wiz_to_date != reg_date_end:
+                registration.date_end = wiz_to_date
 
     def _prepare_registration_data(self, event):
         vals = super(WizEventAppendAssistant,

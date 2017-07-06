@@ -86,7 +86,12 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         self.assertEquals(self.partner.session_count, 0)
         self.assertEquals(self.partner.presences_count, 0)
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
+            active_ids=self.event.ids).create(
+            {'partner': self.partner.id,
+             'from_date': self.event.date_begin,
+             'min_from_date': self.event.date_begin,
+             'max_to_date': self.event.date_end,
+             'to_date': self.event.date_end})
         add_wiz.action_append()
         self.partner.invalidate_cache()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
@@ -174,7 +179,12 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
     def test_event_track_assistant_delete_from_event(self):
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
+            active_ids=self.event.ids).create(
+            {'partner': self.partner.id,
+             'from_date': self.event.date_begin,
+             'min_from_date': self.event.date_begin,
+             'max_to_date': self.event.date_end,
+             'to_date': self.event.date_end})
         add_wiz.action_append()
         self.assertNotEquals(len(self.event.mapped('registration_ids')), 0)
         del_wiz = self.wiz_del_model.with_context(
@@ -222,7 +232,12 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
 
     def test_event_assistant_track_assistant_confirm_assistant(self):
         add_wiz = self.wiz_add_model.with_context(
-            active_ids=self.event.ids).create({'partner': self.partner.id})
+            active_ids=self.event.ids).create(
+            {'partner': self.partner.id,
+             'from_date': self.event.date_begin,
+             'min_from_date': self.event.date_begin,
+             'max_to_date': self.event.date_end,
+             'to_date': self.event.date_end})
         add_wiz.action_append()
         registration = self.event.registration_ids[:1]
         wiz_vals = {'name': 'confirm assistants'}
@@ -251,3 +266,17 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         for track in self.event.track_ids:
             self.assertNotEqual(len(track.claim_ids), 0)
             self.assertNotEqual(track.claim_count, 0)
+
+    def test_wiz_event_registration_confirm(self):
+        registration_vals = {
+            'event_id': self.event.id,
+            'partner_id': self.partner.id,
+            'date_start': self.event.date_begin,
+            'date_end': self.event.date_end
+        }
+        registration = self.registration_model.create(registration_vals)
+        reg_confirm_model = self.env['wiz.event.registration.confirm']
+        wiz = reg_confirm_model.create({'name': 'test from assistant'})
+        wiz.with_context(
+            active_ids=registration.ids).action_confirm_registrations()
+        self.assertEquals(registration.state, 'open')

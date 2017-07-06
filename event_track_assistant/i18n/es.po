@@ -1495,3 +1495,9 @@ msgstr "Nueva duración"
 msgid "Change session duration"
 msgstr "Cambiar duración sesión"
 
+#. module: event_track_assistant
+#: model:ir.actions.act_window,name:event_track_assistant.action_confirm_assistant_from_event_registration
+#: view:wiz.event.registration.confirm:event_track_assistant.wiz_event_registration_confirm_form
+msgid "Confirm registrations"
+msgstr "Confirmar registros"
+
