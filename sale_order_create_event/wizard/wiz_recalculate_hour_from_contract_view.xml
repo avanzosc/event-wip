@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_recalculate_hour_from_contract_form">
+            <field name="name">wiz.recalculate.hour.from.contract.form</field>
+            <field name="model">wiz.recalculate.hour.from.contract</field>
+            <field name="arch" type="xml">
+                <form string="Recalculate sessions date" >
+                    <separator string="Recalculate sessions date from sale contract" />
+                    <field name="name" invisible="1" />
+                    <footer>
+                        <button name="recalculate_session_date" type="object"
+                            string="Recalculate sessions date" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="action_recalculate_hour_from_date"
+            key2="client_action_multi" name="Recalculate date in sessions"
+            res_model="wiz.recalculate.hour.from.contract"
+            src_model="account.analytic.account"
+            view_mode="form" target="new" />
+    </data>
+</openerp>

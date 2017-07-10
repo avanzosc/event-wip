@@ -7,3 +7,4 @@ from . import project
 from . import event
 from . import res_partner
 from . import product
+from . import resource_calendar
