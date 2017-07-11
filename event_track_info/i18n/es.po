@@ -86,3 +86,17 @@ msgstr "Asignar plan de formación a sesiones"
 msgid "Product training plan wizard"
 msgstr "Asistente producto plan de formación"
 
+#. module: event_track_info
+#: field:product.category,training_plan_unique_session:0
+msgid "Training plan in each of the sessions of the event"
+msgstr "Plan de formación en cada una de las sesiones del evento"
+
+#. module: event_track_info
+#: help:product.category,training_plan_unique_session:0
+msgid ""
+"Checking this option, all training plans will be entered in each of the "
+"sessions of the event."
+msgstr ""
+"Activando esta opción, todos los planes de formación serán introducidos en "
+"cada una de las sesiones del evento."
+

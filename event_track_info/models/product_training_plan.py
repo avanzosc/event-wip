@@ -9,16 +9,13 @@ class ProductTrainingPlan(models.Model):
 
     def _search_product_training_plan(self, product, num_session):
         data = {}
-        cond = [('product_tmpl_id', '=', product.product_tmpl_id.id),
-                ('product_id', '=', False),
-                ('sequence', '=', num_session)]
+        cond = [('product_tmpl_id', '=', product.product_tmpl_id.id)]
+        if not product.categ_id.training_plan_unique_session:
+            cond.append(('sequence', '=', num_session))
         data = self._catch_training_plan_information(
-            data, self.search(cond))
-        cond = [('product_tmpl_id', '=', product.product_tmpl_id.id),
-                ('product_id', '=', product.id),
-                ('sequence', '=', num_session)]
+            data, self.search(cond + [('product_id', '=', False)]))
         data = self._catch_training_plan_information(
-            data, self.search(cond))
+            data, self.search(cond + [('product_id', '=', product.id)]))
         return data
 
     def _catch_training_plan_information(self, data, trainings):

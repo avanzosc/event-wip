@@ -23,6 +23,7 @@
         "wizard/product_training_plan_wizard.xml",
         "views/event_track_view.xml",
         "views/event_event_view.xml",
+        "views/product_category_view.xml",
     ],
     "installable": True,
 }
