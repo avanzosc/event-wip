@@ -8,13 +8,12 @@ Event Track Info
 
 * With this module, each product they can define templates for sessions. When
   confirming a sales order, each session will apply that template.
-
 * New planification and resource text fields in event track to
   add extra info.
-
 * New button in events for load training plans.
-
 * Disable 'stage_id' group by when opening tracks from event.
+* In product category you can define if you want that all training plans will
+  be entered in each of the sessions of the event.
 
 Credits
 =======

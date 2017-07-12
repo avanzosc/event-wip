@@ -4,3 +4,4 @@
 from . import event_track
 from . import sale_order
 from . import product_training_plan
+from . import product_category
