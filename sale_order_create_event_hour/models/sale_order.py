@@ -30,7 +30,11 @@ class SaleOrder(models.Model):
         vals = super(SaleOrder, self)._prepare_session_data_from_sale_line(
             event, num_session, line, date)
         if line.project_by_task == 'no':
-            vals['date'] = _convert_to_utc_date(
+            new_date = False
+            if self.project_id.working_hours:
+                working = self.project_id.working_hours
+                new_date, duration = working._calc_date_and_duration(date)
+            vals['date'] = new_date or _convert_to_utc_date(
                 date, time=self.project_id.start_time,
                 tz=self.env.user.tz)
         if line.order_id.project_id.type_hour:

@@ -164,21 +164,25 @@ class SaleOrder(models.Model):
     def _prepare_session_data_from_sale_line(
             self, event, num_session, line, date):
         tz = self.env.user.tz
-        if line.performance:
-            if line.apply_performance_by_quantity:
-                duration = (line.performance * line.product_uom_qty)
-            else:
-                duration = line.performance
-        else:
+        new_date = False
+        duration = False
+        if self.project_id.working_hours:
+            new_date, duration = (
+                self.project_id.working_hours._calc_date_and_duration(date))
+        if not duration:
             duration = line.product_uom_qty
-        if line.project_by_task == 'yes':
-            utc_dt = _convert_to_utc_date(date, line.start_hour, tz=tz)
-        else:
-            utc_dt = _convert_to_utc_date(date, 0.0, tz=tz)
+            if line.performance:
+                duration = ((line.performance * line.product_uom_qty)
+                            if line.apply_performance_by_quantity else
+                            line.performance)
+        if not new_date:
+            utc_dt = _convert_to_utc_date(
+                date, line.start_hour if line.project_by_task == 'yes' else
+                0.0, tz=tz)
         vals = {'name': (_('Session %s for %s') % (str(num_session),
                                                    line.product_id.name)),
                 'event_id': event.id,
-                'date': utc_dt,
+                'date': new_date or utc_dt,
                 'duration': duration}
         return vals
 

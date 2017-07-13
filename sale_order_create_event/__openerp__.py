@@ -25,11 +25,13 @@
         "hr_employee_catch_partner",
         "web_sheet_full_width",
         "web_context_tunnel",
-        "sale_service_recurrence_configurator"
+        "sale_service_recurrence_configurator",
+        "resource"
     ],
     "data": [
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_change_session_date_view.xml",
+        "wizard/wiz_recalculate_hour_from_contract_view.xml",
         "views/account_analytic_account_view.xml",
         "views/sale_order_view.xml",
         "views/project_project_view.xml",

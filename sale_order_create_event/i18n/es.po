@@ -880,3 +880,24 @@ msgstr "{'partner_id':partner_invoice_id, 'manager_id': user_id, 'default_use_ta
 msgid "The project:  '%s', of sale order,already exist in other event. You must create a new project for saleorder."
 msgstr "El projecto:  '%s', del pedido de venta, ya existe en  otro evento. Debe de crear un nuevo proyecto para el presupuesto."
 
+#. module: sale_order_create_event
+#: field:account.analytic.account,working_hours:0
+#: field:project.project,working_hours:0
+msgid "Working Schedule"
+msgstr "Horario planificado"
+
+#. module: sale_order_create_event
+#: model:ir.actions.act_window,name:sale_order_create_event.action_recalculate_hour_from_date
+msgid "Recalculate date in sessions"
+msgstr "Recalcular fechas en sesiones"
+
+#. module: sale_order_create_event
+#: view:wiz.recalculate.hour.from.contract:sale_order_create_event.wiz_recalculate_hour_from_contract_form
+msgid "Recalculate sessions date"
+msgstr "Recalcular fecha sesiones"
+
+#. module: sale_order_create_event
+#: view:wiz.recalculate.hour.from.contract:sale_order_create_event.wiz_recalculate_hour_from_contract_form
+msgid "Recalculate sessions date from sale contract"
+msgstr "Recalcular fecha sesiones desde contratos de venta"
+

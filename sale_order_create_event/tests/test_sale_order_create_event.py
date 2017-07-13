@@ -16,7 +16,35 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
 
     def test_sale_order_create_event(self):
         self.assertEquals(len(self.project.tasks), 0)
+        vals = {'name': 'Resource calendar for test',
+                'attendance_ids': [(0, 0, {'name': 'a',
+                                           'dayofweek': '1',
+                                           'hour_from': 8.00,
+                                           'hour_to': 10.00})]}
+        resource = self.env['resource.calendar'].create(vals)
+        self.sale_order.project_id.working_hours = resource.id
         self.sale_order.action_button_confirm()
+        cond = [('sale_order', '=', self.sale_order.id)]
+        event = self.event_model.search(cond, limit=1)[:1]
+        sessions = event.mapped('track_ids').filtered(
+            lambda x: x.day == '1')
+        min_session = min(sessions, key=lambda x: x.date)
+        self.assertEquals(min_session.date, '2025-01-21 08:00:00',
+                          'Bad date from working_hours')
+        self.assertEquals(min_session.duration, 2.0,
+                          'Bad duration from working_hours')
+        resource.attendance_ids[0].hour_from = 7.00
+        wiz = self.env['wiz.recalculate.hour.from.contract'].create({})
+        account = self.sale_order.project_id
+        wiz.with_context(
+            active_ids=[account.id]).recalculate_session_date()
+        sessions = event.mapped('track_ids').filtered(
+            lambda x: x.day == '1')
+        min_session = min(sessions, key=lambda x: x.date)
+        self.assertEquals(min_session.date, '2025-01-21 07:00:00',
+                          'Bad date from working_hours 2')
+        self.assertEquals(min_session.duration, 3.0,
+                          'Bad duration from working_hours 2')
         self.assertNotEquals(len(self.project.tasks), 0)
         self.assertEquals(
             len(self.project.tasks),
