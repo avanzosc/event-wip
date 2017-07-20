@@ -19,7 +19,6 @@
             <field name="model">event.track.presence</field>
             <field name="arch" type="xml">
                 <tree string="Session presences">
-                    <field name="allowed_partner_ids" invisible="1"/>
                     <field name="event" />
                     <field name="session" />
                     <field name="session_date" />
