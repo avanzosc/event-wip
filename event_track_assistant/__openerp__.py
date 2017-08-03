@@ -17,6 +17,7 @@
         "partner_event",
         "crm_claim",
         "event_registration_mass_mailing",
+        "warning"
     ],
     "data": [
         "security/ir.model.access.csv",

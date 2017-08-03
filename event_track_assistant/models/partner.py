@@ -2,6 +2,7 @@
 # Copyright © 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api
+from openerp.addons.warning.warning import WARNING_MESSAGE, WARNING_HELP
 
 
 class ResPartner(models.Model):
@@ -61,6 +62,11 @@ class ResPartner(models.Model):
     registrations_location_organizer_count = fields.Integer(
         string='Registrations with event location/organizer',
         compute='_compute_registrations_locations_organizer_count')
+    event_registration_warn = fields.Selection(
+        string='Event registration', selection=WARNING_MESSAGE,
+        help=WARNING_HELP, required=True, default='no-message')
+    event_registration_warn_msg = fields.Text(
+        string='Message for event registration')
 
     @api.depends('registrations')
     def _compute_registered_partner(self):

@@ -280,3 +280,14 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         wiz.with_context(
             active_ids=registration.ids).action_confirm_registrations()
         self.assertEquals(registration.state, 'open')
+        self.partner.event_registration_warn = 'block'
+        self.partner.event_registration_warn_msg = 'Warn message'
+        res = registration._onchange_partner()
+        warning = res.get('warning')
+        self.assertEquals(warning.get('message'), 'Warn message')
+        registration.partner_id = self.partner.id
+        self.partner.event_registration_warn = 'warning'
+        res = registration._onchange_partner()
+        warning = res.get('warning')
+        self.assertEquals(warning.get('message'), 'Warn message')
+        self.assertEquals(registration.date_start, self.event.date_begin)

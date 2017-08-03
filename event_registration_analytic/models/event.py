@@ -231,8 +231,9 @@ class EventRegistration(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
-        super(EventRegistration, self)._onchange_partner()
+        result = super(EventRegistration, self)._onchange_partner()
         self.employee = self.partner_id.employee_id
+        return result
 
     def _prepare_wizard_registration_open_vals(self):
         wiz_vals = super(EventRegistration,

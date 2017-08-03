@@ -66,5 +66,20 @@
                 </div>
             </field>
         </record>
+        <record id="view_partner_warning_form_inh_track_assistant" model="ir.ui.view">
+           <field name="name">view.partner.warning.form.inh.track.assistant</field>
+           <field name="model">res.partner</field>
+           <field name="inherit_id" ref="warning.view_partner_warning_form" />
+           <field name="arch" type="xml">
+               <xpath expr="//separator[@string='Warning on the Invoice']/.." position="after">
+                   <group colspan="2" col="2">
+                       <separator string="Warning on the event registration" colspan="4"/>
+                       <field name="event_registration_warn" nolabel="1" />
+                       <field name="event_registration_warn_msg" colspan="3" nolabel="1" 
+                              attrs="{'required':[('event_registration_warn','!=','no-message')],'readonly':[('event_registration_warn','=','no-message')]}"/>
+                   </group>
+               </xpath>
+           </field>
+        </record>
     </data>
 </openerp>
