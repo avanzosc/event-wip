@@ -61,10 +61,11 @@ class EventRegistration(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
-        super(EventRegistration, self)._onchange_partner()
+        result = super(EventRegistration, self)._onchange_partner()
         self.contract = False
         if self.partner_id:
             self._find_contracts_for_employee()
+        return result
 
     @api.multi
     @api.onchange('date_start')

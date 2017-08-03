@@ -502,10 +502,22 @@ class EventRegistration(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
+        warning = {}
+        title = False
+        if (self.partner_id and
+                self.partner_id.event_registration_warn != 'no-message'):
+            title = _("Warning for %s") % self.partner_id.name
+            warning = {'title': title,
+                       'message': self.partner_id.event_registration_warn_msg}
+            if self.partner_id.event_registration_warn == 'block':
+                self.partner_id = False
+                return {'warning': warning}
         super(EventRegistration, self)._onchange_partner()
         self.date_start = self.event_id.date_begin if self.partner_id else\
             False
         self.date_end = self.event_id.date_end if self.partner_id else False
+        if warning:
+            return {'warning': warning}
 
     @api.multi
     @api.onchange('date_start')
