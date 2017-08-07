@@ -9,6 +9,7 @@ class TestCalendarHoliday(common.TransactionCase):
     def setUp(self):
         super(TestCalendarHoliday, self).setUp()
         self.holiday_model = self.env['calendar.holiday']
+        self.registration_model = self.env['event.registration']
         self.contract_model = self.env['hr.contract']
         self.calendar_model = self.env['res.partner.calendar']
         self.wiz_model = self.env['wiz.calculate.workable.festive']
@@ -46,3 +47,29 @@ class TestCalendarHoliday(common.TransactionCase):
         self.assertNotEqual(
             len(calendar), 0, 'Calendar not generated for partner')
         self.contract.write({'partner': self.ref('base.res_partner_1')})
+
+    def test_wiz_event_registration_confirm(self):
+        cond = [('event_id', '!=', False),
+                ('state', '=', 'draft')]
+        registration = self.registration_model.search(cond, limit=1)
+        registration.write({'date_start': registration.event_id.date_begin,
+                            'date_end': registration.event_id.date_end,
+                            'replaces_to': registration.partner_id.id})
+        registration.date_start = registration.event_id.date_begin
+        registration.date_end = registration.event_id.date_end
+        track_vals = {'name': registration.name,
+                      'event_id': registration.event_id.id,
+                      'date': registration.date_start,
+                      'duration': 1}
+        track = self.env['event.track'].create(track_vals)
+        reg_confirm_model = self.env['wiz.event.registration.confirm']
+        wiz = reg_confirm_model.create({'name': 'test from assistant'})
+        res = wiz._prepare_data_confirm_assistant(registration)
+        self.assertEqual(
+            res.get('replaces_to'), registration.partner_id.id,
+            'Bad replaces_to in registration')
+        wiz.with_context(
+            active_ids=registration.ids).action_confirm_registrations()
+        self.assertEqual(
+            track.presences[0].replaces_to.id, registration.partner_id.id,
+            'Bad replaces_to in presences')
