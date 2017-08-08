@@ -4,3 +4,4 @@
 from . import wiz_calculate_employee_calendar
 from . import wiz_event_append_assistant
 from . import wiz_event_delete_assistant
+from . import wiz_event_registration_confirm

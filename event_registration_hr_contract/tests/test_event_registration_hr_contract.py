@@ -100,3 +100,17 @@ class TestEventRegistrationHrContract(common.TransactionCase):
         calculate_calendar.button_calculate_employee_calendar()
         self.holidays.signal_workflow('validate')
         self.holidays.signal_workflow('refuse')
+
+    def test_wiz_event_registration_contract_confirm(self):
+        cond = [('event_id', '!=', False),
+                ('state', '=', 'draft')]
+        registration = self.registration_model.search(cond, limit=1)
+        registration.write({'date_start': registration.event_id.date_begin,
+                            'date_end': registration.event_id.date_end})
+        registration.date_start = registration.event_id.date_begin
+        registration.date_end = registration.event_id.date_end
+        reg_confirm_model = self.env['wiz.event.registration.confirm']
+        wiz = reg_confirm_model.create({'name': 'test from assistant'})
+        res = wiz._prepare_data_confirm_assistant(registration)
+        self.assertIn(
+            'contract', res, 'No contract in partner registration')
