@@ -230,6 +230,7 @@ msgstr "Precio fijo"
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,friday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Friday"
 msgstr "Viernes"
 
@@ -357,6 +358,7 @@ msgstr "Mayo"
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,monday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Monday"
 msgstr "Lunes"
 
@@ -555,6 +557,7 @@ msgstr "Línea de pedido de venta"
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,saturday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Saturday"
 msgstr "Sábado"
 
@@ -605,6 +608,7 @@ msgstr "Suma de las líneas de las hojas de servicios facturadas para este contr
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,sunday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Sunday"
 msgstr "Domingo"
 
@@ -650,6 +654,7 @@ msgstr "Este producto es un servicio recurrente, pero NO ESTA chequeada solo la 
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,thursday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Thursday"
 msgstr "Jueves"
 
@@ -716,6 +721,7 @@ msgstr "Total a facturar"
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,tuesday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Tuesday"
 msgstr "Martes"
 
@@ -744,6 +750,7 @@ msgstr "Usuario sin zona horaria definida"
 #. module: sale_order_create_event
 #: view:project.task:sale_order_create_event.view_task_form2_inh_sale_create_event
 #: field:project.task,wednesday:0
+#: selection:resource.calendar.attendance.historical,dayofweek:0
 msgid "Wednesday"
 msgstr "Miércoles"
 
@@ -900,4 +907,51 @@ msgstr "Recalcular fecha sesiones"
 #: view:wiz.recalculate.hour.from.contract:sale_order_create_event.wiz_recalculate_hour_from_contract_form
 msgid "Recalculate sessions date from sale contract"
 msgstr "Recalcular fecha sesiones desde contratos de venta"
+
+#. module: sale_order_create_event
+#: field:resource.calendar,date_from:0
+msgid "Date from"
+msgstr "Desde fecha"
+
+#. module: sale_order_create_event
+#: model:ir.model,name:sale_order_create_event.model_resource_calendar_attendance_historical
+#: view:resource.calendar:sale_order_create_event.resource_calendar_form_inh_sale_create_event
+#: field:resource.calendar,attendance_historical_ids:0
+msgid "History of schedules"
+msgstr "Histórico de horarios"
+
+#. module: sale_order_create_event
+#: field:resource.calendar.attendance.historical,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: sale_order_create_event
+#: field:resource.calendar.attendance.historical,dayofweek:0
+msgid "day of week"
+msgstr "Día de la semana"
+
+#. module: sale_order_create_event
+#: field:resource.calendar.attendance.historical,date_from:0
+msgid "Starting date"
+msgstr "Fecha de inicio"
+
+#. module: sale_order_create_event
+#: field:resource.calendar.attendance.historical,hour_from:0
+msgid "Work from"
+msgstr "Trabajar desde"
+
+#. module: sale_order_create_event
+#: field:resource.calendar.attendance.historical,hour_to:0
+msgid "Work to"
+msgstr "Trabajar hasta"
+
+#. module: sale_order_create_event
+#: view:resource.calendar:sale_order_create_event.resource_calendar_form_inh_sale_create_event
+msgid "Working hours"
+msgstr "Horas laborables"
+
+#. module: sale_order_create_event
+#: field:project.task,event_address:0
+msgid "Event address"
+msgstr "Dirección del evento"
 

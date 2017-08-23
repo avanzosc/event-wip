@@ -29,6 +29,7 @@
         "resource"
     ],
     "data": [
+        "security/ir.model.access.csv",
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_change_session_date_view.xml",
         "wizard/wiz_recalculate_hour_from_contract_view.xml",
@@ -38,6 +39,7 @@
         "views/project_task_view.xml",
         "views/event_event_view.xml",
         "views/product_view.xml",
+        "views/resource_calendar_view.xml",
     ],
     "installable": True,
 }

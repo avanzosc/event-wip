@@ -26,6 +26,18 @@ class ProjectTask(models.Model):
         for task in self:
             task.num_sessions = len(task.sessions)
 
+    @api.multi
+    @api.depends('event_id', 'event_id.address_id')
+    def _compute_event_address(self):
+        for task in self.filtered(lambda x: x.event_id):
+            task.event_address = ''
+            if task.event_id.address_id:
+                task.event_address = u'{} {} {}-{}'.format(
+                    task.event_id.address_id.street or '',
+                    task.event_id.address_id.street2 or '',
+                    task.event_id.address_id.zip or '',
+                    task.event_id.address_id.city or '')
+
     sessions_partners = fields.Many2many(
         comodel_name="res.partner", relation="task_session_partners_relation",
         column1="session_task_id", column2="session_partner_id",
@@ -88,6 +100,9 @@ class ProjectTask(models.Model):
         string='Saturday', related='service_project_sale_line.saturday')
     sunday = fields.Boolean(
         string='Sunday', related='service_project_sale_line.sunday')
+    event_address = fields.Char(
+        string='Event address', compute='_compute_event_address',
+        store=True)
 
     def _create_task_from_procurement_service_project(self, procurement):
         task = super(

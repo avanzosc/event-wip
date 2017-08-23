@@ -17,6 +17,9 @@
                 <field name="project_id" position="before">
                     <field name="recurring_service" invisible="1" />
                 </field>
+                <field name="project_id" position="after">
+                    <field name="event_address" />
+                </field>
                  <page string="Extra Info" position="after">
                      <page string="Partners of sessions">
                         <group colspan="4">
