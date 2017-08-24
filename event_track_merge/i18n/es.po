@@ -1,0 +1,97 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_track_merge
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-24 07:04+0000\n"
+"PO-Revision-Date: 2017-08-24 09:06+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: event_track_merge
+#: view:wiz.event.track.merge:event_track_merge.wiz_event_track_merge_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,name:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,display_name:0
+msgid "Display Name"
+msgstr "Mostrar nombre"
+
+#. module: event_track_merge
+#: model:ir.model,name:event_track_merge.model_event_event
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_track_merge
+#: view:wiz.event.track.merge:event_track_merge.wiz_event_track_merge_view
+msgid "Event track merge"
+msgstr "Unificar sesiones"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,__last_update:0
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,write_uid:0
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: event_track_merge
+#: field:wiz.event.track.merge,write_date:0
+msgid "Last Updated on"
+msgstr "Última modificación el"
+
+#. module: event_track_merge
+#: view:wiz.event.track.merge:event_track_merge.wiz_event_track_merge_view
+msgid "Merge"
+msgstr "Unificar"
+
+#. module: event_track_merge
+#: model:ir.actions.act_window,name:event_track_merge.action_event_track_merge
+msgid "Merge event tracks"
+msgstr "Unificar sesiones de evento"
+
+#. module: event_track_merge
+#: model:ir.model,name:event_track_merge.model_wiz_event_track_merge
+msgid "Wizard for merge event tracks"
+msgstr "Asistente para unificar sesiones de evento"
+
+#. module: event_track_merge
+#: view:wiz.event.track.merge:event_track_merge.wiz_event_track_merge_view
+msgid "You are going to merge event tracks"
+msgstr "Usted va a unificar sesiones del evento"
+
+#. module: event_track_merge
+#: view:wiz.event.track.merge:event_track_merge.wiz_event_track_merge_view
+msgid "or"
+msgstr "o"
