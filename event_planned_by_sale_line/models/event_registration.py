@@ -15,8 +15,10 @@ class EventRegistration(models.Model):
             event = event_obj.browse(vals.get('event_id'))
             partner = partner_obj.browse(vals.get('partner_id'))
             if not partner.is_group and not partner.is_company:
-                if event.sale_order.payer == 'school':
-                    partner.parent_id = event.address_id
+                if event.sale_order.payer == 'school' and \
+                        not partner.employee_id:
+                    partner.with_context(change_parent=True).parent_id = (
+                        event.address_id)
                 else:
                     if not partner.parent_id:
                         raise exceptions.Warning(
