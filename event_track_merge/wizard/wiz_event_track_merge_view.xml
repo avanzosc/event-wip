@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_event_track_merge_view">
+            <field name="name">wiz.event.track.merge.view</field>
+            <field name="model">wiz.event.track.merge</field>
+            <field name="arch" type="xml">
+                <form string="Event track merge">
+                    <group colspan="4">
+                        <p>You are going to merge event tracks</p>
+                    </group>
+                    <footer>
+                        <button name="buttom_merge_event_tracks" type="object"
+                            string="Merge" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="action_event_track_merge"
+            key2="client_action_multi" name="Merge event tracks"
+            res_model="wiz.event.track.merge"
+            src_model="event.event"
+            view_mode="form" target="new" />
+    </data>
+</openerp>
