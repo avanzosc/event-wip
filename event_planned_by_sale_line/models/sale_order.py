@@ -126,14 +126,19 @@ class SaleOrder(models.Model):
         invoice_line_obj = self.env['account.analytic.invoice.line']
         self.project_id.recurring_invoice_line_ids.unlink()
         for line in self.order_line.filtered(lambda x: x.event_id):
-            vals = {'analytic_account_id': self.project_id.id,
-                    'product_id': line.product_id.id,
-                    'name': line.product_id.name,
-                    'quantity': 1,
-                    'uom_id': line.product_id.uom_id.id,
-                    'price_unit': line.price_unit,
-                    'event_id': line.event_id.id}
+            vals = self._prepare_recurring_invoice_lines(line)
             invoice_line_obj.create(vals)
+
+    @api.multi
+    def _prepare_recurring_invoice_lines(self, line):
+        vals = {'analytic_account_id': self.project_id.id,
+                'product_id': line.product_id.id,
+                'name': line.product_id.name,
+                'quantity': 1,
+                'uom_id': line.product_id.uom_id.id,
+                'price_unit': line.price_unit,
+                'event_id': line.event_id.id}
+        return vals
 
     @api.multi
     def onchange_partner_id(self, part):
