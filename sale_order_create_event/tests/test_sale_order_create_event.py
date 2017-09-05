@@ -17,10 +17,12 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
     def test_sale_order_create_event(self):
         self.assertEquals(len(self.project.tasks), 0)
         vals = {'name': 'Resource calendar for test',
-                'attendance_ids': [(0, 0, {'name': 'a',
-                                           'dayofweek': '1',
-                                           'hour_from': 8.00,
-                                           'hour_to': 10.00})]}
+                'attendance_ids':
+                [(0, 0, {'name': 'a',
+                         'dayofweek': '1',
+                         'hour_from': 8.00,
+                         'hour_to': 10.00,
+                         'date_from': self.sale_order.project_id.date_start})]}
         resource = self.env['resource.calendar'].create(vals)
         self.sale_order.project_id.working_hours = resource.id
         self.sale_order.action_button_confirm()
@@ -70,6 +72,13 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
         self.assertEquals(len(event.my_task_ids), event.count_tasks)
         self.sale_order.action_cancel()
         self.assertEquals(self.sale_order.state, 'cancel')
+        self.assertEquals(
+            len(resource.attendance_historical_ids), 1,
+            'Bad resource historical(1)')
+        resource.attendance_ids[0].hour_to = 11.0
+        self.assertEquals(
+            len(resource.attendance_historical_ids), 2,
+            'Bad resource historical(2)')
 
     def test_sale_order_create_event_by_task(self):
         self.sale_order.write({

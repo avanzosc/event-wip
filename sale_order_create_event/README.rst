@@ -12,6 +12,9 @@ Sale order create event
   are automatically generated. These sessions will be associated with the
   corresponding task.
 
+* If Working hours are defined in the sales order contract, there can be ONLY
+  one row per day of the week.
+
 Credits
 =======
 

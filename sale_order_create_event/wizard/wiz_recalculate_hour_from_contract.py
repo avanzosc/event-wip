@@ -14,17 +14,7 @@ class WizRecalculateHourFromContract(models.TransientModel):
     def recalculate_session_date(self):
         self.ensure_one()
         account_obj = self.env['account.analytic.account']
-        event_obj = self.env['event.event']
         accounts = account_obj.browse(
             self.env.context.get('active_ids')).filtered(
             lambda x: x.sale and x.working_hours)
-        for account in accounts:
-            cond = [('sale_order', '=', account.sale.id)]
-            events = event_obj.search(cond)
-            for session in events.mapped('track_ids'):
-                new_date, duration = (
-                    account.working_hours._calc_date_and_duration(
-                        fields.Datetime.from_string(session.session_date)))
-                if new_date:
-                    session.write({'date': new_date,
-                                   'duration': duration})
+        accounts._recalculate_sessions_date_from_calendar()
