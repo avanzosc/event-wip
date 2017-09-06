@@ -54,6 +54,9 @@
             <field name="model">event.registration</field>
             <field name="inherit_id" ref="event.view_registration_search" />
             <field name="arch" type="xml">
+                <filter string="Unread Messages" position="before">
+                    <filter string="Event draft or confirmed" name="event_state" domain="[('event_state','not in',('cancel','done'))]"/>
+                </filter>
                 <filter string="Registration Day" position="after">
                     <filter string="Start Day" domain="[]" context="{'group_by': 'date_start:day'}"/>
                     <filter string="End Day" domain="[]" context="{'group_by': 'date_end:day'}"/>

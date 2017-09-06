@@ -1527,3 +1527,8 @@ msgstr "Mensaje de bloqueo"
 msgid "Warning on the event registration"
 msgstr "Aviso en registro de eventos"
 
+#. module: event_track_assistant
+#: view:event.registration:event_track_assistant.view_registration_search_inh_assistant
+msgid "Event draft or confirmed"
+msgstr "Evento borrador o confirmado"
+
