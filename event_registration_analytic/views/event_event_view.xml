@@ -166,7 +166,7 @@
           <field name="res_model">event.registration</field>
           <field name="view_type">form</field>
           <field name="view_mode">tree,form,calendar,graph</field>
-          <field name="context">{}</field>
+          <field name="context">{'search_default_event_state': 1}</field>
           <field name="search_view_id" ref="event.view_registration_search"/>
           <field name="domain">[('employee','=',False)]</field>
         </record>
@@ -175,7 +175,7 @@
           <field name="res_model">event.registration</field>
           <field name="view_type">form</field>
           <field name="view_mode">tree,form,calendar,graph</field>
-          <field name="context">{}</field>
+          <field name="context">{'search_default_event_state': 1}</field>
           <field name="search_view_id" ref="event.view_registration_search"/>
           <field name="domain">[('employee','!=',False)]</field>
         </record>
