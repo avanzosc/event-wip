@@ -499,6 +499,8 @@ class EventRegistration(models.Model):
     state = fields.Selection(
         selection=[('draft', 'Unconfirmed'), ('cancel', 'Cancelled'),
                    ('open', 'Confirmed'), ('done', 'Finalized')])
+    event_state = fields.Selection(
+        string='Event state', related='event_id.state', store=True)
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
