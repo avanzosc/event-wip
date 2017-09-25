@@ -10,7 +10,7 @@
                     <attribute name="invisible">1</attribute>
                 </page>
                 <page string="Presences" position="after">
-                  <page string="Student presences">
+                  <page string="Student presences" >
                       <field name="no_employee_presences" nolabel="1" context="{'default_session': active_id}">
                           <tree string="Student presences" editable="bottom">
                               <field name="allowed_partner_ids" invisible="1" />

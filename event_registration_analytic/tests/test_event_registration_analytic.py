@@ -13,6 +13,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
     def setUp(self):
         super(TestEventRegistrationAnalytic, self).setUp()
         self.del_reg_model = self.env['wiz.event.delete.canceled.registration']
+        self.wiz_change_model = self.env['wiz.registration.to.another.event']
         self.partner.parent_id = self.parent
         self.env['res.partner.bank'].create({
             'state': 'iban',
@@ -77,6 +78,18 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
             add_wiz = self.wiz_add_model.browse(wiz_id)
             self.assertFalse(add_wiz.create_account)
             add_wiz.onchange_partner()
+        new_event = self.event.copy()
+        wiz_another_vals = {
+            'new_event_id': new_event.id,
+        }
+        registration = self.event.registration_ids[0]
+        change_wiz = self.wiz_change_model.with_context(
+            active_id=self.event.registration_ids[0].id).create(
+            wiz_another_vals)
+        change_wiz.button_change_registration_event()
+        self.assertEqual(
+            registration.event_id.id, new_event.id,
+            'Registration not found in new event')
 
     def test_event_track_assistant_delete_from_event(self):
         super(TestEventRegistrationAnalytic,

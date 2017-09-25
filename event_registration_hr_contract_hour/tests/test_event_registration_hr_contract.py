@@ -25,11 +25,14 @@ class TestEventRegistrationHrContract(common.TransactionCase):
         calendar_vals = {'name': 'Holidays calendar',
                          'lines': [(0, 0, calendar_line_vals)]}
         self.calendar_holiday = self.holiday_model.create(calendar_vals)
+        type_hour_id = self.ref('sale_order_create_event_hour.type_hour'
+                                '_working')
         account_vals = {'name': 'account procurement service project',
                         'date_start': '2020-03-01',
                         'date': '2020-03-31',
                         'festive_calendars':
-                        [(6, 0, [self.calendar_holiday.id])]}
+                        [(6, 0, [self.calendar_holiday.id])],
+                        'type_hour': type_hour_id}
         self.account = self.account_model.create(account_vals)
         project_vals = {'name': 'project 1',
                         'analytic_account_id': self.account.id}
