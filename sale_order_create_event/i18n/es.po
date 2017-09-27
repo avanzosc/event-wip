@@ -955,3 +955,8 @@ msgstr "Horas laborables"
 msgid "Event address"
 msgstr "Dirección del evento"
 
+#. module: sale_order_create_event
+#: field:project.task,customer_address:0
+msgid "Customer address"
+msgstr "Dirección cliente"
+

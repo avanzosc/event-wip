@@ -18,6 +18,7 @@
                     <field name="recurring_service" invisible="1" />
                 </field>
                 <field name="project_id" position="after">
+                    <field name="customer_address" />
                     <field name="event_address" />
                 </field>
                  <page string="Extra Info" position="after">
