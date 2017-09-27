@@ -26,17 +26,30 @@ class ProjectTask(models.Model):
         for task in self:
             task.num_sessions = len(task.sessions)
 
-    @api.multi
-    @api.depends('event_id', 'event_id.address_id')
+    @api.model
+    @api.depends('event_id', 'event_id.address_id',
+                 'event_id.address_id.street', 'event_id.address_id.street2',
+                 'event_id.address_id.zip', 'event_id.address_id.city')
     def _compute_event_address(self):
+        partner_obj = self.env['res.partner']
         for task in self.filtered(lambda x: x.event_id):
             task.event_address = ''
             if task.event_id.address_id:
-                task.event_address = u'{} {} {}-{}'.format(
-                    task.event_id.address_id.street or '',
-                    task.event_id.address_id.street2 or '',
-                    task.event_id.address_id.zip or '',
-                    task.event_id.address_id.city or '')
+                task.event_address = partner_obj._display_address(
+                    task.event_id.address_id)
+
+    @api.model
+    @api.depends('project_id', 'project_id.partner_id',
+                 'project_id.partner_id.street',
+                 'project_id.partner_id.street2', 'project_id.partner_id.zip',
+                 'project_id.partner_id.city')
+    def _compute_customer_address(self):
+        partner_obj = self.env['res.partner']
+        for task in self.filtered(lambda x: x.project_id):
+            task.customer_address = ''
+            if task.project_id.partner_id:
+                task.customer_address = partner_obj._display_address(
+                    task.project_id.partner_id)
 
     sessions_partners = fields.Many2many(
         comodel_name="res.partner", relation="task_session_partners_relation",
@@ -102,6 +115,9 @@ class ProjectTask(models.Model):
         string='Sunday', related='service_project_sale_line.sunday')
     event_address = fields.Char(
         string='Event address', compute='_compute_event_address',
+        store=True)
+    customer_address = fields.Char(
+        string='Customer address', compute='_compute_customer_address',
         store=True)
 
     def _create_task_from_procurement_service_project(self, procurement):

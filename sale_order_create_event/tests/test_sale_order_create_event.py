@@ -113,3 +113,16 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
             performance = line.end_hour - line.start_hour
             line.onchange_date_begin()
             self.assertEquals(line.performance, performance)
+
+    def test_sale_order_create_event_project_address(self):
+        self.sale_order.action_button_confirm()
+        task = self.task_model.search([('event_id', '!=', False)], limit=1)
+        if not task.event_id.address_id.street:
+            task.event_id.address_id.street = 'Test address'
+        task._compute_event_address()
+        self.assertIn(task.event_id.address_id.street, task.event_address,
+                      'Event address not found in task')
+        task.project_id.partner_id = task.event_id.address_id.id
+        task._compute_customer_address()
+        self.assertIn(task.project_id.partner_id.street, task.customer_address,
+                      'Project customer address not found in task')
