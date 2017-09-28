@@ -316,6 +316,8 @@ class EventTrackPresence(models.Model):
     event = fields.Many2one(
         comodel_name='event.event', string='Event', store=True,
         related='session.event_id')
+    event_state = fields.Selection(
+        related='event.state', string="Event state", store=True, readonly=True)
     allowed_partner_ids = fields.Many2many(
         comodel_name='res.partner', compute='_compute_allowed_partner_ids',
         string='Allowed partners')
