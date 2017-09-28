@@ -1532,3 +1532,9 @@ msgstr "Aviso en registro de eventos"
 msgid "Event draft or confirmed"
 msgstr "Evento borrador o confirmado"
 
+#. module: event_track_assistant
+#: field:event.registration,event_state:0
+#: field:event.track.presence,event_state:0
+msgid "Event state"
+msgstr "Estado del evento"
+

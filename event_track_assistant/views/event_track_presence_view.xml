@@ -50,6 +50,7 @@
             <field name="arch" type="xml">
                 <search string="Search session presences">
                     <field name="event" />
+                    <field name="event_state" />
                     <field name="session" />
                     <field name="session_date" />
                     <field name="session_day" />
