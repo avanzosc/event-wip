@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <record id="event_track_presence_report_search_view" model="ir.ui.view">
+        <field name="name">event.track.presence.report.search.view</field>
+        <field name="model">event.track.presence.report</field>
+        <field name="arch" type="xml">
+            <search string="Event presences analysis">
+                <field name="employee_id"/>
+                <field name="customer_id"/>
+                <field name="event_id" />
+                <group expand="0" string="Group By">
+                    <filter string="Employee" context="{'group_by':'employee_id'}"/>
+                    <filter string="Customer" context="{'group_by':'customer_id'}"/>
+                    <filter string="Event" context="{'group_by':'event_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="event_track_presence_report_tree_view" model="ir.ui.view">
+        <field name="name">event.track.presence.report.tree.view</field>
+        <field name="model">event.track.presence.report</field>
+        <field name="arch" type="xml">
+            <tree string="Event presences analysis" create="false" edit="false" delete="false">
+                <field name="employee_id" />
+                <field name="customer_id" />
+                <field name="city" />
+                <field name="street" />
+                <field name="event_id" />
+                <field name="session_name" />
+                <field name="days" />
+                <field name="start_hour" />
+                <field name="end_hour" />
+                <field name="session_duration" />
+            </tree>
+         </field>
+    </record>
+        <record id="action_event_track_presence_report_view" model="ir.actions.act_window">
+            <field name="name">Event presences analysis</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">event.track.presence.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale_order_create_event.event_track_presence_report_tree_view"/>
+            <field name="search_view_id" ref="sale_order_create_event.event_track_presence_report_search_view"/>
+        </record>
+        <menuitem name="Event presences analysis"
+            id="menu_action_event_track_presence_report" parent="event.menu_reporting_events"
+            action="action_event_track_presence_report_view" sequence="5" groups="event.group_event_manager"/>
+</data>
+</openerp>

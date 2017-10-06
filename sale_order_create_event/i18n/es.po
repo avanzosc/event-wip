@@ -140,7 +140,9 @@ msgid "Date of the latest work done on this account."
 msgstr "Fecha del último trabajo realizado en esta cuenta."
 
 #. module: sale_order_create_event
+#: field:event.track.presence.report,days:0
 #: field:wiz.change.session.date,days:0
+#: field:wiz.recalculate.hour.from.contract,name:0
 msgid "Days"
 msgstr "Días"
 
@@ -162,6 +164,8 @@ msgid "End date"
 msgstr "Fecha fin"
 
 #. module: sale_order_create_event
+#: field:event.track.presence,end_hour:0
+#: field:event.track.presence.report,end_hour:0
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
 #: field:sale.order.line,end_hour:0
 msgid "End hour"
@@ -192,6 +196,8 @@ msgid "Estimation of Hours to Invoice"
 msgstr "Estimación de horas a facturar"
 
 #. module: sale_order_create_event
+#: view:event.track.presence.report:sale_order_create_event.event_track_presence_report_search_view
+#: field:event.track.presence.report,event_id:0
 #: model:ir.model,name:sale_order_create_event.model_event_event
 msgid "Event"
 msgstr "Evento"
@@ -590,6 +596,8 @@ msgid "Start date"
 msgstr "Fecha inicio"
 
 #. module: sale_order_create_event
+#: field:event.track.presence,start_hour:0
+#: field:event.track.presence.report,start_hour:0
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
 #: field:sale.order.line,start_hour:0
 msgid "Start hour"
@@ -959,4 +967,44 @@ msgstr "Dirección del evento"
 #: field:project.task,customer_address:0
 msgid "Customer address"
 msgstr "Dirección cliente"
+
+#. module: sale_order_create_event
+#: view:event.track.presence.report:sale_order_create_event.event_track_presence_report_search_view
+#: field:event.track.presence.report,employee_id:0
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: sale_order_create_event
+#: view:event.track.presence.report:sale_order_create_event.event_track_presence_report_search_view
+#: field:event.track.presence.report,customer_id:0
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: sale_order_create_event
+#: field:event.track.presence.report,city:0
+msgid "City"
+msgstr "Población"
+
+#. module: sale_order_create_event
+#: field:event.track.presence.report,street:0
+msgid "Street"
+msgstr "Calle"
+
+#. module: sale_order_create_event
+#: field:event.track.presence.report,session_duration:0
+msgid "Session duration"
+msgstr "Duración sesión"
+
+#. module: sale_order_create_event
+#: field:event.track.presence.report,session_name:0
+msgid "Job"
+msgstr "Trabajo"
+
+#. module: sale_order_create_event
+#: view:event.track.presence.report:sale_order_create_event.event_track_presence_report_search_view
+#: view:event.track.presence.report:sale_order_create_event.event_track_presence_report_tree_view
+#: model:ir.actions.act_window,name:sale_order_create_event.action_event_track_presence_report_view
+#: model:ir.ui.menu,name:sale_order_create_event.menu_action_event_track_presence_report
+msgid "Event presences analysis"
+msgstr "Análisis presencias a eventos"
 
