@@ -33,6 +33,7 @@
         "wizard/wiz_event_append_assistant_view.xml",
         "wizard/wiz_change_session_date_view.xml",
         "wizard/wiz_recalculate_hour_from_contract_view.xml",
+        "report/event_track_presence_report_view.xml",
         "views/account_analytic_account_view.xml",
         "views/sale_order_view.xml",
         "views/project_project_view.xml",

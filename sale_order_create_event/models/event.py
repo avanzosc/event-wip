@@ -190,6 +190,25 @@ class EventTrack(models.Model):
 class EventTrackPresence(models.Model):
     _inherit = 'event.track.presence'
 
+    @api.depends('session_date', 'session_duration')
+    def _compute_estimated_daynightlight_hours(self):
+        super(EventTrackPresence,
+              self)._compute_estimated_daynightlight_hours()
+        for presence in self.filtered('session_duration'):
+            start_date = _convert_to_local_date(
+                presence.session_date, self.env.user.tz)
+            presence.start_hour = '{:%H:%M:%S}'.format(start_date)
+            end_date = start_date + relativedelta(
+                hours=presence.session_duration)
+            presence.end_hour = '{:%H:%M:%S}'.format(end_date)
+
+    start_hour = fields.Char(
+        string='Start hour', compute='_compute_estimated_daynightlight_hours',
+        store=True)
+    end_hour = fields.Char(
+        string='End hour', compute='_compute_estimated_daynightlight_hours',
+        store=True)
+
     @api.multi
     def button_canceled(self):
         self._delete_hours_in_project_task()
