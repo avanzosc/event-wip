@@ -31,21 +31,70 @@
                 <field name="days" />
                 <field name="start_hour" />
                 <field name="end_hour" />
-                <field name="session_duration" />
+                <field name="session_duration" widget="float_time" sum="Hours"/>
             </tree>
          </field>
     </record>
-        <record id="action_event_track_presence_report_view" model="ir.actions.act_window">
-            <field name="name">Event presences analysis</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">event.track.presence.report</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="sale_order_create_event.event_track_presence_report_tree_view"/>
-            <field name="search_view_id" ref="sale_order_create_event.event_track_presence_report_search_view"/>
-        </record>
-        <menuitem name="Event presences analysis"
-            id="menu_action_event_track_presence_report" parent="event.menu_reporting_events"
-            action="action_event_track_presence_report_view" sequence="5" groups="event.group_event_manager"/>
+    <template id="report_presence_analysis_printing_doc">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                <div class="row">
+                  <div class="col-xs-6">
+                        <p><strong>Empleado: </strong><span t-field="docs[0].employee_id"/></p>
+                        <p><strong>Tel.: </strong><span t-field="docs[0].employee_id.mobile_phone"/> // <span t-field="docs[0].employee_id.work_phone"/></p>
+                  </div>
+                </div>
+                <div class="row" >
+                    <div class="col-xs-6">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>D.Cober.</th>
+                                    <th>H.Ini.</th>
+                                    <th>H.Fin</th>
+                                    <th>H./Sem.</th>
+                                    <th>Dirección</th>
+                                    <th>Población</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="docs" t-as="line">
+                                    <td>
+                                        <span t-field="line.customer_id.name" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.session_name" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.days" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.start_hour" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.end_hour" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.session_duration" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.street" />
+                                    </td>
+                                    <td>
+                                        <span t-field="line.city" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <report id="report_presence_analysis" string="Presences analysis" model="event.track.presence.report"
+            report_type="qweb-pdf" file="sale_order_create_event.report_presence_analysis_printing_doc" name="sale_order_create_event.report_presence_analysis_printing_doc" />
 </data>
 </openerp>

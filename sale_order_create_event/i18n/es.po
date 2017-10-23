@@ -1008,3 +1008,13 @@ msgstr "Trabajo"
 msgid "Event presences analysis"
 msgstr "Análisis presencias a eventos"
 
+#. module: sale_order_create_event
+#: model:ir.actions.report.xml,name:sale_order_create_event.report_presence_analysis
+msgid "Presences analysis"
+msgstr "Análisis de presencias"
+
+#. module: sale_order_create_event
+#: view:hr.employee:sale_order_create_event.view_employee_form_inh_sale_create_event
+msgid "Actual services"
+msgstr "Servicios actuales"
+

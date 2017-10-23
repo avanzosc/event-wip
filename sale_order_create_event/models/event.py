@@ -31,6 +31,9 @@ class EventEvent(models.Model):
         comodel_name='sale.order', string='Sale Order')
     sale_order_line = fields.Many2one(
         comodel_name='sale.order.line', string='Sale Order Line')
+    analytic_account_id = fields.Many2one(
+        comodel_name='account.analytic.account', string='Analytic account',
+        related='project_id.analytic_account_id', store=True)
 
     @api.multi
     def unlink(self):
@@ -86,7 +89,7 @@ class EventEvent(models.Model):
                 if line_dict.get('product_id', False) ==\
                         self.env.ref('event_sale.product_product_event').id:
                     res.remove(line_dict)
-            except:
+            except Exception:
                 pass
         return res
 
@@ -208,6 +211,18 @@ class EventTrackPresence(models.Model):
     end_hour = fields.Char(
         string='End hour', compute='_compute_estimated_daynightlight_hours',
         store=True)
+    analytic_account_id = fields.Many2one(
+        comodel_name='account.analytic.account', string='Analytic account',
+        related='event.analytic_account_id', store=True)
+    analytic_account_state = fields.Selection(
+        string='Analytic account state', store=True,
+        related='analytic_account_id.state')
+    customer_id = fields.Many2one(
+        comodel_name='res.partner', string='Customer',
+        related='event.sale_order.partner_id', store=True)
+    employee_id = fields.Many2one(
+        comodel_name='hr.employee', string='Employee',
+        related='partner.employee_id', store=True)
 
     @api.multi
     def button_canceled(self):
@@ -239,7 +254,7 @@ class EventTrackPresence(models.Model):
             try:
                 presence.session.stage_id = self.env.ref(
                     'website_event_track.event_track_stage5')
-            except:
+            except Exception:
                 continue
 
     @api.multi

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2017 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from openerp import models, fields, tools
+from openerp import models, fields, tools, api
 
 
 class EventTrackPresenceReport(models.Model):
@@ -10,7 +10,7 @@ class EventTrackPresenceReport(models.Model):
     _auto = False
 
     employee_id = fields.Many2one(
-        comodel_name='res.partner', string='Employee', readonly=True)
+        comodel_name='hr.employee', string='Employee', readonly=True)
     customer_id = fields.Many2one(
         comodel_name='res.partner', string='Customer', readonly=True)
     city = fields.Char(string='City', readonly=True)
@@ -25,7 +25,7 @@ class EventTrackPresenceReport(models.Model):
 
     def _select(self):
         select_str = """
-        select p.partner as employee_id, s.partner_id as customer_id,
+        select p.employee_id as employee_id, p.customer_id as customer_id,
                COALESCE(r.street2,r.street) as street, r.city as city,
                p.event as event_id, p.start_hour as start_hour,
                p.end_hour as end_hour,
@@ -52,18 +52,22 @@ class EventTrackPresenceReport(models.Model):
     def _from(self):
         from_str = """
         from   event_track_presence p
-               inner join event_track t on t.id = p.session
-               inner join event_event e on e.id = p.event
-               inner join sale_order s on s.id = e.sale_order
-               inner join res_partner r on r.id = s.partner_id
+               inner join res_partner r on r.id = p.customer_id
         """
         return from_str
 
     def _where(self):
         where_str = """
         where  p.state != 'canceled'
+          and  p.analytic_account_state not in ('canceled','close')
+          and  p.customer_id is not null
+          and  p.employee_id is not null
         """
         return where_str
+
+    def _where2(self):
+        return "{} and p.employee_id = {}".format(
+            self._where(), self.env.context.get('employee_id'))
 
     def _group_by(self):
         group_by_str = """
@@ -81,4 +85,11 @@ class EventTrackPresenceReport(models.Model):
         tools.drop_view_if_exists(cr, self._table)
         cr.execute("""CREATE or REPLACE VIEW %s as (%s %s %s %s %s)
         """ % (self._table, self._select(), self._from(), self._where(),
+               self._group_by(), self._order_by()))
+
+    @api.multi
+    def presence_analysis_from_employee(self):
+        tools.drop_view_if_exists(self.env.cr, self._table)
+        self.env.cr.execute("""CREATE or REPLACE VIEW %s as (%s %s %s %s %s)
+        """ % (self._table, self._select(), self._from(), self._where2(),
                self._group_by(), self._order_by()))

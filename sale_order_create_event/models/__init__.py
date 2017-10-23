@@ -8,3 +8,4 @@ from . import event
 from . import res_partner
 from . import product
 from . import resource_calendar
+from . import hr_employee
