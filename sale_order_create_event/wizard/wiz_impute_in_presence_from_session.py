@@ -23,6 +23,6 @@ class WizImputeInPresenceFromSession(models.TransientModel):
             try:
                 line.session.stage_id = self.env.ref(
                     'website_event_track.event_track_stage5')
-            except:
+            except Exception:
                 continue
         return res

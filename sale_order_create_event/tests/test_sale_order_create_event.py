@@ -96,6 +96,8 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
             event.my_task_ids,
             self.task_model.search([('event_id', '=', event.id)]))
         self.assertEquals(len(event.my_task_ids), event.count_tasks)
+        with self.assertRaises(exceptions.Warning):
+            event.unlink()
 
     def test_sale_order_confirm(self):
         self.assertEquals(self.sale_order.state, 'draft')

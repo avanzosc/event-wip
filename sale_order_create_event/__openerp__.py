@@ -41,6 +41,7 @@
         "views/event_event_view.xml",
         "views/product_view.xml",
         "views/resource_calendar_view.xml",
+        "views/hr_employee_view.xml",
     ],
     "installable": True,
 }
