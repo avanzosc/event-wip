@@ -112,3 +112,9 @@ msgstr "Portal trabajador"
 #: view:hr.employee:event_worker_portal.view_employee_skill_form_inh_workerportal
 msgid "base.group_hr_user"
 msgstr "base.group_hr_user"
+
+#. module: event_worker_portal
+#: model:ir.ui.menu,name:event_worker_portal.worker_portal_training_plan_option_view
+msgid "Training plan"
+msgstr "Plan de formación"
+

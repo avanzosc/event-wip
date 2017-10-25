@@ -19,6 +19,9 @@
         <menuitem id="worker_portal_main_note_option_view" name="Notes"
                   action="note.action_note_note" 
                   parent="worker_portal_main_group_view"/>
+        <menuitem id="worker_portal_training_plan_option_view" name="Training plan"
+                  action="product_training_plan.action_training_plan_view" 
+                  parent="worker_portal_main_group_view" />
         <menuitem id="worker_portal_absences_group_view" name="Absences"
                   parent="worker_portal_menu" groups="event.group_event_user"/>
         <menuitem id="worker_portal_main_leave_request_option_view" name="Leave Request"
