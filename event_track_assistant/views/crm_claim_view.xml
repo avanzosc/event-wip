@@ -8,10 +8,16 @@
             <field name="arch" type="xml">
                 <field name="name" position="after">
                     <field name="event_id" />
+                    <field name="event_state" />
                     <field name="session_id" />
                 </field>
                 <field name="user_id" position="attributes">
                     <attribute name="filter_domain">['|',('user_id','=',self),('create_uid','=',self)]</attribute>
+                </field>
+                <field name="user_id" position="after">
+                    <separator/>
+                    <filter string="Confirmed events" domain="[('event_state','=', 'confirm')]" />
+                    <filter string="Events not confirmed" domain="[('event_state','=', 'draft')]" />
                 </field>
                 <filter string="Responsible" position="after">
                     <filter string="Created by" name="group_by_created"
@@ -20,6 +26,8 @@
                 <filter string="Stage" position="after">
                      <filter string="Event" name="group_by_event"
                              domain="[]" context="{'group_by':'event_id'}" />
+                     <filter string="Event state" name="group_by_event_state"
+                             domain="[]" context="{'group_by':'event_state'}" />
                      <filter string="Session" name="group_by_session"
                              domain="[]" context="{'group_by':'session_id'}" />
                 </filter>
