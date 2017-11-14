@@ -163,3 +163,33 @@ msgstr "Wizard para sustituir empleados en eventos"
 msgid "or"
 msgstr "o"
 
+#. module: event_substitution
+#: field:wiz.event.substitution.line,confirm_registration:0
+msgid "Confirm substitute registration"
+msgstr "Confirmar el registro del sustituto"
+
+#. module: event_substitution
+#: view:wiz.event.substitution:event_substitution.wiz_event_substitution_view
+msgid ""
+"If the \"Confirm substitute registration\" field is activated, the "
+"registration of the person to be replaced will be automatically confirmed."
+msgstr ""
+"Si el campo \"Confirmar el registro del sustituto\" esta activado, se "
+"confirmará automaticamente el registro de la persona que sustituye."
+
+#. module: event_substitution
+#: code:addons/event_substitution/wizard/wiz_event_substitution.py:52
+#, python-format
+msgid "Employee %s without contract for event %s"
+msgstr "Empleado %s sin contrato para evento %s"
+
+#. module: event_substitution
+#: code:addons/event_substitution/wizard/wiz_event_substitution.py:64
+#, python-format
+msgid ""
+"You can not confirm this registration, because their dates overlap with "
+"another record of the same employee, in event: %s"
+msgstr ""
+"No puede confirmar este registro,  porque sus fechas se solapan con otro "
+"registro del mismo empleado, en evento: %s"
+
