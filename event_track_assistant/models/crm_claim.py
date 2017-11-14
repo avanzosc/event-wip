@@ -11,6 +11,8 @@ class CrmClaim(models.Model):
 
     event_id = fields.Many2one(comodel_name='event.event', string='Event')
     session_id = fields.Many2one(comodel_name='event.track', string='Session')
+    event_state = fields.Selection(
+        string='Event state', related='event_id.state', store=True)
 
     @api.onchange('event_id')
     def _onchange_event_id(self):

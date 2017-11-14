@@ -1535,6 +1535,18 @@ msgstr "Evento borrador o confirmado"
 #. module: event_track_assistant
 #: field:event.registration,event_state:0
 #: field:event.track.presence,event_state:0
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
+#: field:crm.claim,event_state:0 field:event.registration,event_state:0
 msgid "Event state"
 msgstr "Estado del evento"
+
+#. module: event_track_assistant
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
+msgid "Confirmed events"
+msgstr "Eventos confirmados"
+
+#. module: event_track_assistant
+#: view:crm.claim:event_track_assistant.crm_claim_event_search_view
+msgid "Events not confirmed"
+msgstr "Eventos NO confirmados"
 
