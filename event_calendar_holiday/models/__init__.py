@@ -5,3 +5,4 @@ from . import account_analytic_account
 from . import res_partner_calendar_day
 from . import event
 from . import sale_order
+from . import hr_contract
