@@ -16,7 +16,7 @@
                                     <field name="event_id" invisible="1" />
                                     <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
                                         domain="[('employee_id','!=',False)]" string="Teacher"/>
-                                    <field name="name" />
+                                    <field name="name" invisible="1"/>
                                     <field name="replaces_to" readonly="1" />
                                     <field name="required_account" invisible="1"/>
                                     <field name="employee" invisible="1"/>
@@ -73,7 +73,7 @@
                             <field name="event_id" invisible="1"/>
                             <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}"
                                 domain="[('employee','=',False),('is_company','=',False),('is_group','=',False)]" string="Student"/>
-                            <field name="name" />
+                            <field name="name" invisible="1"/>
                             <field name="replaces_to" invisible="1" />
                             <field name="required_account" invisible="1"/>
                             <field name="employee" invisible="1"/>
