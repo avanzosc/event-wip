@@ -102,3 +102,9 @@ class HrContract(models.Model):
                'view_type': 'form',
                'domain': [('id', 'in', self.presences.ids)]}
         return res
+
+    def _prepare_partner_day_information(self, absence_type):
+        res = super(HrContract, self)._prepare_partner_day_information(
+            absence_type)
+        res['absence'] = True
+        return res
