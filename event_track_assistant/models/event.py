@@ -149,7 +149,8 @@ class EventEvent(models.Model):
                     active_model='event.registration',
                     default_model='event.registration',
                     default_res_id=registration.id,
-                ).create({'body': body})
+                ).create({'subject': template.subject,
+                          'body': body})
                 wizard.send_mail()
 
 

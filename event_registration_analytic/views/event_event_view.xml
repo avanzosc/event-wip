@@ -37,6 +37,7 @@
                                     <button name="button_registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
                                     <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
                                     <button name="new_button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
+                                    <button string="Set To Unconfirmed" name="do_draft" states="cancel" type="object" icon="gtk-ok"/>
                                 </tree>
                             </field>
                         </group>
@@ -93,6 +94,7 @@
                             <button name="button_registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
                             <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
                             <button name="new_button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
+                            <button string="Set To Unconfirmed" name="do_draft" states="cancel" type="object" icon="gtk-ok"/>
                         </tree>
                     </field>
                 </field>
