@@ -18,6 +18,7 @@ class TestEventRegistrationHrContract(common.TransactionCase):
         self.registration_model = self.env['event.registration']
         self.employee = self.env.ref('hr.employee')
         self.hr_holidays_model = self.env['hr.holidays']
+        self.add_model = self.env['wiz.event.append.assistant']
         self.employee.address_home_id = self.ref('base.public_partner')
         calendar_line_vals = {
             'date': '2020-03-17',
@@ -96,3 +97,57 @@ class TestEventRegistrationHrContract(common.TransactionCase):
         self.holidays.signal_workflow('confirm')
         self.holidays.signal_workflow('validate')
         self.holidays.signal_workflow('refuse')
+
+    def test_event_registration_hr_contract_hour(self):
+        self.sale_order.action_button_confirm()
+        cond = [('sale_order', '=', self.sale_order.id)]
+        events = self.event_model.search(cond)
+        self.assertNotEqual(
+            len(events), 0, 'Sale order without event')
+        wiz_vals = {
+            'partner': self.ref('base.public_partner'),
+            'from_date': events[0].date_begin,
+            'min_from_date': events[0].date_begin,
+            'max_to_date': events[0].date_end,
+            'to_date': events[0].date_end
+        }
+        wiz = self.add_model.with_context(
+            active_ids=events.ids).create(wiz_vals)
+        wiz.action_append()
+        self.assertEqual(
+            events[0].registration_ids[0].state, 'open',
+            'Bad state for new registration')
+        presence = events[0].track_ids[0].presences[0]
+        presence.state = 'completed'
+        wiz._put_init_dates_in_wizard()
+        wiz._put_pending_presence_state(presence)
+        self.assertEqual(presence.state, 'pending',
+                         'Bad state for presence')
+        presence.session.type_hour = False
+        wiz.type_hour = presence.session.type_hour
+        wiz._update_presence_type_hour(presence)
+        self.assertEqual(presence.session.type_hour, wiz.type_hour,
+                         'Bad type hour for presence 1')
+        type_hour_working = self.env.ref(
+            'sale_order_create_event_hour.type_hour_working')
+        type_hour_festive = self.env.ref(
+            'sale_order_create_event_hour.type_hour_festive')
+        presence.session.type_hour = type_hour_working
+        presence.partner_calendar_day.calendar_holiday_day = (
+            self.calendar_holiday.lines[0])
+        wiz._update_presence_type_hour(presence)
+        self.assertEqual(presence.type_hour, type_hour_festive,
+                         'Bad type hour for presence 2')
+        presence.partner_calendar_day.calendar_holiday_day.type_hour = (
+            type_hour_working)
+        wiz._update_presence_type_hour(presence)
+        self.assertEqual(
+            presence.type_hour,
+            presence.partner_calendar_day.calendar_holiday_day.type_hour,
+            'Bad type hour for presence 3')
+        presence.session.type_hour = False
+        wiz.type_hour = self.env.ref(
+            'sale_order_create_event_hour.type_hour_festive_work')
+        wiz._update_presence_type_hour(presence)
+        self.assertEqual(presence.type_hour, wiz.type_hour,
+                         'Bad type hour for presence 4')
