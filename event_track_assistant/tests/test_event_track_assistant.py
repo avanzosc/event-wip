@@ -46,7 +46,6 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         configs = self.config_model.search([])
         configs.write({'show_all_customers_in_presences': True})
         presence = self.event.track_ids[0].presences[0]
-        # presence._compute_allowed_partner_ids()
         configs.write({'show_all_customers_in_presences': False})
         registration.date_start = str2datetime(self.event.date_begin) -\
             relativedelta(days=1)
@@ -70,6 +69,8 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         res = registration._onchange_date_end()
         self.assertTrue(res.get('warning'))
         self.assertEquals(registration.date_end, self.event.date_end)
+        self.assertEquals(registration._onchange_date_end(), {},
+                          'Any date is changed(2)')
         registration.write({
             'date_start': str2datetime(self.event.date_end) +
             relativedelta(days=1),
@@ -80,8 +81,31 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         res = registration._onchange_date_start()
         self.assertTrue(res.get('warning'))
         self.assertEquals(registration.date_start, self.event.date_begin)
+        res = registration._onchange_date_start()
+        self.assertEquals(registration._onchange_date_start(), {},
+                          'Any date is changed')
+        registration_vals = {
+            'event_id': self.event.id,
+            'partner_id': self.partner.id,
+            'date_start': registration.date_start,
+            'date_end': registration.date_end,
+            'name': self.partner.name}
+        registration2 = self.registration_model.create(registration_vals)
+        with self.assertRaises(exceptions.Warning):
+            registration2.button_registration_open()
+        registration2.state = 'done'
+        with self.assertRaises(exceptions.Warning):
+            registration2.unlink()
+        settings_model = self.env['marketing.config.settings']
+        settings = settings_model.search([])
+        settings.unlink()
+        presence.state = 'pending'
+        presence._compute_allowed_partner_ids()
+        self.assertEquals(presence.allowed_partner_ids,
+                          presence.session.allowed_partner_ids)
 
     def test_event_track_assistant_delete(self):
+        settings_model = self.env['marketing.config.settings']
         self.assertEquals(len(self.event.mapped('registration_ids')), 0)
         self.assertEquals(self.partner.session_count, 0)
         self.assertEquals(self.partner.presences_count, 0)
@@ -128,10 +152,14 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
             show_presences.get('res_model'), 'event.track.presence')
         presences = self.event.mapped('track_ids.presences')
         self.assertNotEquals(len(presences), 0)
-        new_presence = self.presence_model.new({
+        new_presence = self.presence_model.create({
             'session': self.event.track_ids[:1].id,
+            'partner': self.partner.id,
+            'name': self.partner.name
         })
         self.assertEquals(new_presence.event, self.event)
+        settings_model._write_or_create_param(
+            'show.all.customers.in.presences', False)
         self.assertIn(self.partner, new_presence.allowed_partner_ids)
         registration = self.event.registration_ids[:1]
         dict_del_wiz = registration.new_button_reg_cancel()
@@ -291,3 +319,10 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         warning = res.get('warning')
         self.assertEquals(warning.get('message'), 'Warn message')
         self.assertEquals(registration.date_start, self.event.date_begin)
+
+    def test_marketing_config_settings(self):
+        settings_model = self.env['marketing.config.settings']
+        settings_model.set_parameters()
+        res = settings_model.get_default_parameters()
+        self.assertEquals(res.get('show_all_customers_in_presences'),
+                          False, 'Bad marketing settings')

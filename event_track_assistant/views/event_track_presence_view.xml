@@ -58,22 +58,25 @@
                     <field name="state" />
                     <separator/>
                     <group expand="0" string="Period">
-                        <filter string="Current week" name="current_week_filter"
-                                domain="[('session_date','&lt;=', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
-                                ('session_date','&gt;',(context_today() - relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"
-                                help="Display all elements in the current week." />
+                        <filter name="last_month_filter" string="Last month"
+                                domain="[('session_date','&gt;=',(context_today()+relativedelta(months=-1)).strftime('%%Y-%%m-01')),
+                                         ('session_date','&lt;',time.strftime('%%Y-%%m-01'))]" />
                         <filter string="Current month" name="current_month_filter"
                                 domain="[('session_date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
                                 ('session_date','&gt;=',time.strftime('%%Y-%%m-01'))]"
                                 help="Display all elements in the current month." />
-                        <filter string="Next week" name="next_week_filter"
-                                domain="[('session_date','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
-                                ('session_date','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"
-                                help="Display all elements in the next week." />
                         <filter string="Next month" name="next_month_filter"
                                 domain="[('session_date','&gt;=',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
                                 ('session_date','&lt;',(context_today()+relativedelta(months=2)).strftime('%%Y-%%m-01'))]"
                                 help="Display all elements in the next month." />
+                        <filter string="Current week" name="current_week_filter"
+                                domain="[('session_date','&lt;=', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                ('session_date','&gt;',(context_today() - relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"
+                                help="Display all elements in the current week." />
+                        <filter string="Next week" name="next_week_filter"
+                                domain="[('session_date','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
+                                ('session_date','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]"
+                                help="Display all elements in the next week." />
                         <filter string="Pending" name="pending" domain="[('state','=','pending')]"/>
                         <filter string="Completed" name="completed" domain="[('state','=','completed')]"/>
                         <filter string="Canceled" name="canceled" domain="[('state','=','canceled')]"/>

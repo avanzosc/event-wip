@@ -19,17 +19,21 @@ class MarketingConfigSettings(models.Model):
         param_obj = self.env['ir.config_parameter']
         rec = self._get_parameter(key)
         if rec:
-            rec.value = str(value)
-        else:
-            param_obj.create({'key': key, 'value': str(value)})
+            if not value:
+                rec.unlink()
+            else:
+                rec.value = value
+        elif value:
+            param_obj.create({'key': key, 'value': value})
 
     @api.multi
     def get_default_parameters(self):
         def get_value(key, default=''):
             rec = self._get_parameter(key)
             return rec and rec.value or default
-        return {'show_all_customers_in_presences': get_value(
-            'show.all.customers.in.presences', False)}
+        return {
+            'show_all_customers_in_presences':
+            get_value('show.all.customers.in.presences', False)}
 
     @api.multi
     def set_parameters(self):
