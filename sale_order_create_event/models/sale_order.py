@@ -30,25 +30,32 @@ class SaleOrder(models.Model):
             raise exceptions.Warning(
                 _('You must enter the Project / Contract and/or select a '
                   'value for \'Create project by task\''))
-        if self.project_id:
-            if not self.project_id.date_start:
-                raise exceptions.Warning(
-                    _('You must enter the start date of the project/contract'))
-            if not self.project_id.date:
-                raise exceptions.Warning(
-                    _('You must enter the end date of the project/contract'))
-            self.project_id.sale = self.id
-            cond = [('analytic_account_id', '=', self.project_id.id)]
-            project = project_obj.search(cond, limit=1)
-            if not project:
-                raise exceptions.Warning(_('Project/contract without project'))
-            cond = [('project_id', '=', project.id)]
-            event = event_obj.search(cond)
-            if event:
-                raise exceptions.Warning(
-                    _("The project:  '%s', of sale order,already exist in "
-                      "other event. You must create a new project for sale"
-                      "order.") % project.name)
+        for sale in self:
+            if sale.project_id:
+                if not sale.project_id.date_start:
+                    raise exceptions.Warning(
+                        _('You must enter the start date of the project/contra'
+                          'ct'))
+                if not sale.project_id.date:
+                    raise exceptions.Warning(
+                        _('You must enter the end date of the project/contract'
+                          ))
+                sale.project_id.sale = sale.id
+                cond = [('analytic_account_id', '=', sale.project_id.id)]
+                project = project_obj.search(cond, limit=1)
+                if not project:
+                    raise exceptions.Warning(
+                        _('Project/contract without project'))
+                cond = [('project_id', '=', project.id)]
+                event = event_obj.search(cond)
+                if event:
+                    raise exceptions.Warning(
+                        _("The project:  '%s', of sale order,already exist in "
+                          "other event. You must create a new project for sale"
+                          "order.") % project.name)
+            for line in sale.order_line.filtered(
+                    lambda x: x.product_id.recurring_service):
+                line._validate_months_weeks_days()
         res = super(SaleOrder, self).action_button_confirm()
         self._create_event_and_sessions_from_sale_order()
         return res
@@ -261,3 +268,32 @@ class SaleOrderLine(models.Model):
             default.update({'event_id': False})
         res = super(SaleOrderLine, self).copy_data(default=default)
         return res[0] if res else {}
+
+    def _validate_months_weeks_days(self):
+        if (not self.january and not self.february and not self.march and not
+            self.april and not self.may and not self.june and not
+            self.july and not self.august and not self.september and not
+                self.october and not self.november and not self.december):
+            raise exceptions.Warning(
+                _("The sale line '%s', has a recurring service product, YOU "
+                  "MUST mark any month in this sale line.") % (self.name))
+        if (not self.week1 and not self.week2 and not self.week3 and not
+                self.week4 and not self.week5 and not self.week6):
+            raise exceptions.Warning(
+                _("The sale line '%s', has a recurring service product, YOU "
+                  "MUST mark any week in this sale line.") % (self.name))
+        if (not self.monday and not self.tuesday and not self.wednesday and not
+            self.thursday and not self.friday and not self.saturday and not
+                self.sunday):
+            raise exceptions.Warning(
+                _("The sale line '%s', has a recurring service product, YOU "
+                  "MUST mark any day in this sale line.") % (self.name))
+        if not self.start_hour:
+            raise exceptions.Warning(
+                _("The sale line '%s', has a recurring service product, YOU "
+                  "MUST enter the start time in this sale line.") %
+                (self.name))
+        if not self.end_hour:
+            raise exceptions.Warning(
+                _("The sale line '%s', has a recurring service product, YOU "
+                  "MUST enter the end time in this sale line.") % (self.name))

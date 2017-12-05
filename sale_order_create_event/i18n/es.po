@@ -1018,3 +1018,53 @@ msgstr "Análisis de presencias"
 msgid "Actual services"
 msgstr "Servicios actuales"
 
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:297
+#, python-format
+msgid ""
+"The sale line '%s', has a recurring service product, YOU MUST enter the end "
+"time in this sale line."
+msgstr ""
+"La línea de venta '%s', tiene un producto servicio recurrente, USTED DEBE "
+"introducir la hora fin en esta línea de venta.."
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:293
+#, python-format
+msgid ""
+"The sale line '%s', has a recurring service product, YOU MUST enter the "
+"start time in this sale line."
+msgstr ""
+"La línea de venta '%s', tiene un producto servicio recurrente, USTED DEBE "
+"introducir la hora inicio en esta línea de venta."
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:289
+#, python-format
+msgid ""
+"The sale line '%s', has a recurring service product, YOU MUST mark any day "
+"in this sale line."
+msgstr ""
+"La línea de venta '%s', tiene un producto servicio recurrente, USTED DEBE "
+"marcar algún día en esta línea de venta."
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:278
+#, python-format
+msgid ""
+"The sale line '%s', has a recurring service product, YOU MUST mark any month "
+"in this sale line."
+msgstr ""
+"La línea de venta '%s', tiene un producto servicio recurrente, USTED DEBE "
+"marcar algún mes en esta línea de venta."
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/sale_order.py:283
+#, python-format
+msgid ""
+"The sale line '%s', has a recurring service product, YOU MUST mark any week "
+"in this sale line."
+msgstr ""
+"La línea de venta '%s', tiene un producto servicio recurrente, USTED DEBE "
+"marcar alguna semana en esta línea de venta."
+
