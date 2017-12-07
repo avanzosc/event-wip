@@ -20,13 +20,15 @@ class SaleOrder(models.Model):
                 lambda l: l.product_id.recurring_service and
                 l.service_project_task):
             pos = line.group_description.find('-')
+            name = u"\n{}: {}".format(line.order_id.name,
+                                      line.group_description[pos+1:])
             line.service_project_task.write(
-                {'name': line.group_description[pos+1:],
+                {'name': name,
                  'description': line.group_description[pos+1:]})
             project = line.service_project_task.project_id
             if project and project.analytic_account_id:
                 project.analytic_account_id.write(
-                    {'name': line.group_description[pos+1:]})
+                    {'name': name})
         return res
 
 
