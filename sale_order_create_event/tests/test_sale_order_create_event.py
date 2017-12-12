@@ -25,6 +25,16 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
                          'date_from': self.sale_order.project_id.date_start})]}
         resource = self.env['resource.calendar'].create(vals)
         self.sale_order.project_id.working_hours = resource.id
+        date = self.sale_order.project_id.date
+        self.sale_order.project_id.date = False
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_button_confirm()
+        date_start = self.sale_order.project_id.date_start
+        self.sale_order.project_id.write({'date': date,
+                                          'date_start': False})
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_button_confirm()
+        self.sale_order.project_id.date_start = date_start
         self.sale_order.action_button_confirm()
         cond = [('sale_order', '=', self.sale_order.id)]
         event = self.event_model.search(cond, limit=1)[:1]
@@ -79,6 +89,58 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
         self.assertEquals(
             len(resource.attendance_historical_ids), 2,
             'Bad resource historical(2)')
+        line = self.sale_order.order_line[0]
+        line.end_hour = 0
+        with self.assertRaises(exceptions.Warning):
+            line._validate_months_weeks_days()
+        line.start_hour = 0
+        with self.assertRaises(exceptions.Warning):
+            line._validate_months_weeks_days()
+        line.write({'monday': False,
+                    'tuesday': False,
+                    'wednesday': False,
+                    'thursday': False,
+                    'friday': False,
+                    'saturday': False,
+                    'sunday': False})
+        with self.assertRaises(exceptions.Warning):
+            line._validate_months_weeks_days()
+        line.write({'week1': False,
+                    'week2': False,
+                    'week3': False,
+                    'week4': False,
+                    'week5': False,
+                    'week6': False})
+        with self.assertRaises(exceptions.Warning):
+            line._validate_months_weeks_days()
+        line.write({'january': False,
+                    'february': False,
+                    'march': False,
+                    'april': False,
+                    'may': False,
+                    'june': False,
+                    'july': False,
+                    'august': False,
+                    'september': False,
+                    'october': False,
+                    'november': False,
+                    'december': False})
+        with self.assertRaises(exceptions.Warning):
+            line._validate_months_weeks_days()
+        cond = [('analytic_account_id', '=', self.sale_order.project_id.id)]
+        project = self.env['project.project'].search(cond, limit=1)
+        project.unlink()
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_button_confirm()
+        self.sale_order.order_line[0].product_id.route_ids = [(5)]
+        res = self.sale_order.order_line[0].product_id_change_with_wh(
+            self.sale_order.pricelist_id.id,
+            self.sale_order.order_line[0].product_id.id,
+            partner_id=self.sale_order.partner_id.id)
+        self.assertEquals(
+            res.get('warning').get('title'),
+            'Error in recurring service product',
+            'Error in recurring service product')
 
     def test_sale_order_create_event_by_task(self):
         self.sale_order.write({
