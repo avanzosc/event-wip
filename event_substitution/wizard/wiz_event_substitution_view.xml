@@ -6,12 +6,14 @@
             <field name="model">wiz.event.substitution</field>
             <field name="arch" type="xml">
                 <form string="Wizard for substitution employee" version="7.0">
+                    <p>If the "Confirm substitute registration" field is activated, the registration of the person to be replaced will be automatically confirmed.</p>
                     <group>
                         <field name="holiday" invisible="1"/>
                         <field name="lines" nolabel="1" >
                             <tree string="Events for substitution employee"
                                 editable="top">
                                 <field name="wiz" invisible="1" />
+                                <field name="confirm_registration" />
                                 <field name="event" readonly="1" />
                                 <field name="employee" required="1"
                                     domain="[('address_home_id','!=',False)]"/>
