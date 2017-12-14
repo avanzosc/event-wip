@@ -1550,3 +1550,13 @@ msgstr "Eventos confirmados"
 msgid "Events not confirmed"
 msgstr "Eventos NO confirmados"
 
+#. module: event_track_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_search_view
+msgid "Last month"
+msgstr "Mes anterior"
+
+#. module: event_track_assistant
+#: view:event.track:event_track_assistant.view_event_track_search_inh_assistant
+msgid "Sessions last month"
+msgstr "Sesiones mes anterior"
+

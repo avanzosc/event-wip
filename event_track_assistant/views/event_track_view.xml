@@ -33,6 +33,9 @@
                     <filter string="Sessions next week"
                             domain="[('date','&gt;',(context_today()+relativedelta(weeks=0, weekday=6)).strftime('%%Y-%%m-%%d')),
                                      ('date','&lt;=',(context_today()+relativedelta(weeks=1, weekday=6)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter name="last_month_filter" string="Sessions last month"
+                            domain="[('date','&gt;=',(context_today()+relativedelta(months=-1)).strftime('%%Y-%%m-01')),
+                                     ('date','&lt;',time.strftime('%%Y-%%m-01'))]" />
                     <filter string="Sessions current month"
                             domain="[('date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),
                                      ('date','&gt;=',time.strftime('%%Y-%%m-01'))]" />

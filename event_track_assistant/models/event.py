@@ -278,14 +278,22 @@ class EventTrackPresence(models.Model):
 
     @api.depends('session', 'session.allowed_partner_ids')
     def _compute_allowed_partner_ids(self):
-        for presence in self:
-            presence.allowed_partner_ids = (
-                [(6, 0, presence.session.allowed_partner_ids.ids)])
-            if self.env['marketing.config.settings']._get_parameter(
-               'show.all.customers.in.presences'):
-                customers = self.env['res.partner'].search([])
-                for customer in customers:
-                    presence.allowed_partner_ids = [(4, customer.id)]
+        try:
+            users = self.env.ref('event.group_event_manager').users
+        except Exception:
+            pass
+        show_all = self.env['marketing.config.settings']._get_parameter(
+            'show.all.customers.in.presences')
+        presences = self.filtered(lambda x: x.state == 'pending')
+        if (show_all and show_all.value == 'True' and
+                self.env.user.id in users.ids):
+            presences.write(
+                {'allowed_partner_ids':
+                 ([(6, 0, self.env['res.partner'].search([]).ids)])})
+        else:
+            for presence in presences:
+                presence.allowed_partner_ids = (
+                    [(6, 0, presence.session.allowed_partner_ids.ids)])
 
     @api.depends('session_date', 'real_duration')
     def _compute_real_date_end(self):
@@ -686,3 +694,8 @@ class EventRegistration(models.Model):
             raise exceptions.Warning(
                 _('You can only delete registration in draft status.'))
         return super(EventRegistration, self).unlink()
+
+    @api.one
+    def registration_open(self):
+        self.removal_date = False
+        return super(EventRegistration, self).registration_open()

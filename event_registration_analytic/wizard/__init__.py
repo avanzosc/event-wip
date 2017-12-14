@@ -7,3 +7,4 @@ from . import wiz_event_confirm_assistant
 from . import wiz_event_delete_canceled_registration
 from . import wiz_registration_to_another_event
 from . import wiz_event_registration_confirm
+from . import wiz_event_substitution
