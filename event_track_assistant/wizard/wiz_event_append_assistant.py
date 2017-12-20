@@ -261,5 +261,6 @@ class WizEventAppendAssistant(models.TransientModel):
         vals = {'session': track.id,
                 'event': event.id,
                 'partner': self.partner.id}
-        presence = presence_obj.create(vals)
+        presence = presence_obj.with_context(
+            tracking_disable=True).create(vals)
         return presence
