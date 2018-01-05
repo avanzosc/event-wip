@@ -13,24 +13,34 @@ class EventEvent(models.Model):
         for event in self.filtered(lambda x: len(x.track_ids) > 0):
             dates = sorted(set(event.mapped('track_ids.session_date')))
             task = False
+            treated_tasks = self.env['project.task']
             tasks = self.env['project.task']
             for date in dates:
-                sessions = event.track_ids.filtered(
-                    lambda x: x.session_date == date)
+                sessions = event._take_sessions_to_date(date)
                 min_session = min(sessions, key=lambda x: x.id)
                 duration = min_session.duration
-                name = min_session.name
                 task = min_session.tasks
+                name = task[0].name
+                description = task[0].description
+                if task:
+                    if task[0] not in treated_tasks:
+                        treated_tasks += task[0]
                 others_sessions = sessions.filtered(
                     lambda x: x.id != min_session.id).sorted(
                     key=lambda e: e.id)
                 for other_session in others_sessions:
                     duration += other_session.duration
-                    name = u'{}\n{}'.format(name, other_session.name)
-                    if (other_session.tasks and
-                        other_session.tasks[0] not in tasks and
-                            other_session.tasks[0] != task):
-                        tasks += other_session.tasks[0]
+                    if other_session.tasks:
+                        if (other_session.tasks[0] not in tasks and
+                            other_session.tasks[0] not in treated_tasks and
+                                other_session.tasks[0] != task):
+                            tasks += other_session.tasks[0]
+                        if other_session.tasks[0].name not in name:
+                            name = u'{} - {}'.format(
+                                name, other_session.tasks[0].name)
+                            description = u'{}\n{}'.format(
+                                description,
+                                other_session.tasks[0].description)
                     for presence in other_session.presences:
                         p = min_session.presences.filtered(
                             lambda x: x.partner == presence.partner)
@@ -40,23 +50,19 @@ class EventEvent(models.Model):
                             p.write({'real_duration': (
                                 p.real_duration + presence.real_duration)})
                             presence.unlink()
+                task[0].write({'name': name, 'description': description})
                 others_sessions.unlink()
                 min_session.write({'name': name,
                                    'duration': duration})
             if tasks:
-                name = task.name
-                description = task.description
-                for t in tasks:
-                    name = u'{} - {}'.format(name, t.name)
-                    description = u'{}\n{}'.format(description,
-                                                   t.description)
-                    if t.service_project_sale_line:
-                        t.service_project_sale_line.write(
-                            {'service_project_task': task.id})
-                task.write({'name': name,
-                            'description': description})
-                cond = [('task_id', 'in', tasks.ids)]
-                works = work_obj.search(cond)
-                if works:
-                    works.write({'task_id': task.id})
-                tasks.unlink()
+                for t in tasks.filtered(lambda x: x.id not in
+                                        treated_tasks.ids):
+                    cond = [('task_id', '=', t.id)]
+                    works = work_obj.search(cond)
+                    if works:
+                        works.write({'task_id': task.id})
+                    t.unlink()
+
+    def _take_sessions_to_date(self, date):
+        sessions = self.track_ids.filtered(lambda x: x.session_date == date)
+        return sessions
