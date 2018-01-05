@@ -17,43 +17,47 @@ class EventEvent(models.Model):
             tasks = self.env['project.task']
             for date in dates:
                 sessions = event._take_sessions_to_date(date)
-                min_session = min(sessions, key=lambda x: x.id)
-                duration = min_session.duration
-                task = min_session.tasks
-                name = task[0].name
-                description = task[0].description
-                if task:
-                    if task[0] not in treated_tasks:
-                        treated_tasks += task[0]
-                others_sessions = sessions.filtered(
-                    lambda x: x.id != min_session.id).sorted(
-                    key=lambda e: e.id)
-                for other_session in others_sessions:
-                    duration += other_session.duration
-                    if other_session.tasks:
-                        if (other_session.tasks[0] not in tasks and
-                            other_session.tasks[0] not in treated_tasks and
-                                other_session.tasks[0] != task):
-                            tasks += other_session.tasks[0]
-                        if other_session.tasks[0].name not in name:
-                            name = u'{} - {}'.format(
-                                name, other_session.tasks[0].name)
-                            description = u'{}\n{}'.format(
-                                description,
-                                other_session.tasks[0].description)
-                    for presence in other_session.presences:
-                        p = min_session.presences.filtered(
-                            lambda x: x.partner == presence.partner)
-                        if not p:
-                            presence.write({'session': min_session.id})
-                        else:
-                            p.write({'real_duration': (
-                                p.real_duration + presence.real_duration)})
-                            presence.unlink()
-                task[0].write({'name': name, 'description': description})
-                others_sessions.unlink()
-                min_session.write({'name': name,
-                                   'duration': duration})
+                treated_date = False
+                if sessions:
+                    treated_date = True
+                    min_session = min(sessions, key=lambda x: x.id)
+                    duration = min_session.duration
+                    task = min_session.tasks
+                    name = task[0].name
+                    description = task[0].description
+                    if task:
+                        if task[0] not in treated_tasks:
+                            treated_tasks += task[0]
+                    others_sessions = sessions.filtered(
+                        lambda x: x.id != min_session.id).sorted(
+                        key=lambda e: e.id)
+                    for other_session in others_sessions:
+                        duration += other_session.duration
+                        if other_session.tasks:
+                            if (other_session.tasks[0] not in tasks and
+                                other_session.tasks[0] not in treated_tasks and
+                                    other_session.tasks[0] != task):
+                                tasks += other_session.tasks[0]
+                            if other_session.tasks[0].name not in name:
+                                name = u'{} - {}'.format(
+                                    name, other_session.tasks[0].name)
+                                description = u'{}\n{}'.format(
+                                    description,
+                                    other_session.tasks[0].description)
+                        for presence in other_session.presences:
+                            p = min_session.presences.filtered(
+                                lambda x: x.partner == presence.partner)
+                            if not p:
+                                presence.write({'session': min_session.id})
+                            else:
+                                p.write({'real_duration': (
+                                    p.real_duration + presence.real_duration)})
+                                presence.unlink()
+                if treated_date:
+                    task[0].write({'name': name, 'description': description})
+                    others_sessions.unlink()
+                    min_session.write({'name': name,
+                                       'duration': duration})
             if tasks:
                 for t in tasks.filtered(lambda x: x.id not in
                                         treated_tasks.ids):
