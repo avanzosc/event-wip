@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="analytic_account_search_view_inh_event_renovate">
+            <field name="name">analytic.account.search.view.inh.event.renovate</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="account.view_account_analytic_account_search" />
+            <field name="arch" type="xml">
+                <filter string="Pending" position="after">
+                    <filter string="With sale order" domain="[('sale','!=',False)]" /> 
+                    <filter string="Without sale order" domain="[('sale','=',False)]" />
+                </filter>
+            </field>
+        </record>
+    </data>
+</openerp>
