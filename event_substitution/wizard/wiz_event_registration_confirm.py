@@ -25,6 +25,8 @@ class WizEventRegistrationConfirm(models.TransientModel):
                     ('session_date_without_hour', '<=', to_date)]
             presences = presence_obj.search(cond)
             presences.write({'replaced_by': reg.partner_id.id})
+            if presences:
+                presences._send_email_to_employees_substitution()
         return super(
             WizEventRegistrationConfirm, self).action_confirm_registrations()
 
