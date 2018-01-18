@@ -25,3 +25,20 @@ msgstr "Pedido de venta"
 msgid "Wizard for renovate sale contract"
 msgstr "Asistente para renovar contrato sin venta"
 
+#. module: event_renovate_sale_contract
+#: model:ir.model,name:event_renovate_sale_contract.model_wiz_analytic_invoice_line_increase
+msgid "Wizard for increase analytic account invoice lines"
+msgstr "Asistente para incrementar líneas de factura de cuenta analítica"
+
+#. module: event_renovate_sale_contract
+#: view:account.analytic.account:event_renovate_sale_contract.analytic_account_search_view_inh_event_renovate
+msgid "With sale order"
+msgstr "With sale order"
+
+#. module: event_renovate_sale_contract
+#: view:account.analytic.account:event_renovate_sale_contract.analytic_account_search_view_inh_event_renovate
+msgid "Without sale order"
+msgstr "Without sale order"
+
+
+

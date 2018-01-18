@@ -7,6 +7,12 @@ Event renovate sale contract
 ============================
 
 * New wizard for renovate sale order and contract.
+* New wizard for renovate analytic accounts of type "contracts" without sale
+  orders.
+  For an increase of 1.4%, in the wizard will have to define an increase of
+  0.014
+* New wizard in analytic accounts for increase price unit of contract invoice
+  lines, without sale order.
 
 Credits
 =======

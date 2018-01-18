@@ -18,6 +18,7 @@
         "sale_order_create_event"
     ],
     "data": [
+        "views/account_analytic_account_view.xml",
     ],
     "installable": True,
     "auto_install": True,
