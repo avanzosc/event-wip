@@ -151,14 +151,13 @@ class TestEventTrackAssistantOnly(EventTrackAssistantSetup):
         wiz_another_vals = {
             'new_event_id': new_event.id,
         }
+        previous_state = registration.state
         change_wiz = self.wiz_change_event_model.with_context(
-            active_id=registration.id).create(wiz_another_vals)
-        self.assertEquals(change_wiz.event_id, registration.event_id)
-        self.assertEquals(change_wiz.event_registration_id, registration)
+            active_ids=registration.ids).create(wiz_another_vals)
         change_wiz.button_change_registration_event()
         self.assertNotEquals(self.event, registration.event_id)
         self.assertEquals(new_event, registration.event_id)
-        self.assertEquals(registration.state, 'draft')
+        self.assertEquals(registration.state, previous_state)
         partner_presences = self.event.mapped('track_ids.presences').filtered(
             lambda x: x.partner == self.partner)
         self.assertFalse(

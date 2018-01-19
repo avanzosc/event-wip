@@ -102,7 +102,7 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
         }
         registration = self.event.registration_ids[0]
         change_wiz = self.wiz_change_model.with_context(
-            active_id=self.event.registration_ids[0].id).create(
+            active_ids=[self.event.registration_ids[0].id]).create(
             wiz_another_vals)
         change_wiz.button_change_registration_event()
         self.assertEqual(

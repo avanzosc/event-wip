@@ -7,11 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Change event to registration" version="7.0">
                     <group>
-                        <separator string="Actual event of registration" colspan="4" />
-                        <field name="event_id" nolabel="1" colspan="4" />
-                        <separator string="New event for the registration" colspan="4" />
+                        <separator string="New event for the registrations" colspan="4" />
                         <field name="new_event_id" nolabel="1" colspan="4"
-                               domain="[('id','!=',event_id),('state','not in',('cancel','done'))]" />
+                               domain="[('state','not in',('cancel','done'))]" />
                     </group>
                     <footer>
                         <button name="button_change_registration_event" type="object"
@@ -22,11 +20,12 @@
                 </form>
             </field>
         </record>
-        <act_window name="Change registration to selected new event"
+        <act_window name="Change registration to another event"
                     res_model="wiz.registration.to.another.event"
                     view_mode="form"
                     view_type="form"
                     target="new"
-                    id="action_change_registration_new_event"/>
+                    id="action_change_registration_new_event"
+                    key2="client_action_multi"/>
     </data>
 </openerp>
