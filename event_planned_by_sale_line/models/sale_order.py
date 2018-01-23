@@ -99,8 +99,10 @@ class SaleOrder(models.Model):
                 not self.env.context.get('check_automatic_contract_creation')):
             return True
         for sale in self:
-            min_fec = min(sale.mapped('order_line.start_date'))
-            max_fec = max(sale.mapped('order_line.end_date'))
+            lines = sale.mapped('order_line').filtered(lambda x: x.start_date)
+            min_fec = min(lines.mapped('start_date'))
+            lines = sale.mapped('order_line').filtered(lambda x: x.end_date)
+            max_fec = max(lines.mapped('end_date'))
             if min_fec and max_fec:
                 account_vals = {'sale': sale.id,
                                 'partner_id': sale.partner_id.id,
