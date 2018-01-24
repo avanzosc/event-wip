@@ -11,13 +11,13 @@ class SaleOrder(models.Model):
     def action_button_confirm(self):
         project_obj = self.env['project.project']
         event_obj = self.env['event.event']
-        for sale in self:
+        for sale in self.filtered(lambda x: x.project_id):
             cond = [('analytic_account_id', '=', sale.project_id.id)]
             project = project_obj.search(cond, limit=1)
-            cond = [('project_id', '=', project.id)]
-            events = event_obj.search(cond)
-            for event in events:
-                for track in event.track_ids:
+            if project:
+                cond = [('project_id', '=', project.id)]
+                events = event_obj.search(cond)
+                for track in events.mapped('track_ids'):
                     f = fields.Datetime.from_string(track.session_date).date()
                     day = f.weekday()
                     if day == 6:
