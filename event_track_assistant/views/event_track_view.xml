@@ -92,9 +92,9 @@
             <field name="arch" type="xml">
                 <field name="event_id" position="after">
                     <field name="date" />
-                    <field name="duration" string="Estimated duration" sum="duration"/>
+                    <field name="duration" string="Estimated duration" widget="float_time" sum="duration" />
                     <field name="estimated_date_end" />
-                    <field name="real_duration" sum="real_duration"/>
+                    <field name="real_duration" widget="float_time" sum="real_duration"/>
                     <field name="real_date_end" />
                     <field name="presences" />
                     <field name="day" invisible="1"/>
