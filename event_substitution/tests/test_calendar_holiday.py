@@ -98,11 +98,17 @@ class TestCalendarHoliday(common.TransactionCase):
             'contract': self.contract.id,
             'employee': self.ref('hr.employee')}
         event.registration_ids = [(0, 0, reg_vals)]
+        event.track_ids[0].write({'date': event.date_begin})
+        event.track_ids[0].presences = [
+            (0, 0, {'name': 'a', 'partner': self.ref('base.public_partner')})]
+        employee3 = self.browse_ref('hr.employee')
+        employee3.address_home_id.email = 'employee3@odoo.com'
+        self.employee.address_home_id.email = 'employee@odoo.com'
         hr_holidays_vals = {'name': 'Employee holidays',
                             'holiday_type': 'employee',
                             'holiday_status_id':
                             self.ref('hr_holidays.holiday_status_comp'),
-                            'employee_id': self.ref('hr.employee'),
+                            'employee_id': employee3.id,
                             'date_from': '2016-01-01 00:00:00',
                             'date_to': '2025-01-01 00:00:00',
                             'number_of_days_temp': 1}
