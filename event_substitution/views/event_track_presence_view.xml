@@ -52,7 +52,7 @@
             -->
             <field name="reply_to">${(object.company_id.email or 'noreply@localhost')|safe}</field>
             <field name="subject">Replacement notice</field>
-            <field name="lang">${object.partner.lang}</field>
+            <field name="lang">${object.partner and object.partner.lang or ''}</field>
             <field name="body_html"><![CDATA[
     <p>Good morning.</p>
     <p>The day ${object.session_date_without_hour} ${object.replaced_by.name} will substitute ${object.partner.name} at customer ${object.event.address_id.name}, in the session ${object.session.name}, at ${object.start_hour} H.</p>

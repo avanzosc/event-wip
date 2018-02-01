@@ -42,16 +42,31 @@ class EventTrackPresence(models.Model):
                         mail_template, presence.event.user_id.partner_id)
 
     def _send_email_by_substitution(self, template, partner):
+        cond = [('name', '=', 'email.template,body_html'),
+                ('lang', '=', partner.lang),
+                ('res_id', '=', template.id),
+                ('module', '=', 'event_substitution'),
+                ('state', '=', 'translated')]
+        tras = self.env['ir.translation'].search(cond, limit=1)
+        body = tras.value if tras else template.body_html
+        cond = [('name', '=', 'email.template,subject'),
+                ('lang', '=', partner.lang),
+                ('res_id', '=', template.id),
+                ('module', '=', 'event_substitution'),
+                ('state', '=', 'translated')]
+        tras = self.env['ir.translation'].search(cond, limit=1)
+        subject = tras.value if tras else template.subject
         mail = self.env['mail.compose.message'].with_context(
             default_composition_mode='mass_mail',
             default_template_id=template.id,
             default_use_template=True,
+            default_partner_ids=[(6, 0, partner.ids)],
             active_id=self.id,
             active_ids=self.ids,
             active_model='event.track.presence',
             default_model='event.track.presence',
             default_res_id=self.id,
             force_send=True
-        ).create({'body': template.body_html})
-        mail.partner_ids = [(6, 0, partner.ids)]
+        ).create({'subject': subject,
+                  'body': body})
         mail.send_mail()
