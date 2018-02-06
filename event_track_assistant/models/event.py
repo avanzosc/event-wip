@@ -275,6 +275,7 @@ class EventTrack(models.Model):
 class EventTrackPresence(models.Model):
     _name = 'event.track.presence'
     _description = 'Session assistants'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     @api.depends('session', 'session.allowed_partner_ids')
     def _compute_allowed_partner_ids(self):
