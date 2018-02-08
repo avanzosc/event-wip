@@ -22,6 +22,7 @@
         </record>
         <act_window name="Change registration to another event"
                     res_model="wiz.registration.to.another.event"
+                    src_model="event.registration"
                     view_mode="form"
                     view_type="form"
                     target="new"
