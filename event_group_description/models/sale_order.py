@@ -20,8 +20,8 @@ class SaleOrder(models.Model):
                 lambda l: l.product_id.recurring_service and
                 l.service_project_task):
             pos = line.group_description.find('-')
-            name = u"\n{}: {}".format(line.order_id.name,
-                                      line.group_description[pos+1:])
+            name = u"{}: {}".format(line.order_id.name,
+                                    line.group_description[pos+1:])
             line.service_project_task.write(
                 {'name': name,
                  'description': line.group_description[pos+1:]})
