@@ -1,0 +1,75 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_track_presence_claim
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-15 11:49+0000\n"
+"PO-Revision-Date: 2018-02-15 11:49+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_track_presence_claim
+#: code:addons/event_track_presence_claim/models/event.py:79
+#, python-format
+msgid "- {}, date: {}."
+msgstr "- {}, fecha: {}."
+
+#. module: event_track_presence_claim
+#: model:ir.model,name:event_track_presence_claim.model_event_event
+msgid "Event"
+msgstr "Evento"
+
+#. module: event_track_presence_claim
+#: model:ir.model,name:event_track_presence_claim.model_event_track
+msgid "Event Tracks"
+msgstr "Sesiones del evento"
+
+#. module: event_track_presence_claim
+#: code:addons/event_track_presence_claim/models/event.py:71
+#, python-format
+msgid "Pending recording assists at the event: %s"
+msgstr "Pendiente registrar asistencias en el evento: %s"
+
+#. module: event_track_presence_claim
+#: model:crm.case.categ,name:event_track_presence_claim.crm_case_categ_pending_registrations_presences
+msgid "Pending registrations of presences"
+msgstr "Pendiente registro de asistencias"
+
+#. module: event_track_presence_claim
+#: code:addons/event_track_presence_claim/models/event.py:87
+#, python-format
+msgid "Regards."
+msgstr "Saludos."
+
+#. module: event_track_presence_claim
+#: code:addons/event_track_presence_claim/models/event.py:101
+#, python-format
+msgid "This claim has been created: {}."
+msgstr "Se ha creado esta reclamación: {}."
+
+#. module: event_track_presence_claim
+#: code:addons/event_track_presence_claim/models/event.py:73
+#, python-format
+msgid "This claim is generated because you are not following the attendance registration procedure. We remind you that it is essential to keep up to date the assistances of the students of your classes. You have pending without registering the following sessions:\n"
+""
+msgstr "Esta reclamación se ha generado porque no estás siguiendo el procedimiento de registro de asistencias. Te recordamos que es imprescindible mantener al día las asistencias de los alumnos y alumnas de tus clases. Tienes pendientes sin registrar las siguientes sesiones:\n"
+""
+
+#. module: event_track_presence_claim
+#: field:event.event,warnings_not_imputations_count:0
+msgid "Warnings not imputations count"
+msgstr "Contador avisos no imputaciones"
+
+#. module: event_track_presence_claim
+#: code:addons/event_track_presence_claim/models/event.py:83
+#, python-format
+msgid "You have 48 hours to register attendance. Please get up to speed as soon as possible, or contact the group coordinator if you have a problem that prevents you from doing so."
+msgstr "Dispones de 48 horas para registrar las asistencias. Por favor ponte al día cuanto antes, o contacta con el coordinador del grupo si tuvieras algún problema que te lo impide."
+
