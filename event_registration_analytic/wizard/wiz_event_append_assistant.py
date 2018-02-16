@@ -46,6 +46,8 @@ class WizEventAppendAssistant(models.TransientModel):
             self.registration.analytic_account.write(
                 self._prepare_data_for_account_not_employee(
                     self.registration.event_id, self.registration))
+        if self.registration:
+            self.registration.analytic_account.set_open()
         return result
 
     def _create_account_for_not_employee_from_wizard(
