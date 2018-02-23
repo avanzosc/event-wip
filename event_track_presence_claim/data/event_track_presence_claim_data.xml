@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record forcecreate="True" id="ir_crm_claim_event_presence_action" model="ir.cron">
+            <field name="name">Claim for not impute hours in presence of events</field>
+            <field eval="False" name="active" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="'event.track'" name="model" />
+            <field eval="'_search_no_imputations_and_create_claim'" name="function" />
+            <field eval="'(None, )'" name="args" />
+        </record>
+        <record id="crm_case_categ_pending_registrations_presences" model="crm.case.categ">
+            <field name="name">Pending registrations of presences</field>
+        </record>
+    </data>
+</openerp>
