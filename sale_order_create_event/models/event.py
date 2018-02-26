@@ -24,6 +24,12 @@ class EventEvent(models.Model):
         for event in self:
             event.count_tasks = len(event.my_task_ids)
 
+    def _compute_count_schedule(self):
+        for event in self.filtered(lambda x: x.sale_order and
+                                   x.sale_order.project_id):
+            event.count_schedule = len(
+                event.sale_order.project_id.working_hours)
+
     my_task_ids = fields.One2many(
         comodel_name='project.task', compute='_compute_event_tasks',
         string='Tasks', oldname='tasks')
@@ -34,6 +40,8 @@ class EventEvent(models.Model):
     analytic_account_id = fields.Many2one(
         comodel_name='account.analytic.account', string='Analytic account',
         related='project_id.analytic_account_id', store=True)
+    count_schedule = fields.Integer(
+        string='Schedule', compute='_compute_count_schedule')
 
     @api.multi
     def unlink(self):
@@ -161,6 +169,18 @@ class EventEvent(models.Model):
                 project.date_start = new_date
             if project and end:
                 project.date = new_date
+
+    @api.multi
+    def show_schedule_from_event(self):
+        self.ensure_one()
+        if self.count_schedule > 0:
+            return {'name': _('Schedule'),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'tree,form',
+                    'view_type': 'form',
+                    'res_model': 'resource.calendar',
+                    'domain': [('id', '=',
+                                self.sale_order.project_id.working_hours.id)]}
 
 
 class EventTrack(models.Model):

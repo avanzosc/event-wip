@@ -4,6 +4,7 @@
 from openerp import models, fields, api, _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from openerp.addons.event_track_assistant._common import _convert_to_local_date
 import pytz
 
 
@@ -119,6 +120,10 @@ class ProjectTask(models.Model):
     customer_address = fields.Char(
         string='Customer address', compute='_compute_customer_address',
         store=True)
+    begin_date = fields.Date(string='Change from date')
+    until_date = fields.Date(string='Change until date')
+    start_hour = fields.Float(string='Start hour')
+    duration = fields.Float(string='Duration')
 
     def _create_task_from_procurement_service_project(self, procurement):
         task = super(
@@ -131,6 +136,17 @@ class ProjectTask(models.Model):
                 task, parent_account, code)
             cond = [('analytic_account_id', '=', new_account.id)]
             project = self.env['project.project'].search(cond, limit=1)
+            duration = task.service_project_sale_line.performance or 1
+            begin_date = _convert_to_local_date(
+                task.date_start, tz=self.env.user.tz).date()
+            until_date = _convert_to_local_date(
+                task.date_end, tz=self.env.user.tz).date()
+            task.write({'project_id': project.id,
+                        'begin_date': begin_date,
+                        'until_date': until_date,
+                        'start_hour':
+                        task.service_project_sale_line.start_hour,
+                        'duration': duration})
             task.project_id = project.id
             new_account.date = parent_account.date
             project.date = parent_account.date
@@ -166,18 +182,22 @@ class ProjectTask(models.Model):
     @api.multi
     def button_recalculate_sessions(self):
         self.ensure_one()
-        self.sessions.unlink()
-        num_session = 0
-        fec_ini = fields.Date.from_string(self.date_start).replace(day=1)
+        sessions = self.mapped('sessions').filtered(
+            lambda x: x.session_date >= self.begin_date and
+            x.session_date <= self.until_date)
+        sessions.unlink()
+        num_session = len(self.mapped('sessions').filtered(
+            lambda x: x.session_date < self.begin_date))
+        fec_ini = fields.Date.from_string(self.begin_date).replace(day=1)
         num_week = 0 if fec_ini.weekday() == 0 else 1
         month = fec_ini.month
-        while fec_ini <= fields.Date.from_string(self.date_end):
+        while fec_ini <= fields.Date.from_string(self.until_date):
             if month != fec_ini.month:
                 month = fec_ini.month
                 num_week = 0 if fec_ini.weekday() == 0 else 1
             if fec_ini.weekday() == 0:
                 num_week += 1
-            if fec_ini >= fields.Date.from_string(self.date_start):
+            if fec_ini >= fields.Date.from_string(self.begin_date):
                 valid = self._validate_event_session_month(self, fec_ini)
                 if valid:
                     valid = self._validate_event_session_week(
@@ -239,18 +259,17 @@ class ProjectTask(models.Model):
         self.planned_hours = duration
 
     def _prepare_session_data_from_task(self, event, num_session, date):
-        new_date = (datetime.strptime(str(date), '%Y-%m-%d') +
-                    relativedelta(hours=float(0.0)))
+        new_date = (
+            datetime.strptime(str(date), '%Y-%m-%d') +
+            relativedelta(hours=self.start_hour))
         local = pytz.timezone(self.env.user.tz)
         local_dt = local.localize(new_date, is_dst=None)
         utc_dt = local_dt.astimezone(pytz.utc)
-        duration = (self.service_project_sale_line.product_uom_qty *
-                    (self.service_project_sale_line.performance or 1))
         vals = {'name': (_('Session %s for %s') %
                          (str(num_session),
                           self.service_project_sale_line.name)),
                 'event_id': event.id,
                 'date': utc_dt,
-                'duration': duration,
+                'duration': self.duration,
                 'tasks': [(4, self.id)]}
         return vals

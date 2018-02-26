@@ -47,6 +47,12 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
                           'Bad date from working_hours 2')
         self.assertEquals(min_session.duration, 3.0,
                           'Bad duration from working_hours 2')
+        self.assertEquals(event.count_schedule, 1, 'Event without schedule')
+        res = event.show_schedule_from_event()
+        domain = res.get('domain')
+        working_hours = event.sale_order.project_id.working_hours
+        self.assertEquals(
+            domain, [('id', '=', working_hours.id)], 'Bad domain for schedule')
         self.assertNotEquals(len(self.project.tasks), 0)
         self.assertEquals(
             len(self.project.tasks),
@@ -56,6 +62,12 @@ class TestSaleOrderCreateEvent(SaleOrderCreateEventSetup):
             button = task.show_sessions_from_task()
             self.assertEquals(button.get('type'), 'ir.actions.act_window')
             self.assertEquals(button.get('res_model'), 'event.track')
+            max_session = max(task.sessions, key=lambda x: x.session_date)
+            min_session = min(task.sessions, key=lambda x: x.session_date)
+            task.write({'begin_date': min_session.session_date,
+                        'until_date': max_session.session_date,
+                        'start_hour': 15.00,
+                        'duration': 1.0})
             task.button_recalculate_sessions()
             self.assertNotEquals(
                 len(task.sessions), 0, 'Sessions no generated')
