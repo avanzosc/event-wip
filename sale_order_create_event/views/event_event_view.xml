@@ -10,6 +10,11 @@
                     <field name="sale_order" />
                     <field name="sale_order_line" />
                </field>
+               <div class="oe_right oe_button_box" position="inside">
+                    <button name="show_schedule_from_event" type="object" class="oe_stat_button oe_inline" icon="fa-tasks">
+                        <field name="count_schedule" widget="statinfo" string="Schedule"/>
+                    </button>
+               </div>
             </field>
         </record>
     </data>

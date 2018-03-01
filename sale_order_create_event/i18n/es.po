@@ -598,6 +598,7 @@ msgstr "Fecha inicio"
 #. module: sale_order_create_event
 #: field:event.track.presence,start_hour:0
 #: field:event.track.presence.report,start_hour:0
+#: field:project.task,start_hour:0
 #: view:sale.order:sale_order_create_event.view_order_form_inh_sale_create_event
 #: field:sale.order.line,start_hour:0
 msgid "Start hour"
@@ -1017,4 +1018,26 @@ msgstr "Análisis de presencias"
 #: view:hr.employee:sale_order_create_event.view_employee_form_inh_sale_create_event
 msgid "Actual services"
 msgstr "Servicios actuales"
+
+#. module: sale_order_create_event
+#: field:project.task,begin_date:0
+msgid "Change from date"
+msgstr "Cambiar desde fecha"
+
+#. module: sale_order_create_event
+#: field:project.task,until_date:0
+msgid "Change until date"
+msgstr "Cambiar hasta fecha"
+
+#. module: sale_order_create_event
+#: field:project.task,duration:0
+msgid "Duration"
+msgstr "Duración"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/event.py:177
+#: view:event.event:sale_order_create_event.view_event_form_inh_sale_order
+#, python-format
+msgid "Schedule"
+msgstr "Horario"
 
