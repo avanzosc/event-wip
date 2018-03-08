@@ -1560,3 +1560,8 @@ msgstr "Mes anterior"
 msgid "Sessions last month"
 msgstr "Sesiones mes anterior"
 
+#. module: event_track_assistant
+#: view:event.track.presence:event_track_assistant.event_track_presence_search_view
+msgid "Filters"
+msgstr "Filtros"
+
