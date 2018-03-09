@@ -4,6 +4,47 @@
 from openerp import models, fields, api
 
 
+class EventEvent(models.Model):
+    _inherit = 'event.event'
+
+    substitution_presences = fields.Many2many(
+        comodel_name='event.track.presence', string='Substitution presences')
+
+    @api.multi
+    def _send_email_to_employees_substitution(self, replaces_to, replaced_by,
+                                              presences):
+        mail_template = self.env.ref(
+            'event_substitution.email_to_workers_by_substitution', False)
+        if mail_template:
+            partners = self.env['res.partner']
+            if replaces_to.email:
+                partners += replaces_to
+            if replaced_by.email:
+                partners += replaced_by
+            if self.user_id.partner_id.email:
+                partners += self.user_id.partner_id
+            if partners:
+                self._send_email_by_substitution(mail_template, partners,
+                                                 presences)
+
+    def _send_email_by_substitution(self, template, partners, presences):
+        self.substitution_presences = [(6, 0, presences.ids)]
+        mail = self.env['mail.compose.message'].with_context(
+            default_composition_mode='mass_mail',
+            default_template_id=template.id,
+            default_use_template=True,
+            default_partner_ids=[(6, 0, partners.ids)],
+            active_id=self.id,
+            active_ids=self.ids,
+            active_model='event.event',
+            default_model='event.event',
+            default_res_id=self.id,
+            force_send=True
+        ).create({'subject': template.subject,
+                  'body': template.body_html})
+        mail.send_mail()
+
+
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
 
@@ -20,53 +61,17 @@ class EventRegistration(models.Model):
 class EventTrackPresence(models.Model):
     _inherit = 'event.track.presence'
 
+    @api.multi
+    def _compute_session_date_without_hour_located(self):
+        for presence in self:
+            date = fields.Date.from_string(presence.session_date_without_hour)
+            presence.session_date_without_hour_located = (
+                date.strftime('%d-%m-%Y'))
+
     replaced_by = fields.Many2one(
         comodel_name='res.partner', string='Replaced by')
     replaces_to = fields.Many2one(
         comodel_name='res.partner', string='Replaces to')
-
-    @api.multi
-    def _send_email_to_employees_substitution(self):
-        mail_template = self.env.ref(
-            'event_substitution.email_to_workers_by_substitution', False)
-        if mail_template:
-            for presence in self:
-                if presence.partner.email:
-                    presence._send_email_by_substitution(
-                        mail_template, presence.partner)
-                if presence.replaced_by.email:
-                    presence._send_email_by_substitution(
-                        mail_template, presence.replaced_by)
-                if presence.event.user_id.partner_id.email:
-                    presence._send_email_by_substitution(
-                        mail_template, presence.event.user_id.partner_id)
-
-    def _send_email_by_substitution(self, template, partner):
-        cond = [('name', '=', 'email.template,body_html'),
-                ('lang', '=', partner.lang),
-                ('res_id', '=', template.id),
-                ('module', '=', 'event_substitution'),
-                ('state', '=', 'translated')]
-        tras = self.env['ir.translation'].search(cond, limit=1)
-        body = tras.value if tras else template.body_html
-        cond = [('name', '=', 'email.template,subject'),
-                ('lang', '=', partner.lang),
-                ('res_id', '=', template.id),
-                ('module', '=', 'event_substitution'),
-                ('state', '=', 'translated')]
-        tras = self.env['ir.translation'].search(cond, limit=1)
-        subject = tras.value if tras else template.subject
-        mail = self.env['mail.compose.message'].with_context(
-            default_composition_mode='mass_mail',
-            default_template_id=template.id,
-            default_use_template=True,
-            default_partner_ids=[(6, 0, partner.ids)],
-            active_id=self.id,
-            active_ids=self.ids,
-            active_model='event.track.presence',
-            default_model='event.track.presence',
-            default_res_id=self.id,
-            force_send=True
-        ).create({'subject': subject,
-                  'body': body})
-        mail.send_mail()
+    session_date_without_hour_located = fields.Char(
+        string='Session date located',
+        compute='_compute_session_date_without_hour_located')
