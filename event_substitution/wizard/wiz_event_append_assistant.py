@@ -18,12 +18,16 @@ class WizEventAppendAssistant(models.TransientModel):
         if self.registration and self.replaces_to:
             from_date, to_date = self._calc_dates_for_search_track(
                 self.from_date, self.to_date)
-            cond = [('event', '=', self.registration.event_id.id),
+            event = self.registration.event_id
+            cond = [('event', '=', event.id),
                     ('partner', '=', self.replaces_to.id),
                     ('session_date_without_hour', '>=', from_date),
                     ('session_date_without_hour', '<=', to_date)]
             presences = presence_obj.search(cond)
             presences.write({'replaced_by': self.partner.id})
+            if presences:
+                event._send_email_to_employees_substitution(
+                    self.replaces_to, self.partner, presences)
         return res
 
     def _create_presence_from_wizard(self, track, event):

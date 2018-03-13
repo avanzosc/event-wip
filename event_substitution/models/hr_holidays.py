@@ -54,7 +54,7 @@ class HrHolidays(models.Model):
         cond = [('partner', '=', self.employee_id.address_home_id.id),
                 ('session_date_without_hour', '>=', date_from),
                 ('session_date_without_hour', '<=', date_to),
-                ('state', 'not in', ('canceled', 'done'))]
+                ('state', '=', 'pending')]
         presences = presence_obj.search(cond)
         events = presences.mapped('event')
         return events

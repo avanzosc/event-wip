@@ -27,6 +27,10 @@
                     <filter string="Replaces to" 
                             domain="[]" context="{'group_by':'replaces_to'}"/>
                 </filter>
+                <filter name="canceled" position="after">
+                    <filter string="With replaces to" name="with_replaces_to" domain="[('replaces_to','!=',False)]"/>
+                    <filter string="With replaced by" name="with_replaced_by" domain="[('replaced_by','!=',False)]"/>
+                </filter>
             </field>
         </record>
         <record model="ir.ui.view" id="event_track_presence_form_view_inh_substitution">
@@ -39,28 +43,6 @@
                     <field name="replaces_to" />
                 </field>
             </field>
-        </record>
-    </data>
-    <data noupdate="1">
-        <record id="email_to_workers_by_substitution" model="email.template">
-            <field name="name">Email to worker by substitution</field>
-            <field name="model_id" ref="event_track_assistant.model_event_track_presence"/>
-            <field name="auto_delete" eval="True"/>
-            <!-- 
-            <field name="partner_to">${object.partner.id}</field>
-            <field name="email_to">${object.partner.email}</field>
-            -->
-            <field name="reply_to">${(object.company_id.email or 'noreply@localhost')|safe}</field>
-            <field name="subject">Replacement notice</field>
-            <field name="lang">${object.partner and object.partner.lang or ''}</field>
-            <field name="body_html"><![CDATA[
-    <p>Good morning.</p>
-    <p>The day ${object.session_date_without_hour} ${object.replaced_by.name} will substitute ${object.partner.name} at customer ${object.event.address_id.name}, in the session ${object.session.name}, at ${object.start_hour} H.</p>
-    <p>Please ${object.partner.name}, get in contact with ${object.replaced_by.name} before the day of the session, to give him more details.</p>
-    <p>His contact data are: ${object.replaced_by.phone or object.replaced_by.mobile or 'Without phone'}; ${object.replaced_by.email or 'Without email'}</p>
-    <p>The data of the coordinator of this center are: ${object.event.user_id.partner_id.name}; ${object.event.user_id.partner_id.phone or object.event.user_id.partner_id.mobile or 'Without phone'}; ${object.event.user_id.partner_id.email or 'Without email'}</p>
-    <p>Thank you very much and good day.</p>
-            ]]></field>
         </record>
     </data>
 </openerp>

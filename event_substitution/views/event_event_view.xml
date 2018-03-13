@@ -12,4 +12,24 @@
             </field>
         </record>
     </data>
+    <data noupdate="1">
+        <record id="email_to_workers_by_substitution" model="email.template">
+            <field name="name">Email to worker by substitution</field>
+            <field name="model_id" ref="event.model_event_event"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="reply_to">${(object.company_id.email or 'noreply@localhost')|safe}</field>
+            <field name="subject">Replacement notice</field>
+            <field name="lang">${object.user_id and object.user_id.partner_id.lang or ''}</field>
+            <field name="body_html"><![CDATA[
+    <p>Good morning.</p>
+    <p></p>
+    <p>${object.substitution_presences[0].replaced_by.name} will replace ${object.substitution_presences[0].partner.name} at school ${object.address_id.name}, in the following session/sessions:</p>
+    % for presence in object.substitution_presences:
+    <p>- ${presence.session.name}, date: ${presence.session_date_without_hour_located}, hour: ${presence.start_hour} H.</p>
+    % endfor
+    <p></p>
+    <p>Thank you very much and good day.</p>
+            ]]></field>
+        </record>
+    </data>
 </openerp>
