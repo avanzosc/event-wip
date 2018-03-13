@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_even_track_tree_inh_sale_create_event" model="ir.ui.view">
+            <field name="name">view.even.track.tree.inh.sale.create.event</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="event_track_assistant.view_event_track_tree_inh_assistant" />
+            <field name="arch" type="xml">
+                <field name="date" position = "before">
+                    <field name="task_id" />
+                </field>
+            </field>
+        </record>
+        <record id="view_even_track_search_inh_sale_create_event" model="ir.ui.view">
+            <field name="name">view.even.track.search.inh.sale.create.event</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="website_event_track.view_event_track_search" />
+            <field name="arch" type="xml">
+                <field name="event_id" position = "after">
+                    <field name="task_id" />
+                </field>
+                <filter string="Event" position="after">
+                    <filter string="Task" context="{'group_by':'task_id'}"/>
+                </filter>
+            </field>
+        </record>
+    </data>
+</openerp>

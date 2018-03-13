@@ -1041,3 +1041,10 @@ msgstr "Duración"
 msgid "Schedule"
 msgstr "Horario"
 
+#. module: sale_order_create_event
+#: view:event.track:sale_order_create_event.view_even_track_search_inh_sale_create_event
+#: field:event.track,task_id:0
+#: model:ir.model,name:sale_order_create_event.model_project_task
+msgid "Task"
+msgstr "Tarea"
+
