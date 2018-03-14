@@ -33,10 +33,10 @@
                             <button name="button_recalculate_sessions" type="object"
                                     class="oe_inline_oe_stat_button"  colspan="2"
                                     string="Recalculate Sessions"/>
-                            <field name="begin_date" required="1" />
-                            <field name="until_date" required="1" />
-                            <field name="start_hour" required="1" widget='float_time' />
-                            <field name="duration" required="1" widget='float_time' />
+                            <field name="begin_date" attrs="{'required': [('recurring_service','!=',False)]}" />
+                            <field name="until_date" attrs="{'required': [('recurring_service','!=',False)]}" />
+                            <field name="start_hour" attrs="{'required': [('recurring_service','!=',False)]}" widget='float_time' />
+                            <field name="duration" attrs="{'required': [('recurring_service','!=',False)]}" widget='float_time' />
                         </group>
                         <group name="group_month_week_day" colspan="4" col="6">
                            <group name="group_month" colspan="2">

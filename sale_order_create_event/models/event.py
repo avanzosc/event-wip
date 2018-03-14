@@ -186,9 +186,19 @@ class EventEvent(models.Model):
 class EventTrack(models.Model):
     _inherit = 'event.track'
 
+    @api.depends('tasks')
+    def _compute_task_id(self):
+        for track in self:
+            track.task_id = False
+            if track.tasks:
+                track.task_id = track.tasks[0].id
+
     tasks = fields.Many2many(
         comodel_name="project.task", relation="task_session_project_relation",
         column1="track_id", column2="task_id", copy=True, string="Tasks")
+    task_id = fields.Many2one(
+        comodel_name="project.task", compute='_compute_task_id',
+        copy=True, string="Task", store=True)
 
     def _change_session_date(self, new_days):
         event_begin = str2date(self.event_id.date_begin)
