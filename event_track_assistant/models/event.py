@@ -199,14 +199,14 @@ class EventTrack(models.Model):
 
     @api.depends('date')
     def _compute_session_date(self):
-        for track in self.filtered('date'):
+        for track in self.filtered(lambda x: x.date):
             from_date = _convert_to_local_date(track.date, self.env.user.tz)
             track.session_date = from_date.date()
             track.day = str(from_date.date().weekday())
 
     @api.depends('estimated_date_end')
     def _compute_session_end_date(self):
-        for track in self.filtered('estimated_date_end'):
+        for track in self.filtered(lambda x: x.estimated_date_end):
             from_date = _convert_to_local_date(
                 track.estimated_date_end, self.env.user.tz)
             track.session_end_date = from_date.date()
@@ -302,7 +302,7 @@ class EventTrackPresence(models.Model):
 
     @api.depends('session_date', 'real_duration')
     def _compute_real_date_end(self):
-        for presence in self.filtered('real_duration'):
+        for presence in self.filtered(lambda x: x.real_duration):
             start_date = str2datetime(presence.session_date)
             end_date = start_date + relativedelta(
                 hours=presence.real_duration)
