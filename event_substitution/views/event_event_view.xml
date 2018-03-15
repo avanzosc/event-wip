@@ -18,7 +18,7 @@
             <field name="model_id" ref="event.model_event_event"/>
             <field name="auto_delete" eval="True"/>
             <field name="reply_to">${(object.company_id.email or 'noreply@localhost')|safe}</field>
-            <field name="subject">Replacement notice</field>
+            <field name="subject">Replacement notice in ${object.address_id.name} for ${object.substitution_presences[0].partner.name}</field>
             <field name="lang">${object.user_id and object.user_id.partner_id.lang or ''}</field>
             <field name="body_html"><![CDATA[
     <p>Good morning.</p>
@@ -28,6 +28,9 @@
     <p>- ${presence.session.name}, date: ${presence.session_date_without_hour_located}, hour: ${presence.start_hour} H.</p>
     % endfor
     <p></p>
+    <p>Please ${object.substitution_presences[0].partner.name}, get in contact with ${object.substitution_presences[0].replaced_by.name} before the day of the session, to give him more details.</p>
+    <p>His contact data are: ${object.substitution_presences[0].replaced_by.phone or object.substitution_presences[0].replaced_by.mobile or 'Without phone'}; ${object.substitution_presences[0].replaced_by.email or 'Without email'}</p>
+    <p>The data of the coordinator of this center are: ${object.user_id.partner_id.name}; ${object.user_id.partner_id.phone or object.user_id.partner_id.mobile or 'Without phone'}; ${object.user_id.partner_id.email or 'Without email'}</p>
     <p>Thank you very much and good day.</p>
             ]]></field>
         </record>
