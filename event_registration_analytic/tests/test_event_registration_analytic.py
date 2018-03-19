@@ -144,19 +144,15 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
         self.env.ref('base.public_partner').employee_id = (
             self.ref('hr.employee'))
         self.calendar_holiday.lines[0].write({'date': '2016-01-06'})
-        wiz = self.wiz_model.with_context(
-            {'active_id': self.contract.id}).create({'year': self.today.year})
-        vals = ['year']
-        wiz.with_context(
-            {'active_id': self.contract.id}).default_get(vals)
-        wiz.with_context(
-            {'active_id':
-             self.contract.id}).button_calculate_workables_and_festives()
-        cond = [('partner', '=', self.ref('base.public_partner')),
-                ('year', '=', self.today.year)]
-        calendar = self.calendar_model.search(cond)
-        self.assertNotEqual(
-            len(calendar), 0, 'Calendar not generated for partner')
+        calendar_vals = {'partner': self.ref('base.public_partner'),
+                         'year': self.today.year}
+        calendar_line_vals = {
+            'partner': self.ref('base.public_partner'),
+            'date': '{}-01-06'.format(self.today.year),
+            'contract': self.contract.id,
+            'festive': True}
+        calendar_vals['dates'] = [(0, 0, calendar_line_vals)]
+        self.calendar_model.create(calendar_vals)
         self.partner = self.env['res.partner'].create({
             'name': 'Partner',
             'parent_id': self.ref('base.public_partner')
@@ -186,14 +182,15 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
                          'holiday_calendars':
                          [(6, 0, [self.calendar_holiday.id])]}
         self.contract2 = self.contract_model.create(contract_vals)
-        wiz = self.wiz_model.with_context(
-            {'active_id': self.contract2.id}).create({'year': self.today.year})
-        vals = ['year']
-        wiz.with_context(
-            {'active_id': self.contract2.id}).default_get(vals)
-        wiz.with_context(
-            {'active_id':
-             self.contract2.id}).button_calculate_workables_and_festives()
+        calendar_vals = {'partner': self.partner.id,
+                         'year': self.today.year}
+        calendar_line_vals = {
+            'partner': self.partner.id,
+            'date': '{}-01-06'.format(self.today.year),
+            'contract': self.contract2.id,
+            'festive': True}
+        calendar_vals['dates'] = [(0, 0, calendar_line_vals)]
+        self.calendar_model.create(calendar_vals)
         event = self.env.ref('event.event_0')
         event.seats_max = 0
         reg_vals = {
