@@ -10,11 +10,3 @@ class WizEventDeleteAssistant(models.TransientModel):
     employee = fields.Many2one(
         comodel_name='hr.employee', related='partner.employee_id',
         string='Employee')
-
-    def _cancel_presences(self):
-        presences = super(WizEventDeleteAssistant, self)._cancel_presences()
-        if self.employee:
-            for presence in presences:
-                presence._update_employee_calendar_days(
-                    contract=False, cancel_presence=True)
-        return presences

@@ -2,12 +2,14 @@
 # (c) 2016 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
+from openerp import fields
 
 
 class TestEventRegistrationHrContract(common.TransactionCase):
 
     def setUp(self):
         super(TestEventRegistrationHrContract, self).setUp()
+        self.calendar_model = self.env['res.partner.calendar']
         self.contract_model = self.env['hr.contract']
         self.holiday_model = self.env['calendar.holiday']
         self.account_model = self.env['account.analytic.account']
@@ -114,3 +116,38 @@ class TestEventRegistrationHrContract(common.TransactionCase):
         res = wiz._prepare_data_confirm_assistant(registration)
         self.assertIn(
             'contract', res, 'No contract in partner registration')
+        registration.employee = self.employee.id
+        date_begin = fields.Datetime.to_string(
+            fields.Datetime.from_string(registration.date_start).date())
+        track = {'name': date_begin,
+                 'date': date_begin,
+                 'event_id': registration.event_id.id,
+                 'duration': 2,
+                 'presences': [(0, 0, {'partner': registration.partner_id.id,
+                                       'name': registration.partner_id.name,
+                                       'session_duration': 2,
+                                       'session_date': date_begin,
+                                       'contract': self.contract.id,
+                                       'employee': self.employee.id,
+                                       'employee_id': self.employee.id})]}
+        track = self.env['event.track'].create(track)
+        date_begin = fields.Datetime.from_string(registration.date_start)
+        calendar_vals = {'partner': registration.partner_id.id,
+                         'year': date_begin.year}
+        calendar_line_vals = {
+            'partner': registration.partner_id.id,
+            'date': registration.event_id.track_ids[0].date,
+            'contract': self.contract.id,
+            'festive': False}
+        calendar_vals['dates'] = [(0, 0, calendar_line_vals)]
+        calendar = self.calendar_model.create(calendar_vals)
+        presence = registration.event_id.track_ids[0].presences[0]
+        presence.partner_calendar_day = calendar.dates[0].id
+        registration._cancel_presences(
+            fields.Datetime.to_string(
+                fields.Datetime.from_string(registration.date_start).date()),
+            fields.Datetime.to_string(
+                fields.Datetime.from_string(registration.date_end).date()),
+            'notes')
+        self.assertEquals(
+            track.presences[0].state, 'canceled', 'BAD state for presence')

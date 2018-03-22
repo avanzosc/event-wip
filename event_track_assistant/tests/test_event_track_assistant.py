@@ -257,6 +257,10 @@ class TestEventTrackAssistant(EventTrackAssistantSetup):
         registration = self.event.registration_ids.filtered(
             lambda r: r.partner_id == self.partner)
         self.assertEquals(registration.state, 'cancel')
+        registration._cancel_registration(
+            '2025-01-29', '2025-01-30', '2025-01-01', 'notes')
+        registration._cancel_registration(
+            '2025-01-20', '2025-01-25', '2025-01-01', 'notes')
 
     def test_event_assistant_track_assistant_confirm_assistant(self):
         add_wiz = self.wiz_add_model.with_context(

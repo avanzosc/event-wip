@@ -42,12 +42,3 @@ class WizEventDeleteAssistant(models.TransientModel):
             self.min_from_date, tz=tz), tz=tz)
         self.end_time = _convert_time_to_float(_convert_to_utc_date(
             self.max_to_date, tz=tz), tz=tz)
-
-    def _update_registration_date_end(self, registration):
-        super(WizEventDeleteAssistant, self)._update_registration_date_end(
-            registration)
-        reg_date_end = str2datetime(registration.date_end)
-        wiz_from_date = _convert_to_utc_date(
-            self.from_date, time=self.start_time, tz=self.env.user.tz)
-        if wiz_from_date != reg_date_end:
-            registration.date_end = wiz_from_date

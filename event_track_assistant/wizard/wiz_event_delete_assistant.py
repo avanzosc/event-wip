@@ -141,8 +141,13 @@ class WizEventDeleteAssistant(models.TransientModel):
     @api.multi
     def action_delete(self):
         self.ensure_one()
-        self._cancel_registration()
-        self._cancel_presences()
+        cond = [('event_id', 'in', self.env.context.get('active_ids')),
+                ('partner_id', '=', self.partner.id),
+                ('state', '=', 'open')]
+        registrations = self.env['event.registration'].search(cond)\
+            if not self.registration else self.registration
+        registrations._cancel_registration(
+            self.from_date, self.to_date, self.removal_date, self.notes)
         return self._open_event_tree_form()
 
     def _prepare_dates_for_search_registrations(self):
@@ -150,45 +155,11 @@ class WizEventDeleteAssistant(models.TransientModel):
         to_date = self._prepare_date_for_control(self.to_date, time=24.0)
         return from_date, to_date
 
-    def _update_registration_date_end(self, registration):
-        reg_date_end = str2datetime(registration.date_end)
-        wiz_from_date = str2datetime(self.from_date)
-        if wiz_from_date.date() != reg_date_end.date():
-            registration.date_end = '{} {}'.format(
-                self.from_date, reg_date_end.time())
-
     def revert_dates(self):
         tz = self.env.user.tz
         self.from_date = _convert_to_local_date(
             self.min_from_date, tz=tz).date()
         self.to_date = _convert_to_local_date(self.max_to_date, tz=tz).date()
-
-    def _cancel_registration(self):
-        cond = [('event_id', 'in', self.env.context.get('active_ids')),
-                ('partner_id', '=', self.partner.id),
-                ('state', '=', 'open')]
-        registrations = self.env['event.registration'].search(cond)\
-            if not self.registration else self.registration
-        if self.removal_date and self.notes:
-            registrations.write({
-                'removal_date': self.removal_date,
-                'notes': self.notes,
-            })
-        for registration in registrations:
-            self._update_registration_date_end(registration)
-            registration.button_reg_cancel()
-        return registrations
-
-    def _cancel_presences(self):
-        from_date, to_date = self._prepare_dates_for_search_registrations()
-        cond = [('event', 'in', self.env.context.get('active_ids')),
-                ('state', '=', 'pending'),
-                ('partner', '=', self.partner.id),
-                ('session_date', '>=', from_date),
-                ('session_date', '<=', to_date)]
-        presences = self.env['event.track.presence'].search(cond)
-        presences.button_canceled()
-        return presences
 
     def _open_event_tree_form(self):
         active_ids = self.env.context.get('active_ids', [])

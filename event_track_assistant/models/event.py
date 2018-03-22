@@ -4,6 +4,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from openerp import models, fields, api, exceptions, _
 from .._common import _convert_to_local_date, _convert_time_to_float
+from .._common import _convert_to_utc_date
 from dateutil.relativedelta import relativedelta
 
 str2datetime = fields.Datetime.from_string
@@ -704,3 +705,52 @@ class EventRegistration(models.Model):
     def registration_open(self):
         self.removal_date = False
         return super(EventRegistration, self).registration_open()
+
+    def _cancel_registration(self, from_date, to_date, removal_date, notes):
+        if removal_date and notes:
+            self.write({'removal_date': removal_date,
+                        'notes': notes})
+        for registration in self:
+            registration._control_registration_dates(from_date, to_date)
+            registration.button_reg_cancel()
+            registration._cancel_presences(from_date, to_date, notes)
+
+    def _control_registration_dates(self, from_date, to_date):
+        reg_date_end = str2datetime(self.date_end)
+        reg_date_start = str2datetime(self.date_start)
+        wiz_from_date = str2date(from_date)
+        wiz_to_date = str2date(to_date)
+        if (reg_date_end.date() == wiz_to_date and wiz_from_date >
+                reg_date_start.date()):
+            date = (fields.Date.from_string(from_date) +
+                    relativedelta(days=-1))
+            self.date_end = '{} {}'.format(date, reg_date_end.time())
+        if (reg_date_start.date() == wiz_from_date and wiz_to_date <
+                reg_date_end.date()):
+            date = (fields.Date.from_string(to_date) +
+                    relativedelta(days=+1))
+            self.date_start = '{} {}'.format(date, reg_date_start.time())
+
+    def _cancel_presences(self, from_date, to_date, notes):
+        from_date, to_date = self._prepare_dates_for_search_registrations(
+            from_date, to_date)
+        cond = [('event', '=', self.event_id.id),
+                ('state', '=', 'pending'),
+                ('partner', '=', self.partner_id.id),
+                ('session_date', '>=', from_date),
+                ('session_date', '<=', to_date)]
+        presences = self.env['event.track.presence'].search(cond)
+        presences.write({'notes': notes})
+        presences.button_canceled()
+        return presences
+
+    def _prepare_dates_for_search_registrations(self, from_date, to_date):
+        from_date = self._prepare_date_for_control(from_date, time=0.0)
+        to_date = self._prepare_date_for_control(to_date, time=24.0)
+        return from_date, to_date
+
+    def _prepare_date_for_control(self, date, time=0.0):
+        date = str2datetime(date) if isinstance(date, str) else date
+        new_date = datetime2str(
+            _convert_to_utc_date(date.date(), time=time, tz=self.env.user.tz))
+        return new_date

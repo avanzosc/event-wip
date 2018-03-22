@@ -170,6 +170,15 @@ class EventRegistration(models.Model):
                 _("You must enter the employee's contract"))
         return super(EventRegistration, self).button_registration_open()
 
+    def _cancel_presences(self, from_date, to_date, notes):
+        presences = super(EventRegistration, self)._cancel_presences(
+            from_date, to_date, notes)
+        if self.employee:
+            for presence in presences:
+                presence._update_employee_calendar_days(
+                    contract=False, cancel_presence=True)
+        return presences
+
 
 class EventTrackPresence(models.Model):
     _inherit = 'event.track.presence'
