@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="hr_timesheet_sheet_form_inh_calendar_holiday">
+            <field name="name">hr.timesheet.sheet.form.inh.calendar.holiday</field>
+            <field name="model">hr_timesheet_sheet.sheet</field>
+            <field name="inherit_id" ref="hr_timesheet_sheet.hr_timesheet_sheet_form" />
+            <field name="arch" type="xml">
+                <notebook position="before">
+                    <group colspan="4" col="8">
+                        <field name="month_hours" string="Month hours" widget="float_time" />
+                        <field name="total_hours_worked" string="Total hours worked" widget="float_time" />
+                        <field name="working_hours_worked" string="Working hours worked" widget="float_time" />
+                        <field name="festive_hours_worked" string="Festive hours worked" widget="float_time" />
+                    </group>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</openerp>
