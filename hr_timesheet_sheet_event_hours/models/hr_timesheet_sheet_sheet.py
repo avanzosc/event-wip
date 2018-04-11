@@ -16,22 +16,19 @@ class HrTimesheetSheetSheet(models.Model):
                     ('state', 'in', ('pending', 'completed'))]
             presences = self.env['event.track.presence'].search(cond)
             sheet.month_hours = sum(presences.mapped('session_duration'))
-            from_date = '{} 00:00:00'.format(sheet.date_from)
-            to_date = '{} 23:59:59'.format(sheet.date_to)
-            cond = [('event_id', '!=', False),
-                    ('user_id', '=', sheet.user_id.id),
-                    ('date', '>=', from_date),
-                    ('date', '<=', to_date)]
-            works = self.env['project.task.work'].search(cond)
-            sheet.total_hours_worked = sum(works.mapped('hours'))
-            cond = [('date', '>=', sheet.date_from),
+            cond = [('partner', '=', sheet.employee_id.address_home_id.id),
+                    ('date', '>=', sheet.date_from),
                     ('date', '<=', sheet.date_to),
-                    ('partner', '=', sheet.employee_id.address_home_id.id),
                     ('festive', '=', True)]
-            festives = self.env['res.partner.calendar.day'].search(cond)
-            sheet.festive_hours_worked = sum(
-                works.filtered(lambda x: x.date[0:10] in
-                               festives.mapped('date')).mapped('hours'))
+            festive_dates = self.env['res.partner.calendar.day'].search(
+                cond).mapped('date')
+            sheet.timesheet_ids.write({'festive': False})
+            times = sheet.timesheet_ids.filtered(
+                lambda x: x.line_id and x.line_id.date in festive_dates)
+            times.write({'festive': True})
+            sheet.total_hours_worked = sum(
+                sheet.mapped('timesheet_ids.line_id.unit_amount'))
+            sheet.festive_hours_worked = sum(times.mapped('unit_amount'))
             sheet.working_hours_worked = (
                 sheet.total_hours_worked - sheet.festive_hours_worked)
 
