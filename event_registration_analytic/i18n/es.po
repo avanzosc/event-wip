@@ -140,6 +140,8 @@ msgstr "Cancelar registro"
 
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
+#: view:event.track:event_registration_analytic.view_event_track_inh_analytic
 msgid "Canceled"
 msgstr "Cancelados"
 
@@ -376,6 +378,7 @@ msgstr "Estudiante: %s - Pagador: %s"
 #. module: event_registration_analytic
 #: view:event.event:event_registration_analytic.view_event_form_inh3_assistant
 #: view:event.event:event_registration_analytic.view_event_form_inh_assistant
+#: view:event.registration:event_registration_analytic.view_registration_search_inh_analytic
 #: view:event.track.presence:event_registration_analytic.event_track_presence_search_view_inh_analytic
 #: model:ir.actions.act_window,name:event_registration_analytic.action_partner_student_form
 #: model:ir.ui.menu,name:event_registration_analytic.student_option_view

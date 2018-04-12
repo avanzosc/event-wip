@@ -29,6 +29,8 @@
                     <filter string="Without Sepa active" domain="[('parent_num_valid_mandates', '=', 0)]" />
                     <filter string="With bank account" domain="[('parent_num_bank_accounts', '!=', 0)]" />
                     <filter string="With Sepa active" domain="[('parent_num_valid_mandates', '!=', 0)]" />
+                    <filter string="Canceled" domain="[('state','=','cancel')]"/>
+                    <filter string="Students" domain="[('employee','=',False)]"/>
                 </filter>
             </field>
         </record>
