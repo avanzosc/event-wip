@@ -62,6 +62,7 @@
                 <filter string="Registration Month" position="after">
                     <filter string="Start Month" domain="[]" context="{'group_by': 'date_start:month'}"/>
                     <filter string="End Month" domain="[]" context="{'group_by': 'date_end:month'}"/>
+                    <filter string="Removal in year" domain="[]" context="{'group_by': 'removal_date:year'}"/>
                 </filter>
                 <filter string="My Registrations" position="after">
                     <separator/>

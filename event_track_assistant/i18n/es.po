@@ -1565,3 +1565,8 @@ msgstr "Sesiones mes anterior"
 msgid "Filters"
 msgstr "Filtros"
 
+#. module: event_track_assistant
+#: view:event.registration:event_track_assistant.view_registration_search_inh_assistant
+msgid "Removal in year"
+msgstr "Año de baja"
+
