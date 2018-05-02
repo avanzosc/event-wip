@@ -20,7 +20,8 @@ class EventTrack(models.Model):
         track_obj = self.env['event.track']
         session_date = fields.Date.to_string(fields.Date.from_string(
             fields.Date.context_today(self)) + relativedelta(days=-2))
-        cond = [('session_date', '=', session_date)]
+        cond = [('session_date', '=', session_date),
+                ('event_id.state', '!=', 'cancel')]
         for track in track_obj.search(cond):
             try:
                 tracks = track_obj
@@ -47,8 +48,14 @@ class EventTrack(models.Model):
 
     def _find_pending_presences(self):
         if any(self.mapped('presences').filtered(
-                lambda l: l.state == 'pending')):
+                lambda l: l.state == 'pending' and not l.employee_id)):
             return True
+        presences = self.mapped('presences').filtered(
+            lambda l: l.state == 'pending' and l.employee_id)
+        if presences:
+            if not any(self.mapped('presences').filtered(
+                    lambda l: l.state == 'completed' and l.employee_id)):
+                return True
         return False
 
     def _find_previous_track(self, event, date):
