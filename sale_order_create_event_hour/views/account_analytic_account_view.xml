@@ -7,13 +7,16 @@
             <field name="inherit_id" ref="account_analytic_analysis.account_analytic_account_form_form" />
             <field name="arch" type="xml">
                 <field name="date_start" position="after">
-                    <field name="start_time" widget="float_time" required="1"/>
+                    <field name="start_time" widget="float_time" 
+                        attrs="{'required': [('type', '=', 'contract')]}"/>
                 </field>
                  <label for="quantity_max" position="before">
-                    <field name="end_time" widget="float_time" required="1"/>
+                    <field name="end_time" widget="float_time" 
+                        attrs="{'required': [('type', '=', 'contract')]}"/>
                       <label for="type_hour" string="Type hour"/>
                       <div name="type_hour">
-                          <field name="type_hour" class="oe_inline" required="1"
+                          <field name="type_hour" class="oe_inline" 
+                                 attrs="{'required': [('type', '=', 'contract')]}"
                                  domain="[('id','not in',[%(sale_order_create_event_hour.type_hour_festive)d,%(sale_order_create_event_hour.type_hour_sunday)d])]" />
                       </div>
                  </label>
