@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <report 
+            string="Diploma"
+            id="action_report_event_registration_diploma"
+            model="event.registration"
+            report_type="qweb-pdf"
+            name="event_registration_diploma_report.report_event_registration_diploma"
+            file="event_registration_diploma_report.report_event_registration_diploma"
+        />
+
+        <template id="report_event_registration_diploma_doc">
+            <t t-call="report.html_container">
+                <div class="page" style="font-size:13px;">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <div class="col-xs-3">
+                        </div>
+                        <div class="col-xs-8" >
+                            <div style="text-align:justify;font-size:20px">
+                                Rockbotic-ek jakinarazten du
+                                <strong><span t-field="o.partner_id.name" /></strong>
+                                ikasleak
+                            </div>
+                            <br/>
+                            <div style="text-align:justify;font-size:20px">
+                                arrakastarekin gainditu duela
+                                <strong><span t-field="o.company_id.name" /></strong>
+                                eskeinitako
+                            </div>
+                            <br/>
+                            <div style="text-align:justify;font-size:20px">
+                                <strong>2017/18</strong>
+                                Ikastaroa.
+                            </div>
+                            <br/>
+                            <div style="text-align:justify;font-size:20px">
+                                <strong><span t-field="o.event_id.registration_ids.filtered(lambda x: x.state in ('open','done') and x.employee)[0].partner_id.name" /></strong>
+                                irakasleak horrela ziurtatzen du.
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-xs-6">
+                        </div>
+                        <div class="col-xs-6" >
+                            <div style="text-align:justify;font-size:20px">
+                                Azkoitian, 2018ko Maiatzak 25ean
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_event_registration_diploma">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'event_registration_diploma_report.report_event_registration_diploma_doc')"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>
