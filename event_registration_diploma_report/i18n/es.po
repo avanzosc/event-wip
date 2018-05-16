@@ -1,0 +1,62 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_registration_diploma_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-14 08:21+0000\n"
+"PO-Revision-Date: 2018-05-14 08:21+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "Azkoitian, 2018ko Maiatzak 25ean"
+msgstr "Azkoitian, 2018ko Maiatzak 25ean"
+
+#. module: event_registration_diploma_report
+#: model:ir.actions.report.xml,name:event_registration_diploma_report.action_report_event_registration_diploma
+msgid "Diploma"
+msgstr "Diploma"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "Ikastaroa."
+msgstr "Ikastaroa."
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "ROCKBOTIC GIPUZKOA"
+msgstr "ROCKBOTIC GIPUZKOA"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "Rockbotic-ek jakinarazten du"
+msgstr "Rockbotic-ek jakinarazten du"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "arrakastarekin gainditu duela"
+msgstr "arrakastarekin gainditu duela"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "eskeinitako"
+msgstr "eskeinitako"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "ikasleak"
+msgstr "ikasleak"
+
+#. module: event_registration_diploma_report
+#: view:website:event_registration_diploma_report.report_event_registration_diploma_doc
+msgid "irakasleak horrela ziurtatzen du."
+msgstr "irakasleak horrela ziurtatzen du."
+

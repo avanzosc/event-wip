@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="paperformat_event_registration_diploma" model="report.paperformat">
+            <field name="name">Diploma A4 Landscape</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">95</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+            <field name="report_ids"
+                   eval="[(4, ref('event_registration_diploma_report.action_report_event_registration_diploma'))]" />
+        </record>
+        <record id="action_report_event_registration_diploma" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="event_registration_diploma_report.paperformat_event_registration_diploma"/>
+        </record>->
+    </data>
+</openerp>

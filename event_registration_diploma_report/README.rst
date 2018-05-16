@@ -1,0 +1,18 @@
+.. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
+   :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
+   :alt: License: AGPL-3
+
+=================================
+Event registration diploma report
+=================================
+
+* This module print a diploma from event registration object.
+
+
+Credits
+=======
+
+Contributors
+------------
+* Ana Juaristi <anajuaristi@avanzosc.es>
+* Alfredo de la Fuente <alfredodelafuente@avanzosc.es>
