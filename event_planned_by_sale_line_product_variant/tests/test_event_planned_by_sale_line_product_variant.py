@@ -12,7 +12,7 @@ class TestEventPlannedBySaleLineProductVariant(common.TransactionCase):
         self.service_product = self.browse_ref(
             'product.product_product_consultant')
         sale_vals = {
-            'name': 'sale order 1',
+            'name': 'sale order 2000',
             'partner_id': self.ref('base.res_partner_1'),
         }
         sale_line_vals = {

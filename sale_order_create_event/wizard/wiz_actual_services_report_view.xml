@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="wiz_actual_services_report_view">
+            <field name="name">wiz.actual.services.report.view</field>
+            <field name="model">wiz.actual.services.report</field>
+            <field name="arch" type="xml">
+                <form string="Employee actual services" version="7.0">
+                    <group colspan="4">
+                        <field name="from_date"/>
+                        <field name="to_date" />
+                    </group>
+                    <footer>
+                        <button name="show_employee_actual_services" type="object"
+                            string="Show services" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_show_employee_services">
+            <field name="name">Wizard show employee services</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wiz.actual.services.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="wiz_actual_services_report_view"/>
+        </record>
+    </data>
+</openerp>

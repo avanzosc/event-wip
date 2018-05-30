@@ -53,7 +53,9 @@ msgid "Based on the costs you had on the project, what would have been the reven
 msgstr "﻿Basado en los costes que tenía en el proyecto, lo que habría sido el ingreso si todos estos costes se hubieran facturado con el precio de venta normal proporcionado por la tarifa."
 
 #. module: sale_order_create_event
+#: view:wiz.actual.services.report:sale_order_create_event.wiz_actual_services_report_view
 #: view:wiz.change.session.date:sale_order_create_event.wiz_change_session_date_form
+#: view:wiz.recalculate.hour.from.contract:sale_order_create_event.wiz_recalculate_hour_from_contract_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1047,4 +1049,24 @@ msgstr "Horario"
 #: model:ir.model,name:sale_order_create_event.model_project_task
 msgid "Task"
 msgstr "Tarea"
+
+#. module: sale_order_create_event
+#: field:wiz.actual.services.report,from_date:0
+msgid "From date"
+msgstr "Desde fecha"
+
+#. module: sale_order_create_event
+#: field:wiz.actual.services.report,to_date:0
+msgid "To date"
+msgstr "A fecha"
+
+#. module: sale_order_create_event
+#: view:wiz.actual.services.report:sale_order_create_event.wiz_actual_services_report_view
+msgid "Employee actual services"
+msgstr "Servicios actuales del empleado"
+
+#. module: sale_order_create_event
+#: view:wiz.actual.services.report:sale_order_create_event.wiz_actual_services_report_view
+msgid "Show services"
+msgstr "Mostrar servicios"
 

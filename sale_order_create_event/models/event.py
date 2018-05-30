@@ -42,6 +42,7 @@ class EventEvent(models.Model):
         related='project_id.analytic_account_id', store=True)
     count_schedule = fields.Integer(
         string='Schedule', compute='_compute_count_schedule')
+    notes = fields.Text(string='Notes')
 
     @api.multi
     def unlink(self):

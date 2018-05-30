@@ -39,8 +39,18 @@ class SaleOrderCreateEventSetup(EventTrackAssistantSetup):
             [(6, 0,
               [self.ref('event_sale.product_product_event')])],
         })
+        i = 0
+        while i < 1000:
+            i += 1
+            name = 'sale order ' + str(i)
+            cond = [('name', '=', name)]
+            sale = self.sale_model.search(cond, limit=1)
+            if sale:
+                i += 1
+            else:
+                i = 5000
         sale_vals = {
-            'name': 'sale order 1',
+            'name': name,
             'partner_id': self.ref('base.res_partner_1'),
             'project_id': self.account.id,
             'project_by_task': 'no',

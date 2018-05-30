@@ -80,3 +80,9 @@ class TestSaleOrderCreateEventAssistant(
         self.work_model.search(cond, limit=1)
         self.assertEqual(len(self.work_model.search(cond, limit=1)), 0,
                          'Found project task work after pending presence')
+        report_vals = {'from_date': presence.session_date_without_hour,
+                       'to_date': presence.session_date_without_hour}
+        employee = self.ref('hr.employee_fp')
+        report = self.env['wiz.actual.services.report'].create(report_vals)
+        report.with_context(
+            active_id=employee).show_employee_actual_services()

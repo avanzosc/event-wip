@@ -39,12 +39,13 @@ class EventTrackPresenceReport(models.Model):
                 array_to_string(array_agg(distinct(replace(replace(replace(
                 replace(replace(replace(replace(p.session_day,'0','L'),'1','M')
                 ,'2','X'),'3','J'),'4','V'),'5','S'),'6','D'))),',') as days,
+               COALESCE(e.notes,
                (select t.name
                 from   event_track t
                 where  t.event_id = p.event
                   and  t.id = (select min(t2.id)
                                 from  event_track t2
-                                where t2.event_id = p.event)) as session_name,
+                                where t2.event_id = p.event))) as session_name,
                min(p.id) as id
         """
         return select_str
@@ -53,6 +54,7 @@ class EventTrackPresenceReport(models.Model):
         from_str = """
         from   event_track_presence p
                inner join res_partner r on r.id = p.customer_id
+               inner join event_event e on e.id = p.event
         """
         return from_str
 
@@ -66,12 +68,17 @@ class EventTrackPresenceReport(models.Model):
         return where_str
 
     def _where2(self):
-        return "{} and p.employee_id = {}".format(
+        res = "{} and p.employee_id = {}".format(
             self._where(), self.env.context.get('employee_id'))
+        res = "{} and p.session_date_without_hour >= '{}'".format(
+            res, self.env.context.get('from_date'))
+        res = "{} and p.session_date_without_hour <= '{}'".format(
+            res, self.env.context.get('to_date'))
+        return res
 
     def _group_by(self):
         group_by_str = """
-        group  by 1, 2, 3, 4, 5, 6, 7, 8
+        group  by 1, 2, 3, 4, 5, 6, 7, 8, 10
         """
         return group_by_str
 

@@ -45,7 +45,7 @@ class TestEventRegistrationHrContract(common.TransactionCase):
             (6, 0,
              [self.ref('procurement_service_project.route_serv_project')])]
         sale_vals = {
-            'name': 'sale order 1',
+            'name': 'sale order 1300',
             'partner_id': self.ref('base.res_partner_1'),
             'partner_shipping_id': self.ref('base.res_partner_1'),
             'partner_invoice_id': self.ref('base.res_partner_1'),

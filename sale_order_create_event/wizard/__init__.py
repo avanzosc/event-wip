@@ -7,3 +7,4 @@ from . import wiz_change_session_date
 from . import wiz_event_confirm_assistant
 from . import wiz_event_registration_confirm
 from . import wiz_recalculate_hour_from_contract
+from . import wiz_actual_services_report
