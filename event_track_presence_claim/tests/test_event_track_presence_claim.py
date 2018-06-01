@@ -47,12 +47,19 @@ class TestEventTrackPresenceClaim(common.TransactionCase):
         event_vals = {'name': 'Test crm claim event presence',
                       'date_begin': date_begin,
                       'date_end': date_end,
-                      'warnings_not_imputations_count': 2,
+                      'warnings_not_imputations_count': 1,
                       'track_ids': tracks}
         self.event = self.env['event.event'].create(event_vals)
 
     def test_event_track_presence_claim(self):
         self.env['event.track']._search_no_imputations_and_create_claim()
+        self.assertEqual(
+            self.event.warnings_not_imputations_count, 2,
+            'Bad imputations counter')
+        self.env['event.track']._search_no_imputations_and_create_claim()
         cond = [('event_id', '=', self.event.id)]
         claims = self.env['crm.claim'].search(cond)
         self.assertEqual(len(claims), 3, 'Claims not found')
+        self.event.track_ids[0].presences.write({'state': 'completed'})
+        res = self.event.track_ids[0]._find_pending_presences()
+        self.assertEqual(res, False, 'Presences found')

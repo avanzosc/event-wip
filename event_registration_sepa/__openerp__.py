@@ -19,6 +19,7 @@
         "account_payment_sale",
         "hr_employee_catch_partner",
         "event_registration_analytic",
+        "event_planned_by_sale_line"
     ],
     'data': ['views/payment_mode_view.xml',
              ],
