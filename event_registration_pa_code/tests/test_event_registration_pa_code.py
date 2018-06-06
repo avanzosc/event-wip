@@ -35,7 +35,7 @@ class TestEventRegistrationPaCode(common.TransactionCase):
             fields.Date.from_string(str(self.fec_ini)) +
             relativedelta(years=-3)))
         sale_vals = {
-            'name': 'sale order 2',
+            'name': 'sale order 1500',
             'partner_id': self.partner.id,
             'partner_shipping_id': self.partner.id,
             'partner_invoice_id': self.partner.id,

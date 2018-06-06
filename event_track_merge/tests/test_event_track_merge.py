@@ -35,7 +35,7 @@ class TestEventTrackMerge(common.TransactionCase):
               [self.ref('event_sale.product_product_event')])],
         })
         sale_vals = {
-            'name': 'sale order 1',
+            'name': 'sale order 1700',
             'partner_id': self.ref('base.res_partner_1'),
             'project_id': self.account.id,
             'project_by_task': 'no',
