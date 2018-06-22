@@ -22,7 +22,10 @@ class EventRegistration(models.Model):
             (self.event_id.sale_order.payer == 'student' and
              self.parent_num_valid_mandates == 0 and not
              self.partner_id.employee_id)):
-            raise exceptions.Warning(
-                _('%s needs a valid sepa mandate for confirm the assistant!')
-                % self.partner_id.name)
+            self.show_sepa_mandate_error()
         return super(EventRegistration, self).registration_open()
+
+    def show_sepa_mandate_error(self):
+        raise exceptions.Warning(
+            _('%s needs a valid sepa mandate for confirm the assistant!')
+            % self.partner_id.name)
