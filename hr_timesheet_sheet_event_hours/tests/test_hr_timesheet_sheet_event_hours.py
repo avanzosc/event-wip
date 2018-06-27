@@ -10,20 +10,31 @@ class TestHrTimesheetSheetEventHours(common.TransactionCase):
 
     def setUp(self):
         super(TestHrTimesheetSheetEventHours, self).setUp()
+        self.analytic_timesheet_model = self.env['hr.analytic.timesheet']
+        self.analytic_line_model = self.env['account.analytic.line']
         self.partner = self.env['res.partner'].create({
             'name': 'Partner for test crm claim event presence',
             'is_company': True})
         self.employee = self.browse_ref('hr.employee_al')
+        self.journal = self.browse_ref('hr_timesheet.analytic_journal')
+        self.account = self.browse_ref('account.analytic_support_internal')
+        self.general_account = self.browse_ref('account.a_salary_expense')
+        self.product = self.browse_ref('product.product_product_consultant')
         self.user = self.env['res.users'].create(
             {'name': 'aaaaa',
              'login': 'aaaaa@aaaa.com'})
         self.employee.write({'address_home_id': self.partner.id,
-                             'user_id': self.user.id})
+                             'user_id': self.user.id,
+                             'journal_id': self.journal.id})
+        history_vals = {'type': 'mod',
+                        'hours': 15,
+                        'description': 'modification'}
         contract_vals = {'name': 'New contract for employee',
                          'employee_id': self.employee.id,
                          'wage': 1000,
-                         'date_start': '2018-01-01',
-                         'partner': self.partner.id}
+                         'date_start': '2000-01-01',
+                         'partner': self.partner.id,
+                         'history_ids': [(0, 0, history_vals)]}
         self.contract = self.env['hr.contract'].create(contract_vals)
         today = fields.Date.today()
         date_end = '{} 12:00:00'.format(today)
@@ -72,3 +83,55 @@ class TestHrTimesheetSheetEventHours(common.TransactionCase):
         sheet = self.env['hr_timesheet_sheet.sheet'].create(sheet_vals)
         self.assertEqual(
             sheet.month_hours, 10.0, 'Bad working hours')
+        analytic_line_vals = {
+            'user_id': self.user.id,
+            'account_id': self.account.id,
+            'amount': -450,
+            'unit_amount': 15,
+            'date': sheet.date_from,
+            'name': 'a',
+            'general_account_id': self.general_account.id,
+            'journal_id': self.journal.id,
+            'product_id': self.product.id,
+            'product_uom_id': self.product.uom_id.id,
+            'to_invoice': 1}
+        analytic_line = self.analytic_line_model.create(analytic_line_vals)
+        analytic_timesheet_vals = {
+            'name': 'Analytic timesheet 1',
+            'partner_id': self.partner.id,
+            'sheet_id': sheet.id,
+            'journal_id': self.journal.id,
+            'account_id': self.account.id,
+            'unit_amount': 5,
+            'line_id': analytic_line.id}
+        self.analytic_timesheet_model.create(
+            analytic_timesheet_vals)
+        analytic_line_vals = {
+            'user_id': self.user.id,
+            'account_id': self.account.id,
+            'amount': -450,
+            'unit_amount': 15,
+            'date': sheet.date_from,
+            'name': 'a',
+            'general_account_id': self.general_account.id,
+            'journal_id': self.journal.id,
+            'product_id': self.product.id,
+            'product_uom_id': self.product.uom_id.id,
+            'to_invoice': 1}
+        analytic_line = self.analytic_line_model.create(analytic_line_vals)
+        analytic_timesheet_vals = {
+            'name': 'Analytic timesheet 1',
+            'partner_id': self.partner.id,
+            'sheet_id': sheet.id,
+            'journal_id': self.journal.id,
+            'account_id': self.account.id,
+            'unit_amount': 5,
+            'line_id': analytic_line.id}
+        self.analytic_timesheet_model.create(
+            analytic_timesheet_vals)
+        sheet.button_recalculate_weekly_hours()
+        hours = sum(sheet.mapped('weekly_hours_ids.hours'))
+        self.assertEqual(hours, 10.0, 'Bad hours in weekly hours')
+        sheet._compute_contract_hours()
+        self.assertEqual(
+            sheet.contract_hours, 15.0, 'Bad contract hours')
