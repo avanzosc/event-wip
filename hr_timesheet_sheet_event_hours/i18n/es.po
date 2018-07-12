@@ -40,3 +40,44 @@ msgstr "Total horas trabajadas"
 msgid "Working hours worked"
 msgstr "Horas laborables trabajadas"
 
+#. module: hr_timesheet_sheet_event_hours
+#: view:hr_timesheet_sheet.sheet:hr_timesheet_sheet_event_hours.hr_timesheet_sheet_form_inh_calendar_holiday
+msgid "Difference"
+msgstr "Diferencia"
+
+#. module: hr_timesheet_sheet_event_hours
+#: view:hr_timesheet_sheet.sheet:hr_timesheet_sheet_event_hours.hr_timesheet_sheet_form_inh_calendar_holiday
+msgid "Calculate weekly hours"
+msgstr "Calcular horas semanales"
+
+#. module: hr_timesheet_sheet_event_hours
+#: field:hr_timesheet_sheet.sheet,weekly_hours_ids:0
+#: view:hr_timesheet_sheet.sheet:hr_timesheet_sheet_event_hours.hr_timesheet_sheet_form_inh_calendar_holiday
+msgid "Weekly hours"
+msgstr "Horas semanales"
+
+#. module: hr_timesheet_sheet_event_hours
+#: view:hr_timesheet_sheet.sheet:hr_timesheet_sheet_event_hours.hr_timesheet_sheet_form_inh_calendar_holiday
+msgid "Contract hours"
+msgstr "Horas contrato"
+
+#. module: hr_timesheet_sheet_event_hours
+#: view:hr_timesheet_sheet.sheet:hr_timesheet_sheet_event_hours.hr_timesheet_sheet_form_inh_calendar_holiday
+msgid "Percentage"
+msgstr "Porcentaje"
+
+#. module: hr_timesheet_sheet_event_hours
+#: view:hr_timesheet_sheet.sheet:hr_timesheet_sheet_event_hours.hr_timesheet_sheet_form_inh_calendar_holiday
+msgid "Estimated hours"
+msgstr "Horas estimadas"
+
+#. module: hr_timesheet_sheet_event_hours
+#: field:hr_timesheet_sheet.sheet.weekly.hour,name:0
+msgid "Week"
+msgstr "Semana"
+
+#. module: hr_timesheet_sheet_event_hours
+#: field:hr_timesheet_sheet.sheet.weekly.hour,hours:0
+msgid "Hours"
+msgstr "Horas"
+

@@ -7,9 +7,10 @@
             <field name="inherit_id" ref="hr_timesheet_sheet.hr_timesheet_sheet_form" />
             <field name="arch" type="xml">
                 <notebook position="before">
-                    <group colspan="4" col="8">
-                        <field name="month_hours" string="Month hours" widget="float_time" />
+                    <group colspan="4" col="10">
+                        <field name="month_hours" string="Estimated hours" widget="float_time" />
                         <field name="total_hours_worked" string="Total hours worked" widget="float_time" />
+                        <field name="difference" string="Difference" widget="float_time" />
                         <field name="working_hours_worked" string="Working hours worked" widget="float_time" />
                         <field name="festive_hours_worked" string="Festive hours worked" widget="float_time" />
                     </group>
@@ -20,6 +21,23 @@
                 <xpath expr="//tree[@string='Timesheet Activities']" position="attributes">
                     <attribute name="colors">red:festive==True</attribute>
                 </xpath>
+                <field name="department_id" position="before">
+                    <field name="contract_hours" string="Contract hours" widget="float_time"/>
+                    <field name="percentage" string="Percentage" widget="float_time"/>
+                </field>
+                <notebook position="after">
+                    <group colspan="4">
+                        <button name="button_recalculate_weekly_hours" string="Calculate weekly hours" type="object" />
+                        <separator string="Weekly hours" colspan="4" />
+                        <field name="weekly_hours_ids" nolabel="1" readonly="1">
+                            <tree string="Weekly hours">
+                                <field name="hr_timesheet_sheet_id" invisible="1" />
+                                <field name="name" />
+                                <field name="hours" widget="float_time" sum="Total hours"/>
+                            </tree>
+                        </field>
+                    </group>
+                </notebook>
             </field>
         </record>
     </data>
