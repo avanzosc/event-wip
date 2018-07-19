@@ -129,6 +129,11 @@
                     </button>
                </button>
                <button help="Register with this event" position="after">
+                    <button name="button_show_parents" type="object"
+                            class="oe_stat_button oe_inline"
+                            icon="fa-github" >
+                           <field name="count_parents" string="Parents" widget="statinfo" />
+                    </button>
                     <button name="show_teacher_registrations" type="object"
                             class="oe_stat_button oe_inline"
                             icon="fa-github" >

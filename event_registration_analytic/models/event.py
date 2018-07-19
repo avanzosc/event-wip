@@ -35,6 +35,9 @@ class EventEvent(models.Model):
     count_presences = fields.Integer(
         string='Presences',
         compute='_compute_count_presences')
+    count_parents = fields.Integer(
+        string='Parents',
+        compute='_compute_count_parents')
 
     @api.multi
     @api.depends('registration_ids')
@@ -46,6 +49,17 @@ class EventEvent(models.Model):
             record.count_all_registrations = len(record.registration_ids)
             record.count_teacher_registrations =\
                 len(record.employee_registration_ids)
+
+    @api.multi
+    @api.depends('no_employee_registration_ids',
+                 'no_employee_registration_ids.state',
+                 'no_employee_registration_ids.partner_id',
+                 'no_employee_registration_ids.partner_id.parent_id')
+    def _compute_count_parents(self):
+        for event in self:
+            reg = event.no_employee_registration_ids.filtered(
+                lambda x: x.state in ('done', 'open'))
+            event.count_parents = len(reg.mapped('partner_id.parent_id'))
 
     @api.multi
     def _compute_count_teacher_pickings_moves(self):
@@ -146,6 +160,19 @@ class EventEvent(models.Model):
                 'view_type': 'form',
                 'res_model': 'event.registration',
                 'domain': [('id', 'in', self.employee_registration_ids.ids)]}
+
+    @api.multi
+    def button_show_parents(self):
+        self.ensure_one()
+        reg = self.no_employee_registration_ids.filtered(
+            lambda x: x.state in ('done', 'open'))
+        parents = reg.mapped('partner_id.parent_id')
+        return {'name': _('Parents'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree,form',
+                'view_type': 'form',
+                'res_model': 'res.partner',
+                'domain': [('id', 'in', parents.ids)]}
 
     @api.multi
     def show_presences(self):
