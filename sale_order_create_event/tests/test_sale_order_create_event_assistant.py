@@ -86,3 +86,11 @@ class TestSaleOrderCreateEventAssistant(
         report = self.env['wiz.actual.services.report'].create(report_vals)
         report.with_context(
             active_id=employee).show_employee_actual_services()
+        self.event.registration_ids[0].partner_id.pending_receipts = True
+        with self.assertRaises(exceptions.Warning):
+            self.event.registration_ids[0].confirm_registration()
+        self.event.registration_ids[0].partner_id.write(
+            {'pending_receipts': False,
+             'with_incident': True})
+        with self.assertRaises(exceptions.Warning):
+            self.event.registration_ids[0].confirm_registration()

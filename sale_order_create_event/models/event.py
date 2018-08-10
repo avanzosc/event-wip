@@ -298,3 +298,19 @@ class EventTrackPresence(models.Model):
                     ('task_id', '=', presence.session.tasks[:1].id),
                     ('user_id', '=', presence.partner.employee_id.user_id.id)]
             work_obj.search(cond, limit=1).unlink()
+
+
+class EventRegistration(models.Model):
+    _inherit = 'event.registration'
+
+    @api.one
+    def confirm_registration(self):
+        if self.partner_id.pending_receipts:
+            raise exceptions.Warning(
+                _("%s with pending payment receipts.") %
+                self.partner_id.name)
+        if self.partner_id.with_incident:
+            raise exceptions.Warning(
+                _("%s with incidents.") %
+                self.partner_id.name)
+        super(EventRegistration, self).confirm_registration()

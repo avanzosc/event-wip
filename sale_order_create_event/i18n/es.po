@@ -1070,3 +1070,45 @@ msgstr "Servicios actuales del empleado"
 msgid "Show services"
 msgstr "Mostrar servicios"
 
+#. module: sale_order_create_event
+#: field:res.partner,pending_receipts:0
+msgid "Pending payment receipts"
+msgstr "Recibos pendientes de pago"
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/event.py:313
+#, python-format
+msgid "%s with incidents."
+msgstr "%s con incidencias."
+
+#. module: sale_order_create_event
+#: code:addons/sale_order_create_event/models/event.py:309
+#, python-format
+msgid "%s with pending payment receipts."
+msgstr "%s con recibos pendientes de pago."
+
+#. module: sale_order_create_event
+#: field:res.partner,with_incident:0
+msgid "With incidents"
+msgstr "Con incidencias"
+
+#. module: sale_order_create_event
+#: field:res.partner,incident_notes:0
+msgid "Incident notes"
+msgstr "Notas incidencia"
+
+#. module: sale_order_create_event
+#: view:res.partner:sale_order_create_event.view_partner_warning_form_inh_sale_order_event
+msgid "Pending payments"
+msgstr "Pagos pendientes"
+
+#. module: sale_order_create_event
+#: view:res.partner:sale_order_create_event.view_partner_warning_form_inh_sale_order_event
+msgid "Incidents"
+msgstr "Incidencias"
+
+#. module: sale_order_create_event
+#: view:res.partner:sale_order_create_event.view_partner_warning_form_inh_sale_order_event
+msgid "Events: Payments and incidents"
+msgstr "Eventos: Pagos e incidencias"
+
