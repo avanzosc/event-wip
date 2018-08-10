@@ -11,3 +11,8 @@ class ResPartner(models.Model):
         comodel_name="project.task", relation="task_session_partners_relation",
         column1="session_partner_id", column2="session_task_id",
         string="Task of sessions")
+    pending_receipts = fields.Boolean(
+        string='Pending payment receipts', default=False)
+    with_incident = fields.Boolean(
+        string='With incidents', default=False)
+    incident_notes = fields.Text(string='Incident notes')

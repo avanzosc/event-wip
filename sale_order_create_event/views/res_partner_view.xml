@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_partner_warning_form_inh_sale_order_event">
+            <field name="name">view.partner.warning.form.inh.sale.order.event</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="warning.view_partner_warning_form" />
+            <field name="arch" type="xml">
+                <page string="Warnings" position="after">
+                    <page string="Events: Payments and incidents">
+                        <group colspan="4">
+                            <separator string="Pending payments" colspan="4"/>
+                            <field name="pending_receipts" />
+                            <newline/>
+                            <separator string="Incidents" colspan="4"/>
+                            <field name="with_incident" />
+                            <newline/>
+                            <field name="incident_notes" />
+                        </group>
+                    </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>
