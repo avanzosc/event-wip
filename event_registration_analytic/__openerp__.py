@@ -26,7 +26,7 @@
         "event_registration_hr_contract",
         "event_substitution",
         "payment_line_menu",
-        "account_payment",
+        "account_payment_sale",
     ],
     "data": [
         "security/ir.model.access.csv",

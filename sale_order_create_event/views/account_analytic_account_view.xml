@@ -14,6 +14,9 @@
                 </field>
                 <field name="partner_id" position="after">
                     <field name="sale" />
+                    <field name="event_id" readonly="1" attrs="{'invisible': [('event_id', '=', False)]}"/>
+                    <field name="event_address_id" readonly="1" attrs="{'invisible': [('event_id', '=', False)]}"/>
+                    <field name="event_organizer_id" readonly="1" attrs="{'invisible': [('event_id', '=', False)]}"/>
                 </field>
             </field>
         </record>
@@ -24,6 +27,9 @@
             <field name="arch" type="xml">
                 <field name="date" position="after">
                     <field name="sale" />
+                    <field name="event_id" />
+                    <field name="event_address_id" />
+                    <field name="event_organizer_id" />
                 </field>
             </field>
         </record>
@@ -34,7 +40,15 @@
             <field name="arch" type="xml">
                 <field name="user_id" position="after">
                     <field name="sale" />
+                    <field name="event_id" />
+                    <field name="event_address_id" />
+                    <field name="event_organizer_id" />
                 </field>
+                <filter string="Parent Account" position="after">
+                    <filter string="Event" domain="[]" context="{'group_by':'event_id'}"/>
+                    <filter string="Event address" domain="[]" context="{'group_by':'event_address_id'}"/>
+                    <filter string="Event organizer" domain="[]" context="{'group_by':'event_organizer_id'}"/>
+                </filter>
             </field>
         </record>
         <record id="view_account_analytic_account_form_inh_sale_event" model="ir.ui.view">
@@ -54,6 +68,9 @@
             <field name="arch" type="xml">
                 <field name="type" position="after">
                     <field name="sale" />
+                    <field name="event_id" />
+                    <field name="event_address_id" />
+                    <field name="event_organizer_id" />
                 </field>
             </field>
         </record>
