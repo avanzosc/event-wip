@@ -110,6 +110,12 @@ class TestEventRegistrationAnalytic(TestSaleOrderCreateEventAssistant):
             'Registration not found in new event')
 
     def test_event_track_assistant_delete_from_event(self):
+        self.assertEqual(self.event.count_parents, 0,
+                         'Bad parents count')
+        result = self.event.button_show_parents()
+        self.assertEqual(
+            result.get('domain'), [('id', 'in', [])],
+            'Bad domain to show parents')
         super(TestEventRegistrationAnalytic,
               self).test_event_track_assistant_delete_from_event()
         self.assertTrue(self.event.registration_ids.filtered(
