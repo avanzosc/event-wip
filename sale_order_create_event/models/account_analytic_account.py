@@ -10,6 +10,13 @@ class AccountAnalyticAccount(models.Model):
     sale = fields.Many2one(comodel_name='sale.order', string='Sale Order')
     working_hours = fields.Many2one(
         comodel_name='resource.calendar', string='Working Schedule')
+    event_id = fields.Many2one(comodel_name='event.event', string='Event')
+    event_address_id = fields.Many2one(
+        comodel_name='res.partner', string='Event address', store=True,
+        related='event_id.address_id')
+    event_organizer_id = fields.Many2one(
+        comodel_name='res.partner', string='Event organizer', store=True,
+        related='event_id.organizer_id')
 
     @api.multi
     def write(self, vals):
