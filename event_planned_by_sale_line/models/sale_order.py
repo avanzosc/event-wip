@@ -4,6 +4,7 @@
 from openerp import fields, models, api, _
 from openerp.tools import config
 import calendar
+from dateutil.relativedelta import relativedelta
 
 
 class SaleOrder(models.Model):
@@ -194,9 +195,12 @@ class SaleOrderLine(models.Model):
     def onchange_start_end_date(self):
         self.ensure_one()
         if self.start_date and self.end_date:
-            fec_ini = fields.Date.from_string(self.start_date)
-            fec_fin = fields.Date.from_string(self.end_date)
-            months = list(range(fec_ini.month, fec_fin.month + 1))
+            fec_ini = fields.Date.from_string(self.start_date).replace(day=1)
+            fec_fin = fields.Date.from_string(self.end_date).replace(day=1)
+            months = []
+            while fec_ini <= fec_fin:
+                months.append(fec_ini.month)
+                fec_ini += relativedelta(months=1)
             self.january = 1 in months
             self.february = 2 in months
             self.march = 3 in months

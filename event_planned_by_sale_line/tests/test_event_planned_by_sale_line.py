@@ -258,3 +258,41 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         self.partner.payer = 'school'
         res = self.sale_order.onchange_partner_id(self.partner.id)
         self.assertEqual(res['value'].get('payer', False), 'school')
+
+    def test_onchange_start_end_date_different_year(self):
+        line = self.sale_line_model.new({
+            'start_date': self.today.replace(month=9),
+            'end_date': self.today.replace(month=5, year=self.today.year+1),
+        })
+        line.onchange_start_end_date()
+        self.assertTrue(line.january)
+        self.assertTrue(line.february)
+        self.assertTrue(line.march)
+        self.assertTrue(line.april)
+        self.assertTrue(line.may)
+        self.assertFalse(line.june)
+        self.assertFalse(line.july)
+        self.assertFalse(line.august)
+        self.assertTrue(line.september)
+        self.assertTrue(line.october)
+        self.assertTrue(line.november)
+        self.assertTrue(line.december)
+
+    def test_onchange_start_end_date_two_different_year(self):
+        line = self.sale_line_model.new({
+            'start_date': self.today.replace(month=9),
+            'end_date': self.today.replace(month=5, year=self.today.year+2),
+        })
+        line.onchange_start_end_date()
+        self.assertTrue(line.january)
+        self.assertTrue(line.february)
+        self.assertTrue(line.march)
+        self.assertTrue(line.april)
+        self.assertTrue(line.may)
+        self.assertTrue(line.june)
+        self.assertTrue(line.july)
+        self.assertTrue(line.august)
+        self.assertTrue(line.september)
+        self.assertTrue(line.october)
+        self.assertTrue(line.november)
+        self.assertTrue(line.december)
