@@ -71,6 +71,7 @@ class SaleOrder(models.Model):
                     if line.service_project_task:
                         project = line.service_project_task.project_id
                         project.event_id = line.event_id
+                        project.analytic_account_id.event_id = line.event_id
             if not self.env.context.get('without_sale_name', False):
                 sale.project_id.name = sale.name
 

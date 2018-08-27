@@ -86,6 +86,8 @@ class EventEvent(models.Model):
             }))
         event = self.with_context(
             sale_order_create_event=True).create(event_vals)
+        if not by_task:
+            project.analytic_account_id.event_id = event
         if line:
             line.event_id = event
         return event
