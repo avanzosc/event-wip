@@ -198,6 +198,9 @@ msgid "Estimation of Hours to Invoice"
 msgstr "Estimación de horas a facturar"
 
 #. module: sale_order_create_event
+#: view:account.analytic.account:sale_order_create_event.view_account_analytic_account_search_inh_sale_event
+#: field:account.analytic.account,event_id:0
+#: view:event.track:sale_order_create_event.view_even_track_search_inh_sale_create_event
 #: view:event.track.presence.report:sale_order_create_event.event_track_presence_report_search_view
 #: field:event.track.presence.report,event_id:0
 #: model:ir.model,name:sale_order_create_event.model_event_event
@@ -962,6 +965,8 @@ msgid "Working hours"
 msgstr "Horas laborables"
 
 #. module: sale_order_create_event
+#: view:account.analytic.account:sale_order_create_event.view_account_analytic_account_search_inh_sale_event
+#: field:account.analytic.account,event_address_id:0
 #: field:project.task,event_address:0
 msgid "Event address"
 msgstr "Dirección del evento"
@@ -1111,4 +1116,10 @@ msgstr "Incidencias"
 #: view:res.partner:sale_order_create_event.view_partner_warning_form_inh_sale_order_event
 msgid "Events: Payments and incidents"
 msgstr "Eventos: Pagos e incidencias"
+
+#. module: sale_order_create_event
+#: view:account.analytic.account:sale_order_create_event.view_account_analytic_account_search_inh_sale_event
+#: field:account.analytic.account,event_organizer_id:0
+msgid "Event organizer"
+msgstr "Organizador evento"
 
