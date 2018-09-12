@@ -296,3 +296,7 @@ class TestEventPlannedBySaleLine(TestEventRegistrationAnalytic):
         self.assertTrue(line.october)
         self.assertTrue(line.november)
         self.assertTrue(line.december)
+
+    def test_check_automatic_contract_creation(self):
+        result = self.sale_order._create_automatic_contract_from_sale()
+        self.assertEquals(result, True)

@@ -65,7 +65,7 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_button_confirm(self):
-        for sale in self:
+        for sale in self.filtered(lambda x: not x.project_id):
             if any(sale.mapped('order_line.product_id.recurring_service')):
                 sale._create_automatic_contract_from_sale()
         res = super(SaleOrder, self).action_button_confirm()
