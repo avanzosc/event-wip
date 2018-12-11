@@ -7,6 +7,9 @@ from openerp import models, fields, api
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    generated_next_year = fields.Boolean(
+        string='Generated Next Year', default=False)
+
     @api.multi
     def automatic_renovate_contract_event(self):
         sale_orders = self.env['sale.order']
@@ -16,7 +19,8 @@ class SaleOrder(models.Model):
                 ('project_id.state', '=', 'open'),
                 ('project_id.type', '=', 'contract'),
                 ('project_id.recurring_invoices', '=', True),
-                ('project_id.date', '=', date)]
+                ('project_id.date', '=', date),
+                ('generated_next_year', '=', False)]
         sales = self.search(cond)
         for sale in sales:
             cond = [('sale_order', '=', sale.id)]
@@ -30,5 +34,7 @@ class SaleOrder(models.Model):
                         ('order_line', '!=', False)]
                 new_sale = self.env['sale.order'].search(cond, limit=1)
                 new_sale.action_button_confirm()
+                sale.generated_next_year = True
+                self.env.cr.commit()
             except Exception:
                 continue

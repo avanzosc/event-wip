@@ -29,7 +29,7 @@ class TestSaleOrderRenovateEvent(common.TransactionCase):
         sale_vals = {
             'name': 'sale order renovate event',
             'partner_id': self.ref('base.res_partner_1'),
-            'project_id': self.account.id
+            'project_id': self.account.id,
         }
         sale_line_vals = {
             'product_id': self.service_product.id,
@@ -37,13 +37,21 @@ class TestSaleOrderRenovateEvent(common.TransactionCase):
             'product_uom_qty': 7,
             'product_uom': self.service_product.uom_id.id,
             'price_unit': self.service_product.list_price,
-            'performance': self.service_product.performance}
+            'performance': self.service_product.performance,
+            'start_date': "{}-01-01".format(int(self.today.year) - 1),
+            'end_date': "{}-12-31".format(int(self.today.year) - 1)}
         sale_vals['order_line'] = [(0, 0, sale_line_vals)]
         self.sale_order = self.sale_model.create(sale_vals)
         self.event = self.browse_ref('event.event_0')
         self.event.sale_order = self.sale_order
 
     def test_sale_order_renovate_event(self):
+        self.sale_order.automatic_renovate_contract_event()
+        self.assertEquals(self.sale_order.generated_next_year, False,
+                          'Generated new sale order')
+
+    def test_sale_order_renovate_event_project_by_task(self):
+        self.sale_order.project_by_task = 'yes'
         self.sale_order.automatic_renovate_contract_event()
         cond = [('generated_from_sale_order', '=', self.sale_order.id)]
         new_sale = self.sale_model.search(cond, limit=1)
@@ -52,3 +60,9 @@ class TestSaleOrderRenovateEvent(common.TransactionCase):
                           'Bad state for old contract')
         self.assertEquals(new_sale.project_id.state, 'open',
                           'Bad state for new contract')
+        self.assertEquals(new_sale.project_id.date_start,
+                          "{}-01-01".format(self.today.year),
+                          'Bad start date for new contract')
+        self.assertEquals(new_sale.project_id.date,
+                          "{}-12-31".format(self.today.year),
+                          'Bad start date for new contract')
