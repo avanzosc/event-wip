@@ -2,6 +2,7 @@
 # Copyright © 2017 Alfredo de la Fuente - AvanzOSC
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import openerp.tests.common as common
+from openerp import exceptions
 
 
 class TestSaleOrderCreateEventSessionNumber(common.TransactionCase):
@@ -57,12 +58,15 @@ class TestSaleOrderCreateEventSessionNumber(common.TransactionCase):
             'thursday': True,
             'start_date': '2025-01-15',
             'start_hour': 8.00,
-            'session_number': 4,
+            'session_number': 0,
             'end_hour': 09.00}
         sale_vals['order_line'] = [(0, 0, sale_line_vals)]
         self.sale_order = self.sale_model.create(sale_vals)
 
     def test_sale_order_create_event_session_number(self):
+        with self.assertRaises(exceptions.Warning):
+            self.sale_order.action_button_confirm()
+        self.sale_order.order_line[0].session_number = 4
         self.sale_order._generate_lines_end_date(self.sale_order.order_line[0])
         self.assertEquals(self.sale_order.order_line[0].end_date,
                           '2025-01-30', 'Bad date end of sale line')
