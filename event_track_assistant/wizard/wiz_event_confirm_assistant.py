@@ -16,8 +16,7 @@ class WizEventConfirmAssistant(models.TransientModel):
         track_obj = self.env['event.track']
         append_obj = self.env['wiz.event.append.assistant']
         for event in event_obj.browse(self.env.context.get('active_ids')):
-            registrations = event.registration_ids.filtered(
-                lambda x: x.state == 'draft')
+            registrations = self._select_event_registrations(event)
             for reg in registrations:
                 append_vals = self._prepare_data_confirm_assistant(reg)
                 append = append_obj.create(append_vals)
@@ -37,6 +36,11 @@ class WizEventConfirmAssistant(models.TransientModel):
                     else:
                         append._create_presence_from_wizard(track,
                                                             reg.event_id)
+
+    def _select_event_registrations(self, event):
+        registrations = event.registration_ids.filtered(
+            lambda x: x.state == 'draft')
+        return registrations
 
     def _prepare_data_confirm_assistant(self, reg):
         append_vals = {'from_date': reg.date_start,
