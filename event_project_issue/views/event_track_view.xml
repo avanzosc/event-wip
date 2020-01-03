@@ -21,11 +21,11 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='website_url']/.." position="before">
                    <div class="oe_right oe_button_box" groups="base.group_user">
-	                    <button name="show_session_issues" type="object"
-	                            class="oe_stat_button oe_inline"
-	                            icon="fa-github" >
-	                           <field name="count_issues" string="Issues" widget="statinfo" />
-	                    </button>
+                        <button name="show_session_issues" type="object"
+                                class="oe_stat_button oe_inline"
+                                icon="fa-github" >
+                               <field name="count_issues" string="Issues" widget="statinfo" />
+                        </button>
                    </div>
                 </xpath>
             </field>

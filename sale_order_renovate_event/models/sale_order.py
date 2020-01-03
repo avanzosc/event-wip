@@ -29,12 +29,13 @@ class SaleOrder(models.Model):
                 sale_orders += sale
         for sale in sale_orders:
             try:
-                sale._renovate_sale_and_contract_from_wizard()
-                cond = [('generated_from_sale_order', '=', sale.id),
-                        ('order_line', '!=', False)]
-                new_sale = self.env['sale.order'].search(cond, limit=1)
-                new_sale.action_button_confirm()
-                sale.generated_next_year = True
-                self.env.cr.commit()
+                with self.env.cr.savepoint():
+                    sale._renovate_sale_and_contract_from_wizard()
+                    cond = [('generated_from_sale_order', '=', sale.id),
+                            ('order_line', '!=', False)]
+                    new_sale = self.env['sale.order'].search(cond, limit=1)
+                    new_sale.action_button_confirm()
+                    sale.generated_next_year = True
+                # self.env.cr.commit()
             except Exception:
                 continue

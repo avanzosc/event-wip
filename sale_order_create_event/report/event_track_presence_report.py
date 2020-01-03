@@ -90,13 +90,13 @@ class EventTrackPresenceReport(models.Model):
 
     def init(self, cr):
         tools.drop_view_if_exists(cr, self._table)
-        cr.execute("""CREATE or REPLACE VIEW %s as (%s %s %s %s %s)
-        """ % (self._table, self._select(), self._from(), self._where(),
-               self._group_by(), self._order_by()))
+        cr.execute("""CREATE or REPLACE VIEW {} as ({} {} {} {} {})
+        """.format(self._table, self._select(), self._from(), self._where(),
+                   self._group_by(), self._order_by()))
 
     @api.multi
     def presence_analysis_from_employee(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute("""CREATE or REPLACE VIEW %s as (%s %s %s %s %s)
-        """ % (self._table, self._select(), self._from(), self._where2(),
-               self._group_by(), self._order_by()))
+        self.env.cr.execute("""CREATE or REPLACE VIEW {} as ({} {} {} {} {})
+        """.format(self._table, self._select(), self._from(), self._where2(),
+                   self._group_by(), self._order_by()))

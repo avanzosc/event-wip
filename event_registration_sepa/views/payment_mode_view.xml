@@ -11,16 +11,6 @@
                 </field>
             </field>
         </record>
-        <record id="view_payment_mode_tree_inh_event_sepa" model="ir.ui.view">
-            <field name="name">view.payment.mode.tree.inh.event.sepa</field>
-            <field name="model">payment.mode</field>
-            <field name="inherit_id" ref="account_payment.view_payment_mode_tree" />
-            <field name="arch" type="xml">
-                <field name="company_id" position="after">
-                    <field name="validate_mandate" />
-                </field>
-            </field>
-        </record>
         <record id="view_payment_mode_form_inh_event_sepa" model="ir.ui.view">
             <field name="name">view.payment.mode.form.inh.event.sepa</field>
             <field name="model">payment.mode</field>
