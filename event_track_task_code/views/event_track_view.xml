@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_track_calendar_inh_task_code">
+            <field name="name">view.event.track.calendar.inh.task.code</field>
+            <field name="model">event.track</field>
+            <field name="inherit_id" ref="event_track_assistant.view_event_track_calendar_inh_assistant" />
+            <field name="arch" type="xml">
+                <field name="lit_presences" position="after">
+                    <field name="lit_task_code" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

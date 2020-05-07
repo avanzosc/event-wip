@@ -1,0 +1,33 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_track_task_code
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-09 09:32+0000\n"
+"PO-Revision-Date: 2018-03-09 09:32+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_track_task_code
+#: model:ir.model,name:event_track_task_code.model_event_track
+msgid "Event Tracks"
+msgstr "Sesiones del evento"
+
+#. module: event_track_task_code
+#: field:event.track,lit_task_code:0
+msgid "Task code literal"
+msgstr "Literal código tarea"
+
+#. module: event_track_task_code
+#: code:addons/event_track_task_code/models/event_track.py:13
+#, python-format
+msgid "Task code:"
+msgstr "Código tarea:"
+
