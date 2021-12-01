@@ -14,7 +14,8 @@
     "category": "Human Resources",
     "depends": [
         "sale_order_renovate_contract",
-        "sale_order_create_event"
+        "sale_order_create_event",
+        "calendar_holiday"
     ],
     "data": [
         "data/sale_order_renovate_event_data.xml",

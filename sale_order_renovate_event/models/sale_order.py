@@ -13,8 +13,9 @@ class SaleOrder(models.Model):
     @api.multi
     def automatic_renovate_contract_event(self):
         sale_orders = self.env['sale.order']
-        date = '{}-12-31'.format(
-            int(fields.Date.from_string(fields.Date.today()).year)-1)
+#        date = '{}-12-31'.format(
+#            int(fields.Date.from_string(fields.Date.today()).year)-1)
+        date = '2021-12-31'
         cond = [('project_id', '!=', False),
                 ('project_id.state', '=', 'open'),
                 ('project_id.type', '=', 'contract'),
@@ -35,7 +36,15 @@ class SaleOrder(models.Model):
                             ('order_line', '!=', False)]
                     new_sale = self.env['sale.order'].search(cond, limit=1)
                     new_sale.action_button_confirm()
+                    if new_sale.project_id:
+                        year = int(fields.Date.from_string(
+                            new_sale.project_id.date_start).year)
+                        new_sale.project_id.name = u'{} {}'.format(
+                            new_sale.project_id.partner_id.name, year)
+                        cond = [('analytic_account_id', '=', new_sale.project_id.id)]
+                        project = self.env['project.project'].search(cond, limit=1)
+                        if project:
+                            project.name = new_sale.project_id.name
                     sale.generated_next_year = True
-                # self.env.cr.commit()
             except Exception:
                 continue
